@@ -28,15 +28,9 @@ package then returned the final dictionary object for python program.
 How to install
 ~~~~~~~~~~~~~~
 
-Firstly, clone **python-jsonpreprocessor** repository to your machine
+Firstly, clone **python-jsonpreprocessor** repository to your machine.
 
-.. code-block::
-
-  git clone ssh://git@sourcecode.socialcoding.bosch.com:7999/robfw/python-jsonpreprocessor.git
-  or
-  git clone https://sourcecode.socialcoding.bosch.com/scm/robfw/python-jsonpreprocessor.git
-
-Go to python-jsonpreprocessor, using the 2 common commands below to build or install this package:
+Then go to python-jsonpreprocessor, using the 2 common commands below to build or install this package:
 
 .. code-block::
 
@@ -274,7 +268,7 @@ Contributors
 License
 -------
 
-TestResultWebApp is open source software provided under the `Apache License
+json-preprocessor is open source software provided under the `Apache License
 2.0`__. 
 
 __ http://apache.org/licenses/LICENSE-2.0
