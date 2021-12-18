@@ -1,0 +1,65 @@
+//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+// 
+// File: atest_config.json
+// Initialized by Mai Dinh Nam Son
+//
+//**************************************************************************
+{
+  "sWelcome": "Welcome to atest of jsonpreprocessor",
+  "arrayTest01": [1, 2, {"test1": "test1", "test2": 2}, 4],
+  "params": {
+    // Global parameters
+    "glo": {
+	  "globalIntParam" : 1,
+	  
+	  "globalFloatParam" : 1.332,
+	  
+	  "globalString"   : "This is a string",
+	   
+	  "globalStructure": {
+	    "general": "general"
+	  }
+    }
+  },
+  "preprocessor": {
+    "definitions": {
+	  "preprolIntParam" : 1,
+	  
+	  "preproFloatParam" : 1.332,
+	  
+	  "global123": "global",
+	  
+	  "preproString"   : "This is a string",
+	   
+	  "preproStructure": {
+	    "general": "general",
+	    "arrayTest02": [20, {"check1": "check1", "check2": 20}, 40],
+	    "variable_01": 19,
+	    "variable_02": "checkParam"
+	  },
+	  "preproTest": {
+	    "param_01": 10,
+	    "param_02": {
+	      "checkParam_01": 2,
+	      "checkParam_02": 5
+	    },
+	    "checkParam": "For testing purpose"
+	  }
+    }
+  },
+  "Project": "JsonPreprocessor",
+  "Summary": "Acceptance testing for sub data structure feature"
+}

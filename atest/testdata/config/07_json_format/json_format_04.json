@@ -1,0 +1,53 @@
+//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//*****************************************************************************
+//  Author: Mai Dinh Nam Son
+//
+//  This json configuration file has standard foramat and comment
+//  test config files
+//*****************************************************************************
+{
+  "Project": "https://www.robfwaio.com",  // Just for testing.
+  "WelcomeString": "Hello... ROBFW is running now!",
+  "version//test": {    // Just for testing.
+    "majorversion": "0",
+    "minorversion": "1",   // Test version.
+    "patchversion": "1" },
+  
+  // This is comment feature of jsonpreprocessor package.
+  // The global parameters are defined here.
+  "params": {
+    "global": 
+    { "gGlobalIntParam" : 1,  // Testing purpose
+	  "gGlobalFloatParam" : 1.332,
+	  "gGlobal//String"   : "https://www.robfwaio.com",
+	  "gGlobalStructure": {
+	    "general": "general" } } },
+  
+  // preprocessor parameters were defined here
+  "preprocessor": {
+    "definitions": 
+    
+    { "gPreprolIntParam" : 1,
+	  
+	  "gPreproFloatParam" : 1.332,
+	  
+	  "gPrepro//String"   : "This is a string", // Just for test.
+	  
+	  "gPreproStructure": { "general": "general",
+	                         "testing": 19,
+	                         "check//01": "check//Param" }}},  // Just testing
+  "abc" : "This is a multline string\nwith\nhttp://www.google.de\na link inside",
+  "Target//Name" : "gen3flex//dlt"  // Testing purpose
+}

@@ -1,0 +1,112 @@
+//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//*****************************************************************************
+//  Author: Mai Dinh Nam Son
+//  This file defines all possible variants and the corresponding configuration
+//  file which need to be loaded for jsonpreprocessor acceptance test.
+//
+//*****************************************************************************
+//*****************************************************************************
+// The file configures the access to all variant dependent on test purpose.
+//
+// The path to the *.json files depends on the test file location. A 
+// different number of ../ is required dependend on the directory depth of the test 
+// case location.
+//*****************************************************************************
+{
+  "proper_file": {
+    "name": "proper_file_config.json",
+    "path": "./01_proper_json"
+  },
+  "one_file_01": {
+    "name": "import_one_file01_config.json",
+    "path": "./02_import_json"
+  },
+  "one_file_02": {
+    "name": "import_one_file02_config.json",
+    "path": "./02_import_json"
+  },
+  "one_file_03": {
+    "name": "import_one_file03_config.json",
+    "path": "./02_import_json"
+  },
+  "one_file_04": {
+    "name": "import_one_file04_config.json",
+    "path": "./02_import_json"
+  },
+  "files_01": {
+    "name": "import_files01_config.json",
+    "path": "./02_import_json"
+  },
+  "files_02": {
+    "name": "import_files02_config.json",
+    "path": "./02_import_json"
+  },
+  "files_03": {
+    "name": "import_files03_config.json",
+    "path": "./02_import_json"
+  },
+  "files_04": {
+    "name": "import_files04_config.json",
+    "path": "./02_import_json"
+  },
+  "nested_01": {
+    "name": "nested_import01_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_02": {
+    "name": "nested_import02_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_03": {
+    "name": "nested_import03_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_04": {
+    "name": "nested_import04_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_05": {
+    "name": "nested_import05_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_06": {
+    "name": "nested_import06_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_07": {
+    "name": "nested_import07_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_08": {
+    "name": "nested_import08_config.json",
+    "path": "./03_nested_import"
+  },
+  "nested_09": {
+    "name": "nested_import09_config.json",
+    "path": "./03_nested_import"
+  },
+  "re_import_01": {
+    "name": "re_import_file01_config.json",
+    "path": "./04_re_import"
+  },
+  "sub_datastructure_01": {
+    "name": "sub_data_structure_01.json",
+    "path": "./05_sub_datastructure"
+  },
+  "sub_datastructure_02": {
+    "name": "sub_data_structure_02.json",
+    "path": "./05_sub_datastructure"
+  }
+}
