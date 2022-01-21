@@ -190,13 +190,18 @@ setuptools.setup(
     classifiers = [
         str(oRepositoryConfig.Get('sProgrammingLanguage')),
         str(oRepositoryConfig.Get('sLicence')),
-        str(oRepositoryConfig.Get('sOperatingSystem'))
+        str(oRepositoryConfig.Get('sOperatingSystem')),
+        str(oRepositoryConfig.Get('sDevelopmentStatus')),
+        str(oRepositoryConfig.Get('sIntendedAudience')),
+        str(oRepositoryConfig.Get('sTopic')),
     ],
     python_requires = str(oRepositoryConfig.Get('sPythonRequires')),
     cmdclass={
         'install': ExtendedInstallCommand,
     },
-)
+    install_requires = oRepositoryConfig.Get('arInstallRequires'),
 
+
+)
 # --------------------------------------------------------------------------------------------------------------
 

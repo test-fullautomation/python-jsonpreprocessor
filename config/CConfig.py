@@ -84,17 +84,21 @@ class CConfig():
 
         # 1. basic setup stuff
         self.__dictConfig['sPackageName']                = "JsonPreprocessor"
-        self.__dictConfig['sVersion']                    = "0.0.1"
+        self.__dictConfig['sVersion']                    = "0.0.2"
         self.__dictConfig['sAuthor']                     = "Mai Dinh Nam Son"
         self.__dictConfig['sAuthorEMail']                = "son.maidinhnam@vn.bosch.com"
         self.__dictConfig['sDescription']                = "This package provides a preprocessor for json files"
-        self.__dictConfig['sLongDescriptionContentType'] = "text/markdown"
-        self.__dictConfig['sURL']                        = "https://sourcecode.socialcoding.bosch.com/projects/ROBFW/repos/python-jsonpreprocessor/browse"
+        self.__dictConfig['sLongDescriptionContentType'] = "text/x-rst"
+        self.__dictConfig['sURL']                        = "https://github.com/test-fullautomation/python-jsonpreprocessor"
         self.__dictConfig['sProgrammingLanguage']        = "Programming Language :: Python :: 3"
-        self.__dictConfig['sLicence']                    = "License :: OSI Approved :: MIT License"
+        self.__dictConfig['sLicence']                    = "License :: OSI Approved :: Apache Software License"
         self.__dictConfig['sOperatingSystem']            = "Operating System :: OS Independent"
-        self.__dictConfig['sPythonRequires']             = ">=3.9"
-        # self.__dictConfig[''] = ""
+        self.__dictConfig['sPythonRequires']             = ">=3.0"
+        self.__dictConfig['sDevelopmentStatus']          = "Development Status :: 4 - Beta"
+        self.__dictConfig['sIntendedAudience']           = "Developers"
+        self.__dictConfig['sTopic']                      = "Software Development"
+        self.__dictConfig['arInstallRequires']            = ['sphinx']
+
 
         # 2. certain folder and executables (things that requires computation)
         bSuccess, sResult = self.__InitConfig()
