@@ -15,15 +15,13 @@
 JSONPREPROCESSOR DOCUMENTATION
 ==============================
 
-**This is the documentation for jsonpreprocessor repository**
-
 Getting Started
 ---------------
 
-The JsonPreprocessor is the python3 package which allows programmer to handle some 
-additional features in json file such as comment, import, override, etc for configuring 
-purpose. The json file containing comment, import,... will be handled by JsonPreprocessor 
-package then returned the final dictionary object for python program.
+The JsonPreprocessor is a python3 package which allows programmers to handle  
+additional features in json files such as comments, imports, overrides, etc. 
+The json files containing comments, imports,... will be handled by the JsonPreprocessor 
+package which returs as result an dictionary object of the deserialized data.
 
 How to install
 ~~~~~~~~~~~~~~
@@ -37,56 +35,20 @@ Then go to python-jsonpreprocessor, using the 2 common commands below to build o
     setup.py build      will build the package underneath 'build/'
     setup.py install    will install the package
 
-We can use --help to discover the options for 'build' command, ex:
-
-.. code-block::
-
-    python setup.py --help build
-    ...
-    Global options:
-      --verbose (-v)  run verbosely (default)
-      --quiet (-q)    run quietly (turns verbosity off)
-      --dry-run (-n)  don't actually do anything
-      --help (-h)     show detailed help message
-      --no-user-cfg   ignore pydistutils.cfg in your home directory
-    
-    Options for 'build' command:
-      --build-base (-b)  base directory for build library
-      --build-purelib    build directory for platform-neutral distributions
-      --build-platlib    build directory for platform-specific distributions
-      --build-lib        build directory for all distribution (defaults to either
-                         build-purelib or build-platlib
-      --build-scripts    build directory for scripts
-      --build-temp (-t)  temporary build directory
-      --plat-name (-p)   platform name to build for, if supported (default: win-
-                         amd64)
-      --compiler (-c)    specify the compiler type
-      --parallel (-j)    number of parallel build jobs
-      --debug (-g)       compile extensions and libraries with debugging
-                         information
-      --force (-f)       forcibly build everything (ignore file timestamps)
-      --executable (-e)  specify final destination interpreter path (build.py)
-      --help-compiler    list available compilers
-    
-    usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
-       or: setup.py --help [cmd1 cmd2 ...]
-       or: setup.py --help-commands
-       or: setup.py cmd --help
-
-After the build processes are completed, the package is located in 'build/', and the documents are 
-located in 'doc/_build/'.
+After the build processes is completed, the package is located in 'build/', and the generated 
+documents are located in 'doc/_build/'.
 
 Features
 --------
 
-Adding comments in json file:
+Adding comments to json file:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The JsonPreprocessor allows adding comments into json file, a comment could be added 
-follow **"//"**.
+The JsonPreprocessor allows adding comments into a json file, a comment can be added 
+anywhere after **"//"**. 
 
-**Note:** This package is not allow commented a block of json code, each comment must 
-be added with **"//"**.
+**Note:** This package is not supporting multiline comments. Only single line comments
+are possible. 
 
 **Example:**
 
@@ -110,11 +72,11 @@ be added with **"//"**.
      "TargetName" : "gen3flex@dlt"
    }
 
-Imported the other json files:
+Import other json files:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This import feature allows user merges the content of other json files into the json 
-file, it also allows the nested importing means we can use import feature in the imported 
+The import feature allows users to merge the content of other json files into a json 
+file, it also allows nested importing, means we can use import feature again in imported 
 files.
 
 **Example:**
@@ -151,12 +113,12 @@ files.
            "TargetName" : "gen3flex@dlt"
          }
 
-Override, add new parameters:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Override, update and add new parameters:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package also provides user ability to override or update as well as add new parameters. 
+This package also allows to override, update and adding new parameters. 
 User can update parameters which are already declared and add new parameters or new 
-element into existing parameters. The below example will show the way to do these features.
+elements into existing parameters. The below example will show the way to use these features.
 
 **Example:**
 
@@ -193,7 +155,7 @@ element into existing parameters. The below example will show the way to do thes
 Nested parameters:
 ~~~~~~~~~~~~~~~~~~
 
-With JsonPreprocessor package, user can also use nested parameters as example below:
+With the JsonPreprocessor package, a user can also use nested parameters:
 
 **Example:**
 
@@ -239,31 +201,22 @@ With JsonPreprocessor package, user can also use nested parameters as example be
 Feedback
 --------
 
-To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_ 
+To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>` 
 
 In case you want to report a bug or request any interesting feature, please don't 
 hesitate to raise a ticket.
 
-About
------
-
 Maintainers
 ~~~~~~~~~~~
 
-`Thomas Pollerspöck`_
+`Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_
 
 Contributors
 ~~~~~~~~~~~~
 
-`Mai Dinh Nam Son`_
+`Mai Dinh Nam Son <son.maidinhnam@vn.bosch.com>`_
 
-`Tran Duy Ngoan`_
-
-`Nguyen Huynh Tri Cuong`_
-
-`Tran Hoang Nguyen`_
-
-`Holger Queckenstedt`_
+`Tran Duy Ngoan <Ngoan.TranDuy@vn.bosch.com>`_
 
 License
 -------

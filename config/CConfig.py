@@ -95,8 +95,8 @@ class CConfig():
         self.__dictConfig['sOperatingSystem']            = "Operating System :: OS Independent"
         self.__dictConfig['sPythonRequires']             = ">=3.0"
         self.__dictConfig['sDevelopmentStatus']          = "Development Status :: 4 - Beta"
-        self.__dictConfig['sIntendedAudience']           = "Developers"
-        self.__dictConfig['sTopic']                      = "Software Development"
+        self.__dictConfig['sIntendedAudience']           = "Intended Audience :: Developers"
+        self.__dictConfig['sTopic']                      = "Topic :: Software Development"
         self.__dictConfig['arInstallRequires']            = ['sphinx']
 
 
