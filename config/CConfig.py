@@ -88,7 +88,7 @@ class CConfig():
         self.__dictConfig['sAuthor']                     = "Mai Dinh Nam Son"
         self.__dictConfig['sAuthorEMail']                = "son.maidinhnam@vn.bosch.com"
         self.__dictConfig['sDescription']                = "This package provides a preprocessor for json files"
-        self.__dictConfig['sLongDescriptionContentType'] = "text/x-rst"
+        self.__dictConfig['sLongDescriptionContentType'] = "text/plain"
         self.__dictConfig['sURL']                        = "https://github.com/test-fullautomation/python-jsonpreprocessor"
         self.__dictConfig['sProgrammingLanguage']        = "Programming Language :: Python :: 3"
         self.__dictConfig['sLicence']                    = "License :: OSI Approved :: Apache Software License"
