@@ -84,11 +84,11 @@ class CConfig():
 
         # 1. basic setup stuff
         self.__dictConfig['sPackageName']                = "JsonPreprocessor"
-        self.__dictConfig['sVersion']                    = "0.0.2"
+        self.__dictConfig['sVersion']                    = "0.0.6"
         self.__dictConfig['sAuthor']                     = "Mai Dinh Nam Son"
         self.__dictConfig['sAuthorEMail']                = "son.maidinhnam@vn.bosch.com"
         self.__dictConfig['sDescription']                = "This package provides a preprocessor for json files"
-        self.__dictConfig['sLongDescriptionContentType'] = "text/plain"
+        self.__dictConfig['sLongDescriptionContentType'] = "text/markdown"
         self.__dictConfig['sURL']                        = "https://github.com/test-fullautomation/python-jsonpreprocessor"
         self.__dictConfig['sProgrammingLanguage']        = "Programming Language :: Python :: 3"
         self.__dictConfig['sLicence']                    = "License :: OSI Approved :: Apache Software License"
@@ -97,7 +97,7 @@ class CConfig():
         self.__dictConfig['sDevelopmentStatus']          = "Development Status :: 4 - Beta"
         self.__dictConfig['sIntendedAudience']           = "Intended Audience :: Developers"
         self.__dictConfig['sTopic']                      = "Topic :: Software Development"
-        self.__dictConfig['arInstallRequires']            = ['sphinx']
+        self.__dictConfig['arInstallRequires']            = ['sphinx','pypandoc','colorama']
 
 
         # 2. certain folder and executables (things that requires computation)
