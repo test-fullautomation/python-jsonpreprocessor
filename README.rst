@@ -12,8 +12,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-JSONPREPROCESSOR DOCUMENTATION
-==============================
+Json Preprocessor's Package Description
+=======================================
 
 Getting Started
 ---------------
@@ -36,172 +36,17 @@ Then go to python-jsonpreprocessor, using the 2 common commands below to build o
     setup.py install    will install the package
 
 After the build processes is completed, the package is located in 'build/', and the generated 
-documents are located in 'doc/_build/'.
+package documentation is located in 'doc/_build/'.
 
-Features
---------
 
-Adding comments to json file:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The JsonPreprocessor allows adding comments into a json file, a comment can be added 
-anywhere after **"//"**. 
+`Package Documentation <./doc/_build/html/index.html>`_
 
-**Note:** This package is not supporting multiline comments. Only single line comments
-are possible. 
-
-**Example:**
-
-.. code-block::
-
-   //*****************************************************************************
-   //  Author: ROBFW-AIO Team
-   //
-   //  This file defines all common global parameters and will be included to all
-   //  test config files
-   //*****************************************************************************
-   {
-     "Project": "G3g",
-     "WelcomeString": "Hello... ROBFW is running now!",
-     // Version control information.
-     "version": {
-       "majorversion": "0",
-       "minorversion": "1",
-       "patchversion": "1"
-     },
-     "TargetName" : "gen3flex@dlt"
-   }
-
-Import other json files:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The import feature allows users to merge the content of other json files into a json 
-file, it also allows nested importing, means we can use import feature again in imported 
-files.
-
-**Example:**
-
-.. code-block::
-
-         //*****************************************************************************
-         //  Author: ROBFW-AIO Team
-         //
-         //  This file defines all common global parameters and will be included to all
-         //  test config files
-         //*****************************************************************************
-         {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
-           "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
-           },
-           "params": {
-             // Global parameters
-             "global": {
-         		"[import]": "<path_to_the_imported_file>/params_global.json"
-               }
-             },
-           "preprocessor": {
-             "definitions": {
-               // FEATURE switches
-                 "[import]": "<path_to_the_imported_file>/preprocessor_definitions.json"
-               }
-           },
-           "TargetName" : "gen3flex@dlt"
-         }
-
-Override, update and add new parameters:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This package also allows to override, update and adding new parameters. 
-User can update parameters which are already declared and add new parameters or new 
-elements into existing parameters. The below example will show the way to use these features.
-
-**Example:**
-
-.. code-block::
-
-         {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
-           "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
-           },
-           "params": {
-             // Global parameters
-             "global": {
-         		"[import]": "<path_to_the_imported_file>/params_global.json"
-               }
-             },
-           "TargetName" : "gen3flex@dlt",
-           // Override parameters
-           "${params}['global']['gGlobalFloatParam']": 9.999,  
-           "${version}['patchversion']": "2",
-           "${params}['global']['gGlobalString']": "This is new string after overrided",
-           // Add new parameters
-           "${newParam}": {
-         	  			"abc": 9,
-         				"xyz": "new param"
-           },
-           "${params}['global']['gGlobalStructure']['newGlobalParam']": 123
-         }
-
-Nested parameters:
-~~~~~~~~~~~~~~~~~~
-
-With the JsonPreprocessor package, a user can also use nested parameters:
-
-**Example:**
-
-.. code-block::
-
-         {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
-           "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
-           },
-           "params": {
-             // Global parameters
-             "global": {
-               "gGlobalIntParam" : 1,
-               "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-               "gGlobalString"   : "This is a string",
-               "gGlobalStructure": {
-                 "general": "general"
-                 }
-             }
-           },
-           "preprocessor": {
-             "definitions": {
-               "gPreprolIntParam" : 1,
-               "gPreproFloatParam" : 9.664,
-         	  "ABC": "checkABC",
-               "gPreproString"   : "This is a string",
-               "gPreproStructure": {
-                                  "general": "general"
-                                 }
-             }
-           },
-           "TargetName" : "gen3flex@dlt",
-           // Nested parameter
-           "${params}['global'][${preprocessor}['definitions']['ABC']]": true,
-           "${params}['global']['gGlobalFloatParam']": "${preprocessor}['definitions']['gPreproFloatParam']"
-         }
 
 Feedback
 --------
 
-To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>` 
+To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_ 
 
 In case you want to report a bug or request any interesting feature, please don't 
 hesitate to raise a ticket.

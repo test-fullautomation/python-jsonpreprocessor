@@ -12,8 +12,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Json Preprocessor's Documentation
-=================================
+Json Preprocessor's Feature Documentation
+=========================================
 
 Introduction:
 -------------
@@ -33,7 +33,7 @@ New features
 
 `Import the contents from other json files`_
 
-`Override existen and add new parameters`_
+`Overwrite existing and add new parameters`_
 
 `Nested parameters`_
 
@@ -227,10 +227,10 @@ The ``config.json`` file is handled by JsonPreprocessor package, then return the
            "TargetName" : "gen3flex@dlt"
          }
 
-Override existen and add new parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Overwrite existing and add new parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package also provides user ability to override or update as well as add new 
+This package also provides user ability to overwrite or update as well as add new 
 parameters. User can update parameters which are already declared and add new parameters 
 or new element into existing parameters. The below example will show the way to do 
 these features.
@@ -277,10 +277,10 @@ Then we import ``params_global.json`` to json file ``config.json`` with content:
                }
              },
            "TargetName" : "gen3flex@dlt",
-           // Override parameters
+           // Overwrite parameters
            "${params}['global']['gGlobalFloatParam']": 9.999,  
            "${version}['patchversion']": "2",
-           "${params}['global']['gGlobalString']": "This is new string after overrided",
+           "${params}['global']['gGlobalString']": "This is the new value for the already existing parameter.",
            // Add new parameters
            "${newParam}": {
          	  			"abc": 9,
@@ -305,7 +305,7 @@ The ``config.json`` file is handled by JsonPreprocessor package, then return the
              "global": {
                "gGlobalIntParam" : 1,
                "gGlobalFloatParam" : 9.999,
-               "gGlobalString"   : "This is new string after overrided",
+               "gGlobalString"   : "This is the new value for the already existing parameter.",
                "gGlobalStructure": {
                  "general": "general",
          		"newGlobalParam": 123

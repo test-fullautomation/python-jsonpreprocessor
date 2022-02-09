@@ -17,7 +17,7 @@
 #
 # sphinx-makeall.py
 #
-# XC-CI1/ECA3-Queckenstedt
+# XC-CT/ECA3-Queckenstedt
 #
 # Uses the Python documentation tool Sphinx to generate the documentation of Python modules
 # - based on the docstrings inside the Python modules and
@@ -39,6 +39,9 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
+# 02.11.2021 / XC-CT/ECA3-Queckenstedt
+# gen_doc_pdf called twice (to get also a table of content added to PDF file)
+# 
 # 30.09.2021 / XC-CI1/ECA3-Queckenstedt
 # Added wrapper for error messages
 # 
@@ -317,6 +320,13 @@ if nReturn != SUCCESS:
 # -- generating new documentation in PDF format (requires configured LaTeX)
 sLaTeXInterpreter = oRepositoryConfig.Get('sLaTeXInterpreter')
 if sLaTeXInterpreter is not None:
+    print("Calling LaTeX PDF renderer (1/2)")
+    nReturn = gen_doc_pdf(oRepositoryConfig)
+    if nReturn != SUCCESS:
+        printerror("PDF generation failed")
+        print()
+        sys.exit(nReturn)
+    print("Calling LaTeX PDF renderer (2/2) - to get referencs and table of content updated")
     nReturn = gen_doc_pdf(oRepositoryConfig)
     if nReturn != SUCCESS:
         printerror("PDF generation failed")
