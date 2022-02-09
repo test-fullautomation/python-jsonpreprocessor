@@ -39,8 +39,11 @@ After the build processes is completed, the package is located in 'build/', and 
 package documentation is located in 'doc/_build/'.
 
 
+Package Documentation
+~~~~~~~~~~~~~~~~~~~~~
 
-`Package Documentation <./doc/_build/html/index.html>`_
+`thejsonpreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/thejsonpreprocessor.pdf>`_
+
 
 
 Feedback
