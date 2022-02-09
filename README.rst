@@ -24,7 +24,7 @@ The json files containing comments, imports,... will be handled by the JsonPrepr
 package which returs as result an dictionary object of the deserialized data.
 
 How to install
-~~~~~~~~~~~~~~
+--------------
 
 Firstly, clone **python-jsonpreprocessor** repository to your machine.
 
@@ -40,10 +40,9 @@ package documentation is located in 'doc/_build/'.
 
 
 Package Documentation
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
-`thejsonpreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/thejsonpreprocessor.pdf>`_
-
+A detailed documentation of the Json Preprocessor's Package can be found here: `thejsonpreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/thejsonpreprocessor.pdf>`_
 
 
 Feedback
@@ -55,12 +54,12 @@ In case you want to report a bug or request any interesting feature, please don'
 hesitate to raise a ticket.
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_
 
 Contributors
-~~~~~~~~~~~~
+------------
 
 `Mai Dinh Nam Son <son.maidinhnam@vn.bosch.com>`_
 
