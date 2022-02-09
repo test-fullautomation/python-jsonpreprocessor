@@ -17,7 +17,7 @@
 #
 # setup.py
 #
-# CM-CI1/ECA3-Queckenstedt
+# XC-CT/ECA3-Queckenstedt
 #
 # Extends the standard setuptools installation by adding the documentation in HTML format
 # (requires installation mode) and tidying up some folders.
@@ -47,10 +47,6 @@
 # to avoid that also config.CConfig() and config.CExtendedSetup() are part of the distribution.
 # CConfig and CExtendedSetup() are only repository internal helper.
 #
-# * Possible improvements:
-#
-#   - What does install.run(self) return? How to realize error handling?
-#
 # * Known issues:
 #
 #   - setuptools do not properly update an existing package installation under %ROBOTPYTHONPATH%\Lib\site-packages\<package name>!
@@ -62,6 +58,10 @@
 #     (see 'delete_previous_build()' and 'delete_previous_installation()')
 #
 # --------------------------------------------------------------------------------------------------------------
+#
+# 09.02.2022 / XC-CT/ECA3-Queckenstedt
+# Suppressed generation of documents and installations in case of command line
+# parameter is not 'install' and not 'build' (this enables printing the help only).
 #
 # 11.10.2021 / XC-CI1/ECA3-Queckenstedt
 # Fixed computation order of readme files together with long_description
@@ -102,38 +102,47 @@ def printexception(sMsg):
 # --------------------------------------------------------------------------------------------------------------
 
 class ExtendedInstallCommand(install):
-    """Extended installation for installation mode."""
+    """Extended setup for installation mode."""
+
     def run(self):
-        # Extended installation step 1/5 moved to outside ExtendedInstallCommand because results are needed earlier
-        print()
-        print(COLBY + "Extended installation step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
-        print()
-        nReturn = oExtendedSetup.delete_previous_build()
-        if nReturn != SUCCESS:
-            return nReturn
-        print()
-        print(COLBY + "Extended installation step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under %ROBOTPYTHONPATH%\Lib\site-packages
-        print()
-        nReturn = oExtendedSetup.delete_previous_installation()
-        if nReturn != SUCCESS:
-            return nReturn
-        print(COLBY + "Extended installation step 4/5: install.run(self)") # creates the build folder .\build
-        print()
-        install.run(self) # TODO: What does install.run(self) return? How to realize error handling?
-        print()
-        print(COLBY + "Extended installation step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to %ROBOTPYTHONPATH%\Lib\site-packages\<package name>_doc)
-        print()
-        nReturn = oExtendedSetup.add_htmldoc_to_installation()
-        if nReturn != SUCCESS:
-            return nReturn
-        print()
-        print(COLBG + "Extended installation done")
-        print()
+
+        # Extended installation step 1/5 (documentation builder) moved to outside ExtendedInstallCommand because results are needed earlier
+
+        listCmdArgs = sys.argv
+        if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) ):
+            print()
+            print(COLBY + "Extended setup (install) step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
+            print()
+            nReturn = oExtendedSetup.delete_previous_build()
+            if nReturn != SUCCESS:
+                return nReturn
+            print()
+            print(COLBY + "Extended setup (install) step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under %ROBOTPYTHONPATH%\Lib\site-packages
+            print()
+            nReturn = oExtendedSetup.delete_previous_installation()
+            if nReturn != SUCCESS:
+                return nReturn
+            print(COLBY + "Extended setup (install) step 4/5: install.run(self)") # creates the build folder .\build
+            print()
+            install.run(self) # TODO: What does install.run(self) return? How to realize error handling?
+            print()
+            print(COLBY + "Extended setup (install) step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to %ROBOTPYTHONPATH%\Lib\site-packages\<package name>_doc)
+            print()
+            nReturn = oExtendedSetup.add_htmldoc_to_installation()
+            if nReturn != SUCCESS:
+                return nReturn
+            print()
+            print(COLBG + "Extended installation done")
+            print()
+
         return SUCCESS
 
 # eof class ExtendedInstallCommand(install):
 
 # --------------------------------------------------------------------------------------------------------------
+
+# -- Even in case of other command line parameters than 'install' or 'build' are used we need the following objects.
+#    (Without repository configuration commands like '--author-email' would not be possible)
 
 # -- setting up the repository configuration
 oRepositoryConfig = None
@@ -158,25 +167,29 @@ except Exception as ex:
 
 # --------------------------------------------------------------------------------------------------------------
 
-print()
-print(COLBY + "Entering extended installation")
-print()
-print(COLBY + "Extended installation step 1/5: Calling the documentation builder")
-# (previously called inside ExtendedInstallCommand - but this is too late, because the content of the initially
-# generated or updated README file is already needed for the long_description below.)
-print()
-nReturn = oExtendedSetup.gen_doc()
-if nReturn != SUCCESS:
-    sys.exit(nReturn)
-print()
+long_description = "long description" # variable is required even in case of other command line parameters than 'install' or 'build' are used
+
+listCmdArgs = sys.argv
+if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) ):
+    print()
+    print(COLBY + "Entering extended installation")
+    print()
+    print(COLBY + "Extended setup step 1/5: Calling the documentation builder")
+    # (previously called inside ExtendedInstallCommand - but this is too late, because the content of the initially
+    # generated or updated README file is already needed for the long_description below.)
+    print()
+    nReturn = oExtendedSetup.gen_doc()
+    if nReturn != SUCCESS:
+        sys.exit(nReturn)
+    print()
+
+    with open("README.md", "r", encoding="utf-8") as fh:
+        long_description = fh.read()
 
 # --------------------------------------------------------------------------------------------------------------
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-    
-# --------------------------------------------------------------------------------------------------------------
-
+# This also handles the printing of help to console and therefore must be called in every case.
+# And therefore all variables and objects must exist (even in case of the values are not used).
 setuptools.setup(
     name         = str(oRepositoryConfig.Get('sPackageName')),
     version      = str(oRepositoryConfig.Get('sVersion')),
@@ -200,8 +213,6 @@ setuptools.setup(
         'install': ExtendedInstallCommand,
     },
     install_requires = oRepositoryConfig.Get('arInstallRequires'),
-
-
 )
 # --------------------------------------------------------------------------------------------------------------
 

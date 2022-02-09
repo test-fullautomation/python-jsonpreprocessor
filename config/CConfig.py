@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 #  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,8 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-# -*- coding: utf-8 -*-
-
+#
 # **************************************************************************************************************
 #
 # CConfig.py
@@ -133,22 +134,22 @@ class CConfig():
 
         if sPlatformSystem == "Windows":
             # -- environment check
-            sRobotPythonPath_EnvVar = "%ROBOTPYTHONPATH%"
+            sRobotPythonPath_EnvVar = "%RobotPythonPath%"
             sRobotPythonPath = os.path.expandvars(sRobotPythonPath_EnvVar)
             if sRobotPythonPath_EnvVar == sRobotPythonPath:
                 # environment variable not resolved => not existing
                 bSuccess = False
-                sResult = f"""Missing Windows environment variable %ROBOTPYTHONPATH%!
-This application requires a Windows environment variable %ROBOTPYTHONPATH%, pointing to a Python installation (version required: {self.__dictConfig['sPythonRequires']}) that shall be updated.
+                sResult = f"""Missing Windows environment variable %RobotPythonPath%!
+This application requires a Windows environment variable %RobotPythonPath%, pointing to a Python installation (version required: {self.__dictConfig['sPythonRequires']}) that shall be updated.
 Please create and try again"""
                 return bSuccess, sResult
 
-            SPHINXBUILD = os.path.normpath(os.path.expandvars("%ROBOTPYTHONPATH%/Scripts/sphinx-build.exe"))
-            sPython     = os.path.normpath(os.path.expandvars("%ROBOTPYTHONPATH%/python.exe"))
+            SPHINXBUILD = os.path.normpath(os.path.expandvars("%RobotPythonPath%/Scripts/sphinx-build.exe"))
+            sPython     = os.path.normpath(os.path.expandvars("%RobotPythonPath%/python.exe"))
             if self.__bGenPDFSupported is True:
                 sLaTeXInterpreter = os.path.normpath(os.path.expandvars("%ROBOTLATEXPATH%/miktex/bin/x64/pdflatex.exe"))
-            sInstalledPackageFolder    = os.path.normpath(os.path.expandvars("%ROBOTPYTHONPATH%/Lib/site-packages/" + self.__dictConfig['sPackageName']))
-            sInstalledPackageDocFolder = os.path.normpath(os.path.expandvars("%ROBOTPYTHONPATH%/Lib/site-packages/" + self.__dictConfig['sPackageName'] + "_doc"))
+            sInstalledPackageFolder    = os.path.normpath(os.path.expandvars("%RobotPythonPath%/Lib/site-packages/" + self.__dictConfig['sPackageName']))
+            sInstalledPackageDocFolder = os.path.normpath(os.path.expandvars("%RobotPythonPath%/Lib/site-packages/" + self.__dictConfig['sPackageName'] + "_doc"))
 
         elif sPlatformSystem == "Linux":
             # -- environment check

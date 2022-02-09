@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CJsonPreprocessor &#8212; The Json Preprocessor  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for CJsonPreprocessor</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#      http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+<span class="c1">#################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># File: JsonPreprocessor.py</span>
+<span class="c1"># </span>
+<span class="c1"># This module uses to handle connfiguration file in json format (import another </span>
+<span class="c1"># json file to the json file).</span>
+<span class="c1"># Allows user adds comment into json config file</span>
+<span class="c1">#</span>
+<span class="c1"># History:</span>
+<span class="c1"># </span>
+<span class="c1"># 2021-01:</span>
+<span class="c1">#    - Initially created by Mai Dinh Nam Son (RBVH/ECM11)</span>
+<span class="c1">#</span>
+<span class="c1"># 2021-02-08:</span>
+<span class="c1">#   - Use object_pairs_hook of json.load() to process [import] node(s).</span>
+<span class="c1">#     Allow to use multiple [import] node(s) at same level.</span>
+<span class="c1">#   - Avoid cyclic import</span>
+<span class="c1">#</span>
+<span class="c1"># 2021-02-17:</span>
+<span class="c1">#   - Replace method to load json data json.load() by json.loads() </span>
+<span class="c1">#     to load string data after removing comment(s)</span>
+<span class="c1">#</span>
+<span class="c1"># 2021-02-18:</span>
+<span class="c1">#   - Add parameter syntax to support Python types if required:</span>
+<span class="c1">#     None  =&gt; null</span>
+<span class="c1">#     True  =&gt; true</span>
+<span class="c1">#     False =&gt; false</span>
+<span class="c1">#</span>
+<span class="c1"># 2021-03-29:</span>
+<span class="c1">#   - Adds update configuration using json file</span>
+<span class="c1">#   - Handles nested parameter in json config file</span>
+<span class="c1">#################################################################################</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="CSyntaxType"><a class="viewcode-back" href="../CJsonPreprocessor.html#CJsonPreprocessor.CSyntaxType">[docs]</a><span class="k">class</span> <span class="nc">CSyntaxType</span><span class="p">():</span>
+    <span class="n">python</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span></div>
+
+<span class="n">NUMBER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;(-?(?:0|[1-9]\d*))(\.\d+)?([eE][-+]?\d+)?&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">))</span>
+
+<div class="viewcode-block" id="CPythonJSONDecoder"><a class="viewcode-back" href="../CJsonPreprocessor.html#CJsonPreprocessor.CPythonJSONDecoder">[docs]</a><span class="k">class</span> <span class="nc">CPythonJSONDecoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Add below python values when scanning json data</span>
+
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | True          | True              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | False         | False             |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | None          | None              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_scan_once</span>
+
+    <span class="k">def</span> <span class="nf">_custom_scan_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">nextchar</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_string</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_object</span><span class="p">((</span><span class="n">string</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_custom_scan_once</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_hook</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_pairs_hook</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">memo</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;[&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_array</span><span class="p">((</span><span class="n">string</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_scan_once</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;false&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;False&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">NUMBER_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">integer</span><span class="p">,</span> <span class="n">frac</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">frac</span> <span class="ow">or</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_float</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="p">(</span><span class="n">frac</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">exp</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_int</span><span class="p">(</span><span class="n">integer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NaN&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_constant</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">),</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Infinity&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_constant</span><span class="p">(</span><span class="s1">&#39;Infinity&#39;</span><span class="p">),</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">8</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-Infinity&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_constant</span><span class="p">(</span><span class="s1">&#39;-Infinity&#39;</span><span class="p">),</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">9</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CPythonJSONDecoder.custom_scan_once"><a class="viewcode-back" href="../CJsonPreprocessor.html#CJsonPreprocessor.CPythonJSONDecoder.custom_scan_once">[docs]</a>    <span class="k">def</span> <span class="nf">custom_scan_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_scan_once</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memo</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="CJsonPreprocessor"><a class="viewcode-back" href="../CJsonPreprocessor.html#CJsonPreprocessor.CJsonPreprocessor">[docs]</a><span class="k">class</span> <span class="nc">CJsonPreprocessor</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    CJsonPreprocessor helps to handle configuration file as json format:</span>
+<span class="sd">        - Allow comment within json file</span>
+<span class="sd">        - Allow import json file within json file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">syntax</span><span class="o">=</span><span class="n">CSyntaxType</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="n">currentCfg</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lImportedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span> <span class="o">=</span> <span class="n">syntax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentCfg</span> <span class="o">=</span> <span class="n">currentCfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lUpdatedParams</span> <span class="o">=</span> <span class="p">[]</span>
+            
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Method: __processImportFiles this is custom decorder of object_pairs_hook function.</span>
+<span class="sd">    This method helps to import json file which is provided in &#39;[import]&#39; keyword into current json file.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary is parsed from json file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__processImportFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^\s*\[\s*import\s*\]\s*&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                <span class="n">abs_path_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                
+                <span class="c1"># Use recursive_level and lImportedFiles to avoid cyclic import</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span> <span class="o">+</span> <span class="mi">1</span>     <span class="c1"># increase recursive level</span>
+                <span class="c1"># length of lImportedFiles should equal to recursive_level</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lImportedFiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lImportedFiles</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">abs_path_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lImportedFiles</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cyclic imported json file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">abs_path_file</span><span class="p">))</span>
+                
+                <span class="n">oJsonImport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jsonLoad</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">masterFile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">oJsonImport</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive_level</span> <span class="o">-</span> <span class="mi">1</span>     <span class="c1"># descrease recursive level</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">out_dict</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Method: __removeComments loads json config file which allows comments inside</span>
+<span class="sd">    Args:</span>
+<span class="sd">        jsonFile: string</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        lJsonData: list, list of string data from jsonFile after removing comment(s).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__removeComments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jsonFile</span><span class="p">):</span>
+        <span class="n">jsonPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">jsonFile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">jsonFile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">jsonPath</span> <span class="o">+=</span> <span class="n">item</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">jsonFile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">jsonPath</span> <span class="o">+=</span> <span class="n">item</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span>
+      
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Removes comment parts in json file then store in temporary json file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">lJsonData</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">jsonFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fr</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^\s*//&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="s1">&#39;//&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">reEx1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;(\s*{*\s*</span><span class="se">\&#39;</span><span class="s2">.+</span><span class="se">\&#39;</span><span class="s2">)\s*:\s*(</span><span class="se">\&#39;</span><span class="s2">.+</span><span class="se">\&#39;</span><span class="s2">\s*,*)*\s*(.*)&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">reEx1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">reEx1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;(\s*{*\s*</span><span class="se">\&quot;</span><span class="s2">.+</span><span class="se">\&quot;</span><span class="s2">)\s*:\s*(</span><span class="se">\&quot;</span><span class="s2">.+</span><span class="se">\&quot;</span><span class="s2">\s*,*)*\s*(.*)&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">reEx1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;//.*&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> \
+                               <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;//.*&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">reEx1</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">reEx2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;(\s*{*\s*</span><span class="se">\&#39;</span><span class="s2">.+</span><span class="se">\&#39;</span><span class="s2">)\s*:\s*(.+,*)\s*//\s*.*&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">reEx2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">reEx2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;(\s*{*\s*</span><span class="se">\&quot;</span><span class="s2">.+</span><span class="se">\&quot;</span><span class="s2">)\s*:\s*(.+,*)\s*(//\s*.*)*&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">reEx2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">line</span> <span class="o">=</span> <span class="n">reEx2</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;//.*&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">reEx2</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                            
+                <span class="n">lJsonData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lJsonData</span><span class="p">,</span> <span class="n">jsonPath</span>
+    
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    private __nestedParamHandler: This method handles the nested variable in param names or value</span>
+<span class="sd">                                  in updated json config file.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        sInputStr: string - param name or value which contains nested variable</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        sStrHandled: string</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__nestedParamHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">):</span>
+        
+        <span class="c1">#globals().update(currentCfg)</span>
+        <span class="n">referVars</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;(\${\s*.*?\s*})&#39;</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">referVars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sUpdateVar</span> <span class="o">=</span>  <span class="n">referVars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">referVars</span> <span class="o">=</span> <span class="n">referVars</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">sInputStr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">sUpdateVar</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">referVars</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">var</span> <span class="o">+</span> <span class="s1">&#39;\s*\[\s*.*?\s*\])&#39;</span>
+                <span class="n">variable</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="p">[]:</span>
+                    <span class="n">sExec</span> <span class="o">=</span> <span class="s2">&quot;value = &quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^\s*\${(\s*.*?)}&#39;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">ldict</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">ldict</span><span class="p">)</span>
+                        <span class="n">tmpValue</span> <span class="o">=</span> <span class="n">ldict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The variable </span><span class="si">%s</span><span class="s1"> is not available&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">var</span><span class="p">))</span>
+                    <span class="n">sInputStr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">var</span><span class="p">,</span> <span class="n">tmpValue</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpValue</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> \
+                                <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">var</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmpValue</span><span class="p">),</span> <span class="n">sInputStr</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">while</span> <span class="n">variable</span> <span class="o">!=</span> <span class="p">[]:</span>
+                    <span class="n">fullVariable</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;\[\s*.*?\s*\])&#39;</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">variable</span> <span class="o">!=</span> <span class="p">[]:</span>
+                        <span class="n">fullVariable</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">sExec</span> <span class="o">=</span> <span class="s2">&quot;value = &quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\${\s*(.*?)\s*}&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&#39;</span><span class="p">,</span> <span class="n">fullVariable</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ldict</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">ldict</span><span class="p">)</span>
+                    <span class="n">tmpValue</span> <span class="o">=</span> <span class="n">ldict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The variable </span><span class="si">%s</span><span class="s1"> is not available!!!&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fullVariable</span><span class="p">))</span>
+                <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\[&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">[&#39;</span><span class="p">,</span> <span class="n">fullVariable</span><span class="p">)</span>
+                <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\]&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">]&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+                <span class="n">sInputStr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">tmpValue</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpValue</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> \
+                            <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmpValue</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+            <span class="n">sStrHandled</span> <span class="o">=</span> <span class="n">sUpdateVar</span> <span class="o">+</span> <span class="n">sInputStr</span>
+            <span class="k">return</span> <span class="n">sStrHandled</span>
+                    
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">referVars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;\s*\[\s*.*?\s*\])&#39;</span>
+            <span class="n">variable</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="p">[]:</span>
+                <span class="n">sStrHandled</span> <span class="o">=</span> <span class="n">referVars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">sStrHandled</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fullVariable</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">while</span> <span class="n">variable</span> <span class="o">!=</span> <span class="p">[]:</span>
+                    <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;\[\s*.*?\s*\])&#39;</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">sInputStr</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">variable</span> <span class="o">!=</span> <span class="p">[]:</span>
+                        <span class="n">fullVariable</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">sStrHandled</span> <span class="o">=</span> <span class="n">fullVariable</span>
+                <span class="k">return</span> <span class="n">sStrHandled</span>
+            
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    private __updateAndReplaceNestedParam: this method replaces all nested params in key and value of Json object</span>
+<span class="sd">    Args:</span>
+<span class="sd">        oJson: dict</span>
+<span class="sd">        currentCfg: dict</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        oJsonOut: dict</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__updateAndReplaceNestedParam</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oJson</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentCfg</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recursive</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentCfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">})</span>
+        
+        <span class="n">tmpJson</span> <span class="o">=</span> <span class="p">{}</span>            
+        <span class="n">bNested</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">oJson</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^\s*\${\s*&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                <span class="n">keyAfterProcessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nestedParamHandler</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^\s*\${\s*(.*?)\s*}&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&#39;</span><span class="p">,</span> <span class="n">keyAfterProcessed</span><span class="p">)</span>
+                <span class="n">bNested</span> <span class="o">=</span> <span class="kc">True</span>
+                
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__updateAndReplaceNestedParam</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">bNested</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                        <span class="n">sExec</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = </span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">v</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> 
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not set variable </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2"> with value </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tmpJson</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> 
+                    <span class="n">bNested</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tmpJson</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^.*\s*\${\s*&#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                
+                <span class="n">valueAfterProcessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nestedParamHandler</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">tmpValueAfterProcessed</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">${\s*(.*?)\s*}&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&#39;</span><span class="p">,</span> <span class="n">valueAfterProcessed</span><span class="p">)</span>
+                <span class="n">sExec</span> <span class="o">=</span> <span class="s2">&quot;value = &quot;</span> <span class="o">+</span> <span class="n">tmpValueAfterProcessed</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpValueAfterProcessed</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> \
+                        <span class="s2">&quot;value = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmpValueAfterProcessed</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ldict</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">ldict</span><span class="p">)</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">ldict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">==</span><span class="n">valueAfterProcessed</span> <span class="k">else</span> \
+                        <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">valueAfterProcessed</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ldict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The variable </span><span class="si">%s</span><span class="s1"> is not available!!!&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tmpValueAfterProcessed</span><span class="p">))</span>
+                
+                <span class="k">if</span> <span class="n">bNested</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                        <span class="n">sExec</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = </span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">v</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> 
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not set variable </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2"> with value </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tmpJson</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> 
+                    <span class="n">bNested</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tmpJson</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">bNested</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                        <span class="n">sExec</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = </span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">v</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> 
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">exec</span><span class="p">(</span><span class="n">sExec</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not set variable </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2"> with value </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tmpJson</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    
+                    <span class="n">bNested</span> <span class="o">=</span> <span class="kc">False</span>
+                    
+        <span class="n">oJson</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmpJson</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">oJson</span>
+
+<div class="viewcode-block" id="CJsonPreprocessor.jsonLoad"><a class="viewcode-back" href="../CJsonPreprocessor.html#CJsonPreprocessor.CJsonPreprocessor.jsonLoad">[docs]</a>    <span class="k">def</span> <span class="nf">jsonLoad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jFile</span><span class="p">,</span> <span class="n">masterFile</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method: jsonLoad loads the json file then parses to dict object</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            jFile: string, json file input</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            oJson: dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lJsonData</span><span class="p">,</span> <span class="n">jsonPath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__removeComments</span><span class="p">(</span><span class="n">jFile</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not read json configuration file </span><span class="si">%s</span><span class="s2"> due to: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\</span>
+<span class="s2">                             Please input &#39;utf-8&#39; format in Json configuration file only&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">jFile</span><span class="p">,</span> <span class="n">reason</span><span class="p">))</span>
+
+        <span class="n">currentDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lImportedFiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">jFile</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">jsonPath</span><span class="p">)</span>
+        <span class="n">CJSONDecoder</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span> <span class="o">!=</span> <span class="n">CSyntaxType</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span> <span class="o">==</span> <span class="n">CSyntaxType</span><span class="o">.</span><span class="n">python</span><span class="p">:</span>
+                <span class="n">CJSONDecoder</span> <span class="o">=</span> <span class="n">CPythonJSONDecoder</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Provided syntax </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1"> is not supported.&#39;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">oJson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lJsonData</span><span class="p">),</span> 
+                               <span class="bp">cls</span><span class="o">=</span><span class="n">CJSONDecoder</span> <span class="p">,</span> 
+                               <span class="n">object_pairs_hook</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__processImportFiles</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;JSON configuration file &#39;</span><span class="si">%s</span><span class="s2">&#39;: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">jFile</span><span class="p">,</span> <span class="n">error</span><span class="p">))</span>
+        
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">currentDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">masterFile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">oJson</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">})</span>
+            <span class="n">oJson</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__updateAndReplaceNestedParam</span><span class="p">(</span><span class="n">oJson</span><span class="p">)</span>
+        <span class="c1"># oJson[&#39;JsonPath&#39;] = jsonPath      # is JsonPath required?</span>
+            
+        <span class="k">return</span> <span class="n">oJson</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">The Json Preprocessor</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../additional_doc/feature_documentation.html">Json Preprocessor’s Feature Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CJsonPreprocessor.html">JsonPreprocessor package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Pollerspoeck Thomas (XC-CI1/ECA3).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
