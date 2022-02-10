@@ -42,8 +42,7 @@ package documentation is located in 'doc/_build/'.
 Package Documentation
 ---------------------
 
-A detailed documentation of the Json Preprocessor's Package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/Json-Preprocessor.pdf>`_
-
+A detailed documentation of the Json Preprocessor's Package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/doc/_build/latex/Json-Preprocessor.pdf>`_
 
 Feedback
 --------
