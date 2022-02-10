@@ -235,9 +235,9 @@ parameters. User can update parameters which are already declared and add new pa
 or new element into existing parameters. The below example will show the way to do 
 these features.
 
-In case we have many different variants, and each varaint requires a different value 
-assigned to the parameter. This feature could help us update new value for existen 
-parameters, it also supports to add new parameters to existen configuation object.
+In case we have many different variants, and each variant requires a different value 
+assigned to the parameter. This feature could help us update new value for existing
+parameters, it also supports to add new parameters to existing configuation object.
 
 **Example:**
 
@@ -407,10 +407,10 @@ The ``config.json`` file is handled by JsonPreprocessor package, then return the
 Feedback
 --------
 
-To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_ or
-`RBVH-ECM-Automation_Test_Framework-Associates <RBVH-ENG2-CMD-Associates@bcn.bosch.com>`_
+To give us a feedback, you can send an email to `Thomas Pollerspöck <mailto:Thomas.Pollerspoeck@de.bosch.com>`_ or
+`RBVH-ECM-Automation_Test_Framework-Associates <mailto:RBVH-ENG2-CMD-Associates@bcn.bosch.com>`_
 
-In case you want to report a bug or request any interesting feature, please don't hesitate to rasie a ticket on 
+In case you want to report a bug or request any interesting feature, please don't hesitate to raise a ticket on 
 `our Jira <https://rb-tracker.bosch.com/tracker01/projects/ROBFW/summary>`_
 
 References
