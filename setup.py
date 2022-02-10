@@ -109,7 +109,7 @@ class ExtendedInstallCommand(install):
         # Extended installation step 1/5 (documentation builder) moved to outside ExtendedInstallCommand because results are needed earlier
 
         listCmdArgs = sys.argv
-        if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) ):
+        if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs)):
             print()
             print(COLBY + "Extended setup (install) step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
             print()
@@ -170,7 +170,7 @@ except Exception as ex:
 long_description = "long description" # variable is required even in case of other command line parameters than 'install' or 'build' are used
 
 listCmdArgs = sys.argv
-if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) ):
+if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs)):
     print()
     print(COLBY + "Entering extended installation")
     print()
@@ -185,6 +185,9 @@ if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) ):
 
     with open("README.md", "r", encoding="utf-8") as fh:
         long_description = fh.read()
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print(long_description)
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
 # --------------------------------------------------------------------------------------------------------------
 
