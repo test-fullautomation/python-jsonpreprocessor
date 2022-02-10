@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-# -*- coding: utf-8 -*-
+
 
 # **************************************************************************************************************
 #
@@ -61,7 +61,7 @@
 #
 # 09.02.2022 / XC-CT/ECA3-Queckenstedt
 # Suppressed generation of documents and installations in case of command line
-# parameter is not 'install' and not 'build' (this enables printing the help only).
+# parameter is not 'install' and not 'build' (this enables printing the help only). (10.02.2022: and not 'sdist')
 #
 # 11.10.2021 / XC-CI1/ECA3-Queckenstedt
 # Fixed computation order of readme files together with long_description
@@ -185,9 +185,6 @@ if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listC
 
     with open("README.md", "r", encoding="utf-8") as fh:
         long_description = fh.read()
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print(long_description)
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
 # --------------------------------------------------------------------------------------------------------------
 

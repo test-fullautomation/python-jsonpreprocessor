@@ -20,11 +20,15 @@ Introduction:
 
 .. image:: /images/python3-jsonpreprocessor.png
 
-The JsonPreprocessor is the python3 package which allows programmer to handle some 
-additional features in json file such as comment, import, override, etc for 
-configuring purpose. The json file containing comment, import,... will be handled 
-by JsonPreprocessor package then returned the final dictionary object for python 
-program.
+The JsonPreprocessor is a Python3 package which allows programmers to handle  
+additional features in json files such as
+
+* add comments
+* import other json files
+* overwrite already existing parameters with new values
+
+These json files will be handled by the JsonPreprocessor package which returns as result
+a dictionary object of the deserialized data.
 
 New features
 ~~~~~~~~~~~~
@@ -42,17 +46,14 @@ Features in details
 
 Adding comments to Json file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   
-The JsonPreprocessor allows adding comments into json file, a comment could be 
-added follow **"//"**.
 
-This is required becuase some big projects require a large json configuration file
-which contains a huge number of configuration parameters for the different features.
-Therefore, having the need of adding comments into json file to clarify the different 
-configuration parameters.
+Every line starting with **"//"**, is commented out. Therefore a comment is valid for singles lines only.
 
-**Note:** This package is not allow commented a block of json code, each comment 
-must be added with **"//"**.
+Comment out a block of several lines with only one start and one end comment string, is currently not supported.
+
+Adding comments to json files is useful in case of more and more content is added, e.g. because of a json file
+has to hold a huge number of configuration parameters for different features. Comments can be used here
+to clarify the meaning of these parameters or the differences between them.
 
 **Example:**
 
@@ -102,13 +103,12 @@ must be added with **"//"**.
 Import the contents from other json files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This import feature allows user merges the content of other json files into the 
-json file, it also allows the nested importing means we can use import feature in 
-the imported files.
+This import feature enables developers to take over the content of other json files into the 
+current json file. A json file that is imported into another json file, can contain imports also
+(allows nested imports).
 
-The import feature helps user distinguish the configuration parameters of each 
-functions, purposes, variants, and so forth into the separate json files. Therefore, 
-we can easy to understand and manage the configuration parameters of big project.
+A possible usecase for nested imports is to handle similar configuration parameters of different variants of a feature
+or a component within a bunch of several smaller files, instead of putting all parameter into only one large json file.
 
 **Example:**
 
