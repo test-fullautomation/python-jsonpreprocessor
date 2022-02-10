@@ -42,13 +42,13 @@ package documentation is located in 'doc/_build/'.
 Package Documentation
 ---------------------
 
-A detailed documentation of the Json Preprocessor's Package can be found here: `thejsonpreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/thejsonpreprocessor.pdf>`_
+A detailed documentation of the Json Preprocessor's Package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/qth2hi/task/documentation_and_sphinx_config_maintenance/doc/_build/latex/Json-Preprocessor.pdf>`_
 
 
 Feedback
 --------
 
-To give us a feedback, you can send an email to `Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_ 
+To give us a feedback, you can send an email to `Thomas Pollerspöck <mailto:Thomas.Pollerspoeck@de.bosch.com>`_ 
 
 In case you want to report a bug or request any interesting feature, please don't 
 hesitate to raise a ticket.
@@ -56,14 +56,14 @@ hesitate to raise a ticket.
 Maintainers
 -----------
 
-`Thomas Pollerspöck <Thomas.Pollerspoeck@de.bosch.com>`_
+`Thomas Pollerspöck <mailto:Thomas.Pollerspoeck@de.bosch.com>`_
 
 Contributors
 ------------
 
-`Mai Dinh Nam Son <son.maidinhnam@vn.bosch.com>`_
+`Mai Dinh Nam Son <mailto:son.maidinhnam@vn.bosch.com>`_
 
-`Tran Duy Ngoan <Ngoan.TranDuy@vn.bosch.com>`_
+`Tran Duy Ngoan <mailto:Ngoan.TranDuy@vn.bosch.com>`_
 
 License
 -------
