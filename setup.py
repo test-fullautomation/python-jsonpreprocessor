@@ -27,8 +27,8 @@
 # This script deletes folders (as defined in config.CConfig, depending on the position of this script):
 # - previous builds within this repository
 # - previous installations within
-#   * %ROBOTPYTHONPATH%\Lib\site-packages (Windows)
-#   * ${RobotPythonPath}/../lib/python3.9/site-packages (Linux)
+#   * <Python installation>\Lib\site-packages (Windows)
+#   * <Python installation>/../lib/python3.9/site-packages (Linux)
 #
 # before the build and the installation start again!
 #
@@ -49,11 +49,11 @@
 #
 # * Known issues:
 #
-#   - setuptools do not properly update an existing package installation under %ROBOTPYTHONPATH%\Lib\site-packages\<package name>!
+#   - setuptools do not properly update an existing package installation under <Python installation>\Lib\site-packages\<package name>!
 #     > Files modified manually within installation folder, are still modified after repeated execution of setuptools.
 #     > Files added manually within installation folder, are still present there after repeated execution of setuptools.
 #     > Only files deleted manually within installation folder, are are restored there after repeated execution of setuptools.
-#   - No such issues with %ROBOTPYTHONPATH%\Lib\site-packages\<package name>-<versions>.egg-info.
+#   - No such issues with <Python installation>\Lib\site-packages\<package name>-<versions>.egg-info.
 #   - Solution: explicit deletion of all previous output (all documentation-, build- and installation-folder, except the egg-info folder)
 #     (see 'delete_previous_build()' and 'delete_previous_installation()')
 #
@@ -109,7 +109,7 @@ class ExtendedInstallCommand(install):
         # Extended installation step 1/5 (documentation builder) moved to outside ExtendedInstallCommand because results are needed earlier
 
         listCmdArgs = sys.argv
-        if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs)):
+        if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs) or ('bdist_wheel' in listCmdArgs) ):
             print()
             print(COLBY + "Extended setup (install) step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
             print()
@@ -117,7 +117,7 @@ class ExtendedInstallCommand(install):
             if nReturn != SUCCESS:
                 return nReturn
             print()
-            print(COLBY + "Extended setup (install) step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under %ROBOTPYTHONPATH%\Lib\site-packages
+            print(COLBY + "Extended setup (install) step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under <Python installation>\Lib\site-packages
             print()
             nReturn = oExtendedSetup.delete_previous_installation()
             if nReturn != SUCCESS:
@@ -126,7 +126,7 @@ class ExtendedInstallCommand(install):
             print()
             install.run(self) # TODO: What does install.run(self) return? How to realize error handling?
             print()
-            print(COLBY + "Extended setup (install) step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to %ROBOTPYTHONPATH%\Lib\site-packages\<package name>_doc)
+            print(COLBY + "Extended setup (install) step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to <Python installation>\Lib\site-packages\<package name>_doc)
             print()
             nReturn = oExtendedSetup.add_htmldoc_to_installation()
             if nReturn != SUCCESS:
@@ -170,7 +170,7 @@ except Exception as ex:
 long_description = "long description" # variable is required even in case of other command line parameters than 'install' or 'build' are used
 
 listCmdArgs = sys.argv
-if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs)):
+if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs) or ('bdist_wheel' in listCmdArgs) ):
     print()
     print(COLBY + "Entering extended installation")
     print()
