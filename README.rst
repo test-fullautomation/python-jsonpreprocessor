@@ -18,10 +18,15 @@ Json Preprocessor's Package Description
 Getting Started
 ---------------
 
-The JsonPreprocessor is a python3 package which allows programmers to handle  
-additional features in json files such as comments, imports, overrides, etc. 
-The json files containing comments, imports,... will be handled by the JsonPreprocessor 
-package which returs as result an dictionary object of the deserialized data.
+The JsonPreprocessor is a Python3 package which allows programmers to handle  
+additional features in json files such as
+
+* add comments
+* import other json files
+* overwrite already existing parameters with new values
+
+These json files will be handled by the JsonPreprocessor which returns as result
+a dictionary object of the deserialized data.
 
 How to install
 --------------
@@ -42,7 +47,7 @@ package documentation is located in 'doc/_build/'.
 Package Documentation
 ---------------------
 
-A detailed documentation of the Json Preprocessor's Package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/doc/_build/latex/Json-Preprocessor.pdf>`_
+A detailed documentation of the Json Preprocessor's package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/doc/_build/latex/Json-Preprocessor.pdf>`_
 
 Feedback
 --------

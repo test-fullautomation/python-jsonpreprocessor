@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 #  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,8 +71,8 @@ class CExtendedSetup():
         sPython = self.__oRepositoryConfig.Get('sPython')
         sDocumentationBuilder = self.__oRepositoryConfig.Get('sDocumentationBuilder')
         listCmdLineParts = []
-        listCmdLineParts.append("\"" + str(sPython) + "\"")
-        listCmdLineParts.append("\"" + str(sDocumentationBuilder) + "\"")
+        listCmdLineParts.append(f"\"{sPython}\"")
+        listCmdLineParts.append(f"\"{sDocumentationBuilder}\"")
         sCmdLine = " ".join(listCmdLineParts)
         del listCmdLineParts
         listCmdLineParts = shlex.split(sCmdLine)
@@ -104,7 +102,7 @@ class CExtendedSetup():
         sSetupDistFolder  = self.__oRepositoryConfig.Get('sSetupDistFolder')
         sEggInfoFolder    = self.__oRepositoryConfig.Get('sEggInfoFolder')
         if os.path.isdir(sSetupBuildFolder) is True:
-            print("* Deleting '" + sSetupBuildFolder + "'")
+            print(f"* Deleting '{sSetupBuildFolder}'")
             try:
                 shutil.rmtree(sSetupBuildFolder)
             except Exception as ex:
@@ -113,7 +111,7 @@ class CExtendedSetup():
                 print()
                 return ERROR
         if os.path.isdir(sSetupDistFolder) is True:
-            print("* Deleting '" + sSetupDistFolder + "'")
+            print(f"* Deleting '{sSetupDistFolder}'")
             try:
                 shutil.rmtree(sSetupDistFolder)
             except Exception as ex:
@@ -122,7 +120,7 @@ class CExtendedSetup():
                 print()
                 return ERROR
         if os.path.isdir(sEggInfoFolder) is True:
-            print("* Deleting '" + sEggInfoFolder + "'")
+            print(f"* Deleting '{sEggInfoFolder}'")
             try:
                 shutil.rmtree(sEggInfoFolder)
             except Exception as ex:
@@ -140,7 +138,7 @@ class CExtendedSetup():
         """
         sInstalledPackageFolder = self.__oRepositoryConfig.Get('sInstalledPackageFolder')
         if os.path.isdir(sInstalledPackageFolder) is True:
-            print("* Deleting '" + sInstalledPackageFolder + "'")
+            print(f"* Deleting '{sInstalledPackageFolder}'")
             try:
                 shutil.rmtree(sInstalledPackageFolder)
             except Exception as ex:
@@ -150,7 +148,7 @@ class CExtendedSetup():
                 return ERROR
         sInstalledPackageDocFolder = self.__oRepositoryConfig.Get('sInstalledPackageDocFolder')
         if os.path.isdir(sInstalledPackageDocFolder) is True:
-            print("* Deleting '" + sInstalledPackageDocFolder + "'")
+            print(f"* Deleting '{sInstalledPackageDocFolder}'")
             try:
                 shutil.rmtree(sInstalledPackageDocFolder)
             except Exception as ex:
@@ -172,18 +170,18 @@ class CExtendedSetup():
         sInstalledPackageDocFolder = self.__oRepositoryConfig.Get('sInstalledPackageDocFolder')
         if os.path.isdir(sHTMLOutputFolder) is False:
             print()
-            printerror("Error: Missing html output folder '" + sHTMLOutputFolder + "'")
+            printerror(f"Error: Missing html output folder '{sHTMLOutputFolder}'")
             print()
             return ERROR
         shutil.copytree(sHTMLOutputFolder, sInstalledPackageDocFolder)
         if os.path.isdir(sInstalledPackageDocFolder) is False:
             print()
-            printerror("Error: html documentation not copied to package installation folder '" + sInstalledPackageDocFolder + "'")
+            printerror(f"Error: html documentation not copied to package installation folder '{sInstalledPackageDocFolder}'")
             print()
             return ERROR
-        print(COLBY + "Folder '" + sHTMLOutputFolder + "'")
+        print(COLBY + f"Folder '{sHTMLOutputFolder}'")
         print(COLBY + "copied to")
-        print(COLBY + "'" + sInstalledPackageDocFolder + "'")
+        print(COLBY + f"'{sInstalledPackageDocFolder}'")
         print()
         return SUCCESS
     # eof def add_htmldoc_to_installation():
