@@ -1,3 +1,5 @@
+# **************************************************************************************************************
+#
 #  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,8 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-
+#
 # **************************************************************************************************************
 #
 # setup.py
@@ -58,6 +59,10 @@
 #     (see 'delete_previous_build()' and 'delete_previous_installation()')
 #
 # --------------------------------------------------------------------------------------------------------------
+#
+# 21.02.2022 / XC-CT/ECA3-Queckenstedt
+#
+# "sdist bdist_wheel" maintenance: some steps moved from inside 'ExtendedInstallCommand' to outside
 #
 # 09.02.2022 / XC-CT/ECA3-Queckenstedt
 # Suppressed generation of documents and installations in case of command line
@@ -106,32 +111,27 @@ class ExtendedInstallCommand(install):
 
     def run(self):
 
-        # Extended installation step 1/5 (documentation builder) moved to outside ExtendedInstallCommand because results are needed earlier
-
         listCmdArgs = sys.argv
         if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listCmdArgs) or ('bdist_wheel' in listCmdArgs) ):
             print()
-            print(COLBY + "Extended setup (install) step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
-            print()
-            nReturn = oExtendedSetup.delete_previous_build()
-            if nReturn != SUCCESS:
-                return nReturn
-            print()
-            print(COLBY + "Extended setup (install) step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under <Python installation>\Lib\site-packages
-            print()
-            nReturn = oExtendedSetup.delete_previous_installation()
-            if nReturn != SUCCESS:
-                return nReturn
-            print(COLBY + "Extended setup (install) step 4/5: install.run(self)") # creates the build folder .\build
+            print(COLBY + "Extended setup step 4/5: install.run(self)") # creates the build folder .\build
             print()
             install.run(self) # TODO: What does install.run(self) return? How to realize error handling?
             print()
-            print(COLBY + "Extended setup (install) step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to <Python installation>\Lib\site-packages\<package name>_doc)
-            print()
-            nReturn = oExtendedSetup.add_htmldoc_to_installation()
-            if nReturn != SUCCESS:
-                return nReturn
-            print()
+            if 'bdist_wheel' in listCmdArgs:
+                print(COLBY + "Extended setup step 5/5: Add html documentation to local wheel folder inside build")
+                print()
+                nReturn = oExtendedSetup.add_htmldoc_to_wheel()
+                if nReturn != SUCCESS:
+                    return nReturn
+                print()
+            else:
+                print(COLBY + "Extended setup step 5/5: Add html documentation to package installation folder") # (./doc/_build/html to <Python installation>\Lib\site-packages\<package name>_doc)
+                print()
+                nReturn = oExtendedSetup.add_htmldoc_to_installation()
+                if nReturn != SUCCESS:
+                    return nReturn
+                print()
             print(COLBG + "Extended installation done")
             print()
 
@@ -174,6 +174,7 @@ if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listC
     print()
     print(COLBY + "Entering extended installation")
     print()
+
     print(COLBY + "Extended setup step 1/5: Calling the documentation builder")
     # (previously called inside ExtendedInstallCommand - but this is too late, because the content of the initially
     # generated or updated README file is already needed for the long_description below.)
@@ -181,10 +182,25 @@ if ( ('install' in listCmdArgs) or ('build' in listCmdArgs) or ('sdist' in listC
     nReturn = oExtendedSetup.gen_doc()
     if nReturn != SUCCESS:
         sys.exit(nReturn)
+
+    print(COLBY + "Extended setup step 2/5: Deleting previous setup outputs (build, dist, <package name>.egg-info within repository)")
     print()
+    nReturn = oExtendedSetup.delete_previous_build()
+    if nReturn != SUCCESS:
+        sys.exit(nReturn)
+
+    if not 'bdist_wheel' in listCmdArgs:
+        print()
+        print(COLBY + "Extended setup step 3/5: Deleting previous package installation folder within site-packages") # (<package name> and <package name>_doc under <Python installation>\Lib\site-packages
+        print()
+        nReturn = oExtendedSetup.delete_previous_installation()
+        if nReturn != SUCCESS:
+            sys.exit(nReturn)
 
     with open("README.md", "r", encoding="utf-8") as fh:
         long_description = fh.read()
+    print()
+
 
 # --------------------------------------------------------------------------------------------------------------
 
