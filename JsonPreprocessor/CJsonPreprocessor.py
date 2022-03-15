@@ -48,6 +48,8 @@
 import os
 import json
 import re
+import sys
+import platform
 
 class CSyntaxType():
     python = "python"
@@ -70,7 +72,7 @@ class CPythonJSONDecoder(json.JSONDecoder):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.scan_once = self.custom_scan_once
+        self.scan_once = self.custom_scan_once     
 
     def _custom_scan_once(self, string, idx):
         try:
@@ -134,6 +136,50 @@ class CJsonPreprocessor():
         self.currentCfg = currentCfg
         self.lUpdatedParams = []
             
+    #
+    # Python struggles with
+    # - UNC paths
+    #   e.g. \\hi-z4939\ccstg\....
+    # - escape sequences in windows paths
+    #   e.g. c:\autotest\tuner   \t will be interpreted as tab, the result
+    #   after processing it with an regexp wuld be
+    #        c:\autotest   uner
+    #
+    # In order to solve this problems any slash will be replaced from backslash
+    # to slash, only the two UNC backslashes must be kept if contained.
+    def sNormalizePath(self,sPath):
+        if sPath.strip()=='':
+            return ''
+      
+        # TML Syntax uses %Name%-syntax to reference an system- or framework
+        # environment variable. Linux requires ${Name} to do the same.
+        # Therefore change on Linux systems to ${Name}-syntax to make
+        # expandvars working here, too.
+        # This makes same TML code working on both platforms
+        if platform.system().lower()!="windows":
+            sPath=re.sub("%(.*?)%","${\\1}",sPath)
+      
+        #in a windows system normpath turns all slashes to backslash
+        #this is unwanted. Therefore turn back after normpath execution.
+        sNPath=os.path.normpath(os.path.expandvars(sPath.strip()))
+        #make all backslashes to slash, but mask
+        #UNC indicator \\ before and restore after.
+        sNPath=self.__mkslash(sNPath)
+      
+        return sNPath   
+
+    # make all backslashes to slash, but mask
+    # UNC indicator \\ before and restore after.
+    def __mkslash(self,sPath):
+        if sPath.strip()=='':
+            return ''
+ 
+        sNPath=re.sub(r"\\\\",r"#!#!#",sPath.strip())
+        sNPath=re.sub(r"\\",r"/",sNPath)
+        sNPath=re.sub(r"#!#!#",r"\\\\",sNPath)
+      
+        return sNPath        
+
 
     '''
     Method: __processImportFiles this is custom decorder of object_pairs_hook function.
@@ -161,6 +207,14 @@ class CJsonPreprocessor():
                 out_dict[key] = value
         return out_dict
 
+
+    def comment_remover(text):
+
+            
+        
+    
+        return 
+
     '''
     Method: __removeComments loads json config file which allows comments inside
     Args:
@@ -169,41 +223,22 @@ class CJsonPreprocessor():
         lJsonData: list, list of string data from jsonFile after removing comment(s).
     '''
     def __removeComments(self, jsonFile):
-        jsonPath = ''
-        if '/' in jsonFile:
-            for item in jsonFile.split('/')[:-1]:
-                jsonPath += item + '/'
-        else:
-            for item in jsonFile.split('\\')[:-1]:
-                jsonPath += item + '\\'
-      
-        '''
-        Removes comment parts in json file then store in temporary json file
-        '''
-        lJsonData = []
         
-        with open(jsonFile) as fr:
-            for line in fr:
-                if re.match('^\s*//', line):
-                    continue
-                elif '//' in line:
-                    reEx1 = re.search("(\s*{*\s*\'.+\')\s*:\s*(\'.+\'\s*,*)*\s*(.*)", line)
-                    if reEx1 is None:
-                        reEx1 = re.search("(\s*{*\s*\".+\")\s*:\s*(\".+\"\s*,*)*\s*(.*)", line)
-                    if reEx1 is None:
-                        line = re.sub('//.*', '', line)
-                    elif reEx1.group(1) is not None and reEx1.group(2) is not None:
-                        line = reEx1.group(1) + ": " + reEx1.group(2) if reEx1.group(3) is None else \
-                               reEx1.group(1) + ": " + reEx1.group(2) + re.sub('//.*', '', reEx1.group(3))
-                    else:
-                        reEx2 = re.search("(\s*{*\s*\'.+\')\s*:\s*(.+,*)\s*//\s*.*", line)
-                        if reEx2 is None:
-                            reEx2 = re.search("(\s*{*\s*\".+\")\s*:\s*(.+,*)\s*(//\s*.*)*", line)
-                        if reEx2 is not None:
-                            line = reEx2.group(1) + ": " + re.sub('//.*', '', reEx2.group(2))
-                            
-                lJsonData.append(line)
-        return lJsonData, jsonPath
+        def replacer(match):
+            s = match.group(0)
+            if s.startswith('/'):
+                return "" 
+            else:
+                return s
+      
+        file=open(jsonFile,mode='r')
+        sContent=file.read()
+        file.close()
+
+        pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
+        sContentCleaned=re.sub(pattern, replacer, sContent)  
+
+        return sContentCleaned
     
     '''
     private __nestedParamHandler: This method handles the nested variable in param names or value
@@ -362,13 +397,24 @@ class CJsonPreprocessor():
         Returns:
             oJson: dict
         '''
+        jFile=jFile.strip()
+
+        if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
+            jFile=self.sNormalizePath(os.path.dirname(sys.argv[0])+"/"+jFile)
+
+        if  not(os.path.isfile(jFile)):
+            raise Exception(f"File '{jFile}' is not existing!")  
+
+        (jsonPath,tail)=os.path.split(jFile)            
+
         try:
-            lJsonData, jsonPath = self.__removeComments(jFile)
+            lJsonData = self.__removeComments(os.path.abspath(jFile))
         except Exception as reason:
             raise Exception("Could not read json configuration file %s due to: %s \n\
                              Please input 'utf-8' format in Json configuration file only" %(jFile, reason))
 
         currentDir = os.getcwd()
+
         self.lImportedFiles.append(os.path.abspath(jFile))
         os.chdir(jsonPath)
         CJSONDecoder = None
@@ -379,7 +425,7 @@ class CJsonPreprocessor():
                 raise Exception('Provided syntax \'%s\' is not supported.' %self.syntax)
 
         try:
-            oJson = json.loads("\n".join(lJsonData), 
+            oJson = json.loads(lJsonData, 
                                cls=CJSONDecoder , 
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:

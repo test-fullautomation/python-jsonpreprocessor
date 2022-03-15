@@ -1,0 +1,16 @@
+//Comment1
+
+/* a new
+   multiline comment
+*/
+
+{
+    //Comment2
+    "myVar1" : "val1",  //Comment3
+    /* comment 4
+    "myVar2" : "val2
+    */
+
+    "myVar2" : "http://www.google.de",
+    "[import]" : "./json/second_file.json"
+}

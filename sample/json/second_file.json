@@ -1,0 +1,15 @@
+//Comment1
+
+/* a new
+   multiline comment
+*/
+
+{
+    //Comment2
+    "second_myVar1" : "val1",  //Comment3
+    /* comment 4
+    "myVar2" : "val2
+    */
+
+    "second_myVar2" : "http://www.amazon.de"
+}
