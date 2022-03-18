@@ -12,5 +12,13 @@
     */
 
     "myVar2" : "http://www.google.de",
-    "[import]" : "./json/second_file.json"
+    "myVar3" : "${myVar1}",
+    "abc" :
+    {
+        "[import]" : "./second_file.json"
+    },
+    "def" :
+    {
+        "[import]" : "./subfolder/third_file.json"
+    }
 }

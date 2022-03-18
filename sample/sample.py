@@ -1,10 +1,13 @@
 import sys
+
 sys.path.append('D:\B\python-jsonpreprocessor')
 
-import JsonPreprocessor
+from JsonPreprocessor import CJsonPreprocessor
+from JsonPreprocessor import CSyntaxType
+
 from pprint import pprint
 
-prepro=JsonPreprocessor.CJsonPreprocessor()
+prepro=CJsonPreprocessor(syntax=CSyntaxType.python)
 
 data=prepro.jsonLoad(".\json\json_with_comment.json")
 

@@ -55,26 +55,25 @@ class CSyntaxType():
     python = "python"
     json = "json"
 
-NUMBER_RE = re.compile(
+class CPythonJSONDecoder(json.JSONDecoder):
+    """ 
+**Method: PythonJSONDecoder**
+   Add python data types and syntax to json. ``True``, ``False`` and ``None`` will be a accepted as json syntax elements.
+
+**Args:**
+   **json.JSONDecoder** (*object*)
+      Decoder object provided by ``json.loads``
+    """
+
+    NUMBER_RE = re.compile(
     r'(-?(?:0|[1-9]\d*))(\.\d+)?([eE][-+]?\d+)?',
     (re.VERBOSE | re.MULTILINE | re.DOTALL))
 
-class CPythonJSONDecoder(json.JSONDecoder):
-    """ Add below python values when scanning json data
-
-    +---------------+-------------------+
-    | True          | True              |
-    +---------------+-------------------+
-    | False         | False             |
-    +---------------+-------------------+
-    | None          | None              |
-    +---------------+-------------------+
-    """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):        
         super().__init__(*args, **kwargs)
         self.scan_once = self.custom_scan_once     
 
-    def _custom_scan_once(self, string, idx):
+    def _custom_scan_once(self, string :str, idx: int) -> any:
         try:
             nextchar = string[idx]
         except IndexError:
@@ -100,7 +99,7 @@ class CPythonJSONDecoder(json.JSONDecoder):
         elif nextchar == 'F' and string[idx:idx + 5] == 'False':
             return False, idx + 5
 
-        m = NUMBER_RE.match(string, idx)
+        m = CPythonJSONDecoder.NUMBER_RE.match(string, idx)
         if m is not None:
             integer, frac, exp = m.groups()
             if frac or exp:
@@ -117,39 +116,107 @@ class CPythonJSONDecoder(json.JSONDecoder):
         else:
             raise StopIteration(idx)
 
-    def custom_scan_once(self, string, idx):
+    def custom_scan_once(self, string : str, idx : int) -> any:
         try:
             return self._custom_scan_once(string, idx)
         finally:
             self.memo.clear()
 
 class CJsonPreprocessor():
-    '''
-    CJsonPreprocessor helps to handle configuration file as json format:
-        - Allow comment within json file
-        - Allow import json file within json file
-    '''
-    def __init__(self, syntax=CSyntaxType.json, currentCfg={}):
+    """
+CJsonPreprocessor extends the syntax of json.
+
+Features are
+
+-  Allow c/c++-style comments within json files.
+
+   // single line or part of single line and /\* \*/ multline comments are possible
+
+-  Allow to import json files into json files
+
+   ``"[import]" : "relative/absolute path"``, imports another json file to exactly this location.
+
+   ``%envariable%`` and ``${envariable}`` can be used, too.
+
+-  Allow use of variables within json files
+
+   In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing variable.
+
+   Example:
+
+   .. code:: json
+   
+      {
+          "basenode" : {
+                           subnode : {
+                                          "myparam" : 5
+                                     },
+   
+                       },
+      
+          "myVar" : "${basenode.subnode.myparam}"
+      }
+
+- Allow python data types ``True``, ``False`` and ``None``
+    """
+
+    def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
+        """
+**Method: __init__**
+   Constructor
+
+**Args:**
+   **syntax** (*CSyntaxType*) optional
+      default: `json` , `python`
+      If set to `python`, then python data types are allowed as part of json file.
+
+   **currentCfg** (*dict*) optional
+      Internally used to aggregate imported json files.
+        """
         self.lImportedFiles = []
         self.recursive_level = 0
         self.syntax = syntax
         self.currentCfg = currentCfg
         self.lUpdatedParams = []
             
-    #
-    # Python struggles with
-    # - UNC paths
-    #   e.g. \\hi-z4939\ccstg\....
-    # - escape sequences in windows paths
-    #   e.g. c:\autotest\tuner   \t will be interpreted as tab, the result
-    #   after processing it with an regexp wuld be
-    #        c:\autotest   uner
-    #
-    # In order to solve this problems any slash will be replaced from backslash
-    # to slash, only the two UNC backslashes must be kept if contained.
-    def sNormalizePath(self,sPath):
-        if sPath.strip()=='':
-            return ''
+ 
+    def __sNormalizePath(self, sPath : str) -> str:
+        """
+**Method: __sNormalizePath**
+    Python struggles with
+
+    - UNC paths
+      e.g. ``\\hi-z4939\ccstg\....``
+    - escape sequences in windows paths
+      e.g. ``c:\autotest\tuner   \t`` will be interpreted as tab, the result
+      after processing it with an regexp would be ``c:\autotest   uner``
+    
+    In order to solve this problems any slash will be replaced from backslash
+    to slash, only the two UNC backslashes must be kept if contained.
+   
+**Args:**
+   **sPath** (*string*)
+      Absolute or relative path as input.
+
+      Allows environment variables with ``%variable%`` or ``${variable}`` syntax.
+
+**Returns:**
+   **sPath** (*string*)
+      normalized path as string        
+        """  
+        # make all backslashes to slash, but mask
+        # UNC indicator \\ before and restore after.
+        def __mkslash(sPath : str) -> str:
+            if sPath.strip()=='':
+                return ''
+     
+            sNPath=re.sub(r"\\\\",r"#!#!#",sPath.strip())
+            sNPath=re.sub(r"\\",r"/",sNPath)
+            sNPath=re.sub(r"#!#!#",r"\\\\",sNPath)
+          
+            return sNPath               
+            if sPath.strip()=='':
+                return ''
       
         # TML Syntax uses %Name%-syntax to reference an system- or framework
         # environment variable. Linux requires ${Name} to do the same.
@@ -164,65 +231,66 @@ class CJsonPreprocessor():
         sNPath=os.path.normpath(os.path.expandvars(sPath.strip()))
         #make all backslashes to slash, but mask
         #UNC indicator \\ before and restore after.
-        sNPath=self.__mkslash(sNPath)
+        sNPath=__mkslash(sNPath)
       
-        return sNPath   
-
-    # make all backslashes to slash, but mask
-    # UNC indicator \\ before and restore after.
-    def __mkslash(self,sPath):
-        if sPath.strip()=='':
-            return ''
- 
-        sNPath=re.sub(r"\\\\",r"#!#!#",sPath.strip())
-        sNPath=re.sub(r"\\",r"/",sNPath)
-        sNPath=re.sub(r"#!#!#",r"\\\\",sNPath)
-      
-        return sNPath        
+        return sNPath          
 
 
-    '''
-    Method: __processImportFiles this is custom decorder of object_pairs_hook function.
-    This method helps to import json file which is provided in '[import]' keyword into current json file.
-    Returns:
-        Dictionary is parsed from json file.
-    '''
-    def __processImportFiles(self, input_data):
+    def __processImportFiles(self, input_data : dict) -> dict:
+        '''
+**Method: __processImportFiles**
+   this is a custom decorder of ``json.loads object_pairs_hook`` function.
+   
+   This method helps to import json files which are provided in ``"[import]"`` keyword into the current json file.  
+
+**Args:**
+   **input_data** (*dict*)
+      dictionary from json file as input
+
+**Returns:**
+   **out_dict** (*dict*)
+      dictionary as output
+
+      dictionary is extended if ``"[import]"`` found and properly imported.
+        '''
         out_dict = {}
+
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 abs_path_file = os.path.abspath(value)
-                
+            
                 # Use recursive_level and lImportedFiles to avoid cyclic import
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
+
                 # length of lImportedFiles should equal to recursive_level
                 self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
                 if abs_path_file in self.lImportedFiles:
-                    raise Exception('Cyclic imported json file \'%s\'' %str(abs_path_file))
+                    raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
                 
-                oJsonImport = self.jsonLoad(value, masterFile=False)
+                oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
                 out_dict.update(oJsonImport)
+
                 self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
                 out_dict[key] = value
         return out_dict
 
+    def __load_and_removeComments(self, jsonFile : str) -> str:
+        """
+**Method: __load_and_removeComments**
+      loads a given json file and filters all C/C++ style comments.
 
-    def comment_remover(text):
+**Args:**
+   **jsonFile** (*string*)
+      path (absolute/relative/) file to be processed. 
+      The path can contain windows/linux style environment variables. 
 
-            
+         !ATTENTION! This is dangerous
         
-    
-        return 
-
-    '''
-    Method: __removeComments loads json config file which allows comments inside
-    Args:
-        jsonFile: string
-    Returns:
-        lJsonData: list, list of string data from jsonFile after removing comment(s).
-    '''
-    def __removeComments(self, jsonFile):
+**Returns:**
+   **sContentCleaned** (*string*)
+      string version of json file after removing all comments.
+        """
         
         def replacer(match):
             s = match.group(0)
@@ -240,15 +308,20 @@ class CJsonPreprocessor():
 
         return sContentCleaned
     
-    '''
-    private __nestedParamHandler: This method handles the nested variable in param names or value
-                                  in updated json config file.
-    Args:
-        sInputStr: string - param name or value which contains nested variable
-    Returns:
-        sStrHandled: string
-    '''
-    def __nestedParamHandler(self, sInputStr):
+
+    def __nestedParamHandler(self, sInputStr : str) -> str:
+        '''
+**Method: __nestedParamHandler**
+    This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
+        
+**Args:**
+      **sInputStr** (*string*) 
+         Parameter name or value which contains a nested variable.
+
+**Returns:**
+      **sStrHandled** (*string*)
+         String which contains the resolved variable.  
+        '''
         
         #globals().update(currentCfg)
         referVars = re.findall('(\${\s*.*?\s*})', sInputStr)
@@ -266,7 +339,7 @@ class CJsonPreprocessor():
                         exec(sExec, globals(), ldict)
                         tmpValue = ldict['value']
                     except:
-                        raise Exception('The variable %s is not available' % (var))
+                        raise Exception(f"The variable '{var}' is not available!")
                     sInputStr = re.sub('\\' + var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
                                 re.sub('\\' + var, str(tmpValue), sInputStr)
                     continue
@@ -282,7 +355,7 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                     tmpValue = ldict['value']
                 except:
-                    raise Exception('The variable %s is not available!!!' % (fullVariable))
+                    raise Exception("fThe variable '{fullVariable}' is not available!")
                 pattern = re.sub('\[', '\\[', fullVariable)
                 pattern = re.sub('\]', '\\]', pattern)
                 sInputStr = re.sub('\\' + pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
@@ -306,16 +379,22 @@ class CJsonPreprocessor():
                 sStrHandled = fullVariable
                 return sStrHandled
             
-    '''
-    private __updateAndReplaceNestedParam: this method replaces all nested params in key and value of Json object
-    Args:
-        oJson: dict
-        currentCfg: dict
-    Returns:
-        oJsonOut: dict
-    '''
-    def __updateAndReplaceNestedParam(self, oJson, recursive=False):
-        
+
+    def __updateAndReplaceNestedParam(self, oJson : dict, recursive : bool = False):
+        '''
+**Method:  __updateAndReplaceNestedParam**
+   This method replaces all nested parameters in key and value of a json object .
+
+**Args:**
+   **oJson** (*dict*)
+      Input Json object as dictionary. This dictionary will be searched for all ``${variable}`` occurences. 
+      If found it will be replaced with it's current value.
+
+**Returns:**
+   **oJsonOut** (*dict*)
+      Output Json object as dictionary with all variables resolved.
+        '''
+    
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 globals().update({k:v})
@@ -336,7 +415,7 @@ class CJsonPreprocessor():
                         try:
                             exec(sExec, globals())
                         except:
-                            raise Exception("Could not set variable \'%s\' with value \'%s\'" %(k, v))
+                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
                     else:
                         tmpJson[k] = v 
                     bNested = False
@@ -356,7 +435,7 @@ class CJsonPreprocessor():
                     v = ldict['value'] if v.strip()==valueAfterProcessed else \
                         v.replace(valueAfterProcessed, str(ldict['value']))
                 except:
-                    raise Exception('The variable %s is not available!!!' % (tmpValueAfterProcessed))
+                    raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
                 
                 if bNested:
                     if '[' in k:
@@ -364,7 +443,7 @@ class CJsonPreprocessor():
                         try:
                             exec(sExec, globals())
                         except:
-                            raise Exception("Could not set variable \'%s\' with value \'%s\'" %(k, v))
+                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
                     else:
                         tmpJson[k] = v 
                     bNested = False
@@ -378,7 +457,7 @@ class CJsonPreprocessor():
                         try:
                             exec(sExec, globals())
                         except:
-                            raise Exception("Could not set variable \'%s\' with value \'%s\'" %(k, v))
+                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
                     else:
                         tmpJson[k] = v
                     
@@ -388,54 +467,63 @@ class CJsonPreprocessor():
 
         return oJson
 
-    def jsonLoad(self, jFile, masterFile=True):
+
+    def jsonLoad(self, jFile : str, masterFile : bool = True):
         '''
-        Method: jsonLoad loads the json file then parses to dict object
-        
-        Args:
-            jFile: string, json file input
-        Returns:
-            oJson: dict
+**Method: jsonLoad**
+   This function is the entry point of JsonPreprocessor.
+
+   It loads the json file, preprocesses it and returns the preprocessed result as data structure.    
+
+**Args:**
+   **jFile** (*string*)
+      relative/absolute path to main json file.
+
+      ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
+
+**Returns:**  
+   **oJson** (*dict*)
+      preprocessed json file(s) as data structure 
         '''
         jFile=jFile.strip()
 
         if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
-            jFile=self.sNormalizePath(os.path.dirname(sys.argv[0])+"/"+jFile)
+            jFile=self.__sNormalizePath(os.path.dirname(sys.argv[0])+"/"+jFile)
 
         if  not(os.path.isfile(jFile)):
-            raise Exception(f"File '{jFile}' is not existing!")  
-
-        (jsonPath,tail)=os.path.split(jFile)            
-
-        try:
-            lJsonData = self.__removeComments(os.path.abspath(jFile))
-        except Exception as reason:
-            raise Exception("Could not read json configuration file %s due to: %s \n\
-                             Please input 'utf-8' format in Json configuration file only" %(jFile, reason))
-
-        currentDir = os.getcwd()
+            raise Exception(f"File '{jFile}' is not existing!")         
 
         self.lImportedFiles.append(os.path.abspath(jFile))
+        (jsonPath,tail)=os.path.split(jFile)                 
+
+        try:
+            sJsonData= self.__load_and_removeComments(os.path.abspath(jFile))
+        except Exception as reason:
+            raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
+
+        
+        currentDir = os.getcwd()
         os.chdir(jsonPath)
+
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
             if self.syntax == CSyntaxType.python:
                 CJSONDecoder = CPythonJSONDecoder
             else:
-                raise Exception('Provided syntax \'%s\' is not supported.' %self.syntax)
+                raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
 
         try:
-            oJson = json.loads(lJsonData, 
+            oJson = json.loads(sJsonData, 
                                cls=CJSONDecoder , 
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            raise Exception("JSON configuration file '%s': %s" %(jFile, error))
+            raise Exception(f"json file '{jFile}': '{error}'")
         
         os.chdir(currentDir)
+
         if masterFile:
             for k, v in oJson.items():
                 globals().update({k:v})
             oJson = self.__updateAndReplaceNestedParam(oJson)
-        # oJson['JsonPath'] = jsonPath      # is JsonPath required?
             
         return oJson

@@ -6,10 +6,10 @@
 
 {
     //Comment2
-    "second_myVar1" : "val1",  //Comment3
+    "second_myVar1" : True,  //Comment3
     /* comment 4
     "myVar2" : "val2
     */
-
-    "second_myVar2" : "http://www.amazon.de"
+    "[import]" : "./subfolder/third_file.json",
+    "second_myVar2" : "http://www.ebay.de"
 }

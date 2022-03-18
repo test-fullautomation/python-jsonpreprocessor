@@ -12,3 +12,5 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 from .CJsonPreprocessor import CJsonPreprocessor
+from .CJsonPreprocessor import CSyntaxType
+

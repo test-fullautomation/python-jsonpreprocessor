@@ -86,7 +86,7 @@ class CConfig():
 
         # 1. basic setup stuff
         self.__dictConfig['sPackageName']                = "JsonPreprocessor"
-        self.__dictConfig['sVersion']                    = "0.1.0"
+        self.__dictConfig['sVersion']                    = "0.2.0"
         self.__dictConfig['sAuthor']                     = "Mai Dinh Nam Son"
         self.__dictConfig['sAuthorEMail']                = "son.maidinhnam@vn.bosch.com"
         self.__dictConfig['sDescription']                = "This package provides a preprocessor for json files"
