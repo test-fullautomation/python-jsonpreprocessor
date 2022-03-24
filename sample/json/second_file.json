@@ -1,15 +1,10 @@
-//Comment1
-
-/* a new
-   multiline comment
-*/
-
 {
-    //Comment2
-    "second_myVar1" : True,  //Comment3
-    /* comment 4
-    "myVar2" : "val2
-    */
+    "second_myVar1" : true,  
+
+    //All imported data will be located in this case below
+    //the root node of this file.
+    //The import is done again relative to this file.
     "[import]" : "./subfolder/third_file.json",
+
     "second_myVar2" : "http://www.ebay.de"
 }

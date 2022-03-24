@@ -1,24 +1,34 @@
-//Comment1
+// You can write anywhere one line comments
 
-/* a new
-   multiline comment
+/*
+This way you can 
+write anywhere multiline
+comments
 */
 
 {
-    //Comment2
-    "myVar1" : "val1",  //Comment3
-    /* comment 4
-    "myVar2" : "val2
+    /*
+    This way you can 
+    write anywhere multiline
+    comments
     */
 
+    // You can write anywhere one line comments
+    "myVar1" : "val1",  
+   
     "myVar2" : "http://www.google.de",
-    "myVar3" : "${myVar1}",
-    "abc" :
+    "myVar3" : "val3", // You can write anywhere one line comments
+    "abc" : // You can write anywhere one line comments
     {
-        "[import]" : "./second_file.json"
+        /*
+        This way you can 
+        write anywhere multiline
+        comments
+        */        
+        "myVar4" : "val4"
     },
     "def" :
     {
-        "[import]" : "./subfolder/third_file.json"
+        "myVar5" : "val5" // You can write anywhere one line comments
     }
 }

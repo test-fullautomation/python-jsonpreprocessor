@@ -1,15 +1,4 @@
-//Comment1
-
-/* a new
-   multiline comment
-*/
-
 {
-    //Comment2
-    "third_myVar1" : "val1",  //Comment3
-    /* comment 4
-    "myVar2" : "val2
-    */
-
+    "third_myVar1" : "val1",  
     "third_myVar2" : "http://www.amazon.de"
 }

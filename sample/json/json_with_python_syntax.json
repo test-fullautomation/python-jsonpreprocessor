@@ -1,0 +1,24 @@
+{
+    //instead of `true` you can use the python-syntax `True`
+    "myVar1" : True,  
+    "myVar1_" : true,
+   
+    //instead of `frue` you can use the python-syntax `False`
+    "myVar2" : False,
+    "myVar2_" : false,
+
+    //instead of `null` you can use the python-syntax `None`
+    "myVar3" : None, 
+    "myVar3_" : null,
+
+    "abc" : 
+    {       
+        //this is a string -> there is no change 
+        "myVar4" : "True"
+    },
+    "def" :
+    {
+        //this is a string -> there is no change 
+        "myVar5" : "False" 
+    }
+}

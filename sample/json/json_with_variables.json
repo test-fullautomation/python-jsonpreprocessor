@@ -1,0 +1,31 @@
+/*
+every node can be used by means of ${node} syntax
+as variable once it was defined.
+This works also with [import] of json data. As per
+order the [import ] appears in the code the nodes
+can be referenced by means of ${syntax} as variable.
+ */
+
+{  
+    // create some initial data
+    "myVar1" : "val1",
+    "myVar2" : "val2",
+    "abc" : {
+               "arList" : ["a","b","c"]
+    },
+
+    //give myVar3 the value of "myVar1"
+    "myVar3" : "${myVar1}",
+    
+    //give myVar4 the value of ${abc}['arList'][1]
+    "myVar4" : "${abc}['arList'][1]",
+
+    //give myVar4 the value of ${abc}['arList']
+    "myVar5" : "${abc}['arList']",
+
+    //add a new entry to node "abc"
+    "${abc}['new_entry']" : "new_entry",
+
+    //give myVar6 the value new value of node "abc"
+    "myVar6" : "${abc}"
+}
