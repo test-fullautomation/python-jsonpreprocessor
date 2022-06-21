@@ -11,6 +11,27 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from .CJsonPreprocessor import CJsonPreprocessor
-from .CJsonPreprocessor import CSyntaxType
+#################################################################################
+
+## This example also shows how to use comments
+## in json files.
+
+import sys
+
+sys.path.append('D:\B\python-jsonpreprocessor')
+
+from JsonPreprocessor import CJsonPreprocessor
+
+from pprint import pprint
+
+prepro=CJsonPreprocessor()
+
+# you can load the base json file with
+# - relative path to your python program
+# - absolute path
+# - paths containting environment variables by means of
+#   %envvariable% syntax
+data=prepro.jsonLoad(".\json\json_with_variables.json")
+
+pprint(data)
 

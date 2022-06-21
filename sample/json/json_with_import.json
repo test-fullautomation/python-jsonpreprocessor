@@ -1,0 +1,52 @@
+/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. */
+
+/*
+imports of json files are done by means of the 
+[import] keyword.
+
+All imported data will be replace the node which
+has the [import] keyword.
+
+[import] can be done at any location in your json
+data structure. This allows to structure big json files
+into any architecture you require.
+*/
+{
+    "myVar1" : "val1", 
+
+    "myVar2" : "http://www.google.de",
+    "abc" :
+    {
+        /* 
+        import of json files should be always a relative path
+        to the current file. This allows later to shift whole
+        json directories to other places without braking the
+        internal strucutre.
+
+        All imported data will be located in this case below
+        node "abc" and replace the [import] node.
+        */
+        "[import]" : "./second_file.json"
+    },
+    "def" :
+    {
+        //All imported data will be located in this case below
+        //node "def" and replace the [import] node.
+        //this file is imported in this example two times as
+        //re-usable data structure.
+        //one time here, a second time in "second_file.json"
+        "[import]" : "./subfolder/third_file.json"
+    }
+}

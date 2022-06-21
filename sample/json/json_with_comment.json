@@ -1,0 +1,48 @@
+/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. */
+
+// You can write anywhere one line comments
+
+/*
+This way you can 
+write anywhere multiline
+comments
+*/
+
+{
+    /*
+    This way you can 
+    write anywhere multiline
+    comments
+    */
+
+    // You can write anywhere one line comments
+    "myVar1" : "val1",  
+   
+    "myVar2" : "http://www.google.de",
+    "myVar3" : "val3", // You can write anywhere one line comments
+    "abc" : // You can write anywhere one line comments
+    {
+        /*
+        This way you can 
+        write anywhere multiline
+        comments
+        */        
+        "myVar4" : "val4"
+    },
+    "def" :
+    {
+        "myVar5" : "val5" // You can write anywhere one line comments
+    }
+}
