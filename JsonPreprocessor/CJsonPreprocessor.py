@@ -58,16 +58,21 @@ NUMBER_RE = re.compile(
     (re.VERBOSE | re.MULTILINE | re.DOTALL))
 
 class CPythonJSONDecoder(json.JSONDecoder):
-    """ Add below python values when scanning json data
-
-    +---------------+-------------------+
-    | True          | True              |
-    +---------------+-------------------+
-    | False         | False             |
-    +---------------+-------------------+
-    | None          | None              |
-    +---------------+-------------------+
     """
+Some keywords are different in Python and Json
+
+.. table:: Python vs. Json keywords
+   :widths: auto
+
+   =======  =======
+   Python   Json
+   =======  =======
+   True     true
+   False    false
+   None     null
+   =======  =======
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.scan_once = self.custom_scan_once
@@ -123,24 +128,26 @@ class CPythonJSONDecoder(json.JSONDecoder):
 
 class CJsonPreprocessor():
     '''
-    CJsonPreprocessor helps to handle configuration file as json format:
-        - Allow comment within json file
-        - Allow import json file within json file
+CJsonPreprocessor helps to handle configuration file as json format:
+
+- Allow comment within json file
+- Allow import json file within json file
     '''
     def __init__(self, syntax=CSyntaxType.json, currentCfg={}):
+        '''
+Method: __processImportFiles this is custom decorder of object_pairs_hook function.
+
+This method helps to import json file which is provided in '[import]' keyword into current json file.
+
+Returns:
+    Dictionary is parsed from json file.
+        '''
         self.lImportedFiles = []
         self.recursive_level = 0
         self.syntax = syntax
         self.currentCfg = currentCfg
         self.lUpdatedParams = []
-            
 
-    '''
-    Method: __processImportFiles this is custom decorder of object_pairs_hook function.
-    This method helps to import json file which is provided in '[import]' keyword into current json file.
-    Returns:
-        Dictionary is parsed from json file.
-    '''
     def __processImportFiles(self, input_data):
         out_dict = {}
         for key, value in input_data:
@@ -161,13 +168,13 @@ class CJsonPreprocessor():
                 out_dict[key] = value
         return out_dict
 
-    '''
-    Method: __removeComments loads json config file which allows comments inside
-    Args:
-        jsonFile: string
-    Returns:
-        lJsonData: list, list of string data from jsonFile after removing comment(s).
-    '''
+    # '''
+    # Method: __removeComments loads json config file which allows comments inside
+    # Args:
+        # jsonFile: string
+    # Returns:
+        # lJsonData: list, list of string data from jsonFile after removing comment(s).
+    # '''
     def __removeComments(self, jsonFile):
         jsonPath = ''
         if '/' in jsonFile:
@@ -205,14 +212,14 @@ class CJsonPreprocessor():
                 lJsonData.append(line)
         return lJsonData, jsonPath
     
-    '''
-    private __nestedParamHandler: This method handles the nested variable in param names or value
-                                  in updated json config file.
-    Args:
-        sInputStr: string - param name or value which contains nested variable
-    Returns:
-        sStrHandled: string
-    '''
+    # '''
+    # private __nestedParamHandler: This method handles the nested variable in param names or value
+                                  # in updated json config file.
+    # Args:
+        # sInputStr: string - param name or value which contains nested variable
+    # Returns:
+        # sStrHandled: string
+    # '''
     def __nestedParamHandler(self, sInputStr):
         
         #globals().update(currentCfg)
@@ -271,14 +278,14 @@ class CJsonPreprocessor():
                 sStrHandled = fullVariable
                 return sStrHandled
             
-    '''
-    private __updateAndReplaceNestedParam: this method replaces all nested params in key and value of Json object
-    Args:
-        oJson: dict
-        currentCfg: dict
-    Returns:
-        oJsonOut: dict
-    '''
+    # '''
+    # private __updateAndReplaceNestedParam: this method replaces all nested params in key and value of Json object
+    # Args:
+        # oJson: dict
+        # currentCfg: dict
+    # Returns:
+        # oJsonOut: dict
+    # '''
     def __updateAndReplaceNestedParam(self, oJson, recursive=False):
         
         if bool(self.currentCfg) and not recursive:
@@ -359,6 +366,7 @@ class CJsonPreprocessor():
         
         Args:
             jFile: string, json file input
+
         Returns:
             oJson: dict
         '''
