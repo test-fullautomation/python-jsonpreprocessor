@@ -60,7 +60,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.06.2022
+# 30.06.2022
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -187,7 +187,7 @@ print(COLBY + "Extended setup step 5/5: install.run(self)")
 print()
 
 setuptools.setup(
-    name         = str(oRepositoryConfig.Get('REPOSITORYNAME')),
+    name         = str(oRepositoryConfig.Get('PACKAGENAME')),
     version      = str(oRepositoryConfig.Get('PACKAGEVERSION')),
     author       = str(oRepositoryConfig.Get('AUTHOR')),
     author_email = str(oRepositoryConfig.Get('AUTHOREMAIL')),
@@ -196,7 +196,6 @@ setuptools.setup(
     long_description_content_type = str(oRepositoryConfig.Get('LONGDESCRIPTIONCONTENTTYPE')),
     url = str(oRepositoryConfig.Get('URL')),
     packages = [str(oRepositoryConfig.Get('PACKAGENAME')),],
-    package_dir = {str(oRepositoryConfig.Get('REPOSITORYNAME')) : str(oRepositoryConfig.Get('PACKAGENAME'))},
     classifiers = [
         str(oRepositoryConfig.Get('PROGRAMMINGLANGUAGE')),
         str(oRepositoryConfig.Get('LICENCE')),
