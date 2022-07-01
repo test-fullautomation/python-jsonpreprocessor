@@ -47,7 +47,7 @@ package documentation is located in 'doc/_build/'.
 Package Documentation
 ---------------------
 
-A detailed documentation of the Json Preprocessor's package can be found here: `Json-Preprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/doc/_build/latex/Json-Preprocessor.pdf>`_
+A detailed documentation of the Json Preprocessor's package can be found here: `JsonPreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/JsonPreprocessor/JsonPreprocessor.pdf>`_
 
 Feedback
 --------
