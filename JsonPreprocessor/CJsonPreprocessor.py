@@ -178,6 +178,7 @@ Features are
         self.syntax = syntax
         self.currentCfg = currentCfg
         self.lUpdatedParams = []
+        self.lNestedParams = []
             
  
     def __sNormalizePath(self, sPath : str) -> str:
@@ -501,7 +502,14 @@ Features are
         except Exception as reason:
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
-        
+        for line in sJsonData.splitlines():
+            if re.match('\s*[\'\"]\s*.+[\'\"]\s*:\s*.+', line.lower()):
+                key_value = re.split('[\'\"]\s*:\s*', line)
+                if re.match('^\s*\${\s*', key_value[0].lower()):
+                    self.lNestedParams.append(key_value[0])
+                if re.match('^.*\s*\${\s*', key_value[1].lower()):
+                    self.lNestedParams.append(key_value[1])
+
         currentDir = os.getcwd()
         os.chdir(jsonPath)
 
@@ -524,6 +532,19 @@ Features are
         if masterFile:
             for k, v in oJson.items():
                 globals().update({k:v})
+
+            # Checking availability of nested parameters before updating and replacing.
+            for param in self.lNestedParams:
+                parseNestedParam = self.__nestedParamHandler(param)
+                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam)
+                sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
+                        "value = " + str(tmpParseNestedParam)
+                try:
+                    ldict = {}
+                    exec(sExec, globals(), ldict)
+                except:
+                    raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")
+                    
             oJson = self.__updateAndReplaceNestedParam(oJson)
             
         return oJson
