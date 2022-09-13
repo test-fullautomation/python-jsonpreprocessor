@@ -503,11 +503,13 @@ Features are
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
         for line in sJsonData.splitlines():
-            if re.match('\s*[\'\"]\s*.+[\'\"]\s*:\s*.+', line.lower()):
-                key_value = re.split('[\'\"]\s*:\s*', line)
+            if re.match('\s*\"\s*.+\"\s*:\s*.+', line.lower()):
+                key_value = re.split('\"\s*:\s*', line)
                 if re.match('^\s*\${\s*', key_value[0].lower()):
+                    key_value[0] = re.sub('^\s*\"', '', key_value[0])
                     self.lNestedParams.append(key_value[0])
                 if re.match('^.*\s*\${\s*', key_value[1].lower()):
+                    key_value[1] = re.sub('^\s*\"\s*(.+)\s*\"\s*,*\s*$', '\\1', key_value[1])
                     self.lNestedParams.append(key_value[1])
 
         currentDir = os.getcwd()
