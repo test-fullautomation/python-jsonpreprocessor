@@ -379,7 +379,6 @@ Features are
                         fullVariable = variable[0]
                 sStrHandled = fullVariable
                 return sStrHandled
-            
 
     def __updateAndReplaceNestedParam(self, oJson : dict, recursive : bool = False):
         '''
@@ -395,79 +394,133 @@ Features are
    **oJsonOut** (*dict*)
       Output Json object as dictionary with all variables resolved.
         '''
-    
+
+        def __tmpJsonUpdated(k, v, tmpJson, bNested):
+            if bNested:
+                if '[' in k:
+                    sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v) 
+                    try:
+                        exec(sExec, globals())
+                    except:
+                        raise Exception(f"Could not set variable '{k}' with value '{v}'!")
+                else:
+                    tmpJson[k] = v
+            else:
+                tmpJson[k] = v
+
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 globals().update({k:v})
         
         tmpJson = {}            
-        bNested = False
         for k, v in oJson.items():
-            if re.match('^\s*\${\s*', k.lower()):
+            bNested = False
+            if re.match('.*\${\s*', k.lower()):
+                if re.match("str\(\s*\${.+", k.lower()):
+                    k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
                 keyAfterProcessed = self.__nestedParamHandler(k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed)
                 bNested = True
                 
             if isinstance(v, dict):
                 v = self.__updateAndReplaceNestedParam(v, recursive=True)
-                if bNested:
-                    if '[' in k:
-                        sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v) 
+                __tmpJsonUpdated(k, v, tmpJson, bNested)
+                bNested = False
+
+            elif isinstance(v, list):
+                tmpValue = []
+                for item in v:
+                    if isinstance(item, str) and re.match('^.*\s*\${\s*', item.lower()):
+                        bStringValue = False
+                        if re.match("str\(\s*\${.+", item.lower()):
+                            item = re.sub("str\(\s*(\${.+)\s*\)", "\\1", item)
+                            bStringValue = True
+                        itemAfterProcessed = self.__nestedParamHandler(item)
+                        tmpItemAfterProcessed = re.sub('\${\s*(.*?)\s*}', '\\1', itemAfterProcessed)
+                        sExec = "value = " + tmpItemAfterProcessed if isinstance(tmpItemAfterProcessed, str) else \
+                                "value = " + str(tmpItemAfterProcessed)
                         try:
-                            exec(sExec, globals())
+                            ldict = {}
+                            exec(sExec, globals(), ldict)
+                            if bStringValue:
+                                item = str(ldict['value'])
+                                # item = str(ldict['value']) if item.strip()==itemAfterProcessed else \
+                                #     item.replace(itemAfterProcessed, str(ldict['value']))
+                            else:
+                                item = ldict['value']
+                                # item = ldict['value'] if item.strip()==itemAfterProcessed else \
+                                #     item.replace(itemAfterProcessed, str(ldict['value']))
                         except:
-                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
-                    else:
-                        tmpJson[k] = v 
-                    bNested = False
-                else:
-                    tmpJson[k] = v
+                            raise Exception(f"The variable '{tmpItemAfterProcessed}' is not available!")
+
+                    tmpValue.append(item)
+                __tmpJsonUpdated(k, tmpValue, tmpJson, bNested)
+                bNested = False
             
             elif isinstance(v, str) and re.match('^.*\s*\${\s*', v.lower()):
-                
+                bStringValue = False
+                if re.match("str\(\s*\${.+", v.lower()):
+                    v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
+                    bStringValue = True
                 valueAfterProcessed = self.__nestedParamHandler(v)
                 tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueAfterProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
-
                 try:
                     ldict = {}
                     exec(sExec, globals(), ldict)
-                    v = ldict['value'] if v.strip()==valueAfterProcessed else \
-                        v.replace(valueAfterProcessed, str(ldict['value']))
+                    if bStringValue:
+                        v = str(ldict['value'])
+                        # v = str(ldict['value']) if v.strip()==valueAfterProcessed else \
+                        #     v.replace(valueAfterProcessed, str(ldict['value']))
+                    else:
+                        v = ldict['value']
+                        # v = ldict['value'] if v.strip()==valueAfterProcessed else \
+                        #     v.replace(valueAfterProcessed, str(ldict['value']))
                 except:
                     raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
                 
-                if bNested:
-                    if '[' in k:
-                        sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v) 
-                        try:
-                            exec(sExec, globals())
-                        except:
-                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
-                    else:
-                        tmpJson[k] = v 
-                    bNested = False
-                else:
-                    tmpJson[k] = v
-                
+                __tmpJsonUpdated(k, v, tmpJson, bNested)
+                bNested = False
             else:
                 if bNested:
-                    if '[' in k:
-                        sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v) 
-                        try:
-                            exec(sExec, globals())
-                        except:
-                            raise Exception(f"Could not set variable '{k}' with value '{v}'!")
-                    else:
-                        tmpJson[k] = v
-                    
+                    __tmpJsonUpdated(k, v, tmpJson, bNested)
                     bNested = False
-                    
-        oJson.update(tmpJson)
 
+        
+        oJson.update(tmpJson)
         return oJson
 
+    def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
+        '''
+**Method: jsonLoad**
+   This function checks and makes up all nested parameters in json configuration files.
+
+**Args:**
+   **sInputStr** (*string*)
+   Key or value which is parsed from json configuration file.
+
+**Returns:**
+   The string after nested parameters are made up.
+
+   Ex: 
+   
+      Nested param ${abc}['xyz'] -> "${abc}['xyz']"
+
+      Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
+        '''
+        if re.match("^\s*.*\s*\"\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*\"", sInputStr.lower()):
+            sInputStr = re.sub("\"(\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*)\"", "\"str(\\1)\"", sInputStr)
+            sInputStr = re.sub("str\(\"(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)\"\)", "str(\\1)", sInputStr)
+            nestedParam = re.sub("^\s*\"str\((.+)\)\"\s*.*$", "\\1", sInputStr)
+            self.lNestedParams.append(nestedParam)
+        elif re.match("^\s*.*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*", sInputStr.lower()):
+            sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)", "\"\\1\"", sInputStr)
+            nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+            self.lNestedParams.append(nestedParam)
+
+        sOutput = sInputStr
+        return sOutput
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         '''
@@ -502,15 +555,37 @@ Features are
         except Exception as reason:
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
+        sJsonDataUpdated = ""
         for line in sJsonData.splitlines():
-            if re.match('\s*\"\s*.+\"\s*:\s*.+', line.lower()):
-                key_value = re.split('\"\s*:\s*', line)
-                if re.match('^\s*\${\s*', key_value[0].lower()):
-                    key_value[0] = re.sub('^\s*\"', '', key_value[0])
-                    self.lNestedParams.append(key_value[0])
-                if re.match('^.*\s*\${\s*', key_value[1].lower()):
-                    key_value[1] = re.sub('^\s*\"\s*(.+)\s*\"\s*,*\s*$', '\\1', key_value[1])
-                    self.lNestedParams.append(key_value[1])
+            if re.search("\${.+}", line):
+                items = re.split("\s*:\s*", line)
+                newLine = ""
+                i=0
+                for item in items:
+                    i+=1
+                    subItems = re.split("\s*,\s*", item)
+                    newSubItem = ""
+                    j=0
+                    for subItem in subItems:
+                        j+=1
+                        if j<len(subItems):
+                            newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ", "
+                        else:
+                            newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
+                    if i<len(items):
+                        newLine = newLine + newSubItem + " : "
+                    else:
+                        newLine = newLine + newSubItem
+                for nestedParam in self.lNestedParams:
+                    tmpNestedParam = nestedParam.replace("$", "\$")
+                    tmpNestedParam = tmpNestedParam.replace("[", "\[")
+                    tmpNestedParam = tmpNestedParam.replace("]", "\]")
+                    if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine) \
+                        or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine):
+                        self.lNestedParams.remove(nestedParam)
+                sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
+            else:
+                sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         currentDir = os.getcwd()
         os.chdir(jsonPath)
@@ -523,7 +598,7 @@ Features are
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
 
         try:
-            oJson = json.loads(sJsonData, 
+            oJson = json.loads(sJsonDataUpdated, 
                                cls=CJSONDecoder , 
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
@@ -546,7 +621,6 @@ Features are
                     exec(sExec, globals(), ldict)
                 except:
                     raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")
-                    
             oJson = self.__updateAndReplaceNestedParam(oJson)
             
         return oJson
