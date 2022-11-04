@@ -57,11 +57,14 @@ class CSyntaxType():
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """ 
-**Method: PythonJSONDecoder**
+**Class: PythonJSONDecoder**
+
    Add python data types and syntax to json. ``True``, ``False`` and ``None`` will be a accepted as json syntax elements.
 
 **Args:**
+
    **json.JSONDecoder** (*object*)
+
       Decoder object provided by ``json.loads``
     """
 
@@ -124,25 +127,27 @@ class CPythonJSONDecoder(json.JSONDecoder):
 
 class CJsonPreprocessor():
     """
-CJsonPreprocessor extends the syntax of json.
+**Class: CJsonPreprocessor**
 
-Features are
+   CJsonPreprocessor extends the syntax of json.
 
--  Allow c/c++-style comments within json files.
+   Features are
 
-   // single line or part of single line and /\* \*/ multline comments are possible
+   -  Allow c/c++-style comments within json files.
 
--  Allow to import json files into json files
+      // single line or part of single line and /\* \*/ multline comments are possible
 
-   ``"[import]" : "relative/absolute path"``, imports another json file to exactly this location.
+   -  Allow to import json files into json files
 
-   ``%envariable%`` and ``${envariable}`` can be used, too.
+      ``"[import]" : "relative/absolute path"``, imports another json file to exactly this location.
 
--  Allow use of variables within json files
+      ``%envariable%`` and ``${envariable}`` can be used, too.
 
-   In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing variable.
+   -  Allow use of variables within json files
 
-   Example:
+      In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing variable.
+
+      * Example:
 
    .. code:: json
    
@@ -157,20 +162,25 @@ Features are
           "myVar" : "${basenode.subnode.myparam}"
       }
 
-- Allow python data types ``True``, ``False`` and ``None``
+   - Allow python data types ``True``, ``False`` and ``None``
     """
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
         """
 **Method: __init__**
+
    Constructor
 
 **Args:**
+
    **syntax** (*CSyntaxType*) optional
+
       default: `json` , `python`
+
       If set to `python`, then python data types are allowed as part of json file.
 
    **currentCfg** (*dict*) optional
+
       Internally used to aggregate imported json files.
         """
         self.lImportedFiles = []
@@ -184,26 +194,34 @@ Features are
     def __sNormalizePath(self, sPath : str) -> str:
         """
 **Method: __sNormalizePath**
-    Python struggles with
 
-    - UNC paths
-      e.g. ``\\hi-z4939\ccstg\....``
-    - escape sequences in windows paths
-      e.g. ``c:\autotest\tuner   \t`` will be interpreted as tab, the result
+   Python struggles with
+
+      - UNC paths
+
+         e.g. ``\\hi-z4939\ccstg\....``
+
+      - escape sequences in windows paths
+
+         e.g. ``c:\autotest\tuner   \t`` will be interpreted as tab, the result
       after processing it with an regexp would be ``c:\autotest   uner``
     
-    In order to solve this problems any slash will be replaced from backslash
-    to slash, only the two UNC backslashes must be kept if contained.
+   In order to solve this problems any slash will be replaced from backslash
+   to slash, only the two UNC backslashes must be kept if contained.
    
 **Args:**
+
    **sPath** (*string*)
+
       Absolute or relative path as input.
 
       Allows environment variables with ``%variable%`` or ``${variable}`` syntax.
 
 **Returns:**
+
    **sPath** (*string*)
-      normalized path as string        
+
+      Normalized path as string        
         """  
         # make all backslashes to slash, but mask
         # UNC indicator \\ before and restore after.
@@ -240,19 +258,22 @@ Features are
     def __processImportFiles(self, input_data : dict) -> dict:
         '''
 **Method: __processImportFiles**
-   this is a custom decorder of ``json.loads object_pairs_hook`` function.
+
+   This is a custom decorder of ``json.loads object_pairs_hook`` function.
    
    This method helps to import json files which are provided in ``"[import]"`` keyword into the current json file.  
 
 **Args:**
+
    **input_data** (*dict*)
-      dictionary from json file as input
+
+      Dictionary from json file as input
 
 **Returns:**
-   **out_dict** (*dict*)
-      dictionary as output
 
-      dictionary is extended if ``"[import]"`` found and properly imported.
+   **out_dict** (*dict*)
+
+      Dictionary as output, dictionary is extended if ``"[import]"`` found and properly imported.
         '''
         out_dict = {}
 
@@ -279,18 +300,23 @@ Features are
     def __load_and_removeComments(self, jsonFile : str) -> str:
         """
 **Method: __load_and_removeComments**
-      loads a given json file and filters all C/C++ style comments.
+
+      Loads a given json file and filters all C/C++ style comments.
 
 **Args:**
+
    **jsonFile** (*string*)
-      path (absolute/relative/) file to be processed. 
+
+      Path (absolute/relative/) file to be processed. 
       The path can contain windows/linux style environment variables. 
 
          !ATTENTION! This is dangerous
         
 **Returns:**
+
    **sContentCleaned** (*string*)
-      string version of json file after removing all comments.
+
+      String version of json file after removing all comments.
         """
         
         def replacer(match):
@@ -313,15 +339,20 @@ Features are
     def __nestedParamHandler(self, sInputStr : str) -> str:
         '''
 **Method: __nestedParamHandler**
-    This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
+
+   This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
         
 **Args:**
-      **sInputStr** (*string*) 
-         Parameter name or value which contains a nested variable.
+
+   **sInputStr** (*string*) 
+
+      Parameter name or value which contains a nested variable.
 
 **Returns:**
-      **sStrHandled** (*string*)
-         String which contains the resolved variable.  
+
+   **sStrHandled** (*string*)
+
+      String which contains the resolved variable.  
         '''
         
         #globals().update(currentCfg)
@@ -384,15 +415,20 @@ Features are
     def __updateAndReplaceNestedParam(self, oJson : dict, recursive : bool = False):
         '''
 **Method:  __updateAndReplaceNestedParam**
+
    This method replaces all nested parameters in key and value of a json object .
 
 **Args:**
+
    **oJson** (*dict*)
+
       Input Json object as dictionary. This dictionary will be searched for all ``${variable}`` occurences. 
       If found it will be replaced with it's current value.
 
 **Returns:**
+
    **oJsonOut** (*dict*)
+
       Output Json object as dictionary with all variables resolved.
         '''
     
@@ -472,19 +508,24 @@ Features are
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         '''
 **Method: jsonLoad**
+
    This function is the entry point of JsonPreprocessor.
 
    It loads the json file, preprocesses it and returns the preprocessed result as data structure.    
 
 **Args:**
+
    **jFile** (*string*)
-      relative/absolute path to main json file.
+
+      Relative/absolute path to main json file.
 
       ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
 
-**Returns:**  
+**Returns:**
+
    **oJson** (*dict*)
-      preprocessed json file(s) as data structure 
+
+      Preprocessed json file(s) as data structure 
         '''
         jFile=jFile.strip()
 
