@@ -44,7 +44,7 @@ After the build processes is completed, the package is located in
 
 A detailed documentation of the Json Preprocessor\'s package can be
 found here:
-[Json-Preprocessor.pdf](https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/doc/_build/latex/Json-Preprocessor.pdf)
+[JsonPreprocessor.pdf](https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/JsonPreprocessor/JsonPreprocessor.pdf)
 
 ## Feedback
 
