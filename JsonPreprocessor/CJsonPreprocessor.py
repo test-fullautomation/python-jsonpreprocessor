@@ -457,37 +457,41 @@ Features are
                 __tmpJsonUpdated(k, tmpValue, tmpJson, bNested)
                 bNested = False
             
-            elif isinstance(v, str) and re.match('^.*\s*\${\s*', v.lower()):
-                bStringValue = False
-                if re.match("str\(\s*\${.+", v.lower()):
-                    v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
-                    bStringValue = True
-                valueAfterProcessed = self.__nestedParamHandler(v)
-                tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueAfterProcessed)
-                sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
-                        "value = " + str(tmpValueAfterProcessed)
-                try:
-                    ldict = {}
-                    exec(sExec, globals(), ldict)
-                    if bStringValue:
-                        v = str(ldict['value'])
-                        # v = str(ldict['value']) if v.strip()==valueAfterProcessed else \
-                        #     v.replace(valueAfterProcessed, str(ldict['value']))
-                    else:
-                        v = ldict['value']
-                        # v = ldict['value'] if v.strip()==valueAfterProcessed else \
-                        #     v.replace(valueAfterProcessed, str(ldict['value']))
-                except:
-                    raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
-                
-                __tmpJsonUpdated(k, v, tmpJson, bNested)
-                bNested = False
+            elif isinstance(v, str):
+                if re.match('^.*\s*\${\s*', v.lower()):
+                    bStringValue = False
+                    if re.match("str\(\s*\${.+", v.lower()):
+                        v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
+                        bStringValue = True
+                    valueAfterProcessed = self.__nestedParamHandler(v)
+                    tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueAfterProcessed)
+                    sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
+                            "value = " + str(tmpValueAfterProcessed)
+                    try:
+                        ldict = {}
+                        exec(sExec, globals(), ldict)
+                        if bStringValue:
+                            v = str(ldict['value'])
+                            # v = str(ldict['value']) if v.strip()==valueAfterProcessed else \
+                            #     v.replace(valueAfterProcessed, str(ldict['value']))
+                        else:
+                            v = ldict['value']
+                            # v = ldict['value'] if v.strip()==valueAfterProcessed else \
+                            #     v.replace(valueAfterProcessed, str(ldict['value']))
+                    except:
+                        raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
+                        
+                    if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
+                        v = '\"' + v + '\"'
+
+                    __tmpJsonUpdated(k, v, tmpJson, bNested)
+                    bNested = False
+
             else:
                 if bNested:
                     __tmpJsonUpdated(k, v, tmpJson, bNested)
                     bNested = False
-
-        
+     
         oJson.update(tmpJson)
         return oJson
 
@@ -539,6 +543,19 @@ Features are
    **oJson** (*dict*)
       preprocessed json file(s) as data structure 
         '''
+        def __handleStrNoneTrueFalse(objJson):
+            oJson = {}
+            for k, v in objJson.items():
+                if isinstance(v, dict):
+                    v = __handleStrNoneTrueFalse(v)
+                    oJson[k] = v
+                elif isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
+                    v = '\"' + v + '\"'
+                    oJson[k] = v
+                else:
+                    oJson[k] = v
+            return oJson
+
         jFile=jFile.strip()
 
         if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
@@ -603,7 +620,8 @@ Features are
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             raise Exception(f"json file '{jFile}': '{error}'")
-        
+
+        oJson = __handleStrNoneTrueFalse(oJson)        
         os.chdir(currentDir)
 
         if masterFile:
