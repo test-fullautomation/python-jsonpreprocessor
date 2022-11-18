@@ -141,15 +141,13 @@ class CJsonPreprocessor():
 
       ``"[import]" : "relative/absolute path"``, imports another json file to exactly this location.
 
-      ``%envariable%`` and ``${envariable}`` can be used, too.
+   -  Allow use of the defined paramaters within json files
 
-   -  Allow use of variables within json files
-
-      In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing variable.
+      In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing parameter.
 
       * Example:
 
-   .. code:: json
+   .. code::
    
       {
           "basenode" : {
@@ -159,10 +157,10 @@ class CJsonPreprocessor():
    
                        },
       
-          "myVar" : "${basenode.subnode.myparam}"
+          "myVar" : ${basenode.subnode.myparam}
       }
 
-   - Allow python data types ``True``, ``False`` and ``None``
+   - Allow Python data types ``True``, ``False`` and ``None``
     """
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
@@ -525,7 +523,7 @@ class CJsonPreprocessor():
 
    **oJson** (*dict*)
 
-      Preprocessed json file(s) as data structure 
+      Preprocessed json file(s) as dictionary data structure 
         '''
         jFile=jFile.strip()
 

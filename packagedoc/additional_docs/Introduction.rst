@@ -15,14 +15,23 @@
 Json Preprocessor documentation
 ===============================
 
-**This is the documentation for JsonPreprocessor Python package**
+**This is the documentation for Python JsonPreprocessor**
 
 Json is a format used to represent data and becomes the universal standard of data 
-exchange. Today many software projects are using Json format as a configuration file, 
-for a big or a complex project, there is a need to have some enhanced format in json 
-file such as adding the comments, importing other json files, etc.
+exchange. Today many software projects are using configuration file in Json format. 
+For a big or a complex project there is a need to have some enhanced format in Json 
+file such as adding the comments, importing other Json files, etc.
 
-Base on that needs, we develop JsonPreprocessor package which allows using the comments, 
-importing other Json files, overwrite existing or add new parameters, and nested parameter.
+Based on that needs, we develop JsonPreprocessor package: 
 
-.. image:: ./pictures/python3-jsonpreprocessor.png
+* Gives the possibility to comment out parts of the content. This feature can be used to 
+  explain the meaning of the parameters defined inside the configuration files.
+
+* Has ability to import other Json files. This feature can be applied for complex project,
+  users can create separated Json files then importing them to other Json file.
+
+* Allows users using the defined parameter in Json file. 
+
+* Accepts **``True``**, **``False``**, and **``None``** in Json syntax
+
+               .. image:: ./pictures/python3-jsonpreprocessor.png

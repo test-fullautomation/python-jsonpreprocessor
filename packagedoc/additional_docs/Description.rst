@@ -12,91 +12,68 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Getting Started
----------------
-
-The JsonPreprocessor package is a Python3 package which allows developers to handle additional 
-features in json files such as:
-
-* Adds the comments
-* Imports other json files
-* Overwrites existing or add new parameters
-* Uses nested parameter
-* Other features
-
-These json files will be handled by JsonPreprocessor package which returns as result a dictionary 
-object of the deserialized data.
-
 How to install
 --------------
 
 Firstly, clone `python-jsonpreprocessor <https://github.com/test-fullautomation/python-jsonpreprocessor>`_ 
 repository to your machine.
 
-Then go to python-jsonpreprocessor, using the 2 common commands below to build or install this package:
+Then open the folder in which you have cloned the repository python-jsonpreprocessor, following the commands 
+below to build or install this package:
 
-.. code-block::
+.. code::
 
     setup.py build      will build the package underneath 'build/'
     setup.py install    will install the package
 
 After the build processes is completed, the package is located in 'build/', and the generated package 
-documentation is located in **build/lib/JsonPreprocessor**.
+documentation is located in **/JsonPreprocessor**.
 
 We can use ``--help`` to discover the options for ``build`` command, example:
 
-.. code-block:: bat
+.. code::
 
      setup.py build      will build the package underneath 'build/'
      setup.py install    will install the package
-   
-   Global options:
-     --verbose (-v)      run verbosely (default)
-     --quiet (-q)        run quietly (turns verbosity off)
-     --dry-run (-n)      don't actually do anything
-     --help (-h)         show detailed help message
-     --no-user-cfg       ignore pydistutils.cfg in your home directory
-     --command-packages  list of packages that provide distutils commands
-   
-   Information display options (just display information, ignore any commands)
-     --help-commands     list all available commands
-     --name              print package name
-     --version (-V)      print package version
-     --fullname          print <package name>-<version>
-     --author            print the author's name
-     --author-email      print the author's email address
-     --maintainer        print the maintainer's name
-     --maintainer-email  print the maintainer's email address
-     --contact           print the maintainer's name if known, else the author's
-     --contact-email     print the maintainer's email address if known, else the
-                         author's
-     --url               print the URL for this package
-     --license           print the license of the package
-     --licence           alias for --license
-     --description       print the package description
-     --long-description  print the long package description
-     --platforms         print the list of platforms
-     --classifiers       print the list of classifiers
-     --keywords          print the list of keywords
-     --provides          print the list of packages/modules provided
-     --requires          print the list of packages/modules required
-     --obsoletes         print the list of packages/modules made obsolete
-   
-   usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
-      or: setup.py --help [cmd1 cmd2 ...]
-      or: setup.py --help-commands
-      or: setup.py cmd --help   
 
 Features
 --------
 
+Basic Json format
+~~~~~~~~~~~~~~~~~
+
+Users can use JsonPreprocessor to handle the json file with its original format.
+
+**Example:**
+
+.. code::
+
+   {
+     "Project": "name_of_prject",
+     "version": {
+       "major": "0",
+       "minor": "1",
+       "patch": "1"
+     },
+     "params": {
+       "global": {
+         "param_1" : "value_1",
+         "param_2" : value_2,
+         "structure_param": {
+           "general": "general"
+         }
+       }
+     },
+     "device" : "device_name"
+   }
+
 Adding the comments
 ~~~~~~~~~~~~~~~~~~~
 
-With a big or a complex project, it requires a lot of configuration parameters. So adding comments to 
-json files is useful in case of more and more content is added, e.g. because of a json file has to 
-hold a huge number of configuration parameters for different features. Comments can be used here to 
-clarify the meaning of these parameters or the differences between them.
+Often large projects require a lot of configuration parameters. So adding comments to json files is 
+useful in case of more and more content is added, e.g. because of a json file has to hold a huge number 
+of configuration parameters for different features. Comments can be used here to clarify the meaning of 
+these parameters or the differences between them.
 
 Every line starting with **"//"**, is commented out. Therefore a comment is valid for singles lines only.
 
@@ -104,7 +81,7 @@ Comment out a block of several lines with only one start and one end comment str
 
 **Example:**
 
-.. code-block::
+.. code::
 
    //*****************************************************************************
    //  Author: ROBFW-AIO Team
@@ -113,38 +90,24 @@ Comment out a block of several lines with only one start and one end comment str
    //  test config files
    //*****************************************************************************
    {
-     "Project": "G3g",
-     "WelcomeString": "Hello... ROBFW is running now!",
-     // Version control information.
+     "Project": "name_of_prject",
+     // <adding comment>
      "version": {
        "majorversion": "0",
        "minorversion": "1",
        "patchversion": "1"
      },
      "params": {
-       // Global parameters
+       // <adding comment>
        "global": {
-         "gGlobalIntParam" : 1,
-         "gGlobalFloatParam" : 1.332,  // This parameter is used to configure for ....
-         "gGlobalString"   : "This is a string",
-         "gGlobalStructure": {
+         "param_1" : "value_1",
+         "param_2" : value_2,  // <adding comment>
+         "structure_param": {
            "general": "general"
          }
        }
      },
-     "preprocessor": {
-       "definitions": {
-         // FEATURE switches
-         "gPreprolIntParam" : 1,
-         "gPreproFloatParam" : 1.332,
-   	  // The parameter for feature ABC
-         "gPreproString"   : "This is a string",
-         "gPreproStructure": {
-                            "general": "general"
-                           }
-         }
-     },
-     "TargetName" : "gen3flex@dlt"
+     "device" : "device_name"
    }
 
 Imports other json files
@@ -154,15 +117,15 @@ This import feature enables developers to take over the content of other json fi
 current json file. A json file that is imported into another json file, can contain imports also
 (allows nested imports).
 
-A possible usecase for nested imports is to handle similar configuration parameters of different 
-variants of a feature or a component within a bunch of several smaller files, instead of putting 
-all parameter into only one large json file.
+A possible usecase for nested imports is to handle configuration parameters of different variants 
+of a feature or a component within a bunch of several smaller files, instead of putting all parameter 
+into only one large json file.
 
 **Example:**
 
 Suppose we have the json file ``params_global.json`` with the content:
 
-.. code-block::
+.. code::
 
          //*****************************************************************************
          //  Author: ROBFW-AIO Team
@@ -173,20 +136,18 @@ Suppose we have the json file ``params_global.json`` with the content:
          //
          //  This is to distinguish the different types of resets
          {
-           "gGlobalIntParam" : 1,
+           "import_param_1" : "value_1",
          
-           "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-           
-           "gGlobalString"   : "This is a string",
+           "import_param_2" : "value_2",
             
-           "gGlobalStructure": {
+           "import_structure_1": {   // <adding comment>
              "general": "general"
            }
          }
 
 And other json file ``preprocessor_definitions.json`` with content:
 
-.. code-block::
+.. code::
 
          //*****************************************************************************
          //  Author: ROBFW-AIO Team
@@ -195,20 +156,20 @@ And other json file ``preprocessor_definitions.json`` with content:
          //  test config files
          //*****************************************************************************
          {
-           "gPreprolIntParam" : 1,
+           "import_param_3" : "value_3",
            
-           "gPreproFloatParam" : 1.332,
-           // The parameter for feature ABC
-           "gPreproString"   : "This is a string",
+           "import_param_4" : "value_4",
+
+           // <adding comment>
             
-           "gPreproStructure": {
-                                  "general": "general"
-                               }
+           "import_structure_2": {
+              "general": "general"
+            }
          }
 
-Then we can import these 2 files above to the json file ``config.json`` with content:
+Then we can import these 2 files above to the json file ``config.json`` with the [import] statement:
 
-.. code-block::
+.. code::
 
          //*****************************************************************************
          //  Author: ROBFW-AIO Team
@@ -217,247 +178,235 @@ Then we can import these 2 files above to the json file ``config.json`` with con
          //  test config files
          //*****************************************************************************
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
+             "major": "0",
+             "minor": "1",
+             "patch": "1"
            },
            "params": {
-             // Global parameters
              "global": {
-         		"[import]": "<path_to_the_imported_file>/params_global.json"
-               }
-             },
+         	    	"[import]": "<path_to_the_imported_file>/params_global.json"
+              }
+            },
            "preprocessor": {
              "definitions": {
-               // FEATURE switches
                  "[import]": "<path_to_the_imported_file>/preprocessor_definitions.json"
                }
            },
-           "TargetName" : "gen3flex@dlt"
+           "device" : "device_name"
          }
 
-The ``config.json`` file is handled by JsonPreprocessor package, then return the dictionary 
-object for a program like below:
+After all imports are resolved by the JsonPreprocessor, this is the resulting of data structure:
 
-.. code-block::
+.. code::
 
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
+             "major": "0",
+             "minor": "1",
+             "patch": "1"
            },
            "params": {
              "global": {
-               "gGlobalIntParam" : 1,
-               "gGlobalFloatParam" : 1.332,
-               "gGlobalString"   : "This is a string",
-               "gGlobalStructure": {
+               "import_param_1" : "value_1",
+               "import_param_2" : "value_2",
+               "import_structure_1": {
                  "general": "general"
                  }
              }
            },
            "preprocessor": {
              "definitions": {
-               "gPreprolIntParam" : 1,
-               "gPreproFloatParam" : 1.332,
-               "gPreproString"   : "This is a string",
-               "gPreproStructure": {
-                                  "general": "general"
-                                 }
+               "import_param_3" : "value_3",
+               "import_param_4" : "value_4",
+               "import_structure_2": {
+                  "general": "general"
+                }
              }
            },
-           "TargetName" : "gen3flex@dlt"
+           "device" : "device_name"
          }
 
-Overwrites existing or add new parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Add new or overwrites existing parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This JsonPreprocessor package also provides developers ability to overwrite or update as well as  
-add new parameters. Developers can update parameters which are already declared and add new 
+This JsonPreprocessor package also provides developers ability to add new as well as overwrite  
+existing parameters. Developers can update parameters which are already declared and add new 
 parameters or new element into existing parameters. The below example will show the way to do 
 these features.
 
 In case we have many different variants, and each variant requires a different value assigned 
-to the parameter. This feature could help us update new value for existing parameters, it also 
-supports to add new parameters to existing configuation object.
+to the parameter, users can use this feature to add new parameters and update new values for 
+existing parameters of existing configuation object.
 
 **Example:**
 
 Suppose we have the json file ``params_global.json`` with the content:
 
-.. code-block::
+.. code::
 
+         //*****************************************************************************
+         //  Author: ROBFW-AIO Team
+         //
+         //  This file defines all common global parameters and will be included to all
+         //  test config files
+         //*****************************************************************************
+         //
+         //  This is to distinguish the different types of resets
          {
-           "gGlobalIntParam" : 1,
+           "import_param_1" : "value_1",
          
-           "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-           
-           "gGlobalString"   : "This is a string",
+           "import_param_2" : "value_2",
             
-           "gGlobalStructure": {
+           "import_structure_1": {   // <adding comment>
              "general": "general"
            }
          }
 
 Then we import ``params_global.json`` to json file ``config.json`` with content:
 
-.. code-block::
+.. code::
 
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
+             "major": "0",
+             "minor": "1",
+             "patch": "1"
            },
            "params": {
-             // Global parameters
              "global": {
          		"[import]": "<path_to_the_imported_file>/params_global.json"
                }
              },
-           "TargetName" : "gen3flex@dlt",
+           "device" : "device_name",
            // Overwrite parameters
-           "${params}['global']['gGlobalFloatParam']": 9.999,  
-           "${version}['patchversion']": "2",
-           "${params}['global']['gGlobalString']": "This is the new value for the already existing parameter.",
+           "${params}['global']['import_param_1']": "new_value_1",  
+           "${version}['patch']": "2",
            // Add new parameters
-           "${newParam}": {
-         	  			"abc": 9,
-         				"xyz": "new param"
+           "new_param": {
+         	  	"abc": 9,
+         			"xyz": "new param"
            },
-           "${params}['global']['gGlobalStructure']['newGlobalParam']": 123
+           "${params}['global']['import_structure_1']['new_structure_param']": "new_structure_value"
          }
 
-The ``config.json`` file is handled by JsonPreprocessor package, then return the dictionary object 
-for a program like below:
+After all imports are resolved by the JsonPreprocessor, this is the resulting of data structure:
 
-.. code-block::
+.. code::
 
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "2"
+             "major": "0",
+             "minor": "1",
+             "patch": "2"
            },
            "params": {
              "global": {
-               "gGlobalIntParam" : 1,
-               "gGlobalFloatParam" : 9.999,
-               "gGlobalString"   : "This is the new value for the already existing parameter.",
-               "gGlobalStructure": {
+               "import_param_1" : "new_value_1",
+               "import_param_2" : "value_2",
+               "import_structure_1": {
                  "general": "general",
-         		"newGlobalParam": 123
-                 }
-               }
+         		     "new_structure_param": "new_structure_value"
+                }
+              }
            },
-           "TargetName": "gen3flex@dlt",
-           "newParam": {
-         	  "abc": 9,
-         	  "xyz": "new param"
+           "device" : "device_name",
+           "new_param": {
+         	   "abc": 9,
+         	   "xyz": "new param"
            }
          }
 
-Uses nested parameter
-~~~~~~~~~~~~~~~~~~~~~
+Using defined parameters
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-With JsonPreprocessor package, user can also use nested parameters as example below:
+With JsonPreprocessor package, users can also use the defined parameters in Json file. The value of 
+the defined parameter could be called with syntax ``${<parameter_name>}``
 
 **Example:**
 
 Suppose we have the json file ``config.json`` with the content:
 
-.. code-block::
+.. code::
 
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
-           // Version control information.
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
+             "major": "0",
+             "minor": "1",
+             "patch": "1"
            },
            "params": {
-             // Global parameters
              "global": {
-               "gGlobalIntParam" : 1,
-               "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-               "gGlobalString"   : "This is a string",
-               "gGlobalStructure": {
+               "import_param_1" : "value_1",
+               "import_param_2" : "value_2",
+               "import_structure_1": {
                  "general": "general"
-                 }
+                }
              }
            },
            "preprocessor": {
              "definitions": {
-               "gPreprolIntParam" : 1,
-               "gPreproFloatParam" : 9.664,
-         	  "ABC": "checkABC",
-               "gPreproString"   : "This is a string",
-               "gPreproStructure": {
-                                  "general": "general"
-                                 }
+               "import_param_3" : "value_3",
+               "import_param_4" : "value_4",
+            	 "ABC": "param_ABC",
+               "import_structure_1": {
+                  "general": "general"
+                }
              }
            },
-           "TargetName" : "gen3flex@dlt",
-           // Nested parameter
-           "${params}['global'][${preprocessor}['definitions']['ABC']]": true,
-           "${params}['global']['gGlobalFloatParam']": ${preprocessor}['definitions']['gPreproFloatParam']
+           "device" : "device_name",
+           // Using the defined parameters
+           "${params}['global'][${preprocessor}['definitions']['ABC']]": True,
+           "${params}['global']['import_param_1']": ${preprocessor}['definitions']['import_param_4']
          }
 
-The ``config.json`` file is handled by JsonPreprocessor package, then return the dictionary object 
-for a program like below:
+After all imports are resolved by the JsonPreprocessor, this is the resulting of data structure:
 
-.. code-block::
+.. code::
 
          {
-           "Project": "G3g",
-           "WelcomeString": "Hello... ROBFW is running now!",
+           "Project": "name_of_prject",
            "version": {
-             "majorversion": "0",
-             "minorversion": "1",
-             "patchversion": "1"
+             "major": "0",
+             "minor": "1",
+             "patch": "1"
            },
            "params": {
              "global": {
-               "gGlobalIntParam" : 1,
-               "gGlobalFloatParam" : 9.664,
-               "gGlobalString"   : "This is a string",
-               "gGlobalStructure": {
+               "import_param_1" : "value_4",
+               "import_param_2" : "value_2",
+               "import_structure_1": {
                  "general": "general"
                  },
-         	  "checkABC": true
+         	     "param_ABC": True
              }
            },
            "preprocessor": {
              "definitions": {
-               "gPreprolIntParam" : 1,
-               "gPreproFloatParam" : 9.664,
-         	  "ABC": "checkABC",
-               "gPreproString"   : "This is a string",
-               "gPreproStructure": {
-                                  "general": "general"
-                                 }
+               "import_param_3" : "value_3",
+               "import_param_4" : "value_4",
+            	 "ABC": "param_ABC",
+               "import_structure_1": {
+                  "general": "general"
+                }
              }
            },
-           "TargetName" : "gen3flex@dlt"
+           "TargetName" : "device_name"
          }
 
-Other features
-~~~~~~~~~~~~~~
+Accepted ``True``, ``False``, and ``None``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To facilitate the json usage, the Python data types such as **``True``**, **``False``**, and 
-**``None``** will be accepted as json syntax elements while using JsonPreprocessor package.
+Some keywords are different between Json and Python syntax:
+
+* Json syntax: **``true``**, **``false``**, **``null``**
+
+* Python syntax: **``True``**, **``False``**, **``None``**
+
+To facilitate the usage of configuration files in Json format, both ways of syntax are accepted.
 
