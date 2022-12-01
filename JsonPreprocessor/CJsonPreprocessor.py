@@ -432,7 +432,7 @@ class CJsonPreprocessor():
         def __tmpJsonUpdated(k, v, tmpJson, bNested):
             if bNested:
                 if '[' in k:
-                    sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v) 
+                    sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
                     except:
@@ -520,11 +520,11 @@ class CJsonPreprocessor():
 
                     __tmpJsonUpdated(k, v, tmpJson, bNested)
                     bNested = False
-
-            else:
-                if bNested:
+                else:
                     __tmpJsonUpdated(k, v, tmpJson, bNested)
                     bNested = False
+            else:
+                __tmpJsonUpdated(k, v, tmpJson, bNested)
      
         oJson.update(tmpJson)
         return oJson
@@ -679,5 +679,4 @@ class CJsonPreprocessor():
                 except:
                     raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")
             oJson = self.__updateAndReplaceNestedParam(oJson)
-            
         return oJson
