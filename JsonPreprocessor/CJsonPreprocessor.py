@@ -615,6 +615,8 @@ class CJsonPreprocessor():
         for line in sJsonData.splitlines():
             if re.search("\${.+}", line):
                 items = re.split("\s*:\s*", line)
+                if re.match("^\s*\${.+", items[0]):
+                    items[0] = '"' + items[0].strip() + '"'
                 newLine = ""
                 i=0
                 for item in items:
