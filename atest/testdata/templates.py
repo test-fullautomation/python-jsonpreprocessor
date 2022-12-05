@@ -474,7 +474,7 @@ JSONFORMAT = {
     "patchversion": "1"
   },
   "params": {
-    "global": {
+    "glob": {
       "gGlobalIntParam" : 1,
       "gGlobalFloatParam" : 1.332,
       "gGlobal//String"   : "https://www.robfwaio.com",
@@ -501,4 +501,33 @@ JSONFORMAT = {
   },
   "abc" : "This is a multline string\nwith\nhttp://www.google.de\na link inside",
   "Target//Name" : "gen3flex//dlt"
+}
+
+JSONFORMAT_NONE_TRUE_FALSE = {
+  "params": {
+    "glob": {
+      "gGlobalIntParam" : 1,
+      "gGlobalFloatParam" : 1.332,
+      "Null_variable": None,
+      "None_variable": None,
+      "True_variable": True,
+      "False_variable": False,
+      "gGlobalString"   : "This is a string",
+      "gGlobalStructure": {
+        "general": "general"
+      }
+    }
+  },
+  "preprocessor": {
+    "definitions": {
+      "gPreprolIntParam" : 1,
+      "gPreproFloatParam" : 1.332,
+      "gPreproString"   : "This is a string",
+      "gPreproStructure": {
+                             "general": "general",
+                             "testing": 19,
+                             "check01": "checkParam"
+                          }
+    }
+  }
 }

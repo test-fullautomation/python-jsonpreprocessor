@@ -12,13 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //**************************************************************************
-// 
-// File: *.json
-// Initialized by Mai Dinh Nam Son
-//
-//**************************************************************************
+
 {
-  "${params}['glo']['globalString']": "Welcome to Jsonpreprocessor Acceptance Test",
+  ${params}['glo']['globalString']: "Welcome to Jsonpreprocessor Acceptance Test",
   "${preprocessor}['definitions']['preproStructure']['variable_01']": 0.192,
-  "${Project}": "Acceptance Testing"
+  ${Project}: "Acceptance Testing"
 }

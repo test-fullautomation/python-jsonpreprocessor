@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file is defined to do acceptance test for override params feature.
-//
-//*****************************************************************************
+
 {
    "WelcomeString":"Hello... ROBFW is running now!!",
    "version":{
@@ -29,7 +25,7 @@
    "[import]": "./common/definitions_common.json",
    "${gPreproString}": "Override string param in imported file.",
    "params":{
-     "global":{
+     "glob":{
 	   "dSUT":{
 	      "tuner":{
 	         "am":{
@@ -87,7 +83,7 @@
 	   }
      }
    },
-   "${gPreproStructure}['test01']": 99,
-   "${gPreproFloatParam}": 9.876,
+   ${gPreproStructure}['test01']: 99,
+   ${gPreproFloatParam}: 9.876,
    "YearOfDevelopment": 2021
 }

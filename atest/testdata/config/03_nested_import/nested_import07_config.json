@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json config file:
-//      - Nested import
-//*****************************************************************************
+
 {
     "Project": "G3g",
     "[import]": "../import/nested_imported04_config.json",

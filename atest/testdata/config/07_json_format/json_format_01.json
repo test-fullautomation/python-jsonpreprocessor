@@ -20,7 +20,7 @@
     "patchversion": "1"
   },
   "params": {
-    "global": {
+    "glob": {
       "gGlobalIntParam" : 1,
       "gGlobalFloatParam" : 1.332,
       "gGlobal//String"   : "https://www.robfwaio.com",

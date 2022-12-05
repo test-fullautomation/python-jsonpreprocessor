@@ -12,10 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file uses to configure for Robot Framework AIO
-//*****************************************************************************
+
 {
   "Project": "G3g",
   "WelcomeString": "Hello... ROBFW is running now!",

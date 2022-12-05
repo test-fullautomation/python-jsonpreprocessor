@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json config file:
-//      - More than 1 json file are imported
-//*****************************************************************************
+
 {
     "[import]": "../import/imported_file01_config.json",
     "[import]": "../import/imported_file02_config.json",

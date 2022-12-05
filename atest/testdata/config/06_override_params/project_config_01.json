@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file is defined to do acceptance test for override params feature.
-//
-//*****************************************************************************
+
 {
    "WelcomeString":"Hello... ROBFW is running now!!",
    "version":{
@@ -28,7 +24,7 @@
    "Descriptioin":"Json Preprocessor Acceptance Test",
    "[import]": "./common/definitions_common.json",
    "params":{
-     "global":{
+     "glob":{
 	   "dSUT":{
 	      "tuner":{
 	         "am":{
@@ -86,8 +82,8 @@
 	   }
      }
    },
-   "${params}['global']['dSUT']['audio']['volume']['bSupported']" : false,
-   "${version}['patchversion']": 1,
-   "${params}['global']['dSUT']['system']['sDetails']": "Params override testing",
+   ${params}['glob']['dSUT']['audio']['volume']['bSupported'] : false,
+   ${version}['patchversion']: 1,
+   ${params}['glob']['dSUT']['system']['sDetails']: "Params override testing",
    "YearOfDevelopment": 2021
 }

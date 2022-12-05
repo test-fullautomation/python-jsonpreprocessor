@@ -12,15 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //**************************************************************************
-// 
-// File: *.json
-// Initialized by Mai Dinh Nam Son
-//
-//**************************************************************************
+
 {
-  "${sWelcome}": "${Project}",
-  "${params}['glo']['globalIntParam']": 69,
-  "${preprocessor}['definitions']['preproStructure']['variable_01']": "${preprocessor}['definitions']['preproStructure']['newStruct']['check1']",
+  ${sWelcome}: ${Project},
+  ${params}['glo']['globalIntParam']: 69,
+  ${preprocessor}['definitions']['preproStructure']['variable_01']: ${preprocessor}['definitions']['preproStructure']['newStruct']['check1'],
   "params": {
     "glo": {
       "globalFloatParam": 97,

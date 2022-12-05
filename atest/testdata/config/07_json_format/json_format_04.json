@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json configuration file has standard foramat and comment
-//  test config files
-//*****************************************************************************
+
 {
   "Project": "https://www.robfwaio.com",  // Just for testing.
   "WelcomeString": "Hello... ROBFW is running now!",
@@ -28,7 +24,7 @@
   // This is comment feature of jsonpreprocessor package.
   // The global parameters are defined here.
   "params": {
-    "global": 
+    "glob": 
     { "gGlobalIntParam" : 1,  // Testing purpose
 	  "gGlobalFloatParam" : 1.332,
 	  "gGlobal//String"   : "https://www.robfwaio.com",

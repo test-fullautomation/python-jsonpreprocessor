@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json config file:
-//      - 1 another json file is imported in sub-object
-//*****************************************************************************
+
 {
     "Project": "G3g",
     "WelcomeString": "Hello... ROBFW is running now!",
