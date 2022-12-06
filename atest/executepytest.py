@@ -16,17 +16,17 @@
 #
 # **************************************************************************************************************
 #
-# executerobottest.py
+# executepytest.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# Executes robot tests recursively in current folder.
+# Executes pytest recursively in current folder.
 # Log file can be set in command line. If not, default log is written.
 # Additional command line for involved framework can also be set in command line (of this script).
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 09.11.2022
+# 04.10.2022
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,6 @@ import os, sys, platform, shlex, subprocess, shutil, argparse
 import colorama as col
 
 from PythonExtensionsCollection.String.CString import CString
-from PythonExtensionsCollection.File.CFile import CFile
 from PythonExtensionsCollection.Folder.CFolder import CFolder
 
 col.init(autoreset=True)
@@ -70,12 +69,11 @@ sPythonPath     = CString.NormalizePath(os.path.dirname(sys.executable))
 sPython         = CString.NormalizePath(sys.executable)
 sPythonVersion  = sys.version
 
+sFilter = None
 if sPlatformSystem == "Windows":
-    # nothing specific to do
-    pass
+    sFilter = "not _Linux_"
 elif sPlatformSystem == "Linux":
-    # nothing specific to do
-    pass
+    sFilter = "not _Windows_"
 else:
    bSuccess = False
    sResult  = f"Operating system {sPlatformSystem} ({sOSName}) not supported"
@@ -86,11 +84,11 @@ print()
 print(f"{sThisScriptName} is running under {sPlatformSystem} ({sOSName})")
 print()
 
-# -- parse the command line of this script (optional path and name of robot xml log file)
+# -- parse the command line of this script (optional path and name of pytest xml log file)
 
 oCmdLineParser = argparse.ArgumentParser()
 oCmdLineParser.add_argument('--logfile', type=str, help='Path and name of XML log file (optional).')
-oCmdLineParser.add_argument('--robotcommandline', type=str, help='Command line for RobotFramework AIO (optional).')
+oCmdLineParser.add_argument('--pytestcommandline', type=str, help='Command line for Python pytest module (optional).')
 oCmdLineArgs = oCmdLineParser.parse_args()
 
 sLogFile = None
@@ -98,20 +96,15 @@ if oCmdLineArgs.logfile is not None:
    sLogFile = CString.NormalizePath(oCmdLineArgs.logfile, sReferencePathAbs=sThisScriptPath)
 else:
    # default log
-   sLogFile = f"{sThisScriptPath}/logfiles/RobotTestLog.xml"
+   sLogFile = f"{sThisScriptPath}/logfiles/PyTestLog.xml"
 
-sRobotCommandLine = None
-if oCmdLineArgs.robotcommandline is not None:
-   sRobotCommandLine = oCmdLineArgs.robotcommandline
+sPytestCommandLine = None
+if oCmdLineArgs.pytestcommandline is not None:
+   sPytestCommandLine = oCmdLineArgs.pytestcommandline
 
 # -- create the log file folder
 
-oLogFile = CFile(sLogFile)
-dLogFileInfo     = oLogFile.GetFileInfo()
-sLogFilePath     = dLogFileInfo['sFilePath']
-sLogFileName     = dLogFileInfo['sFileName']
-sLogFileNameOnly = dLogFileInfo['sFileNameOnly']
-
+sLogFilePath = os.path.dirname(sLogFile)
 oLogFilePath = CFolder(sLogFilePath)
 bSuccess, sResult = oLogFilePath.Create(bOverwrite=False, bRecursive=True)
 del oLogFilePath
@@ -125,14 +118,15 @@ print()
 
 listCmdLineParts = []
 listCmdLineParts.append(f"\"{sPython}\"")
-listCmdLineParts.append("-m robot")
-if sRobotCommandLine is not None:
-   listCmdLineParts.append(f"{sRobotCommandLine}")
-listCmdLineParts.append(f"-d \"{sLogFilePath}\"")
-listCmdLineParts.append(f"-o \"{sLogFileName}\"")
-listCmdLineParts.append(f"-l \"{sLogFileNameOnly}_log.html\"")
-listCmdLineParts.append(f"-r \"{sLogFileNameOnly}_report.html\"")
-listCmdLineParts.append(f"-b \"{sLogFileNameOnly}.log\"")
+listCmdLineParts.append("-m pytest")
+# pytest command line overrules local operating system dependend filter setting
+if sPytestCommandLine is None:
+   if sFilter is not None:
+      listCmdLineParts.append(f"-k \"{sFilter}\"")
+else:
+   listCmdLineParts.append(f"{sPytestCommandLine}")
+listCmdLineParts.append("--show-capture=all")
+listCmdLineParts.append(f"--junitxml=\"{sLogFile}\"")
 listCmdLineParts.append(f"\"{sThisScriptPath}\"")
 sCmdLine = " ".join(listCmdLineParts)
 del listCmdLineParts
@@ -148,7 +142,7 @@ nReturn = ERROR
 try:
    nReturn = subprocess.call(listCmdLineParts)
    print()
-   print(f"[{sThisScriptName}] : Subprocess ROBOT returned {nReturn}")
+   print(f"[{sThisScriptName}] : Subprocess PYTEST returned {nReturn}")
 except Exception as ex:
    print()
    printexception(str(ex))
@@ -161,7 +155,7 @@ if nReturn == SUCCESS:
    print()
    print(COLBG + f"{sThisScriptName} done")
 else:
-   printerror(f"[{sThisScriptName}] : Subprocess ROBOT has not returned expected value {SUCCESS}")
+   printerror(f"[{sThisScriptName}] : Subprocess PYTEST has not returned expected value {SUCCESS}")
    nReturn = -nReturn
 
 print()
