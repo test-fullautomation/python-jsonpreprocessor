@@ -15,8 +15,8 @@
 
 {
     "[import]": "../import/imported_file01_config.json",
-    "Project": "G3g",
-    "WelcomeString": "Hello... ROBFW is running now!",
+    "Project": "JsonPreprocessor",
+    "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
     "[import]": "../import/imported_file01_config.json",
     // Version control information.
     "version": {
@@ -24,5 +24,5 @@
       "minorversion": "1",
       "patchversion": "1"
     },
-    "TargetName" : "gen3flex@dlt"
+    "TargetName" : "Device@01"
   }

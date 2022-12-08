@@ -14,7 +14,7 @@
 //*****************************************************************************
 
 {
-    "WelcomeString": "Hello... Robot Framework AIO is running now!",
+    "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
     // Version control information.
     "version": {
       "majorversion": "0",
@@ -54,7 +54,7 @@
                             }
       }
     },
-    "Project": "Acceptance Test",
+    "Project": "JsonPreprocessor",
     "string_null": "null",
     "string_none": "None",
     "string_true": "True",

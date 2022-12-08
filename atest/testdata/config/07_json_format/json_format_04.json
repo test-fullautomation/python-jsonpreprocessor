@@ -15,7 +15,7 @@
 
 {
   "Project": "https://www.robfwaio.com",  // Just for testing.
-  "WelcomeString": "Hello... ROBFW is running now!",
+  "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
   "version//test": {    // Just for testing.
     "majorversion": "0",
     "minorversion": "1",   // Test version.
