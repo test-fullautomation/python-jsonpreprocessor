@@ -15,36 +15,42 @@
 How to install
 --------------
 
-Firstly, clone `python-jsonpreprocessor <https://github.com/test-fullautomation/python-jsonpreprocessor>`_ 
-repository to your machine.
+**JsonPreprocessor** can be installed in two different ways.
 
-Then open the folder in which you have cloned the repository python-jsonpreprocessor, following the commands 
-below to build or install this package:
+1. Installation via PyPi (recommended for users)
 
-.. code::
+   .. code::
 
-    setup.py build      will build the package underneath 'build/'
-    setup.py install    will install the package
+      pip install JsonPreprocessor
 
-After the build processes is completed, the package is located in 'build/', and the generated package 
-documentation is located in **/JsonPreprocessor**.
+   `JsonPreprocessor in PyPi <https://pypi.org/project/JsonPreprocessor/>`_
 
-We can use ``--help`` to discover the options for ``build`` command, example:
+2. Installation via GitHub (recommended for developers)
 
-.. code::
+   Clone the **python-jsonpreprocessor** repository to your machine.
 
-     setup.py build      will build the package underneath 'build/'
-     setup.py install    will install the package
+   .. code::
 
-Features
---------
+      git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
 
-Basic Json format
+   `JsonPreprocessor in GitHub <https://github.com/test-fullautomation/python-jsonpreprocessor>`_
+
+   Use the following command to install **JsonPreprocessor**:
+
+   .. code::
+
+      cd python-jsonpreprocessor
+      setup.py install
+
+JsonPreprocessor Features
+-------------------------
+
+Basic JSON format
 ~~~~~~~~~~~~~~~~~
 
-Users can use JsonPreprocessor to handle the json file with its original format.
+Users can use JsonPreprocessor to handle any JSON file with its format as per JSON specification.
 
-**Example:**
+**Example**:
 
 .. code::
 
@@ -67,13 +73,11 @@ Users can use JsonPreprocessor to handle the json file with its original format.
      "device" : "device_name"
    }
 
-Adding the comments
+Adding comments
 ~~~~~~~~~~~~~~~~~~~
 
-Often large projects require a lot of configuration parameters. So adding comments to json files is 
-useful in case of more and more content is added, e.g. because of a json file has to hold a huge number 
-of configuration parameters for different features. Comments can be used here to clarify the meaning of 
-these parameters or the differences between them.
+Often large projects require large JSON files. Comments can be used here to clarify the meaning of 
+parameters or the differences between them.
 
 Every line starting with **"//"**, is commented out. Therefore a comment is valid for singles lines only.
 
@@ -84,10 +88,10 @@ Comment out a block of several lines with only one start and one end comment str
 .. code::
 
    //*****************************************************************************
-   //  Author: ROBFW-AIO Team
+   //  Author: Author_of_the_file
    //
-   //  This file defines all common global parameters and will be included to all
-   //  test config files
+   //  This file defines some paramters and will be included to other
+   //  JSON files.
    //*****************************************************************************
    {
      "Project": "name_of_prject",
@@ -110,28 +114,31 @@ Comment out a block of several lines with only one start and one end comment str
      "device" : "device_name"
    }
 
-Imports other json files
+Import other JSON files
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This import feature enables developers to take over the content of other json files into the 
-current json file. A json file that is imported into another json file, can contain imports also
-(allows nested imports).
+The import feature enables users to take over the content of another JSON file(s) into the 
+current JSON file. A JSON file that is imported into another JSON file, can contain imports also
+(nested imports).
 
-A possible usecase for nested imports is to handle configuration parameters of different variants 
-of a feature or a component within a bunch of several smaller files, instead of putting all parameter 
-into only one large json file.
+A possible usecase for nested imports is to handle configuration parameters in a hierarchical way.
+Parameters which belong together are defined in a separate JSON file and at the end inported to
+a JSON file which brings parameters together.
+
+This allows you to build up JSON files which are hierarchichally loaded, starting with
+a default value which you overwrite with a later loaded JSON file.
 
 **Example:**
 
-Suppose we have the json file ``params_global.json`` with the content:
+Suppose we have the JSON file ``params_global.json`` with the content:
 
 .. code::
 
          //*****************************************************************************
-         //  Author: ROBFW-AIO Team
+         //  Author: Author_of_the_file
          //
          //  This file defines all common global parameters and will be included to all
-         //  test config files
+         //  configuration files
          //*****************************************************************************
          //
          //  This is to distinguish the different types of resets
@@ -145,15 +152,15 @@ Suppose we have the json file ``params_global.json`` with the content:
            }
          }
 
-And other json file ``preprocessor_definitions.json`` with content:
+And another JSON file ``preprocessor_definitions.json`` with the following content:
 
 .. code::
 
          //*****************************************************************************
-         //  Author: ROBFW-AIO Team
+         //  Author: Author_of_the_file
          //
          //  This file defines all common global parameters and will be included to all
-         //  test config files
+         //  configuration files
          //*****************************************************************************
          {
            "import_param_3" : "value_3",
@@ -167,18 +174,18 @@ And other json file ``preprocessor_definitions.json`` with content:
             }
          }
 
-Then we can import these 2 files above to the json file ``config.json`` with the [import] statement:
+Now we can import the two files above into the JSON file ``config.json`` with the **``[import]``** statement:
 
 .. code::
 
          //*****************************************************************************
-         //  Author: ROBFW-AIO Team
+         //  Author: Author_of_the_file
          //
          //  This file defines all common global parameters and will be included to all
-         //  test config files
+         //  configuration files
          //*****************************************************************************
          {
-           "Project": "name_of_prject",
+           "Project": "name_of_project",
            "version": {
              "major": "0",
              "minor": "1",
@@ -186,23 +193,23 @@ Then we can import these 2 files above to the json file ``config.json`` with the
            },
            "params": {
              "global": {
-         	    	"[import]": "<path_to_the_imported_file>/params_global.json"
+                 "[import]": "<relative_path_to_the_imported_file>/params_global.json"
               }
             },
            "preprocessor": {
              "definitions": {
-                 "[import]": "<path_to_the_imported_file>/preprocessor_definitions.json"
+                 "[import]": "<relative_path_to_the_imported_file>/preprocessor_definitions.json"
                }
            },
            "device" : "device_name"
          }
 
-After all imports are resolved by the JsonPreprocessor, this is the resulting of data structure:
+After all imports are resolved by the JsonPreprocessor, this is the resulting data structure:
 
 .. code::
 
          {
-           "Project": "name_of_prject",
+           "Project": "name_of_project",
            "version": {
              "major": "0",
              "minor": "1",
@@ -229,29 +236,24 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
            "device" : "device_name"
          }
 
- Add new or overwrites existing parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add new or overwrites existing parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This JsonPreprocessor package also provides developers ability to add new as well as overwrite  
+JsonPreprocessor provides users the powerful possibility to add new as well as overwrite  
 existing parameters. Developers can update parameters which are already declared and add new 
-parameters or new element into existing parameters. The below example will show the way to do 
-these features.
-
-In case we have many different variants, and each variant requires a different value assigned 
-to the parameter, users can use this feature to add new parameters and update new values for 
-existing parameters of existing configuation object.
+parameters or new elements into existing parameters. 
 
 **Example:**
 
-Suppose we have the json file ``params_global.json`` with the content:
+Suppose we have the JSON file ``params_global.json`` with the content:
 
 .. code::
 
          //*****************************************************************************
-         //  Author: ROBFW-AIO Team
+         //  Author: Author_of_the_file
          //
          //  This file defines all common global parameters and will be included to all
-         //  test config files
+         //  configuration files
          //*****************************************************************************
          //
          //  This is to distinguish the different types of resets
@@ -265,7 +267,7 @@ Suppose we have the json file ``params_global.json`` with the content:
            }
          }
 
-Then we import ``params_global.json`` to json file ``config.json`` with content:
+Then we import ``params_global.json`` to JSON file ``config.json`` with content:
 
 .. code::
 
@@ -278,7 +280,7 @@ Then we import ``params_global.json`` to json file ``config.json`` with content:
            },
            "params": {
              "global": {
-         		"[import]": "<path_to_the_imported_file>/params_global.json"
+                 "[import]": "<path_to_the_imported_file>/params_global.json"
                }
              },
            "device" : "device_name",
@@ -287,8 +289,8 @@ Then we import ``params_global.json`` to json file ``config.json`` with content:
            "${version}['patch']": "2",
            // Add new parameters
            "new_param": {
-         	  	"abc": 9,
-         			"xyz": "new param"
+               "abc": 9,
+               "xyz": "new param"
            },
            "${params}['global']['import_structure_1']['new_structure_param']": "new_structure_value"
          }
@@ -310,28 +312,28 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
                "import_param_2" : "value_2",
                "import_structure_1": {
                  "general": "general",
-         		     "new_structure_param": "new_structure_value"
+                     "new_structure_param": "new_structure_value"
                 }
               }
            },
            "device" : "device_name",
            "new_param": {
-         	   "abc": 9,
-         	   "xyz": "new param"
+           "abc": 9,
+           "xyz": "new param"
            }
          }
 
-Using defined parameters
-~~~~~~~~~~~~~~~~~~~~~~~~
+Using already defined parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With JsonPreprocessor package, users can also use the defined parameters in Json file. The value of 
-the defined parameter could be called with syntax ``${<parameter_name>}``
+JsonPreprocessor allows you to use the already defined parameters.  You can
+refer to any already defined parameter by means of ``${<parameter_name>}``-syntax.
 
 **Example:**
 
-Suppose we have the json file ``config.json`` with the content:
+Suppose we have the JSON file ``config.json`` with the content:
 
-.. code::
+.. code::json
 
          {
            "Project": "name_of_prject",
@@ -353,7 +355,7 @@ Suppose we have the json file ``config.json`` with the content:
              "definitions": {
                "import_param_3" : "value_3",
                "import_param_4" : "value_4",
-            	 "ABC": "param_ABC",
+               "ABC": "param_ABC",
                "import_structure_1": {
                   "general": "general"
                 }
@@ -365,7 +367,7 @@ Suppose we have the json file ``config.json`` with the content:
            "${params}['global']['import_param_1']": ${preprocessor}['definitions']['import_param_4']
          }
 
-After all imports are resolved by the JsonPreprocessor, this is the resulting of data structure:
+After all imports are resolved by  JsonPreprocessor, this is the resulting data structure:
 
 .. code::
 
@@ -383,14 +385,14 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
                "import_structure_1": {
                  "general": "general"
                  },
-         	     "param_ABC": True
+               "param_ABC": True
              }
            },
            "preprocessor": {
              "definitions": {
                "import_param_3" : "value_3",
                "import_param_4" : "value_4",
-            	 "ABC": "param_ABC",
+               "ABC": "param_ABC",
                "import_structure_1": {
                   "general": "general"
                 }
@@ -399,14 +401,14 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
            "TargetName" : "device_name"
          }
 
-Accepted ``True``, ``False``, and ``None``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Python-like ``True``, ``False``, and ``None``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Some keywords are different between Json and Python syntax:
+Some keywords are different between JSON and Python syntax:
 
-* Json syntax: **``true``**, **``false``**, **``null``**
+* JSON syntax: **``true``**, **``false``**, **``null``**
 
 * Python syntax: **``True``**, **``False``**, **``None``**
 
-To facilitate the usage of configuration files in Json format, both ways of syntax are accepted.
+JsonPreprocessor enables both ways of syntax.
 

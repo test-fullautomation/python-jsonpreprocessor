@@ -1,44 +1,51 @@
-> Licensed under the Apache License, Version 2.0 (the \"License\"); you
-> may not use this file except in compliance with the License. You may
-> obtain a copy of the License at
->
-> <http://www.apache.org/licenses/LICENSE-2.0>
->
-> Unless required by applicable law or agreed to in writing, software
-> distributed under the License is distributed on an \"AS IS\" BASIS,
-> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-> implied. See the License for the specific language governing
-> permissions and limitations under the License.
-
-# Json Preprocessor\'s Package Description
+# Package description for JsonPreprocessor
 
 ## Getting Started
 
-The JsonPreprocessor is a Python3 package which allows programmers to
-handle additional features in json files such as
+The JsonPreprocessor is a Python3 package which provides additional
+features for JSON files.
 
--   add comments
--   import other json files
--   overwrite already existing parameters with new values
+These are:
 
-These json files will be handled by the JsonPreprocessor which returns
-as result a dictionary object of the deserialized data.
+-   (nested) import of other json files.
+-   overwrite already existing parameters with new values from later
+    loaded json files.
+-   accept `True`, `False` and `None` as data types.
+-   support for comments.
+
+The JsonPreprocessor returns as result a dictionary object of the
+deserialized preprocessed data.
 
 ## How to install
 
-Firstly, clone **python-jsonpreprocessor** repository to your machine.
+**JsonPreprocessor** can be installed in two different ways.
 
-Then go to python-jsonpreprocessor, using the 2 common commands below to
-build or install this package:
+1.  Installation via PyPi (recommended for users)
 
-``` 
-setup.py build      will build the package underneath 'build/'
-setup.py install    will install the package
-```
+    ``` 
+    pip install JsonPreprocessor
+    ```
 
-After the build processes is completed, the package is located in
-\'build/\', and the generated package documentation is located in
-\'doc/\_build/\'.
+    [JsonPreprocessor in
+    PyPi](https://pypi.org/project/JsonPreprocessor/)
+
+2.  Installation via GitHub (recommended for developers)
+
+    Clone the **python-jsonpreprocessor** repository to your machine.
+
+    ``` 
+    git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
+    ```
+
+    [JsonPreprocessor in
+    GitHub](https://github.com/test-fullautomation/python-jsonpreprocessor)
+
+    Use the following command to install **JsonPreprocessor**:
+
+    ``` 
+    cd python-jsonpreprocessor
+    setup.py install
+    ```
 
 ## Package Documentation
 

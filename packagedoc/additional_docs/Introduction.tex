@@ -1,0 +1,42 @@
+% --------------------------------------------------------------------------------------------------------------
+%
+% Copyright 2020-2022 Robert Bosch GmbH
+
+% Licensed under the Apache License, Version 2.0 (the "License");
+% you may not use this file except in compliance with the License.
+% You may obtain a copy of the License at
+
+% http://www.apache.org/licenses/LICENSE-2.0
+
+% Unless required by applicable law or agreed to in writing, software
+% distributed under the License is distributed on an "AS IS" BASIS,
+% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+% See the License for the specific language governing permissions and
+% limitations under the License.
+%
+% --------------------------------------------------------------------------------------------------------------
+
+The JsonPreprocessor is a Python3 package which provides additional features for
+JSON files.
+
+The sources of the JsonPreprocessor are available in \href{https://github.com/test-fullautomation/python-jsonpreprocessor}{GitHub}.
+
+These are:
+\begin{enumerate}
+\item \texttt{import}\\
+   ability to (nested) import other JSON files. Users can create separate JSON files and then import 
+   them to another JSON file.
+\item \texttt{\$\{parameter\}-syntax}\\
+   allows users to use already defined parameters by means of \pcode{\$\{parameter\}}-syntax in JSON files.
+\item \texttt{overwrite}\\
+   overwrite already existing parameters with new values from later loaded JSON files.
+\item \texttt{Python-like syntax}\\
+   accept Python like ``True``, ``False`` and ``None`` in JSON files. 
+\item \texttt{comments}\\
+  provide the possibility to comment out parts of the JSON file content for documentation purposes.
+\end{enumerate}
+
+The JsonPreprocessor returns as result a dictionary object of the deserialized 
+preprocessed JSON data.
+
+
