@@ -229,8 +229,8 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
            "device" : "device_name"
          }
 
- Add new or overwrites existing parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add new or overwrites existing parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This JsonPreprocessor package also provides developers ability to add new as well as overwrite  
 existing parameters. Developers can update parameters which are already declared and add new 
