@@ -57,8 +57,6 @@ class CSyntaxType():
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """ 
-**Class: PythonJSONDecoder**
-
    Add python data types and syntax to json. ``True``, ``False`` and ``None`` will be a accepted as json syntax elements.
 
 **Args:**
@@ -127,8 +125,6 @@ class CPythonJSONDecoder(json.JSONDecoder):
 
 class CJsonPreprocessor():
     """
-**Class: CJsonPreprocessor**
-
    CJsonPreprocessor extends the syntax of json.
 
    Features are
@@ -165,8 +161,6 @@ class CJsonPreprocessor():
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
         """
-**Method: __init__**
-
    Constructor
 
 **Args:**
@@ -191,8 +185,6 @@ class CJsonPreprocessor():
  
     def __sNormalizePath(self, sPath : str) -> str:
         """
-**Method: __sNormalizePath**
-
    Python struggles with
 
       - UNC paths
@@ -255,8 +247,6 @@ class CJsonPreprocessor():
 
     def __processImportFiles(self, input_data : dict) -> dict:
         '''
-**Method: __processImportFiles**
-
    This is a custom decorder of ``json.loads object_pairs_hook`` function.
    
    This method helps to import json files which are provided in ``"[import]"`` keyword into the current json file.  
@@ -297,8 +287,6 @@ class CJsonPreprocessor():
 
     def __load_and_removeComments(self, jsonFile : str) -> str:
         """
-**Method: __load_and_removeComments**
-
       Loads a given json file and filters all C/C++ style comments.
 
 **Args:**
@@ -336,8 +324,6 @@ class CJsonPreprocessor():
 
     def __nestedParamHandler(self, sInputStr : str) -> str:
         '''
-**Method: __nestedParamHandler**
-
    This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
         
 **Args:**
@@ -411,8 +397,6 @@ class CJsonPreprocessor():
 
     def __updateAndReplaceNestedParam(self, oJson : dict, recursive : bool = False):
         '''
-**Method:  __updateAndReplaceNestedParam**
-
    This method replaces all nested parameters in key and value of a json object .
 
 **Args:**
@@ -531,7 +515,6 @@ class CJsonPreprocessor():
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
         '''
-**Method: jsonLoad**
    This function checks and makes up all nested parameters in json configuration files.
 
 **Args:**
@@ -562,8 +545,6 @@ class CJsonPreprocessor():
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         '''
-**Method: jsonLoad**
-
    This function is the entry point of JsonPreprocessor.
 
    It loads the json file, preprocesses it and returns the preprocessed result as data structure.    
