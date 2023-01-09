@@ -14,19 +14,33 @@ as result a dictionary object of the deserialized data.
 
 ## How to install
 
-Firstly, clone **python-jsonpreprocessor** repository to your machine.
+**JsonPreprocessor** can be installed in two different ways.
 
-Then go to python-jsonpreprocessor, using the 2 common commands below to
-build or install this package:
+1.  Installation via PyPi (recommended for users)
 
-``` 
-setup.py build      will build the package underneath 'build/'
-setup.py install    will install the package
-```
+    ``` 
+    pip install JsonPreprocessor
+    ```
 
-After the build processes is completed, the package is located in
-\'build/\', and the generated package documentation is located in
-\'doc/\_build/\'.
+    [JsonPreprocessor in
+    PyPi](https://pypi.org/project/JsonPreprocessor/)
+
+2.  Installation via GitHub (recommended for developers)
+
+    Clone the **JsonPreprocessor** repository to your machine.
+
+    ``` 
+    git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
+    ```
+
+    [JsonPreprocessor in
+    GitHub](https://github.com/test-fullautomation/python-jsonpreprocessor)
+
+    Use the following command to install **JsonPreprocessor**:
+
+    ``` 
+    setup.py install
+    ```
 
 ## Package Documentation
 

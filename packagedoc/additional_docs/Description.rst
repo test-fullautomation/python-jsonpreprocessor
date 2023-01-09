@@ -15,26 +15,31 @@
 How to install
 --------------
 
-Firstly, clone `python-jsonpreprocessor <https://github.com/test-fullautomation/python-jsonpreprocessor>`_ 
-repository to your machine.
+**JsonPreprocessor** can be installed in two different ways.
 
-Then open the folder in which you have cloned the repository python-jsonpreprocessor, following the commands 
-below to build or install this package:
+1. Installation via PyPi (recommended for users)
 
-.. code::
+   .. code::
 
-    setup.py build      will build the package underneath 'build/'
-    setup.py install    will install the package
+      pip install JsonPreprocessor
 
-After the build processes is completed, the package is located in 'build/', and the generated package 
-documentation is located in **/JsonPreprocessor**.
+   `JsonPreprocessor in PyPi <https://pypi.org/project/JsonPreprocessor/>`_
 
-We can use ``--help`` to discover the options for ``build`` command, example:
+2. Installation via GitHub (recommended for developers)
 
-.. code::
+   Clone the **JsonPreprocessor** repository to your machine.
 
-     setup.py build      will build the package underneath 'build/'
-     setup.py install    will install the package
+   .. code::
+
+      git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
+
+   `JsonPreprocessor in GitHub <https://github.com/test-fullautomation/python-jsonpreprocessor>`_
+
+   Use the following command to install **JsonPreprocessor**:
+
+   .. code::
+
+      setup.py install
 
 Features
 --------
