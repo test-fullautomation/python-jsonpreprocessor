@@ -211,9 +211,9 @@ class TestOverrideParameters:
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
-        assert oJsonData['params']['glob']['dSUT']['audio']['volume']['bSupported'] == PARAMOVERRIDE['testcase_01a']
+        assert oJsonData['params']['global']['dSUT']['audio']['volume']['bSupported'] == PARAMOVERRIDE['testcase_01a']
         assert oJsonData['version']['patchversion'] == PARAMOVERRIDE['testcase_01b']
-        assert oJsonData['params']['glob']['dSUT']['system']['sDetails'] == PARAMOVERRIDE['testcase_01c']
+        assert oJsonData['params']['global']['dSUT']['system']['sDetails'] == PARAMOVERRIDE['testcase_01c']
 
     def test_override_parameter_02(self):
         '''
@@ -235,13 +235,13 @@ class TestOverrideParameters:
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
-        assert oJsonData['params']['glob']['dSUT']['audio']['volume']['bSupported'] == PARAMOVERRIDE['testcase_03a']
-        assert oJsonData['params']['glob']['dSUT']['abc'] == PARAMOVERRIDE['testcase_03b']
-        assert oJsonData['params']['glob']['dSUT']['tuner']['fm']['frequency']['bSupported'] == PARAMOVERRIDE['testcase_03c']
-        assert oJsonData['params']['glob']['newStruct'] == PARAMOVERRIDE['testcase_03d']
-        assert oJsonData['params']['glob']['TestLogfileName'] == PARAMOVERRIDE['testcase_03e']
-        assert oJsonData['params']['glob']['dSUT']['system']['hardware'] == PARAMOVERRIDE['testcase_03f']
-        assert oJsonData['params']['glob']['Testparms']['Testglobal'] == PARAMOVERRIDE['testcase_03g']
+        assert oJsonData['params']['global']['dSUT']['audio']['volume']['bSupported'] == PARAMOVERRIDE['testcase_03a']
+        assert oJsonData['params']['global']['dSUT']['abc'] == PARAMOVERRIDE['testcase_03b']
+        assert oJsonData['params']['global']['dSUT']['tuner']['fm']['frequency']['bSupported'] == PARAMOVERRIDE['testcase_03c']
+        assert oJsonData['params']['global']['newStruct'] == PARAMOVERRIDE['testcase_03d']
+        assert oJsonData['params']['global']['TestLogfileName'] == PARAMOVERRIDE['testcase_03e']
+        assert oJsonData['params']['global']['dSUT']['system']['hardware'] == PARAMOVERRIDE['testcase_03f']
+        assert oJsonData['params']['global']['Testparms']['Testglobal'] == PARAMOVERRIDE['testcase_03g']
 
 class TestSubDataStructure:
 
@@ -357,5 +357,5 @@ class TestNoneTrueFalseDatatype:
         assert oJsonData['convert_float_to_string'] == "1.332"
         assert oJsonData['convert_true_to_string'] == '"True"'
         assert oJsonData['convert_false_to_string'] == '"False"'
-        assert oJsonData['params']['glob'] == JSONFORMAT_NONE_TRUE_FALSE['params']['glob']
+        assert oJsonData['params']['global'] == JSONFORMAT_NONE_TRUE_FALSE['params']['global']
         assert oJsonData['preprocessor']['definitions'] == JSONFORMAT_NONE_TRUE_FALSE['preprocessor']['definitions']

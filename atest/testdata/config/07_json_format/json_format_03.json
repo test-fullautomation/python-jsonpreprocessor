@@ -25,7 +25,7 @@
   // This is comment feature of jsonpreprocessor package.
   // The global parameters are defined here.
   "params": {
-    "glob": {
+    "global": {
 	  "gGlobalIntParam" : 1,
 	  "gGlobalFloatParam" : 1.332,
 	  "gGlobal//String"   : "https://www.robfwaio.com",

@@ -25,7 +25,7 @@
    "[import]": "./common/definitions_common.json",
    "${gPreproString}": "Override string param in imported file.",
    "params":{
-     "glob":{
+     "global":{
 	   "dSUT":{
 	      "tuner":{
 	         "am":{

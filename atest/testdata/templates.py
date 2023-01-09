@@ -474,7 +474,7 @@ JSONFORMAT = {
     "patchversion": "1"
   },
   "params": {
-    "glob": {
+    "global": {
       "gGlobalIntParam" : 1,
       "gGlobalFloatParam" : 1.332,
       "gGlobal//String"   : "https://www.robfwaio.com",
@@ -505,7 +505,7 @@ JSONFORMAT = {
 
 JSONFORMAT_NONE_TRUE_FALSE = {
   "params": {
-    "glob": {
+    "global": {
       "gGlobalIntParam" : 1,
       "gGlobalFloatParam" : 1.332,
       "Null_variable": None,

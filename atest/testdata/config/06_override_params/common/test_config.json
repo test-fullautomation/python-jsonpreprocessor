@@ -16,7 +16,7 @@
 {
   "TestErrorFileName": "variant_0_RobotTestError.log",
   "TestLogfileName": "variant_0_RobotTestLog.log",
-  ${params}['glob']['dSUT']['system']['hardware']: {
+  ${params}['global']['dSUT']['system']['hardware']: {
                                                          "sID": "Not defined yet",
                                                          "sSample": "TBD"
                                                        },

@@ -26,7 +26,7 @@
     "TargetName" : "Device",
     "params": {
       // Global parameters
-      "glob": {
+      "global": {
         "gGlobalIntParam" : 1,
         "gGlobalFloatParam" : 1.332,
         "Null_variable": null,
@@ -59,9 +59,9 @@
     "string_none": "None",
     "string_true": "True",
     "string_false": "False",
-    "convert_null_to_string": "${params}['glob']['Null_variable']",
-    "convert_float_to_string": "${params}['glob']['gGlobalFloatParam']",
-    "convert_none_to_string": "${params}['glob']['None_variable']",
-    "convert_true_to_string": "${params}['glob']['True_variable']",
-    "convert_false_to_string": "${params}['glob']['False_variable']"
+    "convert_null_to_string": "${params}['global']['Null_variable']",
+    "convert_float_to_string": "${params}['global']['gGlobalFloatParam']",
+    "convert_none_to_string": "${params}['global']['None_variable']",
+    "convert_true_to_string": "${params}['global']['True_variable']",
+    "convert_false_to_string": "${params}['global']['False_variable']"
   }
