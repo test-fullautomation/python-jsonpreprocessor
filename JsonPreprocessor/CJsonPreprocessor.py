@@ -371,7 +371,7 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                     tmpValue = ldict['value']
                 except:
-                    raise Exception("fThe variable '{fullVariable}' is not available!")
+                    raise Exception(f"The variable '{fullVariable}' is not available!")
                 pattern = re.sub('\[', '\\[', fullVariable)
                 pattern = re.sub('\]', '\\]', pattern)
                 sInputStr = re.sub('\\' + pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
@@ -416,7 +416,7 @@ class CJsonPreprocessor():
         def __tmpJsonUpdated(k, v, tmpJson, bNested):
             if bNested:
                 if '[' in k:
-                    sExec = k + " = \'" + v + "\'" if isinstance(v, str) else k + " = " + str(v)
+                    sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
                     except:
