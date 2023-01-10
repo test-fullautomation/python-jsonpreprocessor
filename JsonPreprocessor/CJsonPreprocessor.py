@@ -312,7 +312,7 @@ class CJsonPreprocessor():
             else:
                 return s
       
-        file=open(jsonFile,mode='r')
+        file=open(jsonFile, mode='r', encoding='utf-8')
         sContent=file.read()
         file.close()
 
