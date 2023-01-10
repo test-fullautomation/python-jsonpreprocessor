@@ -17,8 +17,9 @@
 ## as part of json files.
 
 import sys
+import os
 
-sys.path.append('D:\B\python-jsonpreprocessor')
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../"))
 
 from JsonPreprocessor import CJsonPreprocessor
 from JsonPreprocessor import CSyntaxType
@@ -34,7 +35,7 @@ prepro=CJsonPreprocessor(syntax=CSyntaxType.python)
 # - absolute path
 # - paths containting environment variables by means of
 #   %envvariable% syntax
-data=prepro.jsonLoad(".\json\json_with_python_syntax.json")
+data=prepro.jsonLoad(os.path.dirname(__file__) + "/json/json_with_python_syntax.json")
 
 pprint(data)
 

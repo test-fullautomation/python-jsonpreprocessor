@@ -17,8 +17,9 @@
 ## in json files.
 
 import sys
+import os
 
-sys.path.append('D:\B\python-jsonpreprocessor')
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../"))
 
 from JsonPreprocessor import CJsonPreprocessor
 
@@ -31,7 +32,7 @@ prepro=CJsonPreprocessor()
 # - absolute path
 # - paths containting environment variables by means of
 #   %envvariable% syntax
-data=prepro.jsonLoad(".\json\json_with_comment.json")
+data=prepro.jsonLoad(os.path.dirname(__file__) + "/json/json_with_comment.json")
 
 pprint(data)
 
