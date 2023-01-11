@@ -359,3 +359,20 @@ class TestNoneTrueFalseDatatype:
         assert oJsonData['convert_false_to_string'] == '"False"'
         assert oJsonData['params']['global'] == JSONFORMAT_NONE_TRUE_FALSE['params']['global']
         assert oJsonData['preprocessor']['definitions'] == JSONFORMAT_NONE_TRUE_FALSE['preprocessor']['definitions']
+
+class TestUTF8Encoding:
+
+    def test_utf8_encoding(self):
+        '''
+        Test utf-8 encoding
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
