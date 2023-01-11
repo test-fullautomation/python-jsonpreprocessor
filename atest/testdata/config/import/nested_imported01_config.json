@@ -12,10 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file is imported to other json config file.
-//*****************************************************************************
+
 {
     "[import]" : "./nested_import/nested_file01_config.json",
     

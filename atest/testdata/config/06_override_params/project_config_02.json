@@ -12,19 +12,15 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file is defined to do acceptance test for override params feature.
-//
-//*****************************************************************************
+
 {
-   "WelcomeString":"Hello... ROBFW is running now!!",
+   "WelcomeString":"Hello... JsonPreprocessor selftest is running now!",
    "version":{
       "majorversion": 0,
       "minorversion": 1,
       "patchversion": 0
    },
-   "Project":"ROBFW AIO",
+   "Project":"JsonPreprocessor",
    "Descriptioin":"Json Preprocessor Acceptance Test",
    "[import]": "./common/definitions_common.json",
    "${gPreproString}": "Override string param in imported file.",
@@ -87,7 +83,7 @@
 	   }
      }
    },
-   "${gPreproStructure}['test01']": 99,
-   "${gPreproFloatParam}": 9.876,
+   ${gPreproStructure}['test01']: 99,
+   ${gPreproFloatParam}: 9.876,
    "YearOfDevelopment": 2021
 }

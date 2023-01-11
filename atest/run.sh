@@ -11,13 +11,17 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-*** Settings ***
-Variables     ../../../testdata/templates.py
-Library    ../../../resources/atest_libs.py    WITH NAME    testlibs
 
-*** Test Cases ***
-Test Load Proper File
-   ${JSONDATA} =    testlibs.load_json    ../../../testdata/config/testsuites_config.json   ${2}    proper_file
-   Log    ${JSONDATA}
-   Log    ${PROPERCONFIGFILE}
-   Should Be Equal    ${JSONDATA}    ${PROPERCONFIGFILE}
+# Executes JsonPreprocessor acceptance test.
+#!/bin/sh
+
+bash_file_path=`readlink -f "${BASH_SOURCE:-$0}"`
+atest_dir=`dirname $bash_file_path`
+cd $atest_dir/jsonpreprocessor
+export PYTHONPATH="$atest_dir/../"
+echo $PYTHONPATH
+   $RobotPythonPath/python3 -m pytest jsonpreprocessor_unittest.py --junit-xml=../logs/linux_jsonpreprocessor_unittest.xml && (
+   echo "Run JsonPreprocessor acceptance test successful!"
+ ) || (
+   echo "Run JsonPreprocessor acceptance test failed!"
+ )

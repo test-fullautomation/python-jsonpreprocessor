@@ -12,20 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json config file:
-//      - Nested import
-//*****************************************************************************
+
 {
-    "Project": "G3g",
+    "Project": "JsonPreprocessor",
     "[import]": "../import/nested_imported01_config.json",
-    "WelcomeString": "Hello... ROBFW is running now!",
+    "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
     // Version control information.
     "version": {
       "majorversion": "0",
       "minorversion": "1",
       "patchversion": "1"
     },
-    "TargetName" : "gen3flex@dlt"
+    "TargetName" : "Device@01"
 }

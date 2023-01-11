@@ -12,18 +12,15 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This file uses to configure for Robot Framework AIO
-//*****************************************************************************
+
 {
-  "Project": "G3g",
-  "WelcomeString": "Hello... ROBFW is running now!",
+  "Project": "JsonPreprocessor",
+  "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
   // Version control information.
   "version": {
     "majorversion": "0",
     "minorversion": "1",
     "patchversion": "1"
   },
-  "TargetName" : "gen3flex@dlt"
+  "TargetName" : "Device@01"
 }

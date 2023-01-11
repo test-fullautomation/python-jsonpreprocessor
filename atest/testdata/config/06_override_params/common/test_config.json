@@ -12,15 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //**************************************************************************
-// 
-// File: robot_config.json
-// Initialized by Mai Dinh Nam Son
-//
-//**************************************************************************
+
 {
   "TestErrorFileName": "variant_0_RobotTestError.log",
   "TestLogfileName": "variant_0_RobotTestLog.log",
-  "${params}['global']['dSUT']['system']['hardware']": {
+  ${params}['global']['dSUT']['system']['hardware']: {
                                                          "sID": "Not defined yet",
                                                          "sSample": "TBD"
                                                        },

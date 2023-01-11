@@ -12,14 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//
-//  This json config file:
-//      - 1 another json file is imported at the end
-//*****************************************************************************
+
 {
-  "Project": "G3g",
-  "WelcomeString": "Hello... ROBFW is running now!",
+  "Project": "JsonPreprocessor",
+  "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
 
   // Version control information.
   "version": {
@@ -27,6 +23,6 @@
     "minorversion": "1",
     "patchversion": "1"
   },
-  "TargetName" : "gen3flex@dlt",
+  "TargetName" : "Device@01",
   "[import]": "../import/imported_file01_config.json"
 }

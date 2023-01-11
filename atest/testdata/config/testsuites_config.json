@@ -12,11 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //*****************************************************************************
-//  Author: Mai Dinh Nam Son
-//  This file defines all possible variants and the corresponding configuration
-//  file which need to be loaded for jsonpreprocessor acceptance test.
-//
-//*****************************************************************************
+
 //*****************************************************************************
 // The file configures the access to all variant dependent on test purpose.
 //

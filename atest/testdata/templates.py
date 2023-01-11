@@ -12,14 +12,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 PROPERCONFIGFILE = {
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE01 = {
@@ -29,19 +29,19 @@ IMPORTEDFILE01 = {
     'gPreproStructure': {
         'general': 'general'
     }, 
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE02 = {
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'gPreprolIntParam': 1, 
     'gPreproFloatParam': 1.332, 
     'gPreproString': 'This is a string', 
@@ -53,18 +53,18 @@ IMPORTEDFILE02 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE03 = {
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt', 
+    'TargetName': 'Device@01', 
     'gPreprolIntParam': 1, 
     'gPreproFloatParam': 1.332, 
     'gPreproString': 'This is a string', 
@@ -74,8 +74,8 @@ IMPORTEDFILE03 = {
 }
 
 IMPORTEDFILE04 = {
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'gPreprolIntParam': 1, 
@@ -87,7 +87,7 @@ IMPORTEDFILE04 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES01 = {
@@ -107,14 +107,14 @@ IMPORTEDFILES01 = {
         }
     }, 
     'file02StringParam': 'Imported file 02', 
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES02 = {
@@ -124,14 +124,14 @@ IMPORTEDFILES02 = {
     'gPreproStructure': {
         'general': 'general'
     }, 
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt',
+    'TargetName': 'Device@01',
     'file02IntParam': 100, 
     'file02FloatParam': 0.145, 
     'file02StructureParam': {
@@ -145,14 +145,14 @@ IMPORTEDFILES02 = {
 }
 
 IMPORTEDFILES03 = {
-    'Project': 'G3g',
+    'Project': 'JsonPreprocessor',
     'gPreprolIntParam': 1, 
     'gPreproFloatParam': 1.332, 
     'gPreproString': 'This is a string', 
     'gPreproStructure': {
         'general': 'general'
     },  
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0',
         'file02IntParam': 100, 
@@ -168,12 +168,12 @@ IMPORTEDFILES03 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES04 = {
-    'Project': 'G3g',
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0',
         'gPreprolIntParam': 1, 
@@ -195,7 +195,7 @@ IMPORTEDFILES04 = {
         }, 
         'file02StringParam': 'Imported file 02' 
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT01 = {
@@ -208,18 +208,18 @@ NESTEDIMPORT01 = {
         'general': 'general'
     }, 
     'gPreproString': 'This is a string', 
-    'Project': 'G3g', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT02 = {
-    'Project': 'G3g', 
+    'Project': 'JsonPreprocessor', 
     'iNestedParam1': 11, 
     'oNestedParam2': {
         'general': 'general'
@@ -229,18 +229,18 @@ NESTEDIMPORT02 = {
         'general': 'general'
     }, 
     'gPreproString': 'This is a string', 
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT03 = {
-    'Project': 'G3g',  
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',  
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'iNestedParam1': 11, 
@@ -255,18 +255,18 @@ NESTEDIMPORT03 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT04 = {
-    'Project': 'G3g',  
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',  
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt',
+    'TargetName': 'Device@01',
     'iNestedParam1': 11, 
     'oNestedParam2': {
         'general': 'general'
@@ -279,8 +279,8 @@ NESTEDIMPORT04 = {
 }
 
 NESTEDIMPORT05 = {
-    'Project': 'G3g',  
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',  
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'gPreprolIntParam': 11, 
@@ -295,18 +295,18 @@ NESTEDIMPORT05 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT06 = {
-    'Project': 'G3g',  
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',  
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt',
+    'TargetName': 'Device@01',
     'gPreprolIntParam': 11, 
     'gPreproStructure': {
         'general': 'general'
@@ -319,7 +319,7 @@ NESTEDIMPORT06 = {
 }
 
 NESTEDIMPORT07 = {
-    'Project': 'G3g',
+    'Project': 'JsonPreprocessor',
     "iNestedParam1" : 11,
     "oNestedParam2": {
         "general": "general"
@@ -329,13 +329,13 @@ NESTEDIMPORT07 = {
         "testObject1": "testObject1",
         "testObject2": "testObject2"
     },
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt',
+    'TargetName': 'Device@01',
     'gPreprolIntParam': 11, 
     'gPreproStructure': {
         'general': 'general'
@@ -344,8 +344,8 @@ NESTEDIMPORT07 = {
 }
 
 NESTEDIMPORT08 = {
-    'Project': 'G3g',
-    'WelcomeString': 'Hello... ROBFW is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
     'version': {
         'majorversion': '0', 
         "gPreprolIntParam" : 11,
@@ -366,12 +366,12 @@ NESTEDIMPORT08 = {
         'minorversion': '1', 
         'patchversion': '1'
     }, 
-    'TargetName': 'gen3flex@dlt'
+    'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT09 = {
-    "Project": "G3g",
-    "WelcomeString": "Hello... ROBFW is running now!",
+    "Project": "JsonPreprocessor",
+    "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
     "version": {
         "majorversion": "0",
         "gPreprolIntParam" : 11,
@@ -399,7 +399,7 @@ NESTEDIMPORT09 = {
         "minorversion": "1",
         "patchversion": "1"
     },
-    "TargetName" : "gen3flex@dlt"
+    "TargetName" : "Device@01"
 }
 
 SUBDATASTRUCTURE = {
@@ -467,7 +467,7 @@ PARAMOVERRIDE = {
 
 JSONFORMAT = {
   "Project": "https://www.robfwaio.com",
-  "WelcomeString": "Hello... ROBFW is running now!",
+  "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
   "version//test": {
     "majorversion": "0",
     "minorversion": "1",
@@ -501,4 +501,33 @@ JSONFORMAT = {
   },
   "abc" : "This is a multline string\nwith\nhttp://www.google.de\na link inside",
   "Target//Name" : "gen3flex//dlt"
+}
+
+JSONFORMAT_NONE_TRUE_FALSE = {
+  "params": {
+    "global": {
+      "gGlobalIntParam" : 1,
+      "gGlobalFloatParam" : 1.332,
+      "Null_variable": None,
+      "None_variable": None,
+      "True_variable": True,
+      "False_variable": False,
+      "gGlobalString"   : "This is a string",
+      "gGlobalStructure": {
+        "general": "general"
+      }
+    }
+  },
+  "preprocessor": {
+    "definitions": {
+      "gPreprolIntParam" : 1,
+      "gPreproFloatParam" : 1.332,
+      "gPreproString"   : "This is a string",
+      "gPreproStructure": {
+                             "general": "general",
+                             "testing": 19,
+                             "check01": "checkParam"
+                          }
+    }
+  }
 }

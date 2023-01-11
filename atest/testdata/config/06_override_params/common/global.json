@@ -12,14 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 /////////////////////////////////////////////////////////////////////////////
-//
-// Copyright (c) 2021 Robert Bosch Car Multimedia GmbH, Hildesheim
-//
-// Copyright notice:
-// This software is property of Robert Bosch Car Multimedia GmbH
-// Unauthorized duplication and disclosure to third parties is forbidden.
-//
-/////////////////////////////////////////////////////////////////////////////
+
 {
 
   "dSUT": {

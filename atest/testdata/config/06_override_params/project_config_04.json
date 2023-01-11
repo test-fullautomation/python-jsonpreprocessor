@@ -1,0 +1,67 @@
+//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//*****************************************************************************
+
+{
+    "WelcomeString": "Hello... JsonPreprocessor selftest is running now!",
+    // Version control information.
+    "version": {
+      "majorversion": "0",
+      "minorversion": "1",
+      "patchversion": "0"
+    },
+    "Maximum_version": "0.5.3",
+    "Minimum_version": "0.4.10",
+    "TargetName" : "Device",
+    "params": {
+      // Global parameters
+      "global": {
+        "gGlobalIntParam" : 1,
+        "gGlobalFloatParam" : 1.332,
+        "Null_variable": null,
+        "None_variable": None,
+        "True_variable": True,
+        "False_variable": False,
+        "gGlobalString"   : "This is a string", // just for test
+        "gGlobalStructure": {
+          "general": "general"
+        }
+      }
+    },
+    "preprocessor": {
+      "definitions": {
+        "gPreprolIntParam" : 1,
+  
+        "gPreproFloatParam" : 1.332,
+        
+        "gPreproString"   : "This is a string",
+         
+        "gPreproStructure": {
+                               "general": "general",
+                               "testing": 19,
+                               "check01": "checkParam"
+                            }
+      }
+    },
+    "Project": "JsonPreprocessor",
+    "string_null": "null",
+    "string_none": "None",
+    "string_true": "True",
+    "string_false": "False",
+    "convert_null_to_string": "${params}['global']['Null_variable']",
+    "convert_float_to_string": "${params}['global']['gGlobalFloatParam']",
+    "convert_none_to_string": "${params}['global']['None_variable']",
+    "convert_true_to_string": "${params}['global']['True_variable']",
+    "convert_false_to_string": "${params}['global']['False_variable']"
+  }
