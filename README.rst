@@ -35,16 +35,9 @@ How to install
 
 1. Installation via PyPi (recommended for users)
 
-<<<<<<< HEAD
    .. code::
 
       pip install JsonPreprocessor
-=======
-.. code::
-
-   setup.py build      will build the package underneath 'build/'
-   setup.py install    will install the package
->>>>>>> 6218d44 (tiny fixes)
 
    `JsonPreprocessor in PyPi <https://pypi.org/project/JsonPreprocessor/>`_
 
