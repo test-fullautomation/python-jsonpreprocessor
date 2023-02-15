@@ -375,7 +375,6 @@ class TestUTF8Encoding:
         assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
         assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
         assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
-<<<<<<< HEAD
         assert oJsonData['Chinese'] == "這是 UTF-8 自測"
 
     def test_utf8_encoding_both_key_and_value(self):
@@ -484,6 +483,3 @@ class TestUTF8Encoding:
         assert oJsonData['utf8']['日本'] == 1.987
         assert oJsonData['utf8']['हिंदी'] == "นี่คือการทดสอบตัวเอง UTF-8"
         assert oJsonData['utf8']['한국인'] == "1"
-=======
-        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
->>>>>>> 385e4d9 (Adds selftest for utf-8 encoding.)

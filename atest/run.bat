@@ -16,7 +16,7 @@
 @ECHO OFF
 set current_dir=%CD%
 cd %~dp0\jsonpreprocessor
-"%RobotPythonPath%"\python -m pytest jsonpreprocessor_unittest.py --junit-xml=..\logs\windows_jsonpreprocessor_unittest.xml && (
+"%RobotPythonPath%"\python -m pytest test_jsonpreprocessor.py --junit-xml=..\logs\windows_test_jsonpreprocessor.xml && (
     echo Run JsonPreprocessor acceptance test sussessful!
 ) || (
     echo Run JsonPreprocessor acceptance test failed!
