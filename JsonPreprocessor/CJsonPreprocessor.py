@@ -50,6 +50,7 @@ import json
 import re
 import sys
 import platform
+import copy
 
 class CSyntaxType():
     python = "python"
@@ -413,36 +414,35 @@ class CJsonPreprocessor():
       Output Json object as dictionary with all variables resolved.
         '''
 
-        def __tmpJsonUpdated(k, v, tmpJson, bNested):
-            if bNested:
-                if '[' in k:
-                    sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
-                    try:
-                        exec(sExec, globals())
-                    except:
-                        raise Exception(f"Could not set variable '{k}' with value '{v}'!")
-                else:
-                    tmpJson[k] = v
+        def __jsonUpdated(k, v, oJson):
+            if '[' in k:
+                sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
+                try:
+                    exec(sExec, globals())
+                except:
+                    raise Exception(f"Could not set variable '{k}' with value '{v}'!")
             else:
-                tmpJson[k] = v
+                oJson[k] = v
+
 
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 globals().update({k:v})
         
-        tmpJson = {}            
-        for k, v in oJson.items():
+        tmpJson = copy.deepcopy(oJson)            
+        for k, v in tmpJson.items():
             bNested = False
             if re.match('.*\${\s*', k.lower()):
                 if re.match("str\(\s*\${.+", k.lower()):
                     k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
                 keyAfterProcessed = self.__nestedParamHandler(k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed)
+                self.lUpdatedParams.append(k)
                 bNested = True
                 
             if isinstance(v, dict):
                 v = self.__updateAndReplaceNestedParam(v, recursive=True)
-                __tmpJsonUpdated(k, v, tmpJson, bNested)
+                __jsonUpdated(k, v, tmpJson)
                 bNested = False
 
             elif isinstance(v, list):
@@ -472,7 +472,7 @@ class CJsonPreprocessor():
                             raise Exception(f"The variable '{tmpItemAfterProcessed}' is not available!")
 
                     tmpValue.append(item)
-                __tmpJsonUpdated(k, tmpValue, tmpJson, bNested)
+                __jsonUpdated(k, v, oJson)
                 bNested = False
             
             elif isinstance(v, str):
@@ -502,15 +502,15 @@ class CJsonPreprocessor():
                     if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
                         v = '\"' + v + '\"'
 
-                    __tmpJsonUpdated(k, v, tmpJson, bNested)
+                    __jsonUpdated(k, v, oJson)
                     bNested = False
                 else:
-                    __tmpJsonUpdated(k, v, tmpJson, bNested)
+                    __jsonUpdated(k, v, oJson)
                     bNested = False
             else:
-                __tmpJsonUpdated(k, v, tmpJson, bNested)
-     
-        oJson.update(tmpJson)
+                if bNested:
+                    __jsonUpdated(k, v, oJson)
+                    bNested = False
         return oJson
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
