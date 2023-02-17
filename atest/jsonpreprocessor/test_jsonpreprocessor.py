@@ -359,3 +359,127 @@ class TestNoneTrueFalseDatatype:
         assert oJsonData['convert_false_to_string'] == '"False"'
         assert oJsonData['params']['global'] == JSONFORMAT_NONE_TRUE_FALSE['params']['global']
         assert oJsonData['preprocessor']['definitions'] == JSONFORMAT_NONE_TRUE_FALSE['preprocessor']['definitions']
+
+class TestUTF8Encoding:
+
+    def test_utf8_encoding(self):
+        '''
+        Test utf-8 encoding
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
+
+    def test_utf8_encoding_both_key_and_value(self):
+        '''
+        Test utf-8 encoding in both key and value in json configuration file.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_02.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['Tiếng Đức'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Tiếng Việt'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['日本'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['हिंदी'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['แบบไทย'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['한국인'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['中國人'] == "這是 UTF-8 自測"
+
+    def test_utf8_encoding_imported_01(self):
+        '''
+        Test utf-8 encoding file is imported to other normal json config file
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_01.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
+
+    def test_utf8_encoding_imported_02(self):
+        '''
+        Test utf-8 encoding file is imported to other utf8 json config file
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_02.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
+
+    def test_utf8_encoding_imported_03(self):
+        '''
+        Test utf-8 encoding file is imported and overried by utf8 values to other json config file
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_03.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
+
+    def test_utf8_encoding_imported_04(self):
+        '''
+        Test utf-8 encoding - Override utf8 data by normal data
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_04.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "This is German"
+        assert oJsonData['Vietnamese'] == 84
+        assert oJsonData['Japanese'] == "Đây là tiếng Nhật"
+        assert oJsonData['Hindi'] == True
+        assert oJsonData['Thai'] == False
+        assert oJsonData['Korean'] == [1, 2, "List", 4, 5]
+        assert oJsonData['Chinese'] == None
+
+    def test_utf8_encoding_imported_05(self):
+        '''
+        Test utf-8 encoding - import normal json configuration file into utf8 file.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_01.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
+        assert oJsonData['Vietnamese'] == "Đây là bản tự kiểm tra UTF-8"
+        assert oJsonData['Japanese'] == "これは UTF-8 セルフテストです"
+        assert oJsonData['Hindi'] == "यह UTF-8 सेल्फ़टेस्ट है"
+        assert oJsonData['Thai'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['Korean'] == "이것은 UTF-8 자체 테스트입니다"
+        assert oJsonData['Chinese'] == "這是 UTF-8 自測"
+        assert oJsonData['gPreprolIntParam'] == 1
+        assert oJsonData['gPreproFloatParam'] == 1.332
+        assert oJsonData['gPreproString'] == "This is a string"
+        assert oJsonData['gPreproStructure']['general'] == "general"
+
+    def test_utf8_encoding_imported_06(self):
+        '''
+        Test utf-8 encoding - Override parameters have utf8 format in keys.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_03.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['utf8']['Tiếng Đức'] == "This is German"
+        assert oJsonData['utf8']['Tiếng Việt'] == 84
+        assert oJsonData['utf8']['日本'] == 1.987
+        assert oJsonData['utf8']['हिंदी'] == "นี่คือการทดสอบตัวเอง UTF-8"
+        assert oJsonData['utf8']['한국인'] == "1"

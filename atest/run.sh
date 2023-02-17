@@ -20,7 +20,7 @@ atest_dir=`dirname $bash_file_path`
 cd $atest_dir/jsonpreprocessor
 export PYTHONPATH="$atest_dir/../"
 echo $PYTHONPATH
-   $RobotPythonPath/python3 -m pytest jsonpreprocessor_unittest.py --junit-xml=../logs/linux_jsonpreprocessor_unittest.xml && (
+   $RobotPythonPath/python3 -m pytest test_jsonpreprocessor.py --junit-xml=../logs/linux_test_jsonpreprocessor.xml && (
    echo "Run JsonPreprocessor acceptance test successful!"
  ) || (
    echo "Run JsonPreprocessor acceptance test failed!"
