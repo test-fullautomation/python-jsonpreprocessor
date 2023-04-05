@@ -715,18 +715,5 @@ class CJsonPreprocessor():
             for k, v in oJson.items():
                 globals().update({k:v})
 
-            # Checking availability of nested parameters before updating and replacing.
-            for param in self.lNestedParams:
-                parseNestedParam = self.__nestedParamHandler(param)
-                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam)
-                sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
-                        "value = " + str(tmpParseNestedParam)
-                try:
-                    ldict = {}
-                    exec(sExec, globals(), ldict)
-                except:
-                    raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
-            # for k, v in oJson.items():
-            #     globals().update({k:v})
         return oJson
