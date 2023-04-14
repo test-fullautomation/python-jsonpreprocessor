@@ -483,3 +483,50 @@ class TestUTF8Encoding:
         assert oJsonData['utf8']['日本'] == 1.987
         assert oJsonData['utf8']['हिंदी'] == "นี่คือการทดสอบตัวเอง UTF-8"
         assert oJsonData['utf8']['한국인'] == "1"
+
+class TestDotdictFormat:
+
+    def test_dotdict_format_in_value_01(self):
+        '''
+        Test nested param with dotdict format in the right site of a colon in a JSON file.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_01.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['params']['global']['newParam_01'] == 1
+        assert oJsonData['params']['global']['newParamStr_01'] == "1"
+        assert oJsonData['params']['newParam_02'] == "Structure test"
+        assert oJsonData['newParam_03'] == "general"
+        assert oJsonData['newParam_04'] == "This is a string"
+
+    def test_dotdict_format_in_value_02(self):
+        '''
+        Test nested param with dotdict format in the right site of a colon in a JSON file.
+        Nested param is a element of a list
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_02.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['params']['global']['newListParam_01'] == ['one', 2, 1, 'three']
+        assert oJsonData['params']['global']['newListParam_02'] == ['one', 2, 'This is a string', 'three', 'Structure test']
+
+    def test_dotdict_format_in_value_03(self):
+        '''
+        Test nested param with dotdict format in the left site of a colon in a JSON file.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_03.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['params']['global']['gPrepro.Float.Param'] == 9.999
+        assert oJsonData['params']['global']['gPrepro.Structure']['test.Structure'] == "Change value"
+        assert oJsonData['params']['global']['gPrepro.Structure']['general'] == "Update value"
+
+    def test_dotdict_format_in_value_04(self):
+        '''
+        Test nested param with dotdict format in the both sites of a colon in a JSON file.
+        '''
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_04.json")
+        oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
+        assert oJsonData['params']['global']['gPrepro.Float.Param'] == 1
+        assert oJsonData['params']['global']['gPrepro.Structure']['test.Structure'] == "Structure test"

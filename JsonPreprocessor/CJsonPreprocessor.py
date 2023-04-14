@@ -182,8 +182,8 @@ class CJsonPreprocessor():
         self.currentCfg = currentCfg
         self.lUpdatedParams = []
         self.lNestedParams = []
+        self.lDotInParamName = []
             
- 
     def __sNormalizePath(self, sPath : str) -> str:
         """
    Python struggles with
@@ -340,7 +340,6 @@ class CJsonPreprocessor():
       String which contains the resolved variable.  
         '''
         
-        #globals().update(currentCfg)
         referVars = re.findall('(\${\s*.*?\s*})', sInputStr)
         if len(referVars) > 1:
             sUpdateVar =  referVars[0]
@@ -384,7 +383,17 @@ class CJsonPreprocessor():
             pattern = '(\\' + referVars[0] + '\s*\[\s*.*?\s*\])'
             variable = re.findall(pattern, sInputStr)
             if variable == []:
-                sStrHandled = referVars[0]
+                if "." in referVars[0]:
+                    dotdictVariable = re.sub('\${\s*(.*?)\s*}', '\\1', referVars[0])
+                    lDotdictVariable = dotdictVariable.split(".")
+                    lParams = self.__handleDotdictFormat(lDotdictVariable, [])
+                    sStrHandled = '${' + lParams[0] + '}'
+                    lParams.pop(0)
+                    for item in lParams:
+                        sStrHandled = sStrHandled + "['" + item + "']"
+                else:
+                    sStrHandled = referVars[0]
+
                 return sStrHandled
             else:
                 fullVariable = variable[0]
@@ -396,7 +405,46 @@ class CJsonPreprocessor():
                 sStrHandled = fullVariable
                 return sStrHandled
 
-    def __updateAndReplaceNestedParam(self, oJson : dict, recursive : bool = False):
+    def __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list:
+        '''
+   This method checks the availability of param names contained "." in dotdict format element in JSON config file.
+
+**Args:**
+
+   **lInputListParams** (*list*)
+
+      List of items which separated by "." of dotdict format element.
+
+   **lParams** (*list*)
+
+      List of param names in dotdict format element.
+
+**Returns:**
+
+   **lParams** (*list*)
+
+        '''
+        checkParam = lInputListParams[0]
+        i = 0
+        bDotdictParam = False
+        for item in lInputListParams:
+            if i > 0:
+                checkParam = checkParam + '.' + item
+                if checkParam in self.lDotInParamName:
+                    lParams.append(checkParam)
+                    bDotdictParam = True
+                    lInputListParams = lInputListParams[i+1:]
+                    break
+            i+=1
+        if not bDotdictParam:
+            lParams.append(lInputListParams[0])
+            lInputListParams.pop(0)
+        if lInputListParams == []:
+            return lParams
+        else:
+            return self.__handleDotdictFormat(lInputListParams, lParams)    
+
+    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
         '''
    This method replaces all nested parameters in key and value of a json object .
 
@@ -429,9 +477,8 @@ class CJsonPreprocessor():
             for k, v in self.currentCfg.items():
                 globals().update({k:v})
         
-        tmpJson = copy.deepcopy(oJson)            
+        tmpJson = copy.deepcopy(oJson)
         for k, v in tmpJson.items():
-            bNested = False
             if re.match('.*\${\s*', k.lower()):
                 if re.match("str\(\s*\${.+", k.lower()):
                     k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
@@ -441,15 +488,15 @@ class CJsonPreprocessor():
                 bNested = True
                 
             if isinstance(v, dict):
-                v = self.__updateAndReplaceNestedParam(v, recursive=True)
-                __jsonUpdated(k, v, tmpJson)
-                bNested = False
+                v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
+                __jsonUpdated(k, v, oJson) if bNested else __jsonUpdated(k, v, tmpJson)
 
             elif isinstance(v, list):
                 tmpValue = []
                 for item in v:
                     if isinstance(item, str) and re.match('^.*\s*\${\s*', item.lower()):
                         bStringValue = False
+                        bNested = True
                         if re.match("str\(\s*\${.+", item.lower()):
                             item = re.sub("str\(\s*(\${.+)\s*\)", "\\1", item)
                             bStringValue = True
@@ -472,8 +519,7 @@ class CJsonPreprocessor():
                             raise Exception(f"The variable '{tmpItemAfterProcessed}' is not available!")
 
                     tmpValue.append(item)
-                __jsonUpdated(k, v, oJson)
-                bNested = False
+                __jsonUpdated(k, tmpValue, oJson)
             
             elif isinstance(v, str):
                 if re.match('^.*\s*\${\s*', v.lower()):
@@ -503,7 +549,7 @@ class CJsonPreprocessor():
                         v = '\"' + v + '\"'
 
                     __jsonUpdated(k, v, oJson)
-                    bNested = False
+                    bNested = True
                 else:
                     __jsonUpdated(k, v, oJson)
                     bNested = False
@@ -511,7 +557,7 @@ class CJsonPreprocessor():
                 if bNested:
                     __jsonUpdated(k, v, oJson)
                     bNested = False
-        return oJson
+        return oJson, bNested
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
         '''
@@ -542,6 +588,23 @@ class CJsonPreprocessor():
 
         sOutput = sInputStr
         return sOutput
+
+    def __checkDotInParamName(self, oJson : dict):
+        '''
+   This is recrusive funtion collects all parameters which contain "." in the name.
+
+**Args:**
+   **oJson** (*dict*)
+   Json object which want to collect all parameter's name contained "."
+
+**Returns:**
+   **None**
+        '''
+        for k, v in oJson.items():
+            if "." in k and k not in self.lDotInParamName:
+                self.lDotInParamName.append(k)
+            if isinstance(v, dict):
+                self.__checkDotInParamName(v)
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         '''
@@ -646,20 +709,11 @@ class CJsonPreprocessor():
         oJson = __handleStrNoneTrueFalse(oJson)        
         os.chdir(currentDir)
 
+        self.__checkDotInParamName(oJson)
+
         if masterFile:
             for k, v in oJson.items():
                 globals().update({k:v})
 
-            # Checking availability of nested parameters before updating and replacing.
-            for param in self.lNestedParams:
-                parseNestedParam = self.__nestedParamHandler(param)
-                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam)
-                sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
-                        "value = " + str(tmpParseNestedParam)
-                try:
-                    ldict = {}
-                    exec(sExec, globals(), ldict)
-                except:
-                    raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")
-            oJson = self.__updateAndReplaceNestedParam(oJson)
+            oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
         return oJson
