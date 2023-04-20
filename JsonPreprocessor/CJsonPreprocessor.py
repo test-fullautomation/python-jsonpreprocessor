@@ -180,7 +180,7 @@ class CJsonPreprocessor():
         self.recursive_level = 0
         self.syntax = syntax
         self.currentCfg = currentCfg
-        self.lUpdatedParams = []
+        self.lUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
             
@@ -462,15 +462,21 @@ class CJsonPreprocessor():
       Output Json object as dictionary with all variables resolved.
         '''
 
-        def __jsonUpdated(k, v, oJson):
-            if '[' in k:
-                sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
-                try:
-                    exec(sExec, globals())
-                except:
-                    raise Exception(f"Could not set variable '{k}' with value '{v}'!")
+        def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
+            if keyNested != '':
+                del oJson[keyNested]
+                if '[' in k:
+                    sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
+                    try:
+                        exec(sExec, globals())
+                    except:
+                        raise Exception(f"Could not set variable '{k}' with value '{v}'!")
+                else:
+                    oJson[k] = v
+               
             else:
-                oJson[k] = v
+                if bNested:
+                    oJson[k] = v
 
 
         if bool(self.currentCfg) and not recursive:
@@ -479,17 +485,16 @@ class CJsonPreprocessor():
         
         tmpJson = copy.deepcopy(oJson)
         for k, v in tmpJson.items():
+            keyNested = ''
             if re.match('.*\${\s*', k.lower()):
+                keyNested = k
                 if re.match("str\(\s*\${.+", k.lower()):
                     k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
                 keyAfterProcessed = self.__nestedParamHandler(k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed)
-                self.lUpdatedParams.append(k)
-                bNested = True
                 
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
-                __jsonUpdated(k, v, oJson) if bNested else __jsonUpdated(k, v, tmpJson)
 
             elif isinstance(v, list):
                 tmpValue = []
@@ -509,21 +514,18 @@ class CJsonPreprocessor():
                             exec(sExec, globals(), ldict)
                             if bStringValue:
                                 item = str(ldict['value'])
-                                # item = str(ldict['value']) if item.strip()==itemAfterProcessed else \
-                                #     item.replace(itemAfterProcessed, str(ldict['value']))
                             else:
                                 item = ldict['value']
-                                # item = ldict['value'] if item.strip()==itemAfterProcessed else \
-                                #     item.replace(itemAfterProcessed, str(ldict['value']))
                         except:
                             raise Exception(f"The variable '{tmpItemAfterProcessed}' is not available!")
 
                     tmpValue.append(item)
-                __jsonUpdated(k, tmpValue, oJson)
+                v = tmpValue
             
             elif isinstance(v, str):
                 if re.match('^.*\s*\${\s*', v.lower()):
                     bStringValue = False
+                    bNested = True
                     if re.match("str\(\s*\${.+", v.lower()):
                         v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
                         bStringValue = True
@@ -536,27 +538,18 @@ class CJsonPreprocessor():
                         exec(sExec, globals(), ldict)
                         if bStringValue:
                             v = str(ldict['value'])
-                            # v = str(ldict['value']) if v.strip()==valueAfterProcessed else \
-                            #     v.replace(valueAfterProcessed, str(ldict['value']))
                         else:
                             v = ldict['value']
-                            # v = ldict['value'] if v.strip()==valueAfterProcessed else \
-                            #     v.replace(valueAfterProcessed, str(ldict['value']))
                     except:
                         raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
                         
                     if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
                         v = '\"' + v + '\"'
+                        
+            __jsonUpdated(k, v, oJson, bNested, keyNested)
+            if keyNested != '':
+                self.lUpdatedParams.update({k:v})
 
-                    __jsonUpdated(k, v, oJson)
-                    bNested = True
-                else:
-                    __jsonUpdated(k, v, oJson)
-                    bNested = False
-            else:
-                if bNested:
-                    __jsonUpdated(k, v, oJson)
-                    bNested = False
         return oJson, bNested
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
@@ -714,6 +707,33 @@ class CJsonPreprocessor():
         if masterFile:
             for k, v in oJson.items():
                 globals().update({k:v})
-
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
+            for k, v in self.lUpdatedParams.items():
+                if '[' in k:
+                    if isinstance(v, str):
+                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
+                    else:
+                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
+                else:
+                    if isinstance(v, str):
+                        sExec = "oJson['" + k + "'] = \"" + v + "\""
+                    else:
+                        sExec = "oJson['" + k + "'] = " + str(v)
+                try:
+                    exec(sExec)
+                except:
+                    pass
+            
+            # Checking availability of nested parameters before updating and replacing.
+            for param in self.lNestedParams:
+                parseNestedParam = self.__nestedParamHandler(param)
+                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam)
+                sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
+                        "value = " + str(tmpParseNestedParam)
+                try:
+                    ldict = {}
+                    exec(sExec, globals(), ldict)
+                except:
+                    raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")  
+            
         return oJson
