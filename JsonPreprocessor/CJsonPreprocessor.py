@@ -650,10 +650,15 @@ class CJsonPreprocessor():
 
         sJsonDataUpdated = ""
         for line in sJsonData.splitlines():
+            if line == '' or line.isspace():
+                continue
             if re.search("\${.+}", line):
                 items = re.split("\s*:\s*", line)
-                if re.match("^\s*\${.+", items[0]):
-                    items[0] = '"' + items[0].strip() + '"'
+                if len(items) > 1:
+                    if re.match("^\s*\${.+", items[0]):
+                        items[0] = '"' + items[0].strip() + '"'
+                else:
+                    items[0] = items[0].strip()
                 newLine = ""
                 i=0
                 for item in items:
