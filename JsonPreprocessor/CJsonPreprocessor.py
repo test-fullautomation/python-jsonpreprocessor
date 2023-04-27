@@ -279,10 +279,21 @@ class CJsonPreprocessor():
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
                 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
+                tmpOutdict = copy.deepcopy(out_dict)
+                for k1, v1 in tmpOutdict.items():
+                    for k2, v2 in oJsonImport.items():
+                        if k2 == k1:
+                            del out_dict[k1]
+                del tmpOutdict
                 out_dict.update(oJsonImport)
 
                 self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
+                tmpOutdict = copy.deepcopy(out_dict)
+                for k1, v1 in tmpOutdict.items():
+                    if k1 == key:
+                        del out_dict[k1]
+                del tmpOutdict
                 out_dict[key] = value
         return out_dict
 
@@ -471,6 +482,15 @@ class CJsonPreprocessor():
                         exec(sExec, globals())
                     except:
                         raise Exception(f"Could not set variable '{k}' with value '{v}'!")
+                    
+                    if isinstance(v, str):
+                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
+                    else:
+                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
+                    try:
+                        exec(sExec, globals())
+                    except:
+                        pass
                 else:
                     oJson[k] = v
                
