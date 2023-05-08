@@ -34,4 +34,4 @@ Based on that needs, we develop JsonPreprocessor package:
 
 * Accepts **``True``**, **``False``**, and **``None``** in Json syntax
 
-               .. image:: ./pictures/python3-jsonpreprocessor.png
+.. image:: ./pictures/python3-jsonpreprocessor.png
