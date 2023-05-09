@@ -391,21 +391,22 @@ class CJsonPreprocessor():
             return sStrHandled
                     
         else:
+            if "." in referVars[0]:
+                dotdictVariable = re.sub('\${\s*(.*?)\s*}', '\\1', referVars[0])
+                lDotdictVariable = dotdictVariable.split(".")
+                lParams = self.__handleDotdictFormat(lDotdictVariable, [])
+                sParam = '${' + lParams[0] + '}'
+                lParams.pop(0)
+                for item in lParams:
+                    sParam = sParam + "['" + item + "']"
+                sInputStr = re.sub('\${\s*([^\}]*)\s*}', sParam, sInputStr)
+
+                referVars = re.findall('(\${\s*.*?\s*})', sInputStr)
+
             pattern = '(\\' + referVars[0] + '\s*\[\s*.*?\s*\])'
             variable = re.findall(pattern, sInputStr)
             if variable == []:
-                if "." in referVars[0]:
-                    dotdictVariable = re.sub('\${\s*(.*?)\s*}', '\\1', referVars[0])
-                    lDotdictVariable = dotdictVariable.split(".")
-                    lParams = self.__handleDotdictFormat(lDotdictVariable, [])
-                    sStrHandled = '${' + lParams[0] + '}'
-                    lParams.pop(0)
-                    for item in lParams:
-                        sStrHandled = sStrHandled + "['" + item + "']"
-                else:
-                    sStrHandled = referVars[0]
-
-                return sStrHandled
+                return referVars[0]
             else:
                 fullVariable = variable[0]
                 while variable != []:
