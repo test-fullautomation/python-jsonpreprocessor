@@ -18,20 +18,20 @@ Json Preprocessor's Package Description
 Getting Started
 ---------------
 
-The JsonPreprocessor is a Python3 package which allows programmers to handle  
-additional features in json files such as
+The **JsonPreprocessor** is a Python3 package which allows programmers to handle  
+additional features in JSON files such as
 
 * add comments
 * import other json files
 * overwrite already existing parameters with new values
 
-These json files will be handled by the JsonPreprocessor which returns as result
+These JSON files will be handled by the **JsonPreprocessor** which returns as result
 a dictionary object of the deserialized data.
 
 How to install
 --------------
 
-**JsonPreprocessor** can be installed in two different ways.
+The **JsonPreprocessor** can be installed in two different ways.
 
 1. Installation via PyPi (recommended for users)
 
@@ -43,19 +43,48 @@ How to install
 
 2. Installation via GitHub (recommended for developers)
 
-   Clone the **JsonPreprocessor** repository to your machine.
+   * Clone the **JsonPreprocessor** repository to your machine.
 
-   .. code::
+     .. code::
 
-      git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
+        git clone https://github.com/test-fullautomation/python-jsonpreprocessor.git
 
-   `JsonPreprocessor in GitHub <https://github.com/test-fullautomation/python-jsonpreprocessor>`_
+     `JsonPreprocessor in GitHub <https://github.com/test-fullautomation/python-jsonpreprocessor>`_
+
+   * Install dependencies
+
+     **JsonPreprocessor** requires some additional Python libraries. Before you install the cloned repository sources
+     you have to install the dependencies manually. The names of all related packages you can find in the file ``requirements.txt``
+     in the repository root folder. Use pip to install them:
+
+     .. code::
+
+        pip install -r requirements.txt
+
+     Additionally install **LaTeX** (recommended: TeX Live). This is used to render the documentation.
+
+   * Configure dependencies
+
+     The installation of **JsonPreprocessor** includes to generate the documentation in PDF format. This is done by
+     an application called **GenPackageDoc**, that is part of the installation dependencies (see ``requirements.txt``).
+
+     **GenPackageDoc** uses **LaTeX** to generate the documentation in PDF format. Therefore **GenPackageDoc** needs to know where to find
+     **LaTeX**. This is defined in the **GenPackageDoc** configuration file
+
+     .. code::
+
+        packagedoc\packagedoc_config.json
+
+     Before you start the installation you have to introduce the following environment variable, that is used in ``packagedoc_config.json``:
+
+     - ``GENDOC_LATEXPATH`` : path to ``pdflatex`` executable
 
    Use the following command to install **JsonPreprocessor**:
 
    .. code::
 
       setup.py install
+
 
 Package Documentation
 ---------------------
