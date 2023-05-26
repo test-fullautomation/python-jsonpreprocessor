@@ -538,7 +538,7 @@ class CJsonPreprocessor():
                             else:
                                 item = ldict['value']
                         except:
-                            raise Exception(f"The variable '{tmpItemAfterProcessed}' is not available!")
+                            raise Exception(f"The variable '{itemAfterProcessed}' is not available!")
 
                     tmpValue.append(item)
                 v = tmpValue
@@ -562,7 +562,7 @@ class CJsonPreprocessor():
                         else:
                             v = ldict['value']
                     except:
-                        raise Exception(f"The variable '{tmpValueAfterProcessed}' is not available!")
+                        raise Exception(f"The variable '{valueAfterProcessed}' is not available!")
                         
                     if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
                         v = '\"' + v + '\"'
@@ -760,6 +760,6 @@ class CJsonPreprocessor():
                     ldict = {}
                     exec(sExec, globals(), ldict)
                 except:
-                    raise Exception(f"The variable '{tmpParseNestedParam}' is not available!")  
+                    raise Exception(f"The variable '{parseNestedParam}' is not available!")  
             
         return oJson
