@@ -1,0 +1,4 @@
+colorama
+pypandoc
+GenPackageDoc
+PythonExtensionsCollection
