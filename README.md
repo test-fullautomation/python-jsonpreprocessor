@@ -45,7 +45,7 @@ The **JsonPreprocessor** can be installed in two different ways.
         repository root folder. Use pip to install them:
 
         ``` 
-        pip install -r requirements.txt
+        pip install -r ./requirements.txt
         ```
 
         Additionally install **LaTeX** (recommended: TeX Live). This is
@@ -73,11 +73,11 @@ The **JsonPreprocessor** can be installed in two different ways.
 
         -   `GENDOC_LATEXPATH` : path to `pdflatex` executable
 
-    Use the following command to install **JsonPreprocessor**:
+    -   Use the following command to install **JsonPreprocessor**:
 
-    ``` 
-    setup.py install
-    ```
+        ``` 
+        setup.py install
+        ```
 
 ## Package Documentation
 
