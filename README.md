@@ -73,11 +73,11 @@ The **JsonPreprocessor** can be installed in two different ways.
 
         -   `GENDOC_LATEXPATH` : path to `pdflatex` executable
 
-    Use the following command to install **JsonPreprocessor**:
+    -   Use the following command to install **JsonPreprocessor**:
 
-    ``` 
-    setup.py install
-    ```
+        ``` 
+        setup.py install
+        ```
 
 ## Package Documentation
 
