@@ -684,15 +684,18 @@ class CJsonPreprocessor():
                 i=0
                 for item in items:
                     i+=1
-                    subItems = re.split("\s*,\s*", item)
                     newSubItem = ""
-                    j=0
-                    for subItem in subItems:
-                        j+=1
-                        if j<len(subItems):
-                            newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ", "
-                        else:
-                            newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
+                    if re.search("\s*\[[^\[\]]*\]\s*,*\s*", item):
+                        subItems = re.split("\s*,\s*", item)
+                        j=0
+                        for subItem in subItems:
+                            j+=1
+                            if j<len(subItems):
+                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ","
+                            else:
+                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
+                    else:
+                        newSubItem = item
                     if i<len(items):
                         newLine = newLine + newSubItem + " : "
                     else:
@@ -720,7 +723,7 @@ class CJsonPreprocessor():
 
         try:
             oJson = json.loads(sJsonDataUpdated, 
-                               cls=CJSONDecoder , 
+                               cls=CJSONDecoder, 
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             raise Exception(f"json file '{jFile}': '{error}'")
