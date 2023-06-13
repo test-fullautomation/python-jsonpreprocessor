@@ -675,12 +675,14 @@ class CJsonPreprocessor():
                 continue
             if re.search("\${.+}", line):
                 items = re.split("\s*:\s*", line)
+                newLine = ""
                 if len(items) > 1:
                     if re.match("^\s*\${.+", items[0]):
                         items[0] = '"' + items[0].strip() + '"'
+                        newLine = items[0] + ": "
+                        items.pop(0)
                 else:
                     items[0] = items[0].strip()
-                newLine = ""
                 i=0
                 for item in items:
                     i+=1
@@ -695,7 +697,7 @@ class CJsonPreprocessor():
                             else:
                                 newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
                     else:
-                        newSubItem = item
+                        newSubItem = self.__checkAndUpdateKeyValue(item)
                     if i<len(items):
                         newLine = newLine + newSubItem + " : "
                     else:
