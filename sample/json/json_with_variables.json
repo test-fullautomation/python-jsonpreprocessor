@@ -1,4 +1,4 @@
-/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+/*Copyright 2020-2023 Robert Bosch GmbH
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ order the [import ] appears in the code the nodes
 can be referenced by means of ${syntax} as variable.
  */
 
-{  
+{
     // create some initial data
     "myVar1" : "val1",
     "myVar2" : "val2",
@@ -30,7 +30,7 @@ can be referenced by means of ${syntax} as variable.
 
     //give myVar3 the value of "myVar1"
     "myVar3" : "${myVar1}",
-    
+
     //give myVar4 the value of ${abc}['arList'][1]
     "myVar4" : "${abc}['arList'][1]",
 

@@ -1,4 +1,4 @@
-/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+/*Copyright 2020-2023 Robert Bosch GmbH
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,30 +15,30 @@
 // You can write anywhere one line comments
 
 /*
-This way you can 
+This way you can
 write anywhere multiline
 comments
 */
 
 {
     /*
-    This way you can 
+    This way you can
     write anywhere multiline
     comments
     */
 
     // You can write anywhere one line comments
-    "myVar1" : "val1",  
-   
+    "myVar1" : "val1",
+
     "myVar2" : "http://www.google.de",
     "myVar3" : "val3", // You can write anywhere one line comments
     "abc" : // You can write anywhere one line comments
     {
         /*
-        This way you can 
+        This way you can
         write anywhere multiline
         comments
-        */        
+        */
         "myVar4" : "val4"
     },
     "def" :

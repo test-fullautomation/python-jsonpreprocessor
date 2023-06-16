@@ -1,4 +1,4 @@
-#  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+#  Copyright 2020-2023 Robert Bosch GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -12,307 +12,307 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 PROPERCONFIGFILE = {
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE01 = {
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
-    }, 
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE02 = {
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
-    }, 
+    },
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILE03 = {
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
-    'TargetName': 'Device@01', 
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    },
+    'TargetName': 'Device@01',
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
     }
 }
 
 IMPORTEDFILE04 = {
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'gPreprolIntParam': 1, 
-        'gPreproFloatParam': 1.332, 
-        'gPreproString': 'This is a string', 
+        'majorversion': '0',
+        'gPreprolIntParam': 1,
+        'gPreproFloatParam': 1.332,
+        'gPreproString': 'This is a string',
         'gPreproStructure': {
             'general': 'general'
         },
-        'minorversion': '1', 
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES01 = {
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
-    }, 
-    'file02IntParam': 100, 
-    'file02FloatParam': 0.145, 
+    },
+    'file02IntParam': 100,
+    'file02FloatParam': 0.145,
     'file02StructureParam': {
-        'iTestParam': 999, 
+        'iTestParam': 999,
         'general': {
-            'general01': 'general01', 
+            'general01': 'general01',
             'general02': 10
         }
-    }, 
-    'file02StringParam': 'Imported file 02', 
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'file02StringParam': 'Imported file 02',
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES02 = {
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
-    }, 
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01',
-    'file02IntParam': 100, 
-    'file02FloatParam': 0.145, 
+    'file02IntParam': 100,
+    'file02FloatParam': 0.145,
     'file02StructureParam': {
-        'iTestParam': 999, 
+        'iTestParam': 999,
         'general': {
-            'general01': 'general01', 
+            'general01': 'general01',
             'general02': 10
         }
-    }, 
+    },
     'file02StringParam': 'Imported file 02'
 }
 
 IMPORTEDFILES03 = {
     'Project': 'JsonPreprocessor',
-    'gPreprolIntParam': 1, 
-    'gPreproFloatParam': 1.332, 
-    'gPreproString': 'This is a string', 
+    'gPreprolIntParam': 1,
+    'gPreproFloatParam': 1.332,
+    'gPreproString': 'This is a string',
     'gPreproStructure': {
         'general': 'general'
-    },  
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
         'majorversion': '0',
-        'file02IntParam': 100, 
-        'file02FloatParam': 0.145, 
+        'file02IntParam': 100,
+        'file02FloatParam': 0.145,
         'file02StructureParam': {
-            'iTestParam': 999, 
+            'iTestParam': 999,
             'general': {
-                'general01': 'general01', 
+                'general01': 'general01',
                 'general02': 10
             }
-        }, 
-        'file02StringParam': 'Imported file 02', 
-        'minorversion': '1', 
+        },
+        'file02StringParam': 'Imported file 02',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 IMPORTEDFILES04 = {
     'Project': 'JsonPreprocessor',
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
         'majorversion': '0',
-        'gPreprolIntParam': 1, 
-        'gPreproFloatParam': 1.332, 
-        'gPreproString': 'This is a string', 
+        'gPreprolIntParam': 1,
+        'gPreproFloatParam': 1.332,
+        'gPreproString': 'This is a string',
         'gPreproStructure': {
             'general': 'general'
-        }, 
-        'minorversion': '1', 
+        },
+        'minorversion': '1',
         'patchversion': '1',
-        'file02IntParam': 100, 
-        'file02FloatParam': 0.145, 
+        'file02IntParam': 100,
+        'file02FloatParam': 0.145,
         'file02StructureParam': {
-            'iTestParam': 999, 
+            'iTestParam': 999,
             'general': {
-                'general01': 'general01', 
+                'general01': 'general01',
                 'general02': 10
             }
-        }, 
-        'file02StringParam': 'Imported file 02' 
-    }, 
+        },
+        'file02StringParam': 'Imported file 02'
+    },
     'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT01 = {
-    'iNestedParam1': 11, 
+    'iNestedParam1': 11,
     'oNestedParam2': {
         'general': 'general'
     },
-    'gPreprolIntParam': 11, 
+    'gPreprolIntParam': 11,
     'gPreproStructure': {
         'general': 'general'
-    }, 
-    'gPreproString': 'This is a string', 
-    'Project': 'JsonPreprocessor', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'gPreproString': 'This is a string',
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT02 = {
-    'Project': 'JsonPreprocessor', 
-    'iNestedParam1': 11, 
+    'Project': 'JsonPreprocessor',
+    'iNestedParam1': 11,
     'oNestedParam2': {
         'general': 'general'
-    }, 
-    'gPreprolIntParam': 11, 
+    },
+    'gPreprolIntParam': 11,
     'gPreproStructure': {
         'general': 'general'
-    }, 
-    'gPreproString': 'This is a string', 
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    },
+    'gPreproString': 'This is a string',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT03 = {
-    'Project': 'JsonPreprocessor',  
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'iNestedParam1': 11, 
+        'majorversion': '0',
+        'iNestedParam1': 11,
         'oNestedParam2': {
             'general': 'general'
-        }, 
-        'gPreprolIntParam': 11, 
+        },
+        'gPreprolIntParam': 11,
         'gPreproStructure': {
             'general': 'general'
-        }, 
+        },
         'gPreproString': 'This is a string',
-        'minorversion': '1', 
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT04 = {
-    'Project': 'JsonPreprocessor',  
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01',
-    'iNestedParam1': 11, 
+    'iNestedParam1': 11,
     'oNestedParam2': {
         'general': 'general'
-    }, 
-    'gPreprolIntParam': 11, 
+    },
+    'gPreprolIntParam': 11,
     'gPreproStructure': {
         'general': 'general'
-    }, 
+    },
     'gPreproString': 'This is a string',
 }
 
 NESTEDIMPORT05 = {
-    'Project': 'JsonPreprocessor',  
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'gPreprolIntParam': 11, 
+        'majorversion': '0',
+        'gPreprolIntParam': 11,
         'gPreproStructure': {
-            'iNestedParam1': 11, 
+            'iNestedParam1': 11,
             'oNestedParam2': {
                 'general': 'general'
-            }, 
+            },
             'general': 'general'
-        }, 
+        },
         'gPreproString': 'This is a string',
-        'minorversion': '1', 
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
 NESTEDIMPORT06 = {
-    'Project': 'JsonPreprocessor',  
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'Project': 'JsonPreprocessor',
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01',
-    'gPreprolIntParam': 11, 
+    'gPreprolIntParam': 11,
     'gPreproStructure': {
         'general': 'general'
-    }, 
+    },
     'gPreproString': 'This is a string',
-    'iNestedParam1': 11, 
+    'iNestedParam1': 11,
     'oNestedParam2': {
         'general': 'general'
     }
@@ -323,31 +323,31 @@ NESTEDIMPORT07 = {
     "iNestedParam1" : 11,
     "oNestedParam2": {
         "general": "general"
-    }, 
+    },
     "iNestedTest1" : 9999,
     "oNestedTest2": {
         "testObject1": "testObject1",
         "testObject2": "testObject2"
     },
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
-        'minorversion': '1', 
+        'majorversion': '0',
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01',
-    'gPreprolIntParam': 11, 
+    'gPreprolIntParam': 11,
     'gPreproStructure': {
         'general': 'general'
-    }, 
+    },
     'gPreproString': 'This is a string'
 }
 
 NESTEDIMPORT08 = {
     'Project': 'JsonPreprocessor',
-    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!', 
+    'WelcomeString': 'Hello... JsonPreprocessor selftest is running now!',
     'version': {
-        'majorversion': '0', 
+        'majorversion': '0',
         "gPreprolIntParam" : 11,
         "iNestedParam1" : 11,
 
@@ -359,13 +359,13 @@ NESTEDIMPORT08 = {
             "oNestedTest2": {
                 "testObject1": "testObject1",
                 "testObject2": "testObject2"
-            }, 
+            },
             "general": "general"
         },
         "gPreproString"   : "This is a string",
-        'minorversion': '1', 
+        'minorversion': '1',
         'patchversion': '1'
-    }, 
+    },
     'TargetName': 'Device@01'
 }
 
@@ -384,7 +384,7 @@ NESTEDIMPORT09 = {
                 "general": "general"
             },
             "paramObject2": "paramObject2"
-        },  
+        },
         "gPreproStructure": {
             "iNestedTest1" : 9999,
 
@@ -394,7 +394,7 @@ NESTEDIMPORT09 = {
             },
             "general": "general"
         },
-        
+
         "gPreproString"   : "This is a string",
         "minorversion": "1",
         "patchversion": "1"
@@ -485,13 +485,13 @@ JSONFORMAT = {
   },
   "preprocessor": {
     "definitions": {
-    
+
       "gPreprolIntParam" : 1,
-      
+
       "gPreproFloatParam" : 1.332,
-      
+
       "gPrepro//String"   : "This is a string",
-      
+
       "gPreproStructure": {
                              "general": "general",
                              "testing": 19,
