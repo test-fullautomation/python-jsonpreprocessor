@@ -1,4 +1,4 @@
-//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//  Copyright 2020-2023 Robert Bosch GmbH
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@
     // Global parameters
     "glo": {
 	  "globalIntParam" : 1,
-	  
+
 	  "globalFloatParam" : 1.332,
-	  
+
 	  "globalString"   : "This is a string",
-	   
+
 	  "globalStructure": {
 	    "general": "general"
 	  }
@@ -33,13 +33,13 @@
   "preprocessor": {
     "definitions": {
 	  "preprolIntParam" : 1,
-	  
+
 	  "preproFloatParam" : 1.332,
-	  
+
 	  "global123": "global",
-	  
+
 	  "preproString"   : "This is a string",
-	   
+
 	  "preproStructure": {
 	    "general": "general",
 	    "arrayTest02": [20, {"check1": "check1", "check2": 20}, 40],

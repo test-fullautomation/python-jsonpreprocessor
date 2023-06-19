@@ -1,4 +1,4 @@
-.. Copyright 2020-2022 Robert Bosch GmbH
+.. Copyright 2020-2023 Robert Bosch GmbH
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ Introduction:
 
 .. image:: /images/python3-jsonpreprocessor.png
 
-The JsonPreprocessor is a Python3 package which allows programmers to handle  
+The JsonPreprocessor is a Python3 package which allows programmers to handle
 additional features in json files such as
 
 * add comments
@@ -103,7 +103,7 @@ to clarify the meaning of these parameters or the differences between them.
 Import the contents from other json files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This import feature enables developers to take over the content of other json files into the 
+This import feature enables developers to take over the content of other json files into the
 current json file. A json file that is imported into another json file, can contain imports also
 (allows nested imports).
 
@@ -126,11 +126,11 @@ Suppose we have the json file ``params_global.json`` with the content:
          //  This is to distinguish the different types of resets
          {
            "gGlobalIntParam" : 1,
-         
+
            "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-           
+
            "gGlobalString"   : "This is a string",
-            
+
            "gGlobalStructure": {
              "general": "general"
            }
@@ -148,11 +148,11 @@ And other json file ``preprocessor_definitions.json`` with content:
          //*****************************************************************************
          {
            "gPreprolIntParam" : 1,
-           
+
            "gPreproFloatParam" : 1.332,
            // The parameter for feature ABC
            "gPreproString"   : "This is a string",
-            
+
            "gPreproStructure": {
                                   "general": "general"
                                }
@@ -230,12 +230,12 @@ The ``config.json`` file is handled by JsonPreprocessor package, then return the
 Overwrite existing and add new parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package also provides user ability to overwrite or update as well as add new 
-parameters. User can update parameters which are already declared and add new parameters 
-or new element into existing parameters. The below example will show the way to do 
+This package also provides user ability to overwrite or update as well as add new
+parameters. User can update parameters which are already declared and add new parameters
+or new element into existing parameters. The below example will show the way to do
 these features.
 
-In case we have many different variants, and each variant requires a different value 
+In case we have many different variants, and each variant requires a different value
 assigned to the parameter. This feature could help us update new value for existing
 parameters, it also supports to add new parameters to existing configuation object.
 
@@ -247,11 +247,11 @@ Suppose we have the json file ``params_global.json`` with the content:
 
          {
            "gGlobalIntParam" : 1,
-         
+
            "gGlobalFloatParam" : 1.332, // This parameter is used to configure for ....
-           
+
            "gGlobalString"   : "This is a string",
-            
+
            "gGlobalStructure": {
              "general": "general"
            }
@@ -278,7 +278,7 @@ Then we import ``params_global.json`` to json file ``config.json`` with content:
              },
            "TargetName" : "gen3flex@dlt",
            // Overwrite parameters
-           "${params}['global']['gGlobalFloatParam']": 9.999,  
+           "${params}['global']['gGlobalFloatParam']": 9.999,
            "${version}['patchversion']": "2",
            "${params}['global']['gGlobalString']": "This is the new value for the already existing parameter.",
            // Add new parameters
@@ -410,7 +410,7 @@ Feedback
 To give us a feedback, you can send an email to `Thomas Pollerspöck <mailto:Thomas.Pollerspoeck@de.bosch.com>`_ or
 `RBVH-ECM-Automation_Test_Framework-Associates <mailto:RBVH-ENG2-CMD-Associates@bcn.bosch.com>`_
 
-In case you want to report a bug or request any interesting feature, please don't hesitate to raise a ticket on 
+In case you want to report a bug or request any interesting feature, please don't hesitate to raise a ticket on
 `our Jira <https://rb-tracker.bosch.com/tracker01/projects/ROBFW/summary>`_
 
 References

@@ -1,4 +1,4 @@
-//  Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+//  Copyright 2020-2023 Robert Bosch GmbH
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 //  This is to distinguish the different types of resets
 {
     "file02IntParam" : 100,
-    
+
     "file02FloatParam" : 0.145,
 
     "file02StructureParam": {
@@ -26,6 +26,6 @@
             "general02": 10
         }
       },
-    
+
     "file02StringParam"   : "Imported file 02"
 }

@@ -1,4 +1,4 @@
-/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+/*Copyright 2020-2023 Robert Bosch GmbH
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,25 +13,25 @@
   limitations under the License. */
 {
     //instead of `true` you can use the python-syntax `True`
-    "myVar1" : True,  
+    "myVar1" : True,
     "myVar1_" : true,
-   
+
     //instead of `frue` you can use the python-syntax `False`
     "myVar2" : False,
     "myVar2_" : false,
 
     //instead of `null` you can use the python-syntax `None`
-    "myVar3" : None, 
+    "myVar3" : None,
     "myVar3_" : null,
 
-    "abc" : 
-    {       
-        //this is a string -> there is no change 
+    "abc" :
+    {
+        //this is a string -> there is no change
         "myVar4" : "True"
     },
     "def" :
     {
-        //this is a string -> there is no change 
-        "myVar5" : "False" 
+        //this is a string -> there is no change
+        "myVar5" : "False"
     }
 }

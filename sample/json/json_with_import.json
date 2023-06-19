@@ -1,4 +1,4 @@
-/*Copyright 2020-2022 Robert Bosch Car Multimedia GmbH
+/*Copyright 2020-2023 Robert Bosch GmbH
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
   limitations under the License. */
 
 /*
-imports of json files are done by means of the 
+imports of json files are done by means of the
 [import] keyword.
 
 All imported data will be replace the node which
@@ -24,12 +24,12 @@ data structure. This allows to structure big json files
 into any architecture you require.
 */
 {
-    "myVar1" : "val1", 
+    "myVar1" : "val1",
 
     "myVar2" : "http://www.google.de",
     "abc" :
     {
-        /* 
+        /*
         import of json files should be always a relative path
         to the current file. This allows later to shift whole
         json directories to other places without braking the

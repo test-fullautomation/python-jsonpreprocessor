@@ -1,4 +1,4 @@
-.. Copyright 2020-2022 Robert Bosch GmbH
+.. Copyright 2020-2023 Robert Bosch GmbH
 
 .. Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -75,9 +75,9 @@ Users can use JsonPreprocessor to handle the json file with its original format.
 Adding the comments
 ~~~~~~~~~~~~~~~~~~~
 
-Often large projects require a lot of configuration parameters. So adding comments to json files is 
-useful in case of more and more content is added, e.g. because of a json file has to hold a huge number 
-of configuration parameters for different features. Comments can be used here to clarify the meaning of 
+Often large projects require a lot of configuration parameters. So adding comments to json files is
+useful in case of more and more content is added, e.g. because of a json file has to hold a huge number
+of configuration parameters for different features. Comments can be used here to clarify the meaning of
 these parameters or the differences between them.
 
 Every line starting with **"//"**, is commented out. Therefore a comment is valid for singles lines only.
@@ -118,12 +118,12 @@ Comment out a block of several lines with only one start and one end comment str
 Imports other json files
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This import feature enables developers to take over the content of other json files into the 
+This import feature enables developers to take over the content of other json files into the
 current json file. A json file that is imported into another json file, can contain imports also
 (allows nested imports).
 
-A possible usecase for nested imports is to handle configuration parameters of different variants 
-of a feature or a component within a bunch of several smaller files, instead of putting all parameter 
+A possible usecase for nested imports is to handle configuration parameters of different variants
+of a feature or a component within a bunch of several smaller files, instead of putting all parameter
 into only one large json file.
 
 **Example:**
@@ -142,9 +142,9 @@ Suppose we have the json file ``params_global.json`` with the content:
          //  This is to distinguish the different types of resets
          {
            "import_param_1" : "value_1",
-         
+
            "import_param_2" : "value_2",
-            
+
            "import_structure_1": {   // <adding comment>
              "general": "general"
            }
@@ -162,11 +162,11 @@ And other json file ``preprocessor_definitions.json`` with content:
          //*****************************************************************************
          {
            "import_param_3" : "value_3",
-           
+
            "import_param_4" : "value_4",
 
            // <adding comment>
-            
+
            "import_structure_2": {
               "general": "general"
             }
@@ -237,13 +237,13 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
 Add new or overwrites existing parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This JsonPreprocessor package also provides developers ability to add new as well as overwrite  
-existing parameters. Developers can update parameters which are already declared and add new 
-parameters or new element into existing parameters. The below example will show the way to do 
+This JsonPreprocessor package also provides developers ability to add new as well as overwrite
+existing parameters. Developers can update parameters which are already declared and add new
+parameters or new element into existing parameters. The below example will show the way to do
 these features.
 
-In case we have many different variants, and each variant requires a different value assigned 
-to the parameter, users can use this feature to add new parameters and update new values for 
+In case we have many different variants, and each variant requires a different value assigned
+to the parameter, users can use this feature to add new parameters and update new values for
 existing parameters of existing configuation object.
 
 **Example:**
@@ -262,9 +262,9 @@ Suppose we have the json file ``params_global.json`` with the content:
          //  This is to distinguish the different types of resets
          {
            "import_param_1" : "value_1",
-         
+
            "import_param_2" : "value_2",
-            
+
            "import_structure_1": {   // <adding comment>
              "general": "general"
            }
@@ -288,7 +288,7 @@ Then we import ``params_global.json`` to json file ``config.json`` with content:
              },
            "device" : "device_name",
            // Overwrite parameters
-           "${params}['global']['import_param_1']": "new_value_1",  
+           "${params}['global']['import_param_1']": "new_value_1",
            "${version}['patch']": "2",
            // Add new parameters
            "new_param": {
@@ -329,7 +329,7 @@ After all imports are resolved by the JsonPreprocessor, this is the resulting of
 Using defined parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-With JsonPreprocessor package, users can also use the defined parameters in Json file. The value of 
+With JsonPreprocessor package, users can also use the defined parameters in Json file. The value of
 the defined parameter could be called with syntax ``${<parameter_name>}``
 
 **Example:**
