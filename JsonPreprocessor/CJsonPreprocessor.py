@@ -547,7 +547,7 @@ class CJsonPreprocessor():
                 if re.match('^.*\s*\${\s*', v.lower()):
                     bStringValue = False
                     bNested = True
-                    if re.match("str\(\s*\${.+", v.lower()):
+                    if re.search("str\(\s*\${.+", v.lower()):
                         v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
                         bStringValue = True
                     valueAfterProcessed = self.__nestedParamHandler(v)
@@ -558,7 +558,7 @@ class CJsonPreprocessor():
                         ldict = {}
                         exec(sExec, globals(), ldict)
                         if bStringValue:
-                            v = str(ldict['value'])
+                            v = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*)", str(ldict['value']), v)
                         else:
                             v = ldict['value']
                     except:
@@ -590,12 +590,11 @@ class CJsonPreprocessor():
 
       Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
         '''
-        if re.match("^\s*.*\s*\"\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*\"", sInputStr.lower()):
-            sInputStr = re.sub("\"(\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*)\"", "\"str(\\1)\"", sInputStr)
-            sInputStr = re.sub("str\(\"(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)\"\)", "str(\\1)", sInputStr)
-            nestedParam = re.sub("^\s*\"str\((.+)\)\"\s*.*$", "\\1", sInputStr)
+        if re.search("\"\s*[0-9A-Za-z\.\-_]*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*[0-9A-Za-z\.\-_]*\s*\"", sInputStr.lower()):
+            sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*)", "str(\\1)", sInputStr)
+            nestedParam = re.sub("^.*str\((.+)\).*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
-        elif re.match("^\s*.*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*", sInputStr.lower()):
+        elif re.search("\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*", sInputStr.lower()):
             sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)", "\"\\1\"", sInputStr)
             nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
