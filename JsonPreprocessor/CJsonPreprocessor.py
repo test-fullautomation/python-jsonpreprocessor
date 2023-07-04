@@ -590,7 +590,7 @@ class CJsonPreprocessor():
 
       Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
         '''
-        if re.search("\"\s*[0-9A-Za-z\.\-_\s]*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*[0-9A-Za-z\.\-_\s]*\s*\"", sInputStr.lower()):
+        if re.search("\"\s*[0-9A-Za-z@#%&*+=\\:,;,?<>~().\-_\s]*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*[0-9A-Za-z@#%&*+=\\:,;,?<>~().\-_\s]*\s*\"", sInputStr.lower()):
             sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*)", "str(\\1)", sInputStr)
             nestedParam = re.sub("^.*str\((.+)\).*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
