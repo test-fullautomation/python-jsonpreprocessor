@@ -1,0 +1,19 @@
+sep=|
+TESTID|SECTION|SUBSECTION|DESCRIPTION
+JPP_0001|DATA_TYPES|GOODCASE|JSON file with parameters of different data types (basic and composite)
+JPP_0002|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types
+JPP_0003|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
+JPP_0004|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict
+JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar operators
+JPP_0100|DATA_INTGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
+JPP_0101|DATA_INTGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
+JPP_0102|DATA_INTGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
+JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with composite string on right hand side of colon: parameters and hard coded string parts
+JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with composite string on left hand side of colon: parameters and hard coded string parts
+JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with composite string on right hand side of colon: parameters and hard coded string parts; quotes around expression are missing
+JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with composite string on left hand side of colon: parameters and hard coded string parts; quotes around expression are missing
+JPP_0900|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
+JPP_0901|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
+JPP_0902|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)
+JPP_0903|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file is completely empty
+JPP_0904|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
