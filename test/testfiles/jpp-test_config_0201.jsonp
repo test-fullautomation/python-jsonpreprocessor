@@ -1,0 +1,23 @@
+//  Copyright 2020-2023 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+   // taking over the already defined basic data types
+   "[import]" : "./jpp-test_config_0001.jsonp",
+   //
+   "string_01" : "ABC",
+   "string_02" : "DEF",
+   "composite_param_name_1_${string_01}_${string_02}" : "(1.01)--'${string_01}'--(1.02)--'${string_02}'",
+   "${string_01}_composite_param_name_2_${string_02}" : "(2.01)--'${string_01}'--(2.02)--'${string_02}'"
+}

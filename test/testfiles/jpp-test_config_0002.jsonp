@@ -1,0 +1,68 @@
+//  Copyright 2020-2023 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+   "param_01" : "string",
+   "param_02" : 123,
+   "param_03" : "123",
+   "param_04" : 4.56,
+   "param_05" : "4.56",
+   "param_06" : true,
+   "param_07" : "true",
+   "param_08" : false,
+   "param_09" : "false",
+   "param_10" : null,
+   "param_11" : "null",
+   "param_12" : True,
+   "param_13" : "True",
+   "param_14" : False,
+   "param_15" : "False",
+   "param_16" : None,
+   "param_17" : "None",
+   //
+   "param_18" : ${param_01},
+   "param_19" : "${param_01}",
+   "param_20" : ${param_02},
+   "param_21" : "${param_02}",
+   "param_22" : ${param_03},
+   "param_23" : "${param_03}",
+   "param_24" : ${param_04},
+   "param_25" : "${param_04}",
+   "param_26" : ${param_05},
+   "param_27" : "${param_05}",
+   "param_28" : ${param_06},
+   "param_29" : "${param_06}",
+   "param_30" : ${param_07},
+   "param_31" : "${param_07}",
+   "param_32" : ${param_08},
+   "param_33" : "${param_08}",
+   "param_34" : ${param_09},
+   "param_35" : "${param_09}",
+   "param_36" : ${param_10},
+   "param_37" : "${param_10}",
+   "param_38" : ${param_11},
+   "param_39" : "${param_11}",
+   "param_40" : ${param_12},
+   "param_41" : "${param_12}",
+   "param_42" : ${param_13},
+   "param_43" : "${param_13}",
+   "param_44" : ${param_14},
+   "param_45" : "${param_14}",
+   "param_46" : ${param_15},
+   "param_47" : "${param_15}",
+   "param_48" : ${param_16},
+   "param_49" : "${param_16}",
+   "param_50" : ${param_17},
+   "param_51" : "${param_17}"
+}
