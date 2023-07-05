@@ -558,7 +558,7 @@ class CJsonPreprocessor():
                         ldict = {}
                         exec(sExec, globals(), ldict)
                         if bStringValue:
-                            v = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*)", str(ldict['value']), v)
+                            v = re.sub("(\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*.+\s*\]+)*)", str(ldict['value']), v)
                         else:
                             v = ldict['value']
                     except:
@@ -590,12 +590,14 @@ class CJsonPreprocessor():
 
       Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
         '''
-        if re.search("\"\s*[0-9A-Za-z@#%&*+=\\:,;,?<>~().\-_\s]*\s*\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*\s*[0-9A-Za-z@#%&*+=\\:,;,?<>~().\-_\s]*\s*\"", sInputStr.lower()):
-            sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[+\s*.+\s*\]+)*)", "str(\\1)", sInputStr)
+        pattern1 = "\"\s*[0-9A-Za-z\u0080-\uFFFF@#%&*+=\\:,;,?<>~().\-_\s]*\s*\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*.+\s*\]+)*\s*[0-9A-Za-z\u0080-\uFFFF@#%&*+=\\:,;,?<>~().\-_\s]*\s*\""
+        pattern2 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*"
+        if re.search(pattern1, sInputStr.lower()):
+            sInputStr = re.sub("(\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*.+\s*\]+)*)", "str(\\1)", sInputStr)
             nestedParam = re.sub("^.*str\((.+)\).*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
-        elif re.search("\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*", sInputStr.lower()):
-            sInputStr = re.sub("(\${\s*[0-9A-Za-z\.\-_]+\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)", "\"\\1\"", sInputStr)
+        elif re.search(pattern2, sInputStr.lower()):
+            sInputStr = re.sub("(\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*'\s*[0-9A-Za-z\.\-_]+\s*'\s*\])*)", "\"\\1\"", sInputStr)
             nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
 
