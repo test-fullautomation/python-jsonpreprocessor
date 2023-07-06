@@ -334,7 +334,7 @@ class CJsonPreprocessor():
         return sContentCleaned
 
 
-    def __nestedParamHandler(self, sInputStr : str) -> str:
+    def __nestedParamHandler(self, sInputStr : str, bKey = False) -> list:
         '''
    This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
 
@@ -346,53 +346,13 @@ class CJsonPreprocessor():
 
 **Returns:**
 
-   **sStrHandled** (*string*)
+   **lNestedParam** (*list*)
 
-      String which contains the resolved variable.
+      List of resolved variables which contains in the sInputStr.
         '''
-
-        referVars = re.findall('(\${\s*.*?\s*})', sInputStr)
-        if len(referVars) > 1:
-            sUpdateVar =  referVars[0]
-            referVars = referVars[1:]
-            sInputStr = re.sub('\\' + sUpdateVar, '', sInputStr, count=1)
-            for var in referVars[::-1]:
-                pattern = '(\\' + var + '\s*\[\s*.*?\s*\])'
-                variable = re.findall(pattern, sInputStr)
-                if variable == []:
-                    sExec = "value = " + re.search('^\s*\${(\s*.*?)}', var).group(1)
-                    try:
-                        ldict = {}
-                        exec(sExec, globals(), ldict)
-                        tmpValue = ldict['value']
-                    except:
-                        raise Exception(f"The variable '{var}' is not available!")
-                    sInputStr = re.sub('\\' + var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
-                                re.sub('\\' + var, str(tmpValue), sInputStr)
-                    continue
-                while variable != []:
-                    fullVariable = variable[0]
-                    pattern = pattern[:-1] + '\[\s*.*?\s*\])'
-                    variable = re.findall(pattern, sInputStr)
-                    if variable != []:
-                        fullVariable = variable[0]
-                sExec = "value = " + re.sub('\${\s*(.*?)\s*}', '\\1', fullVariable)
-                try:
-                    ldict = {}
-                    exec(sExec, globals(), ldict)
-                    tmpValue = ldict['value']
-                except:
-                    raise Exception(f"The variable '{fullVariable}' is not available!")
-                pattern = re.sub('\[', '\\[', fullVariable)
-                pattern = re.sub('\]', '\\]', pattern)
-                sInputStr = re.sub('\\' + pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
-                            re.sub('\\' + pattern, '\'' + str(tmpValue) + '\'', sInputStr)
-            sStrHandled = sUpdateVar + sInputStr
-            return sStrHandled
-
-        else:
-            if "." in referVars[0]:
-                dotdictVariable = re.sub('\${\s*(.*?)\s*}', '\\1', referVars[0])
+        def __referVarHandle(referVar : str, sInputStr : str) -> str:
+            if "." in referVar:
+                dotdictVariable = re.sub('\${\s*(.*?)\s*}', '\\1', referVar)
                 lDotdictVariable = dotdictVariable.split(".")
                 lParams = self.__handleDotdictFormat(lDotdictVariable, [])
                 sParam = '${' + lParams[0] + '}'
@@ -400,13 +360,11 @@ class CJsonPreprocessor():
                 for item in lParams:
                     sParam = sParam + "['" + item + "']"
                 sInputStr = re.sub('\${\s*([^\}]*)\s*}', sParam, sInputStr)
-
-                referVars = re.findall('(\${\s*.*?\s*})', sInputStr)
-
-            pattern = '(\\' + referVars[0] + '\s*\[\s*.*?\s*\])'
+                referVar = re.findall('(\${\s*.*?\s*})', sInputStr)[0]
+            pattern = '(\\' + referVar + '\s*\[\s*.*?\s*\])'
             variable = re.findall(pattern, sInputStr)
             if variable == []:
-                return referVars[0]
+                return referVar
             else:
                 fullVariable = variable[0]
                 while variable != []:
@@ -414,8 +372,59 @@ class CJsonPreprocessor():
                     variable = re.findall(pattern, sInputStr)
                     if variable != []:
                         fullVariable = variable[0]
-                sStrHandled = fullVariable
-                return sStrHandled
+                referVar = fullVariable
+                return referVar
+
+
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
+        referVars = re.findall("(" + pattern + ")", sInputStr)
+        lNestedParam = []
+        if len(referVars) > 1:
+            if not bKey:
+                for referVar in referVars:
+                    lNestedParam.append(__referVarHandle(referVar, sInputStr)) 
+                return lNestedParam
+            else:
+                sUpdateVar =  referVars[0]
+                referVars = referVars[1:]
+                sInputStr = re.sub('\\' + sUpdateVar, '', sInputStr, count=1)
+                for var in referVars[::-1]:
+                    pattern = '(\\' + var + '\s*\[\s*.*?\s*\])'
+                    variable = re.findall(pattern, sInputStr)
+                    if variable == []:
+                        sExec = "value = " + re.search('^\s*\${(\s*.*?)}', var).group(1)
+                        try:
+                            ldict = {}
+                            exec(sExec, globals(), ldict)
+                            tmpValue = ldict['value']
+                        except:
+                            raise Exception(f"The variable '{var}' is not available!")
+                        sInputStr = re.sub('\\' + var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
+                                    re.sub('\\' + var, str(tmpValue), sInputStr)
+                        continue
+                    while variable != []:
+                        fullVariable = variable[0]
+                        pattern = pattern[:-1] + '\[\s*.*?\s*\])'
+                        variable = re.findall(pattern, sInputStr)
+                        if variable != []:
+                            fullVariable = variable[0]
+                    sExec = "value = " + re.sub('\${\s*(.*?)\s*}', '\\1', fullVariable)
+                    try:
+                        ldict = {}
+                        exec(sExec, globals(), ldict)
+                        tmpValue = ldict['value']
+                    except:
+                        raise Exception(f"The variable '{fullVariable}' is not available!")
+                    pattern = re.sub('\[', '\\[', fullVariable)
+                    pattern = re.sub('\]', '\\]', pattern)
+                    sInputStr = re.sub('\\' + pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
+                                re.sub('\\' + pattern, '\'' + str(tmpValue) + '\'', sInputStr)
+                sKeyHandled = sUpdateVar + sInputStr
+                lNestedParam.append(sKeyHandled)
+                return lNestedParam
+        else:
+            lNestedParam.append(__referVarHandle(referVars[0], sInputStr))
+            return lNestedParam
 
     def __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list:
         '''
@@ -511,8 +520,8 @@ class CJsonPreprocessor():
                 keyNested = k
                 if re.match("str\(\s*\${.+", k.lower()):
                     k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
-                keyAfterProcessed = self.__nestedParamHandler(k)
-                k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed)
+                keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
+                k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
 
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
@@ -527,7 +536,7 @@ class CJsonPreprocessor():
                             item = re.sub("str\(\s*(\${.+)\s*\)", "\\1", item)
                             bStringValue = True
                         itemAfterProcessed = self.__nestedParamHandler(item)
-                        tmpItemAfterProcessed = re.sub('\${\s*(.*?)\s*}', '\\1', itemAfterProcessed)
+                        tmpItemAfterProcessed = re.sub('\${\s*(.*?)\s*}', '\\1', itemAfterProcessed[0])
                         sExec = "value = " + tmpItemAfterProcessed if isinstance(tmpItemAfterProcessed, str) else \
                                 "value = " + str(tmpItemAfterProcessed)
                         try:
@@ -538,7 +547,7 @@ class CJsonPreprocessor():
                             else:
                                 item = ldict['value']
                         except:
-                            raise Exception(f"The variable '{itemAfterProcessed}' is not available!")
+                            raise Exception(f"The variable '{itemAfterProcessed[0]}' is not available!")
 
                     tmpValue.append(item)
                 v = tmpValue
@@ -547,23 +556,25 @@ class CJsonPreprocessor():
                 if re.match('^.*\s*\${\s*', v.lower()):
                     bStringValue = False
                     bNested = True
-                    if re.search("str\(\s*\${.+", v.lower()):
-                        v = re.sub("str\(\s*(\${.+)\s*\)", "\\1", v)
+                    pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
+                    if re.search("(str\(\s*" + pattern + "\))", v.lower()):
+                        v = re.sub("str\(\s*(" + pattern + ")\s*\)", "\\1", v)
                         bStringValue = True
                     valueAfterProcessed = self.__nestedParamHandler(v)
-                    tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueAfterProcessed)
-                    sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
-                            "value = " + str(tmpValueAfterProcessed)
-                    try:
-                        ldict = {}
-                        exec(sExec, globals(), ldict)
-                        if bStringValue:
-                            v = re.sub("(\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*.+\s*\]+)*)", str(ldict['value']), v)
-                        else:
-                            v = ldict['value']
-                    except:
-                        raise Exception(f"The variable '{valueAfterProcessed}' is not available!")
-
+                    for valueProcessed in valueAfterProcessed:
+                        tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueProcessed)
+                        sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
+                                "value = " + str(tmpValueAfterProcessed)
+                        try:
+                            ldict = {}
+                            exec(sExec, globals(), ldict)
+                            if bStringValue:
+                                v = re.sub("(\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*)", str(ldict['value']), v, count=1)
+                            else:
+                                v = ldict['value']
+                        except:
+                            raise Exception(f"The variable '{valueProcessed}' is not available!")
+                        
                     if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
                         v = '\"' + v + '\"'
 
@@ -759,13 +770,13 @@ class CJsonPreprocessor():
             # Checking availability of nested parameters before updating and replacing.
             for param in self.lNestedParams:
                 parseNestedParam = self.__nestedParamHandler(param)
-                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam)
+                tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam[0])
                 sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
                         "value = " + str(tmpParseNestedParam)
                 try:
                     ldict = {}
                     exec(sExec, globals(), ldict)
                 except:
-                    raise Exception(f"The variable '{parseNestedParam}' is not available!")
+                    raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
 
         return oJson
