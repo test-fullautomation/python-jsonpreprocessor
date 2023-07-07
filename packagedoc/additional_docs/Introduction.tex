@@ -1,0 +1,66 @@
+% Copyright 2020-2023 Robert Bosch GmbH
+
+% Licensed under the Apache License, Version 2.0 (the "License");
+% you may not use this file except in compliance with the License.
+% You may obtain a copy of the License at
+
+% http://www.apache.org/licenses/LICENSE-2.0
+
+% Unless required by applicable law or agreed to in writing, software
+% distributed under the License is distributed on an "AS IS" BASIS,
+% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+% See the License for the specific language governing permissions and
+% limitations under the License.
+
+\textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation (\textbf{JSON}) is a text-based format for storing any user defined data and can also be used
+for data interchange between different applications.
+
+But this format has some limitations and the \pkg\ has been introduced to fill the gaps.
+
+The \pkg\ extends the JSON format by the following features:
+
+\begin{enumerate}
+   \item Parts of a JSON file can be commented out
+   \item A JSON file can import other JSON files (nested imports)
+   \item Parameter can be defined, referenced and overwritten (follow up definitions in configuration files overwrite previous definitions of the same parameter)
+   \item Also Python specific keywords like \pcode{True}, \pcode{False} and \pcode{None} can be used (additionally to the corresponding JSON keywords \pcode{true},
+         \pcode{false} and \pcode{null})
+\end{enumerate}
+
+The main goal behind the \pkg\ is to support huge sets of parameters for complex projects. Like in usual programming languages code comments are useful
+to explain the meaning of the defined parameters.
+
+Splitting all required parameters into several JSON files - that can import each other - enables to distinguish e.g. between local and global parameters
+or between specific and common parameters. Another advantage of a file split is: Smaller files with a more specific content are easier to maintain than
+a huge single file that contains all.
+
+A possible use case for a file split would be to have a software containing several different components with each component requires an individual set of
+parameters - and therefore an own JSON file. Additionally all components also require a common set of parameters. In this case all common parameters can be defined
+within an own JSON file that is imported into all other JSON files containing the specific values. This procedure avoids redundancy in parameter definitions.
+
+Another useful side effect is that parameters can be initialized in common JSON files and overwritten in specific JSON files that import the common ones.
+
+But this has consequences: The new features cause some deviations from JSON standard. 
+
+These deviations harm the syntax highlighting of editors and also cause invalid findings of JSON format related static code checkers.
+
+To avoid conflicts between the standard JSON format and the extended JSON format described here, the \pkg\ uses the alternative file extension
+\pcode{.jsonp} for all JSON files.
+
+\newpage
+
+\textbf{References:}
+
+The \pkg\ is hosted in PyPi (recommended for users) and in GitHub (recommended for developers):
+
+\begin{itemize}
+   \item \href{https://pypi.org/project/JsonPreprocessor/}{JsonPreprocessor in PyPi}
+   \item \href{https://github.com/test-fullautomation/python-jsonpreprocessor}{JsonPreprocessor in GitHub}
+\end{itemize}
+
+Details about how to get the \pkg\ can be found in the
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/README.rst}{README}.
+
+For the development environment \textbf{VSCodium} an extension is available to support the extended JSON format of the \pkg:
+\href{https://github.com/test-fullautomation/vscode-jsonp}{vscode-jsonp}
+
