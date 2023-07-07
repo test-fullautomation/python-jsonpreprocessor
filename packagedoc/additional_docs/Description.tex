@@ -32,6 +32,10 @@ except Exception as reason:
    print(f"'{reason}'")
 \end{pythoncode}
 
+\textbf{!!! Caution:} relative path bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/83}{issues/83} \textbf{!!!}
+
+
 The main method of the \pkg\ is: \pcode{jsonLoad}. Input is the path and the name of a JSON file.
 Output is a dictionary containing all values parsed from this JSON file.
 
@@ -767,7 +771,7 @@ previously added keys of this dictionary!
 
 \newpage
 
-\section{The \texttt{dotdict} notation}
+\section{\texttt{dotdict} notation}
 
 Up to now we have accessed dictionary keys in this way (standard notation):
 
@@ -799,15 +803,76 @@ ${dictionary.key.sub.key}
 \end{pythoncode}
 
 Therefore it is not possible to implement in this way! In case you need to have dots inside key names, you must use the standard notation.
+We recommend to prefer underlines as separator - like done in the examples in this document.
 
 \textit{Do you really need dots inside key names?}
 
-Pleace keep in mind: The dotdict notation is a reduced one. Because of parts are missing (e.g. the single quotes aroud key names),
+Please keep in mind: The dotdict notation is a reduced one. Because of parts are missing (e.g. the single quotes around key names),
 the outcome can be code that is really hard to capture.
 
+In the following example we create a composite data structure and demonstate how to access single elements in both notations.
 
+\vspace{2ex}
+
+\textbullet\ JSON file:
+
+\begin{pythoncode}
+{
+   // composite data structure
+   "params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+                "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+               //
+               {"dict_2_key_1" : "dict_2_key_1 value",
+                "dict_2_key_2" : {"dict_2_A_key_1" : "dict_2_A_key_1 value",
+                                  "dict_2_A_key_2" : ["dict_2_A_key_2 value 1", "dict_2_A_key_2 value 2"]}}],
+   //
+   // access to single elements of composite data structure
+   //
+   // a) standard notation
+   "dict_1_key_2_value_2_standard" : ${params}[0]['dict_1_key_2'][1],
+   // b) dotdict notation
+   // "dict_1_key_2_value_2_dotdict" : ${params.0.dict_1_key_2.1},
+   // -> 'The variable '${params}['0']['dict_1_key_2']['1']' is not available!'
+   //
+   // c) standard notation
+   "dict_2_A_key_2_value_2_standard" : ${params}[1]['dict_2_key_2']['dict_2_A_key_2'][1]
+   // d) dotdict notation
+   // "dict_2_A_key_2_value_2_dotdict" : ${params.1.dict_2_key_2.dict_2_A_key_2.1}
+   // -> 'The variable '${params}['1']['dict_2_key_2']['dict_2_A_key_2']['1']' is not available!'
+}
+\end{pythoncode}
+
+\textbf{!!! Caution:} dotdict bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/89}{issues/89} \textbf{!!!}
+
+\newpage
+
+\textbf{Outcome:}
+
+In case of the composite data structure becomes more and more nested (and if also the key names contain numbers), understanding
+the expressions (like \pcode{$\{params.1.dict_2_key_2.dict_2_A_key_2.1\}}) becomes more and more challenging!
+
+\vspace{2ex}
+
+\begin{pythonlog}
+{'dict_1_key_2_value_2_standard': 'dict_1_key_2 value 2',
+ 'dict_2_A_key_2_value_2_standard': 'dict_2_A_key_2 value 2',
+ 'params': [{'dict_1_key_1': 'dict_1_key_1 value',
+             'dict_1_key_2': ['dict_1_key_2 value 1', 'dict_1_key_2 value 2']},
+            {'dict_2_key_1': 'dict_2_key_1 value',
+             'dict_2_key_2': {'dict_2_A_key_1': 'dict_2_A_key_1 value',
+                              'dict_2_A_key_2': ['dict_2_A_key_2 value 1',
+                                                 'dict_2_A_key_2 value 2']}}]}
+\end{pythonlog}
 
 
 
 % --------------------------------------------------------------------------------------------------------------
+% TODO:
+% - extended use of nested parameters
+% - screenshots from VSCodium extensions
+% --------------------------------------------------------------------------------------------------------------
+
+
+
 
