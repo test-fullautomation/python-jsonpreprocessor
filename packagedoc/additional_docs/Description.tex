@@ -763,10 +763,51 @@ previously added keys of this dictionary!
                                         'featureC_param_2': 'featureC param 2 value'}}}
 \end{pythonlog}
 
-
 % --------------------------------------------------------------------------------------------------------------
 
-% Next: dot notation
+\newpage
+
+\section{The \texttt{dotdict} notation}
+
+Up to now we have accessed dictionary keys in this way (standard notation):
+
+\begin{pythoncode}
+${dictionary}['key']['sub_key']
+\end{pythoncode}
+
+Additionally to this standard notation, the \pkg\ supports the so called \textit{dotdict} notation where keys
+are handled as attributes:
+
+\begin{pythoncode}
+${dictionary.key.sub_key}
+\end{pythoncode}
+
+In standard notation keys are encapsulated in square brackets and all together is placed \textit{outside} the curly brackets.
+In dotdict notation the dictionary name and the keys are separated by dots from each other. All together is placed \textit{inside}
+the curly brackets.
+
+In standard notation key names are allowed to contain dots:
+
+\begin{pythoncode}
+${dictionary}['key']['sub.key']
+\end{pythoncode}
+
+In dotdict notation this would cause ambiguities:
+
+\begin{pythoncode}
+${dictionary.key.sub.key}
+\end{pythoncode}
+
+Therefore it is not possible to implement in this way! In case you need to have dots inside key names, you must use the standard notation.
+
+\textit{Do you really need dots inside key names?}
+
+Pleace keep in mind: The dotdict notation is a reduced one. Because of parts are missing (e.g. the single quotes aroud key names),
+the outcome can be code that is really hard to capture.
+
+
+
+
 
 % --------------------------------------------------------------------------------------------------------------
 
