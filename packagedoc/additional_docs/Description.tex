@@ -891,8 +891,9 @@ have been either hard coded strings, encapsulated in quotes, or dollar operator 
 
 Also a mix of both is possible!
 
-Outcome is a hard coded string, encapsulated in quotes, with parts represented by a dollar operator expression. This can be used to create new content very dynamically:
-On the right hand side of the colon new string values can be created; on the left hand side of the colon this mechanism generates new parameter names.
+Outcome is a hard coded string, encapsulated in quotes, with parts represented by one or more than one dollar operator expression. This can be used to create
+new content very dynamically: On the right hand side of the colon new string values can be created; on the left hand side of the colon this mechanism
+generates dynamic parameter names.
 
 \vspace{2ex}
 
@@ -926,7 +927,7 @@ On the right hand side of the colon new string values can be created; on the lef
 
 \textit{We recommend to use simple data types for this kind of substitution only!}
 
-But nevertheless, on the right hand side of the colon also composite data types are allowed. Here it might makes sense to use them.
+But nevertheless, on the right hand side of the colon also composite data types are possible. Here it might makes sense to use them.
 But on the left hand side of the colon only simple data types are allowed. Because it makes no sense to create
 parameter names based on composite data types. Most probably this would cause invalid key names.
 
@@ -978,8 +979,11 @@ Now we try to do the same on the left hand side of the colon:
 \textbf{Outcome:}
 
 \begin{pythonlog}
-!!! not yet possible !!!
+!!! Error message expected; still under development !!!
 \end{pythonlog}
+
+\textbf{!!! Caution:}
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/69#issuecomment-1589581903}{issues/69 issuecomment-1589581903} \textbf{!!!}
 
 
 % --------------------------------------------------------------------------------------------------------------
@@ -990,7 +994,7 @@ Now we try to do the same on the left hand side of the colon:
 
 Up to now we have discussed two different ways of creating nested dictionaries.
 
-The first one is "on the fly", like:
+The first one is \q{on the fly}, like:
 
 \begin{pythoncode}
 {
@@ -1050,8 +1054,8 @@ And the same in dotdict notation (with precondition, that no key name contains a
 
 \textbf{Caution:}
 
-We urgently recommend not to mixup both styles. In case of keys contain a list and also numerical indices are involved, we also recommend
-to prefer the standard notation. 
+We urgently recommend \textit{not} to mixup both styles in one line of code. In case of keys contain a list and also numerical indices are involved,
+we recommend to prefer the standard notation. 
 
 Please be aware of: In case of a missing level in between an expression like 
 
@@ -1061,7 +1065,7 @@ Please be aware of: In case of a missing level in between an expression like
 }
 \end{pythoncode}
 
-you will not get an error message any more. The entire data structure will be created implicitely. The impact is that this method
+you will \textit{not} get an error message! The entire data structure will be created implicitely. The impact is that this method
 is very susceptible to typing mistakes.
 
 The implicite creation of data structures does not work with lists! In case you use a list index out of range, you will get
@@ -1082,9 +1086,11 @@ or we change the extension to \pcode{.jsonp}, but in this case an editor usually
 In case you use \href{https://vscodium.com/}{VSCodium}, you can install a
 \href{https://github.com/test-fullautomation/vscode-jsonp}{jsonp extension}. 
 
-With this extension the VSCodium editor will be able to display jsonp files properly.
+With this extension the VSCodium editor will be able to display \pcode{.jsonp} files properly.
 
-Some Impressions:
+\vspace{2ex}
+
+\textbf{Some Impressions:}
 
 \includegraphics{./pictures/screenshot1.png}
 
