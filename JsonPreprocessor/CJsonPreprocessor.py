@@ -664,6 +664,18 @@ class CJsonPreprocessor():
                 else:
                     oJson[k] = v
             return oJson
+        
+        def __handleListElements(sInput : str) -> str:
+            items = re.split("\s*,\s*", sInput)
+            j=0
+            newItem = ""
+            for item in items:
+                j+=1
+                if j<len(items):
+                    newItem = newItem + self.__checkAndUpdateKeyValue(item) + ","
+                else:
+                    newItem = newItem + self.__checkAndUpdateKeyValue(item)
+            return newItem
 
         jFile=jFile.strip()
 
@@ -699,15 +711,28 @@ class CJsonPreprocessor():
                 for item in items:
                     i+=1
                     newSubItem = ""
-                    if re.search("\s*\[[^\[\]]*\]\s*,*\s*", item):
-                        subItems = re.split("\s*,\s*", item)
-                        j=0
-                        for subItem in subItems:
-                            j+=1
-                            if j<len(subItems):
-                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ","
-                            else:
-                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
+                    if re.search("^\s*\[.+\]\s*,*\s*$", item) and item.count('[')==item.count(']'):
+                        item = item.strip()
+                        bLastElement = True
+                        if item.endswith(","):
+                            bLastElement = False
+                        item = re.sub("^\[", "", item)
+                        item = re.sub("\s*\]\s*,*$", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = "[" + newSubItem + "]" if bLastElement else "[" + newSubItem + "],"
+                    elif re.search("^\s*\[.*\${.+", item):
+                        item = item.strip()
+                        item = re.sub("^\[", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = "[" + newSubItem
+                    elif re.search("]\s*,*\s*", item) and item.count('[') < item.count(']'):
+                        item = item.rstrip()
+                        bLastElement = True
+                        if item.endswith(","):
+                            bLastElement = False
+                        item = re.sub("\s*\]\s*,*$", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
                     else:
                         newSubItem = self.__checkAndUpdateKeyValue(item)
                     if i<len(items):
