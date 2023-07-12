@@ -99,9 +99,9 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
-   **JSON file with composite string on right hand side of colon: parameters and hard coded string parts**
+   **JSON file with nested parameter / string parameter substitution in parameter value**
 
-   Expected: JsonPreprocessor returns a string with parameter values resolved as string
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
 ----
 
@@ -109,9 +109,89 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
-   **JSON file with composite string on left hand side of colon: parameters and hard coded string parts**
+   **JSON file with nested parameter / string parameter substitution in parameter name**
 
-   Expected: JsonPreprocessor creates a parameter with parameter values resolved as string
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0202**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0203**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0204**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0205**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0206**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0207**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0208**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0209**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
 ----
 
@@ -119,9 +199,9 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with composite string on right hand side of colon: parameters and hard coded string parts; quotes around expression are missing**
+   **JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing**
 
-   Expected: No values are returned, and JsonPreprocessor throws an exception
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
 ----
 
@@ -129,15 +209,105 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with composite string on left hand side of colon: parameters and hard coded string parts; quotes around expression are missing**
+   **JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing**
 
-   Expected: No values are returned, and JsonPreprocessor throws an exception
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0252**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0253**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0254**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0255**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0256**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0257**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0258**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0259**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
 ----
 
 * **Test JPP_0900**
 
-  [SYNTAX_VIOLATIONS / BADCASE]
+  [COMMON_SYNTAX_VIOLATIONS / GOODCASE]
+
+   **JSON file with syntax error, that is commented out**
+
+   Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
+
+----
+
+* **Test JPP_0950**
+
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
 
    **JSON file with syntax error (1)**
 
@@ -145,9 +315,9 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0901**
+* **Test JPP_0951**
 
-  [SYNTAX_VIOLATIONS / BADCASE]
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
 
    **JSON file with syntax error (2)**
 
@@ -155,9 +325,9 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0902**
+* **Test JPP_0952**
 
-  [SYNTAX_VIOLATIONS / BADCASE]
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
 
    **JSON file with syntax error (3)**
 
@@ -165,9 +335,9 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0903**
+* **Test JPP_0953**
 
-  [SYNTAX_VIOLATIONS / BADCASE]
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
 
    **JSON file with syntax error (4): file is completely empty**
 
@@ -175,9 +345,9 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0904**
+* **Test JPP_0954**
 
-  [SYNTAX_VIOLATIONS / BADCASE]
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
 
    **JSON file with syntax error (5): file is empty (multiple pairs of brackets only)**
 
@@ -185,5 +355,15 @@ Test Use Cases
 
 ----
 
-Generated: 04.07.2023 - 16:17:36
+* **Test JPP_0955**
+
+  [COMMON_SYNTAX_VIOLATIONS / BADCASE]
+
+   **JSON file with Python keywords used as parameter names**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 12.07.2023 - 19:43:13
 

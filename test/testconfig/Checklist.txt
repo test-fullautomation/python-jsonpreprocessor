@@ -17,7 +17,7 @@ XC-CT/ECA3-Queckenstedt
 "list_variant_index"   : 0,
 "variant_number"       : "1",
 "dict_variants"        : {"variant_1" : "VARIANT-1", "variant_2" : "VARIANT-2"},
-"variant_key_1"        : "variant_1"
+"variant_key_1"        : "variant_1",
 //
 "INNERMOST_VARIANT_VALUE" : "RIA",
 "ARIAN"                   : "ARIAN",
@@ -31,11 +31,11 @@ XC-CT/ECA3-Queckenstedt
 "list_milestone_index"   : 1,
 "milestone_number"       : "2",
 "dict_milestones"        : {"milestone_1" : "MILESTONE-1", "milestone_2" : "MILESTONE-2", "milestone_3" : "MILESTONE-3"},
-"milestone_key_2"        : "milestone_2"
+"milestone_key_2"        : "milestone_2",
 //
 "innermost_milestone_name" : "est",
 "ilesto"                   : "ilesto",
-"milestone"                : "milestone",
+"milestone"                : "milestone"
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -109,53 +109,53 @@ XC-CT/ECA3-Queckenstedt
 
 * nested composite data structure used for testing
 
-"composite_data" : [{"dict_1_key_1" : "dict_1_key_1 value",
-                    "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
-                    //
-                    {"dict_2_key_1" : "dict_2_key_1 value",
-                     "dict_2_key_2" : {"dict_2_A_key_1" : "dict_2_A_key_1 value",
-                                       "dict_2_A_key_2" : ["dict_2_A_key_2 list value 1",
-                                                           "dict_2_A_key_2 list value 2",
-                                                           {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
-                                                            "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}],
+"params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+             "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+             //
+             {"dict_2_key_1" : "dict_2_key_1 value",
+              "dict_2_key_2" : {"dict_2_A_key_1" : "dict_2_A_key_1 value",
+                                "dict_2_A_key_2" : ["dict_2_A_key_2 list value 1",
+                                                    "dict_2_A_key_2 list value 2",
+                                                    {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
+                                                     "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}]
 
 // examples
 
 // access to single elements of composite data structure
 
 // a) standard notation
-"dict_1_key_1_value_standard" : ${composite_data}[0]['dict_1_key_1'],
+"dict_1_key_1_value_standard" : ${params}[0]['dict_1_key_1'],
 // b) dotdict notation
-"dict_1_key_1_value_dotdict" : ${composite_data.0.dict_1_key_1},
+"dict_1_key_1_value_dotdict" : ${params.0.dict_1_key_1},
 
 // c) standard notation
-"dict_2_A_key_2_subkey_2_value_1_standard" : ${composite_data}[1]['dict_2_key_2']['dict_2_A_key_2'][2]['dict_2_A_key_2_subkey_2'][0]
+"dict_2_A_key_2_subkey_2_value_1_standard" : ${params}[1]['dict_2_key_2']['dict_2_A_key_2'][2]['dict_2_A_key_2_subkey_2'][0]
 // d) dotdict notation
-"dict_2_A_key_2_subkey_2_value_1_dotdict" : ${composite_data.1.dict_2_key_2.dict_2_A_key_2.2.dict_2_A_key_2_subkey_2.0}
+"dict_2_A_key_2_subkey_2_value_1_dotdict" : ${params.1.dict_2_key_2.dict_2_A_key_2.2.dict_2_A_key_2_subkey_2.0}
 
 --------------------------------------------------------------------------------------------------------------
 
 * the same data structure, but with partially dots inside key names
 
-"composite_data" : [{"dict_1_key_1" : "dict_1_key_1 value",
-                    "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
-                    //
-                    {"dict_2_key_1" : "dict_2_key_1 value",
-                     "dict_2_key_2" : {"dict.2.A.key.1" : "dict_2_A_key_1 value",
-                                       "dict.2.A.key.2" : ["dict_2_A_key_2 list value 1",
-                                                           "dict_2_A_key_2 list value 2",
-                                                           {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
-                                                            "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}],
+"params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+             "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+             //
+             {"dict_2_key_1" : "dict_2_key_1 value",
+              "dict_2_key_2" : {"dict.2.A.key.1" : "dict_2_A_key_1 value",
+                                "dict.2.A.key.2" : ["dict_2_A_key_2 list value 1",
+                                                    "dict_2_A_key_2 list value 2",
+                                                    {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
+                                                     "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}]
 
 // "dict_2_A_key_1" renamed to "dict.2.A.key.1"
 // "dict_2_A_key_2" renamed to "dict.2.A.key.2"
 
 // a) standard notation
 // key names with dots inside require standard syntax (['dict.2.A.key.2'])
-"value_1_standard" : "${composite_data}[1]['dict_2_key_2']['dict.2.A.key.2'][2]['dict_2_A_key_2_subkey_2'][0]"
+"value_1_standard" : "${params}[1]['dict_2_key_2']['dict.2.A.key.2'][2]['dict_2_A_key_2_subkey_2'][0]"
 
 // b) dotdict notation (in this case deprecated!)
-// "value_1_dotdict" : "${composite_data.1.dict_2_key_2.dict.2.A.key.2.2.dict_2_A_key_2_subkey_2.0}"
+// "value_1_dotdict" : "${params.1.dict_2_key_2.dict.2.A.key.2.2.dict_2_A_key_2_subkey_2.0}"
 // it's obvious: this is partially ambiguous and also not human readable any more
 
 // we urgently recommend not to mix up standard notation and dotdict notation within the same line of code
@@ -281,4 +281,18 @@ Further rules for names? Naming convention already defined?
 
 No substitution of composite data types at left hand side of colon (parameter names and key names)
 
+--------------------------------------------------------------------------------------------------------------
+
+Syntax error commented out must not harm the execution
+
+--------------------------------------------------------------------------------------------------------------
+NESTED_IMPORTS (incl. file not existing)
+--------------------------------------------------------------------------------------------------------------
+CYCLIC_IMPORT
+--------------------------------------------------------------------------------------------------------------
+IMPLICIT_SUBKEYS
+--------------------------------------------------------------------------------------------------------------
+SPECIAL_CHARACTERS
+--------------------------------------------------------------------------------------------------------------
+missing JSON file
 --------------------------------------------------------------------------------------------------------------

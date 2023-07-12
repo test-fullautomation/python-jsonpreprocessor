@@ -8,12 +8,30 @@ JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar oper
 JPP_0100|DATA_INTGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
 JPP_0101|DATA_INTGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
 JPP_0102|DATA_INTGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
-JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with composite string on right hand side of colon: parameters and hard coded string parts
-JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with composite string on left hand side of colon: parameters and hard coded string parts
-JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with composite string on right hand side of colon: parameters and hard coded string parts; quotes around expression are missing
-JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with composite string on left hand side of colon: parameters and hard coded string parts; quotes around expression are missing
-JPP_0900|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
-JPP_0901|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
-JPP_0902|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)
-JPP_0903|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file is completely empty
-JPP_0904|SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
+JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
+JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
+JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
+JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation
+JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
+JPP_0205|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
+JPP_0206|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation
+JPP_0207|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation
+JPP_0208|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation
+JPP_0209|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation
+JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
+JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
+JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
+JPP_0253|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
+JPP_0254|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
+JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+JPP_0256|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
+JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
+JPP_0258|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
+JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
+JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
+JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
+JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
+JPP_0952|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)
+JPP_0953|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file is completely empty
+JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
+JPP_0955|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with Python keywords used as parameter names

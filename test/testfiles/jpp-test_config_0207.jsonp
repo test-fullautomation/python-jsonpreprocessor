@@ -16,5 +16,5 @@
    // taking over the already defined basic data types
    "[import]" : "./jpp-test_config_testdata_1.jsonp",
    //
-   "variant_1" : "${V${A${INNERMOST_VARIANT_VALUE}N}T}-${variant_number} (new value)"
+   "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.milestone_key_${milestone_number}}_param" : "value"
 }

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_05_SYNTAX_VIOLATIONS_BADCASE.py
+# test_06_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 04.07.2023 - 16:17:36
+# 12.07.2023 - 19:43:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_SYNTAX_VIOLATIONS_BADCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with syntax error (1)",]
    )
-   def test_JPP_0900(self, Description):
-      nReturn = CExecute.Execute("JPP_0900")
+   def test_JPP_0950(self, Description):
+      nReturn = CExecute.Execute("JPP_0950")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with syntax error (2)",]
    )
-   def test_JPP_0901(self, Description):
-      nReturn = CExecute.Execute("JPP_0901")
+   def test_JPP_0951(self, Description):
+      nReturn = CExecute.Execute("JPP_0951")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with syntax error (3)",]
    )
-   def test_JPP_0902(self, Description):
-      nReturn = CExecute.Execute("JPP_0902")
+   def test_JPP_0952(self, Description):
+      nReturn = CExecute.Execute("JPP_0952")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with syntax error (4): file is completely empty",]
    )
-   def test_JPP_0903(self, Description):
-      nReturn = CExecute.Execute("JPP_0903")
+   def test_JPP_0953(self, Description):
+      nReturn = CExecute.Execute("JPP_0953")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
    )
-   def test_JPP_0904(self, Description):
-      nReturn = CExecute.Execute("JPP_0904")
+   def test_JPP_0954(self, Description):
+      nReturn = CExecute.Execute("JPP_0954")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with Python keywords used as parameter names",]
+   )
+   def test_JPP_0955(self, Description):
+      nReturn = CExecute.Execute("JPP_0955")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

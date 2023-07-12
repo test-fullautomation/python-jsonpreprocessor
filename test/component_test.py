@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.06.2023
+# 12.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -169,7 +169,10 @@ def AnalyzeExceptions(EXPECTEDEXCEPTION=None, sException=None):
 
    if len(listErrors) == 0:
       bSuccess = True
-      sResult  = "JsonPreprocessor threw expected exception."
+      if EXPECTEDEXCEPTION is None:
+         sResult  = "No exception thrown from JsonPreprocessor (like expected)."
+      else:
+         sResult  = "JsonPreprocessor threw expected exception."
    else:
       bSuccess = False
       sResult  = "JsonPreprocessor did not throw expected exception."
