@@ -12,8 +12,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Component test of JsonPrprocessor
-=================================
+Component test of JsonPreprocessor
+==================================
 
 XC-CT/ECA3-Queckenstedt
 
@@ -76,11 +76,11 @@ It is also possible to provide a semicolon separated list of TESTIDs:
 
    component_test.py --testid="<TESTID1; TESTID2; TESTID3; ...>"
 
-The execution of all test cases runs in a loop. The JsonPreprocessor class object is created (and deleted) outside this loop (default!).
+The execution of all test cases runs in a loop. The **JsonPreprocessor** class object is created (and deleted) outside this loop (default!).
 
 Outcome: *All tests work with the same class object.*
 
-With the (optional) command line switch ``--recreateinstance`` the JsonPreprocessor class object is created (and deleted) inside the loop.
+With the (optional) command line switch ``--recreateinstance`` the **JsonPreprocessor** class object is created (and deleted) inside the loop.
 
 Outcome: *All tests work with their own class object.*
 
@@ -96,13 +96,13 @@ Test case results
 
 The result of a single test case depends on the following topics:
 
-* The returned values read from JSON file (like defined with ``EXPECTEDRETURN`` in ``TestConfig.py``)
+* The values returned from **JsonPreprocessor** (like defined with ``EXPECTEDRETURN`` in ``TestConfig.py``)
 * A thrown exception (like defined with ``EXPECTEDEXCEPTION`` in ``TestConfig.py``)
 
 If both ``EXPECTEDRETURN`` and ``EXPECTEDEXCEPTION`` is defined with ``None``, the result of the test case will be ``UNKNOWN``.
 But nevertheless the test case will be executed!
 
-It is expected, that either values are returned from JsonPreprocessor or an exception is thrown.
+It is expected, that either values are returned from **JsonPreprocessor** or an exception is thrown.
 
 If both is like expected, the result of the test case is ``PASSED``. In case of deviations between expected and returned content
 the result of the test case is ``FAILED``.
