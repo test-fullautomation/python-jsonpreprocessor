@@ -49,7 +49,7 @@ This script executes a bunch of test cases that are configured in
 
    testconfig/TestConfig.py
 
-The the JSON files used for testing, are placed in folder
+The JSON files used for testing, are placed in folder
 
 .. code::
 
