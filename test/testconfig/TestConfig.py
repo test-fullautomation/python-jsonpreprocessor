@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 12.07.2023
+# 13.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -250,7 +250,37 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0201.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {milestone_2} [STR]  :  'MILESTONE-2 (new value)'
+"""
+
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------

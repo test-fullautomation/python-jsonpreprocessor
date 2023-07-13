@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 12.07.2023
+# 13.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -250,6 +250,7 @@ PYTHONVERSION      = oConfig.Get('PYTHONVERSION')
 TESTLOGFILESFOLDER = oConfig.Get('TESTLOGFILESFOLDER')
 SELFTESTLOGFILE    = oConfig.Get('SELFTESTLOGFILE')
 TESTID             = oConfig.Get('TESTID')
+RECREATEINSTANCE   = oConfig.Get('RECREATEINSTANCE')
 
 # -- start logging
 oSelfTestLogFile = CFile(SELFTESTLOGFILE)
@@ -259,12 +260,16 @@ print()
 
 nNrOfUsecases = 0
 
+# 'listofdictUsecases' is imported directly from test/testconfig/TestConfig.py
+
 if TESTID is not None:
+   listTESTIDs = TESTID.split(';')
    listofdictUsecasesSubset = []
    for dictUsecase in listofdictUsecases:
-      if TESTID == dictUsecase['TESTID']:
-         listofdictUsecasesSubset.append(dictUsecase)
-         break # currently assumed that there is only one TESTID provided (maybe later more than one)
+      for sTESTID in listTESTIDs:
+         if sTESTID == dictUsecase['TESTID']:
+            listofdictUsecasesSubset.append(dictUsecase)
+   # eof for dictUsecase in listofdictUsecases:
    if len(listofdictUsecasesSubset) == 0:
       bSuccess = False
       sResult  = f"Test ID '{TESTID}' not defined"
@@ -307,16 +312,18 @@ nCntUnknownUsecases = 0
 
 # --------------------------------------------------------------------------------------------------------------
 # !!! the object under test !!!
-oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+oJsonPreprocessor = None
+if RECREATEINSTANCE is not True:
+   oJsonPreprocessor = CJsonPreprocessor(syntax="python")
 #
-# The current philosophy is: The object under test is created only once for all test cases!
+# The default behavior is: The object under test is created only once for all test cases!
 # Every test case uses the same JsonPreprocessor class object. This is also like a stress test,
 # to see how stable the JsonPreprocessor is.
 #
-# An alternative way would be to create a JsonPreprocessor class object for every test case separately
+# An alternative way is to create a JsonPreprocessor class object for every test case separately
 # (= create at the beginning, destroy at the end of a test case).
 #
-# TODO: A command line switch could be implemented to toggle between both ways.
+# This depends on the switch RECREATEINSTANCE (command line)
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -388,6 +395,9 @@ for dictUsecase in listofdictUsecases:
 
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    # -- test case execution
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      oJsonPreprocessor = CJsonPreprocessor(syntax="python")
    dictReturned = None
    sException   = None
    try:
@@ -398,6 +408,9 @@ for dictUsecase in listofdictUsecases:
       oSelfTestLogFile.Write("JsonPreprocessor threw exception:", 1)
       oSelfTestLogFile.Write(sException)
       oSelfTestLogFile.Write()
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      del oJsonPreprocessor
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    listReturnedLines = PrettyPrint(dictReturned, bToConsole=False)
@@ -463,6 +476,12 @@ for dictUsecase in listofdictUsecases:
       listTestsNotPassed.append(TESTFULLNAME)
 
 # eof for dictUsecase in listofdictUsecases:
+
+try:
+   # !!! the object under test !!!
+   del oJsonPreprocessor
+except:
+   pass
 
 # --------------------------------------------------------------------------------------------------------------
 

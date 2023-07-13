@@ -20,7 +20,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 29.06.2023
+# 13.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -89,26 +89,6 @@ class CConfig():
       # -- configuration: test environment
       # TODO maybe later: get this from external JSON config file
 
-      # # # NOTPATTERNFILE_TXT = f"{REFERENCEPATH}/testconfig/tsm_test_not_pattern_TXT.txt"
-      # # # if os.path.isfile(NOTPATTERNFILE_TXT) is False:
-         # # # raise Exception(CString.FormatResult(sMethod, False, f"'Not' pattern file not found: '{NOTPATTERNFILE_TXT}'"))
-      # # # self.__dictConfig['NOTPATTERNFILE_TXT'] = NOTPATTERNFILE_TXT # needed for log file pre check
-
-      # # # IGNOREPATTERNFILE_TXT = f"{REFERENCEPATH}/testconfig/tsm_test_ignore_pattern_TXT.txt"
-      # # # if os.path.isfile(IGNOREPATTERNFILE_TXT) is False:
-         # # # raise Exception(CString.FormatResult(sMethod, False, f"'Ignore' pattern file not found: '{IGNOREPATTERNFILE_TXT}'"))
-      # # # self.__dictConfig['IGNOREPATTERNFILE_TXT'] = IGNOREPATTERNFILE_TXT
-
-      # # # PATTERNFILE_TXT = f"{REFERENCEPATH}/testconfig/tsm_test_pattern_TXT.txt"
-      # # # if os.path.isfile(PATTERNFILE_TXT) is False:
-         # # # raise Exception(CString.FormatResult(sMethod, False, f"Pattern file not found: '{PATTERNFILE_TXT}'"))
-      # # # self.__dictConfig['PATTERNFILE_TXT'] = PATTERNFILE_TXT # needed for log file comparison
-
-      # # # PATTERNFILE_XML = f"{REFERENCEPATH}/testconfig/tsm_test_pattern_XML.txt"
-      # # # if os.path.isfile(PATTERNFILE_XML) is False:
-         # # # raise Exception(CString.FormatResult(sMethod, False, f"Pattern file not found: '{PATTERNFILE_XML}'"))
-      # # # self.__dictConfig['PATTERNFILE_XML'] = PATTERNFILE_XML # needed for log file comparison
-
       TESTLOGFILESFOLDER = f"{REFERENCEPATH}/testlogfiles"
       oFolder = CFolder(TESTLOGFILESFOLDER)
       bSuccess, sResult = oFolder.Create(bOverwrite=False, bRecursive=True)
@@ -125,6 +105,7 @@ class CConfig():
       oCmdLineParser.add_argument('--testid', type=str, help='The ID of the test to be executed')
       oCmdLineParser.add_argument('--codedump', action='store_true', help='If True, creates pytest code and test lists; default: False')
       oCmdLineParser.add_argument('--configdump', action='store_true', help='If True, basic configuration values are dumped to console; default: False')
+      oCmdLineParser.add_argument('--recreateinstance', action='store_true', help='If True, the JsonPreprocessor class object will be recreated in every iteration; default: False')
 
       oCmdLineArgs = oCmdLineParser.parse_args()
 
@@ -144,6 +125,11 @@ class CConfig():
          bConfigDump = oCmdLineArgs.configdump
       self.__dictConfig['CONFIGDUMP'] = bConfigDump
       # if True: script quits after config dump
+
+      bRecreateInstance = False
+      if oCmdLineArgs.recreateinstance != None:
+         bRecreateInstance = oCmdLineArgs.recreateinstance
+      self.__dictConfig['RECREATEINSTANCE'] = bRecreateInstance
 
       # dump of basic configuration parameters to console
       self.DumpConfig()
