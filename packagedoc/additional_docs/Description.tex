@@ -194,8 +194,8 @@ Therefore we extend the list of JSON files by a file containing the common part 
 
 \begin{enumerate}
    \item A file \plog{common.jsonp} containing all parameters that are the same for component \textit{A} and component \textit{B}
-   \item A file \plog{componentA.jsonp} containing all parameters required for component \textit{A}
-   \item A file \plog{componentB.jsonp} containing all parameters required for component \textit{B}
+   \item A file \plog{componentA.jsonp} containing remaining parameters (with specific values) required for component \textit{A}
+   \item A file \plog{componentB.jsonp} containing remaining parameters (with specific values) required for component \textit{B}
 \end{enumerate}
 
 Finally we use the import mechanism of the \pkg\ to import the file \plog{common.jsonp} in file \plog{componentA.jsonp} and also in
@@ -928,7 +928,7 @@ generates dynamic parameter names.
 \textit{We recommend to use simple data types for this kind of substitution only!}
 
 But nevertheless, on the right hand side of the colon also composite data types are possible. Here it might makes sense to use them.
-But on the left hand side of the colon only simple data types are allowed. Because it makes no sense to create
+But on the left hand side of the colon only simple data types are allowed for substitution. Because it makes no sense to create
 parameter names based on composite data types. Most probably this would cause invalid key names.
 
 To demonstrate this, we change the JSON file to:

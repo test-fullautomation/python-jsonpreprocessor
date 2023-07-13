@@ -267,6 +267,7 @@ if TESTID is not None:
    listofdictUsecasesSubset = []
    for dictUsecase in listofdictUsecases:
       for sTESTID in listTESTIDs:
+         sTESTID = sTESTID.strip()
          if sTESTID == dictUsecase['TESTID']:
             listofdictUsecasesSubset.append(dictUsecase)
    # eof for dictUsecase in listofdictUsecases:
