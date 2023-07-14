@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_02_DATA_INTGRITY_GOODCASE.py
+# test_07_COMMON_SYNTAX_VIOLATIONS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,30 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_DATA_INTGRITY_GOODCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns empty dictionary
+   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
    @pytest.mark.parametrize(
-      "Description", ["JSON file is empty (single pair of brackets only)",]
+      "Description", ["JSON file with syntax error, that is commented out",]
    )
-   def test_JPP_0100(self, Description):
-      nReturn = CExecute.Execute("JPP_0100")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: String is returned unchanged
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with string containing several separator characters and blanks; no parameters",]
-   )
-   def test_JPP_0101(self, Description):
-      nReturn = CExecute.Execute("JPP_0101")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: String is returned unchanged (but with masked special characters and escape sequences resolved)
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with string containing more special characters, masked special characters and escape sequences",]
-   )
-   def test_JPP_0102(self, Description):
-      nReturn = CExecute.Execute("JPP_0102")
+   def test_JPP_0900(self, Description):
+      nReturn = CExecute.Execute("JPP_0900")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

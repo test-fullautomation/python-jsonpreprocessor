@@ -295,6 +295,102 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0300**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 1*
+
+----
+
+* **Test JPP_0301**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 3*
+
+----
+
+* **Test JPP_0302**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 4*
+
+----
+
+* **Test JPP_0303**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 5*
+
+----
+
+* **Test JPP_0304**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 6*
+
+----
+
+* **Test JPP_0350**
+
+  [VALUE_DETECTION / BADDCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 1*
+
+----
+
+* **Test JPP_0351**
+
+  [VALUE_DETECTION / BADDCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2*
+
+----
+
+* **Test JPP_0352**
+
+  [VALUE_DETECTION / BADDCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3*
+
+----
+
 * **Test JPP_0900**
 
   [COMMON_SYNTAX_VIOLATIONS / GOODCASE]
@@ -365,5 +461,5 @@ Test Use Cases
 
 ----
 
-Generated: 12.07.2023 - 19:43:13
+Generated: 14.07.2023 - 19:07:06
 

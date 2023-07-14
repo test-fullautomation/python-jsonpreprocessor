@@ -286,7 +286,7 @@ No substitution of composite data types at left hand side of colon (parameter na
 Syntax error commented out must not harm the execution
 
 --------------------------------------------------------------------------------------------------------------
-EXPRESSION_DETECTION
+VALUE_DETECTION
 --------------------------------------------------------------------------------------------------------------
 NESTED_IMPORTS (incl. file not existing)
 --------------------------------------------------------------------------------------------------------------
@@ -301,5 +301,7 @@ missing JSON file
 Colon inside string harms parameter substitution
 "test_parameter" : "ABC ${value} : DEF"
 https://github.com/test-fullautomation/python-jsonpreprocessor/issues/92
+--------------------------------------------------------------------------------------------------------------
+In case of a list or a dictionary is defined as string, it must not be possible to work with keys or indices.
 --------------------------------------------------------------------------------------------------------------
 

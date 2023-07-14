@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_01_DATA_TYPES_GOODCASE.py
+# test_08_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,46 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_DATA_TYPES_GOODCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All values are returned untouched, with their correct data types
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with parameters of different data types (basic and composite)",]
+      "Description", ["JSON file with syntax error (1)",]
    )
-   def test_JPP_0001(self, Description):
-      nReturn = CExecute.Execute("JPP_0001")
+   def test_JPP_0950(self, Description):
+      nReturn = CExecute.Execute("JPP_0950")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types",]
+      "Description", ["JSON file with syntax error (2)",]
    )
-   def test_JPP_0002(self, Description):
-      nReturn = CExecute.Execute("JPP_0002")
+   def test_JPP_0951(self, Description):
+      nReturn = CExecute.Execute("JPP_0951")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list",]
+      "Description", ["JSON file with syntax error (3)",]
    )
-   def test_JPP_0003(self, Description):
-      nReturn = CExecute.Execute("JPP_0003")
+   def test_JPP_0952(self, Description):
+      nReturn = CExecute.Execute("JPP_0952")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict",]
+      "Description", ["JSON file with syntax error (4): file is completely empty",]
    )
-   def test_JPP_0004(self, Description):
-      nReturn = CExecute.Execute("JPP_0004")
+   def test_JPP_0953(self, Description):
+      nReturn = CExecute.Execute("JPP_0953")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with string values containing dollar operators",]
+      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
    )
-   def test_JPP_0005(self, Description):
-      nReturn = CExecute.Execute("JPP_0005")
+   def test_JPP_0954(self, Description):
+      nReturn = CExecute.Execute("JPP_0954")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with Python keywords used as parameter names",]
+   )
+   def test_JPP_0955(self, Description):
+      nReturn = CExecute.Execute("JPP_0955")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

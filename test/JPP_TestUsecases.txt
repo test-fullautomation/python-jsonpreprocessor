@@ -127,6 +127,46 @@ Test JPP_0259 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
 Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0300 / VALUE_DETECTION / GOODCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 1
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0301 / VALUE_DETECTION / GOODCASE
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 3
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0302 / VALUE_DETECTION / GOODCASE
+Description: JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 4
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0303 / VALUE_DETECTION / GOODCASE
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 5
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0304 / VALUE_DETECTION / GOODCASE
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 6
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0350 / VALUE_DETECTION / BADDCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 1
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0351 / VALUE_DETECTION / BADDCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0352 / VALUE_DETECTION / BADDCASE
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 3
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0900 / COMMON_SYNTAX_VIOLATIONS / GOODCASE
 Description: JSON file with syntax error, that is commented out
 Expectation: JsonPreprocessor returns remaining content of JSON file (valid parameters)
@@ -155,5 +195,5 @@ Test JPP_0955 / COMMON_SYNTAX_VIOLATIONS / BADCASE
 Description: JSON file with Python keywords used as parameter names
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 12.07.2023 - 19:43:13
+Generated: 14.07.2023 - 19:07:06
 
