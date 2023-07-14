@@ -4,7 +4,7 @@ Checklist for implementation of self test cases for JsonPreprocessor
 
 XC-CT/ECA3-Queckenstedt
 
-13.07.2023
+14.07.2023
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -60,16 +60,16 @@ XC-CT/ECA3-Queckenstedt
 "param" : "VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${list_milestone_index}}} value"
 
 // nested parameter / key parameter substitution in parameter name / standard notation
-"VAR-${dict_variants}[${variant_key_${variant_number}}]_MS-${dict_milestones}[milestone_key_${milestone_number}]_param" : "value"
+"VAR-${dict_variants}['${variant_key_${variant_number}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
 
 // nested parameter / key parameter substitution in parameter name / dotdict notation
-"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.milestone_key_${milestone_number}}_param" : "value"
+"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${milestone_number}}}_param" : "value"
 
 // nested parameter / key parameter substitution in parameter value / standard notation
-"param" : "VAR-${dict_variants}[${variant_key_${variant_number}}]_MS-${dict_milestones}[milestone_key_${milestone_number}] value"
+"param" : "VAR-${dict_variants}['${variant_key_${variant_number}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}'] value"
 
 // nested parameter / key parameter substitution in parameter value / dotdict notation
-"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.milestone_key_${milestone_number}} value"
+"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${milestone_number}}} value"
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -94,16 +94,16 @@ XC-CT/ECA3-Queckenstedt
 "param" : "VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
 
 // nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
-"VAR-${dict_variants}[${variant_key_${IAMNOTEXISTING}}]_MS-${dict_milestones}[milestone_key_${milestone_number}]_param" : "value"
+"VAR-${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
 
 // nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
-"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.milestone_key_${IAMNOTEXISTING}}_param" : "value"
+"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${IAMNOTEXISTING}}}_param" : "value"
 
 // nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
-"param" : "VAR-${dict_variants}[${variant_key_${IAMNOTEXISTING}}]_MS-${dict_milestones}[milestone_key_${milestone_number}] value"
+"param" : "VAR-${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}'] value"
 
 // nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
-"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.milestone_key_${IAMNOTEXISTING}} value"
+"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${IAMNOTEXISTING}}} value"
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -232,7 +232,7 @@ OK: "${par.0}am.1}"
 ERR: ${par.0}am.1}
 
 // * rule 4
-// expression starts with '${' and ends with '}', no further '${' and '}' in between
+// expression starts with '${' and ends with '}', no further matching '${' and '}' in between
 // => no quotes around expression required, but allowed (string conversion)
 OK: ${param}
 OK: "${param}"
@@ -285,6 +285,8 @@ No substitution of composite data types at left hand side of colon (parameter na
 
 Syntax error commented out must not harm the execution
 
+--------------------------------------------------------------------------------------------------------------
+EXPRESSION_DETECTION
 --------------------------------------------------------------------------------------------------------------
 NESTED_IMPORTS (incl. file not existing)
 --------------------------------------------------------------------------------------------------------------

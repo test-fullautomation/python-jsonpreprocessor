@@ -55,11 +55,19 @@ The JSON files used for testing, are placed in folder
 
    testfiles
 
-The log file of the test execution can be found in here
+The log file of the test execution can be found here
 
 .. code::
 
    testlogfiles/JPP_SelfTest.log
+
+This is a default setting. It is possible to redirect the output with
+
+.. code::
+
+   component_test.py --logfile="<path and name of logfile>"
+
+The path to the log file is created recursively. 
 
 Per default all test cases defined in ``TestConfig.py``, are executed. Alternatively a single test case can
 be choosed for execution by providing the test id (``TESTID``) in command line in the following way:

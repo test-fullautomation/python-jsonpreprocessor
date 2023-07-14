@@ -323,6 +323,7 @@ if RECREATEINSTANCE is not True:
 #
 # An alternative way is to create a JsonPreprocessor class object for every test case separately
 # (= create at the beginning, destroy at the end of a test case).
+# Every test case uses an own JsonPreprocessor class object
 #
 # This depends on the switch RECREATEINSTANCE (command line)
 #

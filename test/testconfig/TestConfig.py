@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 13.07.2023
+# 14.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -150,7 +150,161 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (53/1) > {param_01} [STR]  :  'string'
+[DICT] (53/2) > {param_02} [INT]  :  123
+[DICT] (53/3) > {param_03} [STR]  :  '123'
+[DICT] (53/4) > {param_04} [FLOAT]  :  4.56
+[DICT] (53/5) > {param_05} [STR]  :  '4.56'
+[DICT] (53/6) > {param_06} [BOOL]  :  True
+[DICT] (53/7) > {param_07} [STR]  :  '"true"'
+[DICT] (53/8) > {param_08} [BOOL]  :  False
+[DICT] (53/9) > {param_09} [STR]  :  'false'
+[DICT] (53/10) > {param_10} [NONE]  :  None
+[DICT] (53/11) > {param_11} [STR]  :  'null'
+[DICT] (53/12) > {param_12} [BOOL]  :  True
+[DICT] (53/13) > {param_13} [STR]  :  'True'
+[DICT] (53/14) > {param_14} [BOOL]  :  False
+[DICT] (53/15) > {param_15} [STR]  :  'False'
+[DICT] (53/16) > {param_16} [NONE]  :  None
+[DICT] (53/17) > {param_17} [STR]  :  'None'
+[DICT] (53/18) > {param_18} [STR]  :  'string'
+[DICT] (53/19) > {param_19} [STR]  :  'string'
+[DICT] (53/20) > {param_20} [INT]  :  123
+[DICT] (53/21) > {param_21} [STR]  :  '123'
+[DICT] (53/22) > {param_22} [STR]  :  '123'
+[DICT] (53/23) > {param_23} [STR]  :  '123'
+[DICT] (53/24) > {param_24} [FLOAT]  :  4.56
+[DICT] (53/25) > {param_25} [STR]  :  '4.56'
+[DICT] (53/26) > {param_26} [STR]  :  '4.56'
+[DICT] (53/27) > {param_27} [STR]  :  '4.56'
+[DICT] (53/28) > {param_28} [BOOL]  :  True
+[DICT] (53/29) > {param_29} [STR]  :  'True'
+[DICT] (53/30) > {param_30} [STR]  :  'true'
+[DICT] (53/31) > {param_31} [STR]  :  'true'
+[DICT] (53/32) > {param_32} [BOOL]  :  False
+[DICT] (53/33) > {param_33} [STR]  :  'False'
+[DICT] (53/34) > {param_34} [STR]  :  'false'
+[DICT] (53/35) > {param_35} [STR]  :  'false'
+[DICT] (53/36) > {param_36} [NONE]  :  None
+[DICT] (53/37) > {param_37} [STR]  :  'None'
+[DICT] (53/38) > {param_38} [STR]  :  'null'
+[DICT] (53/39) > {param_39} [STR]  :  'null'
+[DICT] (53/40) > {param_40} [BOOL]  :  True
+[DICT] (53/41) > {param_41} [STR]  :  'True'
+[DICT] (53/42) > {param_42} [STR]  :  'True'
+[DICT] (53/43) > {param_43} [STR]  :  'True'
+[DICT] (53/44) > {param_44} [BOOL]  :  False
+[DICT] (53/45) > {param_45} [STR]  :  'False'
+[DICT] (53/46) > {param_46} [STR]  :  'False'
+[DICT] (53/47) > {param_47} [STR]  :  'False'
+[DICT] (53/48) > {param_48} [NONE]  :  None
+[DICT] (53/49) > {param_49} [STR]  :  'None'
+[DICT] (53/50) > {param_50} [STR]  :  'None'
+[DICT] (53/51) > {param_51} [STR]  :  'None'
+[DICT] (53/52) > {param_100} [LIST] (51/1) > [STR]  :  'string'
+[DICT] (53/52) > {param_100} [LIST] (51/2) > [INT]  :  123
+[DICT] (53/52) > {param_100} [LIST] (51/3) > [STR]  :  '123'
+[DICT] (53/52) > {param_100} [LIST] (51/4) > [FLOAT]  :  4.56
+[DICT] (53/52) > {param_100} [LIST] (51/5) > [STR]  :  '4.56'
+[DICT] (53/52) > {param_100} [LIST] (51/6) > [BOOL]  :  True
+[DICT] (53/52) > {param_100} [LIST] (51/7) > [STR]  :  'true'
+[DICT] (53/52) > {param_100} [LIST] (51/8) > [BOOL]  :  False
+[DICT] (53/52) > {param_100} [LIST] (51/9) > [STR]  :  'false'
+[DICT] (53/52) > {param_100} [LIST] (51/10) > [NONE]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/11) > [STR]  :  'null'
+[DICT] (53/52) > {param_100} [LIST] (51/12) > [BOOL]  :  True
+[DICT] (53/52) > {param_100} [LIST] (51/13) > [STR]  :  'True'
+[DICT] (53/52) > {param_100} [LIST] (51/14) > [BOOL]  :  False
+[DICT] (53/52) > {param_100} [LIST] (51/15) > [STR]  :  'False'
+[DICT] (53/52) > {param_100} [LIST] (51/16) > [NONE]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/17) > [STR]  :  'None'
+[DICT] (53/52) > {param_100} [LIST] (51/18) > [STR]  :  'string'
+[DICT] (53/52) > {param_100} [LIST] (51/19) > [STR]  :  'string'
+[DICT] (53/52) > {param_100} [LIST] (51/20) > [INT]  :  123
+[DICT] (53/52) > {param_100} [LIST] (51/21) > [STR]  :  '123'
+[DICT] (53/52) > {param_100} [LIST] (51/22) > [STR]  :  '123'
+[DICT] (53/52) > {param_100} [LIST] (51/23) > [STR]  :  '123'
+[DICT] (53/52) > {param_100} [LIST] (51/24) > [FLOAT]  :  4.56
+[DICT] (53/52) > {param_100} [LIST] (51/25) > [STR]  :  '4.56'
+[DICT] (53/52) > {param_100} [LIST] (51/26) > [STR]  :  '4.56'
+[DICT] (53/52) > {param_100} [LIST] (51/27) > [STR]  :  '4.56'
+[DICT] (53/52) > {param_100} [LIST] (51/28) > [BOOL]  :  True
+[DICT] (53/52) > {param_100} [LIST] (51/29) > [STR]  :  'true'
+[DICT] (53/52) > {param_100} [LIST] (51/30) > [STR]  :  'true'
+[DICT] (53/52) > {param_100} [LIST] (51/31) > [STR]  :  'true'
+[DICT] (53/52) > {param_100} [LIST] (51/32) > [BOOL]  :  False
+[DICT] (53/52) > {param_100} [LIST] (51/33) > [STR]  :  'false'
+[DICT] (53/52) > {param_100} [LIST] (51/34) > [STR]  :  'false'
+[DICT] (53/52) > {param_100} [LIST] (51/35) > [STR]  :  'false'
+[DICT] (53/52) > {param_100} [LIST] (51/36) > [BOOL]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/37) > [STR]  :  'null'
+[DICT] (53/52) > {param_100} [LIST] (51/38) > [STR]  :  'null'
+[DICT] (53/52) > {param_100} [LIST] (51/39) > [STR]  :  'null'
+[DICT] (53/52) > {param_100} [LIST] (51/40) > [BOOL]  :  True
+[DICT] (53/52) > {param_100} [LIST] (51/41) > [STR]  :  'True'
+[DICT] (53/52) > {param_100} [LIST] (51/42) > [STR]  :  'True'
+[DICT] (53/52) > {param_100} [LIST] (51/43) > [STR]  :  'True'
+[DICT] (53/52) > {param_100} [LIST] (51/44) > [BOOL]  :  False
+[DICT] (53/52) > {param_100} [LIST] (51/45) > [STR]  :  'False'
+[DICT] (53/52) > {param_100} [LIST] (51/46) > [STR]  :  'False'
+[DICT] (53/52) > {param_100} [LIST] (51/47) > [STR]  :  'False'
+[DICT] (53/52) > {param_100} [LIST] (51/48) > [BOOL]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/49) > [STR]  :  'None'
+[DICT] (53/52) > {param_100} [LIST] (51/50) > [STR]  :  'None'
+[DICT] (53/52) > {param_100} [LIST] (51/51) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/1) > [STR]  :  'string'
+[DICT] (53/53) > {param_101} [LIST] (51/2) > [STR]  :  '123'
+[DICT] (53/53) > {param_101} [LIST] (51/3) > [STR]  :  '123'
+[DICT] (53/53) > {param_101} [LIST] (51/4) > [STR]  :  '4.56'
+[DICT] (53/53) > {param_101} [LIST] (51/5) > [STR]  :  '4.56'
+[DICT] (53/53) > {param_101} [LIST] (51/6) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/7) > [STR]  :  'true'
+[DICT] (53/53) > {param_101} [LIST] (51/8) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/9) > [STR]  :  'false'
+[DICT] (53/53) > {param_101} [LIST] (51/10) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/11) > [STR]  :  'null'
+[DICT] (53/53) > {param_101} [LIST] (51/12) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/13) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/14) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/15) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/16) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/17) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/18) > [STR]  :  'string'
+[DICT] (53/53) > {param_101} [LIST] (51/19) > [STR]  :  'string'
+[DICT] (53/53) > {param_101} [LIST] (51/20) > [INT]  :  123
+[DICT] (53/53) > {param_101} [LIST] (51/21) > [STR]  :  '123'
+[DICT] (53/53) > {param_101} [LIST] (51/22) > [STR]  :  '123'
+[DICT] (53/53) > {param_101} [LIST] (51/23) > [STR]  :  '123'
+[DICT] (53/53) > {param_101} [LIST] (51/24) > [FLOAT]  :  4.56
+[DICT] (53/53) > {param_101} [LIST] (51/25) > [STR]  :  '4.56'
+[DICT] (53/53) > {param_101} [LIST] (51/26) > [STR]  :  '4.56'
+[DICT] (53/53) > {param_101} [LIST] (51/27) > [STR]  :  '4.56'
+[DICT] (53/53) > {param_101} [LIST] (51/28) > [BOOL]  :  True
+[DICT] (53/53) > {param_101} [LIST] (51/29) > [STR]  :  'true'
+[DICT] (53/53) > {param_101} [LIST] (51/30) > [STR]  :  'true'
+[DICT] (53/53) > {param_101} [LIST] (51/31) > [STR]  :  'true'
+[DICT] (53/53) > {param_101} [LIST] (51/32) > [BOOL]  :  False
+[DICT] (53/53) > {param_101} [LIST] (51/33) > [STR]  :  'false'
+[DICT] (53/53) > {param_101} [LIST] (51/34) > [STR]  :  'false'
+[DICT] (53/53) > {param_101} [LIST] (51/35) > [STR]  :  'false'
+[DICT] (53/53) > {param_101} [LIST] (51/36) > [BOOL]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/37) > [STR]  :  'null'
+[DICT] (53/53) > {param_101} [LIST] (51/38) > [STR]  :  'null'
+[DICT] (53/53) > {param_101} [LIST] (51/39) > [STR]  :  'null'
+[DICT] (53/53) > {param_101} [LIST] (51/40) > [BOOL]  :  True
+[DICT] (53/53) > {param_101} [LIST] (51/41) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/42) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/43) > [STR]  :  'True'
+[DICT] (53/53) > {param_101} [LIST] (51/44) > [BOOL]  :  False
+[DICT] (53/53) > {param_101} [LIST] (51/45) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/46) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/47) > [STR]  :  'False'
+[DICT] (53/53) > {param_101} [LIST] (51/48) > [BOOL]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/49) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/50) > [STR]  :  'None'
+[DICT] (53/53) > {param_101} [LIST] (51/51) > [STR]  :  'None'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -164,7 +318,161 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0004.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (53/1) > {param_01} [STR]  :  'string'
+[DICT] (53/2) > {param_02} [INT]  :  123
+[DICT] (53/3) > {param_03} [STR]  :  '123'
+[DICT] (53/4) > {param_04} [FLOAT]  :  4.56
+[DICT] (53/5) > {param_05} [STR]  :  '4.56'
+[DICT] (53/6) > {param_06} [BOOL]  :  True
+[DICT] (53/7) > {param_07} [STR]  :  'true'
+[DICT] (53/8) > {param_08} [BOOL]  :  False
+[DICT] (53/9) > {param_09} [STR]  :  'false'
+[DICT] (53/10) > {param_10} [NONE]  :  None
+[DICT] (53/11) > {param_11} [STR]  :  'null'
+[DICT] (53/12) > {param_12} [BOOL]  :  True
+[DICT] (53/13) > {param_13} [STR]  :  'True'
+[DICT] (53/14) > {param_14} [BOOL]  :  False
+[DICT] (53/15) > {param_15} [STR]  :  'False'
+[DICT] (53/16) > {param_16} [NONE]  :  None
+[DICT] (53/17) > {param_17} [STR]  :  'None'
+[DICT] (53/18) > {param_18} [STR]  :  'string'
+[DICT] (53/19) > {param_19} [STR]  :  'string'
+[DICT] (53/20) > {param_20} [INT]  :  123
+[DICT] (53/21) > {param_21} [STR]  :  '123'
+[DICT] (53/22) > {param_22} [STR]  :  '123'
+[DICT] (53/23) > {param_23} [STR]  :  '123'
+[DICT] (53/24) > {param_24} [FLOAT]  :  4.56
+[DICT] (53/25) > {param_25} [STR]  :  '4.56'
+[DICT] (53/26) > {param_26} [STR]  :  '4.56'
+[DICT] (53/27) > {param_27} [STR]  :  '4.56'
+[DICT] (53/28) > {param_28} [BOOL]  :  True
+[DICT] (53/29) > {param_29} [STR]  :  'True'
+[DICT] (53/30) > {param_30} [STR]  :  'true'
+[DICT] (53/31) > {param_31} [STR]  :  'true'
+[DICT] (53/32) > {param_32} [BOOL]  :  False
+[DICT] (53/33) > {param_33} [STR]  :  'False'
+[DICT] (53/34) > {param_34} [STR]  :  'false'
+[DICT] (53/35) > {param_35} [STR]  :  'false'
+[DICT] (53/36) > {param_36} [NONE]  :  None
+[DICT] (53/37) > {param_37} [STR]  :  'None'
+[DICT] (53/38) > {param_38} [STR]  :  'null'
+[DICT] (53/39) > {param_39} [STR]  :  'null'
+[DICT] (53/40) > {param_40} [BOOL]  :  True
+[DICT] (53/41) > {param_41} [STR]  :  'True'
+[DICT] (53/42) > {param_42} [STR]  :  'True'
+[DICT] (53/43) > {param_43} [STR]  :  'True'
+[DICT] (53/44) > {param_44} [BOOL]  :  False
+[DICT] (53/45) > {param_45} [STR]  :  'False'
+[DICT] (53/46) > {param_46} [STR]  :  'False'
+[DICT] (53/47) > {param_47} [STR]  :  'False'
+[DICT] (53/48) > {param_48} [NONE]  :  None
+[DICT] (53/49) > {param_49} [STR]  :  'None'
+[DICT] (53/50) > {param_50} [STR]  :  'None'
+[DICT] (53/51) > {param_51} [STR]  :  'None'
+[DICT] (53/52) > {param_102} [DICT] (51/1) > {key_01} [STR]  :  'string'
+[DICT] (53/52) > {param_102} [DICT] (51/2) > {key_02} [INT]  :  123
+[DICT] (53/52) > {param_102} [DICT] (51/3) > {key_03} [STR]  :  '123'
+[DICT] (53/52) > {param_102} [DICT] (51/4) > {key_04} [FLOAT]  :  4.56
+[DICT] (53/52) > {param_102} [DICT] (51/5) > {key_05} [STR]  :  '4.56'
+[DICT] (53/52) > {param_102} [DICT] (51/6) > {key_06} [BOOL]  :  True
+[DICT] (53/52) > {param_102} [DICT] (51/7) > {key_07} [STR]  :  'true'
+[DICT] (53/52) > {param_102} [DICT] (51/8) > {key_08} [BOOL]  :  False
+[DICT] (53/52) > {param_102} [DICT] (51/9) > {key_09} [STR]  :  'false'
+[DICT] (53/52) > {param_102} [DICT] (51/10) > {key_10} [NONE]  :  None
+[DICT] (53/52) > {param_102} [DICT] (51/11) > {key_11} [STR]  :  'null'
+[DICT] (53/52) > {param_102} [DICT] (51/12) > {key_12} [BOOL]  :  True
+[DICT] (53/52) > {param_102} [DICT] (51/13) > {key_13} [STR]  :  'True'
+[DICT] (53/52) > {param_102} [DICT] (51/14) > {key_14} [BOOL]  :  False
+[DICT] (53/52) > {param_102} [DICT] (51/15) > {key_15} [STR]  :  'False'
+[DICT] (53/52) > {param_102} [DICT] (51/16) > {key_16} [NONE]  :  None
+[DICT] (53/52) > {param_102} [DICT] (51/17) > {key_17} [STR]  :  'None'
+[DICT] (53/52) > {param_102} [DICT] (51/18) > {key_18} [STR]  :  'string'
+[DICT] (53/52) > {param_102} [DICT] (51/19) > {key_19} [STR]  :  'string'
+[DICT] (53/52) > {param_102} [DICT] (51/20) > {key_20} [INT]  :  123
+[DICT] (53/52) > {param_102} [DICT] (51/21) > {key_21} [STR]  :  '123'
+[DICT] (53/52) > {param_102} [DICT] (51/22) > {key_22} [STR]  :  '123'
+[DICT] (53/52) > {param_102} [DICT] (51/23) > {key_23} [STR]  :  '123'
+[DICT] (53/52) > {param_102} [DICT] (51/24) > {key_24} [FLOAT]  :  4.56
+[DICT] (53/52) > {param_102} [DICT] (51/25) > {key_25} [STR]  :  '4.56'
+[DICT] (53/52) > {param_102} [DICT] (51/26) > {key_26} [STR]  :  '4.56'
+[DICT] (53/52) > {param_102} [DICT] (51/27) > {key_27} [STR]  :  '4.56'
+[DICT] (53/52) > {param_102} [DICT] (51/28) > {key_28} [BOOL]  :  True
+[DICT] (53/52) > {param_102} [DICT] (51/29) > {key_29} [STR]  :  'True'
+[DICT] (53/52) > {param_102} [DICT] (51/30) > {key_30} [STR]  :  'true'
+[DICT] (53/52) > {param_102} [DICT] (51/31) > {key_31} [STR]  :  'true'
+[DICT] (53/52) > {param_102} [DICT] (51/32) > {key_32} [BOOL]  :  False
+[DICT] (53/52) > {param_102} [DICT] (51/33) > {key_33} [STR]  :  'False'
+[DICT] (53/52) > {param_102} [DICT] (51/34) > {key_34} [STR]  :  'false'
+[DICT] (53/52) > {param_102} [DICT] (51/35) > {key_35} [STR]  :  'false'
+[DICT] (53/52) > {param_102} [DICT] (51/36) > {key_36} [NONE]  :  None
+[DICT] (53/52) > {param_102} [DICT] (51/37) > {key_37} [STR]  :  'None'
+[DICT] (53/52) > {param_102} [DICT] (51/38) > {key_38} [STR]  :  'null'
+[DICT] (53/52) > {param_102} [DICT] (51/39) > {key_39} [STR]  :  'null'
+[DICT] (53/52) > {param_102} [DICT] (51/40) > {key_40} [BOOL]  :  True
+[DICT] (53/52) > {param_102} [DICT] (51/41) > {key_41} [STR]  :  'True'
+[DICT] (53/52) > {param_102} [DICT] (51/42) > {key_42} [STR]  :  'True'
+[DICT] (53/52) > {param_102} [DICT] (51/43) > {key_43} [STR]  :  'True'
+[DICT] (53/52) > {param_102} [DICT] (51/44) > {key_44} [BOOL]  :  False
+[DICT] (53/52) > {param_102} [DICT] (51/45) > {key_45} [STR]  :  'False'
+[DICT] (53/52) > {param_102} [DICT] (51/46) > {key_46} [STR]  :  'False'
+[DICT] (53/52) > {param_102} [DICT] (51/47) > {key_47} [STR]  :  'False'
+[DICT] (53/52) > {param_102} [DICT] (51/48) > {key_48} [NONE]  :  None
+[DICT] (53/52) > {param_102} [DICT] (51/49) > {key_49} [STR]  :  'None'
+[DICT] (53/52) > {param_102} [DICT] (51/50) > {key_50} [STR]  :  'None'
+[DICT] (53/52) > {param_102} [DICT] (51/51) > {key_51} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/1) > {key_01} [STR]  :  'string'
+[DICT] (53/53) > {param_103} [DICT] (51/2) > {key_02} [STR]  :  '123'
+[DICT] (53/53) > {param_103} [DICT] (51/3) > {key_03} [STR]  :  '123'
+[DICT] (53/53) > {param_103} [DICT] (51/4) > {key_04} [STR]  :  '4.56'
+[DICT] (53/53) > {param_103} [DICT] (51/5) > {key_05} [STR]  :  '4.56'
+[DICT] (53/53) > {param_103} [DICT] (51/6) > {key_06} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/7) > {key_07} [STR]  :  'true'
+[DICT] (53/53) > {param_103} [DICT] (51/8) > {key_08} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/9) > {key_09} [STR]  :  'false'
+[DICT] (53/53) > {param_103} [DICT] (51/10) > {key_10} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/11) > {key_11} [STR]  :  'null'
+[DICT] (53/53) > {param_103} [DICT] (51/12) > {key_12} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/13) > {key_13} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/14) > {key_14} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/15) > {key_15} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/16) > {key_16} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/17) > {key_17} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/18) > {key_18} [STR]  :  'string'
+[DICT] (53/53) > {param_103} [DICT] (51/19) > {key_19} [STR]  :  'string'
+[DICT] (53/53) > {param_103} [DICT] (51/20) > {key_20} [INT]  :  123
+[DICT] (53/53) > {param_103} [DICT] (51/21) > {key_21} [STR]  :  '123'
+[DICT] (53/53) > {param_103} [DICT] (51/22) > {key_22} [STR]  :  '123'
+[DICT] (53/53) > {param_103} [DICT] (51/23) > {key_23} [STR]  :  '123'
+[DICT] (53/53) > {param_103} [DICT] (51/24) > {key_24} [FLOAT]  :  4.56
+[DICT] (53/53) > {param_103} [DICT] (51/25) > {key_25} [STR]  :  '4.56'
+[DICT] (53/53) > {param_103} [DICT] (51/26) > {key_26} [STR]  :  '4.56'
+[DICT] (53/53) > {param_103} [DICT] (51/27) > {key_27} [STR]  :  '4.56'
+[DICT] (53/53) > {param_103} [DICT] (51/28) > {key_28} [BOOL]  :  True
+[DICT] (53/53) > {param_103} [DICT] (51/29) > {key_29} [STR]  :  'true'
+[DICT] (53/53) > {param_103} [DICT] (51/30) > {key_30} [STR]  :  'true'
+[DICT] (53/53) > {param_103} [DICT] (51/31) > {key_31} [STR]  :  'true'
+[DICT] (53/53) > {param_103} [DICT] (51/32) > {key_32} [BOOL]  :  False
+[DICT] (53/53) > {param_103} [DICT] (51/33) > {key_33} [STR]  :  'false'
+[DICT] (53/53) > {param_103} [DICT] (51/34) > {key_34} [STR]  :  'false'
+[DICT] (53/53) > {param_103} [DICT] (51/35) > {key_35} [STR]  :  'false'
+[DICT] (53/53) > {param_103} [DICT] (51/36) > {key_36} [BOOL]  :  None
+[DICT] (53/53) > {param_103} [DICT] (51/37) > {key_37} [STR]  :  'null'
+[DICT] (53/53) > {param_103} [DICT] (51/38) > {key_38} [STR]  :  'null'
+[DICT] (53/53) > {param_103} [DICT] (51/39) > {key_39} [STR]  :  'null'
+[DICT] (53/53) > {param_103} [DICT] (51/40) > {key_40} [BOOL]  :  True
+[DICT] (53/53) > {param_103} [DICT] (51/41) > {key_41} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/42) > {key_42} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/43) > {key_43} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/44) > {key_44} [BOOL]  :  False
+[DICT] (53/53) > {param_103} [DICT] (51/45) > {key_45} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/46) > {key_46} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/47) > {key_47} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/48) > {key_48} [BOOL]  :  None
+[DICT] (53/53) > {param_103} [DICT] (51/49) > {key_49} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/50) > {key_50} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/51) > {key_51} [STR]  :  'None'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -236,7 +544,35 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0200.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (21/1) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (21/2) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (21/2) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (21/3) > {list_variant_index} [INT]  :  0
+[DICT] (21/4) > {variant_number} [STR]  :  '1'
+[DICT] (21/5) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (21/5) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (21/6) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (21/7) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (21/8) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (21/9) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (21/10) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (21/11) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (21/12) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (21/13) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (21/13) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (21/13) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (21/14) > {list_milestone_index} [INT]  :  1
+[DICT] (21/15) > {milestone_number} [STR]  :  '2'
+[DICT] (21/16) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (21/16) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (21/16) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (21/17) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (21/18) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (21/19) > {ilesto} [STR]  :  'ilesto'
+[DICT] (21/20) > {milestone} [STR]  :  'milestone'
+[DICT] (21/21) > {variant_1} [STR]  :  'VARIANT-1 (new value)'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -294,7 +630,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0202.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-milestone_2_param} [STR]  :  'value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -308,7 +673,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0203.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-milestone_2_param} [STR]  :  'value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -322,7 +716,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0204.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {param} [STR]  :  'VAR-VARIANT-1_MS-MILESTONE-2 value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -336,7 +759,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0205.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {param} [STR]  :  'VAR-VARIANT-1_MS-MILESTONE-2 value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -350,7 +802,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0206.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-MILESTONE-2_param} [STR]  :  'value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -364,7 +845,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0207.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-MILESTONE-2_param} [STR]  :  'value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -378,7 +888,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0208.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {param} [STR]  :  'VAR-VARIANT-1_MS-MILESTONE-2 value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -392,7 +931,36 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0209.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (22/4) > {list_variant_index} [INT]  :  0
+[DICT] (22/5) > {variant_number} [STR]  :  '1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DICT] (22/22) > {param} [STR]  :  'VAR-VARIANT-1_MS-MILESTONE-2 value'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -462,7 +1030,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0254.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${list_variant_numbers}[${IAMNOTEXISTING}]' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -518,7 +1086,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0258.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${dict_variants}[${variant_key_${IAMNOTEXISTING}}]' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
