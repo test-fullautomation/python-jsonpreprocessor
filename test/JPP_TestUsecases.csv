@@ -5,9 +5,9 @@ JPP_0002|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operato
 JPP_0003|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
 JPP_0004|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict
 JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar operators
-JPP_0100|DATA_INTGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
-JPP_0101|DATA_INTGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
-JPP_0102|DATA_INTGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
+JPP_0100|DATA_INTEGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
+JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
+JPP_0102|DATA_INTEGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
 JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
 JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
 JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
@@ -33,32 +33,45 @@ JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more clos
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
 JPP_0303|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)
 JPP_0304|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)
-JPP_0350|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
-JPP_0351|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
-JPP_0352|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
-JPP_0353|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0354|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0355|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0356|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0357|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0358|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0359|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0360|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
-JPP_0361|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0362|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0363|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0364|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0365|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0366|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
-JPP_0367|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
-JPP_0368|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
-JPP_0369|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
-JPP_0370|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
-JPP_0371|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+JPP_0350|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 1)
+JPP_0351|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 2)
+JPP_0352|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 3)
+JPP_0353|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 1)
+JPP_0354|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 2)
+JPP_0355|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 3)
+JPP_0356|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 4)
+JPP_0357|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)
+JPP_0358|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
+JPP_0359|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
+JPP_0360|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 9)
+JPP_0361|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
+JPP_0362|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 2)
+JPP_0363|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 3)
+JPP_0364|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 4)
+JPP_0365|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 5)
+JPP_0366|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 6)
+JPP_0367|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 1)
+JPP_0368|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 2)
+JPP_0369|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 3)
+JPP_0370|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 4)
+JPP_0371|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 5)
+JPP_0450|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (1)
+JPP_0451|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (2)
+JPP_0452|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (3)
+JPP_0453|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (4)
+JPP_0454|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (5)
+JPP_0455|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (6)
+JPP_0456|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (7)
+JPP_0457|NAMING_CONVENTION|BADCASE|JSON file with Python keywords used as parameter names (8)
+JPP_0458|NAMING_CONVENTION|BADCASE|JSON file with parameter name containing not allowed special characters
+JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
+JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 2)
+JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+JPP_0503|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 4)
+JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
 JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
 JPP_0952|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)
 JPP_0953|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file is completely empty
 JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
-JPP_0955|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with Python keywords used as parameter names

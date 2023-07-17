@@ -13,6 +13,8 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "param1" : "value",
-   "param2" : ${param1}[0]
+   // taking over the already defined composite data structure
+   "[import]" : "./jpp-test_config_testdata_3.jsonp",
+   //
+   "param" : ${params}[1]['dict_2_key_2']['dict.2.A.key.2'][2]['dict_2_A_key_2_subkey_2'][1]
 }

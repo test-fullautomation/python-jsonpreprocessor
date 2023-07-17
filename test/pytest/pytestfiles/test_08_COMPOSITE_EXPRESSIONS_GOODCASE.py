@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_05_VALUE_DETECTION_GOODCASE.py
+# test_08_COMPOSITE_EXPRESSIONS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,46 +27,38 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_VALUE_DETECTION_GOODCASE:
+class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 1)",]
    )
-   def test_JPP_0300(self, Description):
-      nReturn = CExecute.Execute("JPP_0300")
+   def test_JPP_0500(self, Description):
+      nReturn = CExecute.Execute("JPP_0500")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 2)",]
    )
-   def test_JPP_0301(self, Description):
-      nReturn = CExecute.Execute("JPP_0301")
+   def test_JPP_0501(self, Description):
+      nReturn = CExecute.Execute("JPP_0501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)",]
    )
-   def test_JPP_0302(self, Description):
-      nReturn = CExecute.Execute("JPP_0302")
+   def test_JPP_0502(self, Description):
+      nReturn = CExecute.Execute("JPP_0502")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 4)",]
    )
-   def test_JPP_0303(self, Description):
-      nReturn = CExecute.Execute("JPP_0303")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)",]
-   )
-   def test_JPP_0304(self, Description):
-      nReturn = CExecute.Execute("JPP_0304")
+   def test_JPP_0503(self, Description):
+      nReturn = CExecute.Execute("JPP_0503")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

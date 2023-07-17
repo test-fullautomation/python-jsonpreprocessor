@@ -35,15 +35,15 @@ Test JPP_0005 / DATA_TYPES / GOODCASE
 Description: JSON file with string values containing dollar operators
 Expectation: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_0100 / DATA_INTGRITY / GOODCASE
+Test JPP_0100 / DATA_INTEGRITY / GOODCASE
 Description: JSON file is empty (single pair of brackets only)
 Expectation: JsonPreprocessor returns empty dictionary
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_0101 / DATA_INTGRITY / GOODCASE
+Test JPP_0101 / DATA_INTEGRITY / GOODCASE
 Description: JSON file with string containing several separator characters and blanks; no parameters
 Expectation: String is returned unchanged
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_0102 / DATA_INTGRITY / GOODCASE
+Test JPP_0102 / DATA_INTEGRITY / GOODCASE
 Description: JSON file with string containing more special characters, masked special characters and escape sequences
 Expectation: String is returned unchanged (but with masked special characters and escape sequences resolved)
 ------------------------------------------------------------------------------------------------------------------------
@@ -153,114 +153,175 @@ Expectation: JsonPreprocessor returns values
 Hint.......: Checklist rule 6
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0350 / VALUE_DETECTION / BADCASE
-Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 1 / pattern 1
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0351 / VALUE_DETECTION / BADCASE
-Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 1 / pattern 2
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0352 / VALUE_DETECTION / BADCASE
-Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 3)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 1 / pattern 3
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0353 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 1
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0354 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 2
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0355 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 3)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 3
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0356 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 4)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 4
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0357 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 5
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0358 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 6
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0359 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 7
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0360 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 8
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0361 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 1
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0362 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 2
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0363 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 3)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 3
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0364 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 4)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 4
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0365 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 5)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 5
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0366 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)
+Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 6)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 6
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0367 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 1
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0368 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 2
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0369 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 3)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 3
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0370 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 4)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 4
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0371 / VALUE_DETECTION / BADCASE
-Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)
+Description: JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 5)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 5
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0450 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0451 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0452 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0453 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (4)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0454 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (5)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0455 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (6)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0456 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (7)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0457 / NAMING_CONVENTION / BADCASE
+Description: JSON file with Python keywords used as parameter names (8)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0458 / NAMING_CONVENTION / BADCASE
+Description: JSON file with parameter name containing not allowed special characters
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0500 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 1)
+Expectation: JsonPreprocessor returns expected value
+Hint.......: Standard notation
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0501 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 2)
+Expectation: JsonPreprocessor returns expected value
+Hint.......: Dotdict notation
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0502 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+Expectation: JsonPreprocessor returns expected value
+Hint.......: Standard notation
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0503 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 4)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
+Description: JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Needs clarification!
+Hint.......: Dotdict notation (ambiguous in this case)
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0900 / COMMON_SYNTAX_VIOLATIONS / GOODCASE
 Description: JSON file with syntax error, that is commented out
@@ -286,9 +347,5 @@ Test JPP_0954 / COMMON_SYNTAX_VIOLATIONS / BADCASE
 Description: JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_0955 / COMMON_SYNTAX_VIOLATIONS / BADCASE
-Description: JSON file with Python keywords used as parameter names
-Expectation: No values are returned, and JsonPreprocessor throws an exception
-------------------------------------------------------------------------------------------------------------------------
-Generated: 17.07.2023 - 13:33:10
+Generated: 17.07.2023 - 20:25:39
 

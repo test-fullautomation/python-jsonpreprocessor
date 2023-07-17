@@ -270,19 +270,6 @@ ERR: ${param1}, ABC ; XYZ / ${param2}
 Further test cases
 --------------------------------------------------------------------------------------------------------------
 
-// it's not allowed to use Python keywords as name for parameters and dictionary keys
-// identified by:
-//   import keyword
-//   if param_name in keyword.kwlist:
-// => syntax error
-ERR: "str" : "string"
-ERR: "list" : [1,2,3]
-ERR: "dict" : {"str" : "string", "list" : [1,2,3], "dict" : {"A" : 1, "B" : 2}}
-
-Further rules for names? Naming convention already defined?
-
---------------------------------------------------------------------------------------------------------------
-
 No substitution of composite data types at left hand side of colon (parameter names and key names)
 
 --------------------------------------------------------------------------------------------------------------
@@ -306,7 +293,5 @@ missing JSON file
 Colon inside string harms parameter substitution
 "test_parameter" : "ABC ${value} : DEF"
 https://github.com/test-fullautomation/python-jsonpreprocessor/issues/92
---------------------------------------------------------------------------------------------------------------
-In case of a list or a dictionary is defined as string, it must not be possible to work with keys or indices.
 --------------------------------------------------------------------------------------------------------------
 

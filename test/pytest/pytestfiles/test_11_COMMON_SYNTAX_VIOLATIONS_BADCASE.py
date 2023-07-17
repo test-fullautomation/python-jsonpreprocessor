@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_05_VALUE_DETECTION_GOODCASE.py
+# test_11_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_VALUE_DETECTION_GOODCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)",]
+      "Description", ["JSON file with syntax error (1)",]
    )
-   def test_JPP_0300(self, Description):
-      nReturn = CExecute.Execute("JPP_0300")
+   def test_JPP_0950(self, Description):
+      nReturn = CExecute.Execute("JPP_0950")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)",]
+      "Description", ["JSON file with syntax error (2)",]
    )
-   def test_JPP_0301(self, Description):
-      nReturn = CExecute.Execute("JPP_0301")
+   def test_JPP_0951(self, Description):
+      nReturn = CExecute.Execute("JPP_0951")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)",]
+      "Description", ["JSON file with syntax error (3)",]
    )
-   def test_JPP_0302(self, Description):
-      nReturn = CExecute.Execute("JPP_0302")
+   def test_JPP_0952(self, Description):
+      nReturn = CExecute.Execute("JPP_0952")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)",]
+      "Description", ["JSON file with syntax error (4): file is completely empty",]
    )
-   def test_JPP_0303(self, Description):
-      nReturn = CExecute.Execute("JPP_0303")
+   def test_JPP_0953(self, Description):
+      nReturn = CExecute.Execute("JPP_0953")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)",]
+      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
    )
-   def test_JPP_0304(self, Description):
-      nReturn = CExecute.Execute("JPP_0304")
+   def test_JPP_0954(self, Description):
+      nReturn = CExecute.Execute("JPP_0954")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

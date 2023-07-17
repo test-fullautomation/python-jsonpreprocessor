@@ -14,7 +14,6 @@
 //**************************************************************************
 //
 // the same data structure than testdata_2, but with partially dots inside key names
-
 {
    "params" : [{"dict_1_key_1" : "dict_1_key_1 value",
                 "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
