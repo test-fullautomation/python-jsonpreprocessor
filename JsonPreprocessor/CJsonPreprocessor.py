@@ -184,6 +184,16 @@ class CJsonPreprocessor():
         self.lNestedParams = []
         self.lDotInParamName = []
 
+    def __reset(self) -> None:
+        '''
+   Reset initial variables which are set in constructor method after master Json file is loaded.
+        '''
+        self.lImportedFiles = []
+        self.recursive_level = 0
+        self.lUpdatedParams = {}
+        self.lNestedParams = []
+        self.lDotInParamName = []
+
     def __sNormalizePath(self, sPath : str) -> str:
         """
    Python struggles with
@@ -778,5 +788,7 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                 except:
                     raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
+                
+            self.__reset()
 
         return oJson
