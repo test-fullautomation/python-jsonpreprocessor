@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 14.07.2023
+# 17.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -1207,8 +1207,8 @@ dictUsecase['TESTID']            = "JPP_0350"
 dictUsecase['DESCRIPTION']       = "JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "VALUE_DETECTION"
-dictUsecase['SUBSECTION']        = "BADDCASE"
-dictUsecase['HINT']              = "Checklist rule 1"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 1 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0350.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
@@ -1218,11 +1218,11 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0351"
-dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['DESCRIPTION']       = "JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "VALUE_DETECTION"
-dictUsecase['SUBSECTION']        = "BADDCASE"
-dictUsecase['HINT']              = "Checklist rule 2"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 1 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0351.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
@@ -1232,20 +1232,283 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0352"
-dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['DESCRIPTION']       = "JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "VALUE_DETECTION"
-dictUsecase['SUBSECTION']        = "BADDCASE"
-dictUsecase['HINT']              = "Checklist rule 3"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 1 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0352.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
-
-
-
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0353"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 1"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0353.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0354"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 2"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0354.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0355"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 3"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0355.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0356"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 4"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0356.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0357"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 5"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0357.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0358"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 6"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0358.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0359"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 7"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0359.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0360"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 2 / pattern 8"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0360.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0361"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 1"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0361.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Expecting property name enclosed in double quotes"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0362"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 2"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0362.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0363"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 3"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0363.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0364"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 4"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0364.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0365"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 5"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0365.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0366"
+dictUsecase['DESCRIPTION']       = "JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 3 / pattern 6"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0366.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0367"
+dictUsecase['DESCRIPTION']       = "JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 6 / pattern 1"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0367.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0368"
+dictUsecase['DESCRIPTION']       = "JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 6 / pattern 2"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0368.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0369"
+dictUsecase['DESCRIPTION']       = "JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 6 / pattern 3"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0369.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0370"
+dictUsecase['DESCRIPTION']       = "JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 6 / pattern 4"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0370.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Expecting value:"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0371"
+dictUsecase['DESCRIPTION']       = "JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "VALUE_DETECTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Checklist rule 6 / pattern 5"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0371.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Expecting property name enclosed in double quotes"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

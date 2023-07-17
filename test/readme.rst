@@ -17,7 +17,7 @@ Component test of JsonPreprocessor
 
 XC-CT/ECA3-Queckenstedt
 
-13.07.2023
+17.07.2023
 
 ----
 
@@ -55,13 +55,13 @@ The JSON files used for testing, are placed in folder
 
    testfiles
 
-The log file of the test execution can be found here
+The log file of the test execution can be found here (default)
 
 .. code::
 
    testlogfiles/JPP_SelfTest.log
 
-This is a default setting. It is possible to redirect the output with
+It is possible to redirect the output with
 
 .. code::
 

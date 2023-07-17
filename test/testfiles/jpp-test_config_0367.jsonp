@@ -13,6 +13,13 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "list_param" : ["A", "B", "C"],
-   "val1"       : ${list_param[0]}
+   "par1"   : "par1",
+   "par2"   : "par2",
+   "par3"   : ["A", "B"],
+   "par4"   : ["ara"],
+   "ara"    : "ara",
+   "param"  : "param",
+   "param2" : ${par3},
+   //
+   "val1" : ${par1}${p${ara}m}
 }
