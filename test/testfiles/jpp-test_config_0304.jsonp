@@ -15,6 +15,13 @@
 {
    "param1" : "param1",
    "param2" : "param2",
+   "param3" : [123, 456],
+   "lara"   : ["ara"],
    "ara"    : "ara",
-   "val1"  : "${param1}${p${ara}m2}"
+   //
+   "val1"  : "${param1}${p${ara}m2}",
+   "val2"  : "${param3}[0]${p${lara}[0]m3}[1]",
+   "val3"  : "${param3.0}${p${lara.0}m3.1}",
+   "val4"  :  "ABC, ${param1}, ${param2}, XYZ",
+   "val5"  :  "${param1}, ABC ; XYZ / ${param2}"
 }

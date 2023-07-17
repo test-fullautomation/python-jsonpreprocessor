@@ -13,8 +13,15 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "ara"   : "ara",
-   "param" : "param",
-   "val1"  : ${p${ara}m},
-   "val2"  : "${p${ara}m}"
+   "ara"    : "ara",
+   "lara"   : ["ara"],
+   "param"  : 123,
+   "param1" : [4.56],
+   //
+   "val1"   : ${p${ara}m},
+   "val2"   : "${p${ara}m}",
+   "val3"   : ${p${lara}[0]m1}[0],
+   "val4"   : "${p${lara}[0]m1}[0]",
+   "val5"   : ${p${lara.0}m1.0},
+   "val6"   : "${p${lara.0}m1.0}"
 }

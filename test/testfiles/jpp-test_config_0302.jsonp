@@ -13,7 +13,13 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "param" : 123,
-   "val1"  : ${param},
-   "val2"  : "${param}"
+   "param1" : 123,
+   "param2" : [123],
+   //
+   "val1"   : ${param1},
+   "val2"   : "${param1}",
+   "val3"   : ${param2}[0],
+   "val4"   : "${param2}[0]",
+   "val5"   : ${param2.0},
+   "val6"   : "${param2.0}"
 }

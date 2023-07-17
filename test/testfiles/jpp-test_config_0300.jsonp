@@ -13,7 +13,8 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "list_param" : ["A", "B", "C"],
+   "list_param" : [12, 3.4, 56],
+   //
    "val1"       : ${list_param}[0],
    "val2"       : "${list_param}[1]",
    "val3"       : "value_${list_param}[2]"

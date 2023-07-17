@@ -13,7 +13,17 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "par" : "par",
-   "val1" : "{par}am}",
-   "val2" : "${par}am}"
+   "par1"   : 1.23,
+   "par2"   : ["A", "B"],
+   "par3"   : ["par"],
+   "ara"    : "ara",
+   "param"  : "param",
+   "param2" : ${par3},
+   //
+   "val1" : "{par1}am}",
+   "val2" : "${par1}am}",
+   "val3" : "${par3}[0]am}",
+   "val4" : "${par3.0}am}",
+   "val5" : "${par3}[0]am2}[0]",
+   "val6" : "${par3.0}am2.0}"
 }

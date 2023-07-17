@@ -268,12 +268,12 @@ nNrOfUsecases = 0
 if TESTID is not None:
    listTESTIDs = TESTID.split(';')
    listofdictUsecasesSubset = []
-   for dictUsecase in listofdictUsecases:
-      for sTESTID in listTESTIDs:
-         sTESTID = sTESTID.strip()
+   for sTESTID in listTESTIDs:
+      sTESTID = sTESTID.strip()
+      for dictUsecase in listofdictUsecases:
          if sTESTID == dictUsecase['TESTID']:
             listofdictUsecasesSubset.append(dictUsecase)
-   # eof for dictUsecase in listofdictUsecases:
+   # eof for sTESTID in listTESTIDs:
    if len(listofdictUsecasesSubset) == 0:
       bSuccess = False
       sResult  = f"Test ID '{TESTID}' not defined"

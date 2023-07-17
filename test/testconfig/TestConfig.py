@@ -1117,12 +1117,12 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0300.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (4/1) > {list_param} [LIST] (3/1) > [STR]  :  'A'
-[DICT] (4/1) > {list_param} [LIST] (3/2) > [STR]  :  'B'
-[DICT] (4/1) > {list_param} [LIST] (3/3) > [STR]  :  'C'
-[DICT] (4/2) > {val1} [STR]  :  'A'
-[DICT] (4/3) > {val2} [STR]  :  'B'
-[DICT] (4/4) > {val3} [STR]  :  'value_C'
+[DICT] (4/1) > {list_param} [LIST] (3/1) > [INT]  :  12
+[DICT] (4/1) > {list_param} [LIST] (3/2) > [FLOAT]  :  3.4
+[DICT] (4/1) > {list_param} [LIST] (3/3) > [INT]  :  56
+[DICT] (4/2) > {val1} [INT]  :  12
+[DICT] (4/3) > {val2} [STR]  :  '3.4'
+[DICT] (4/4) > {val3} [STR]  :  'value_56'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1138,9 +1138,19 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0301.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (3/1) > {par} [STR]  :  'par'
-[DICT] (3/2) > {val1} [STR]  :  '{par}am}'
-[DICT] (3/3) > {val2} [STR]  :  'param}'
+[DICT] (13/1) > {par1} [FLOAT]  :  1.23
+[DICT] (13/1) > {par2} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (13/1) > {par2} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (13/2) > {par3} [LIST] (1/1) > [STR]  :  'par'
+[DICT] (13/3) > {ara} [STR]  :  'ara'
+[DICT] (13/4) > {param} [STR]  :  'param'
+[DICT] (13/5) > {param2} [LIST] (1/1) > [STR]  :  'par'
+[DICT] (13/6) > {val1} [STR]  :  '{par1}am}'
+[DICT] (13/6) > {val2} [STR]  :  'param}'
+[DICT] (13/6) > {val3} [STR]  :  'param}'
+[DICT] (13/6) > {val4} [STR]  :  'param}'
+[DICT] (13/6) > {val5} [STR]  :  'param2}[0]'
+[DICT] (13/6) > {val6} [STR]  :  'param2.0}'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1156,9 +1166,14 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0302.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (3/1) > {param} [INT]  :  123
-[DICT] (3/2) > {val1} [INT]  :  123
-[DICT] (3/3) > {val2} [STR]  :  '123'
+[DICT] (8/1) > {param1} [INT]  :  123
+[DICT] (8/2) > {param2} [LIST] (1/1) > [INT]  :  123
+[DICT] (8/3) > {val1} [INT]  :  123
+[DICT] (8/4) > {val2} [STR]  :  '123'
+[DICT] (8/5) > {val3} [INT]  :  123
+[DICT] (8/6) > {val4} [STR]  :  '123'
+[DICT] (8/7) > {val5} [INT]  :  123
+[DICT] (8/8) > {val6} [STR]  :  '123'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1174,10 +1189,16 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0303.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (4/1) > {ara} [STR]  :  'ara'
-[DICT] (4/2) > {param} [STR]  :  'param'
-[DICT] (4/3) > {val1} [STR]  :  'param'
-[DICT] (4/4) > {val2} [STR]  :  'param'
+[DICT] (10/1) > {ara} [STR]  :  'ara'
+[DICT] (10/2) > {lara} [STR]  :  'ara'
+[DICT] (10/3) > {param} [INT]  :  123
+[DICT] (10/4) > {param} [LIST] (1/1) > [FLOAT]  :  4.56
+[DICT] (10/5) > {val1} [INT]  :  123
+[DICT] (10/6) > {val2} [STR]  :  '123'
+[DICT] (10/7) > {val3} [STR]  :  [FLOAT]  :  4.56
+[DICT] (10/8) > {val4} [STR]  :  [STR]  :  '4.56'
+[DICT] (10/9) > {val5} [STR]  :  [FLOAT]  :  4.56
+[DICT] (10/10) > {val6} [STR]  :  [STR]  :  '4.56'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1193,10 +1214,17 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_0304.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (4/1) > {param1} [STR]  :  'param1'
-[DICT] (4/2) > {param2} [STR]  :  'param2'
-[DICT] (4/3) > {ara} [STR]  :  'ara'
-[DICT] (4/4) > {val1} [STR]  :  'param1param2'
+[DICT] (10/1) > {param1} [STR]  :  'param1'
+[DICT] (10/2) > {param2} [STR]  :  'param2'
+[DICT] (10/3) > {param3} [LIST] (2/1) > [INT]  :  123
+[DICT] (10/3) > {param3} [LIST] (2/2) > [FLOAT]  :  4.56
+[DICT] (10/4) > {lara} [LIST] (1/1) > [STR]  :  "ara"
+[DICT] (10/5) > {ara} [STR]  :  'ara'
+[DICT] (10/6) > {val1} [STR]  :  'param1param2'
+[DICT] (10/7) > {val2} [STR]  :  '1234.56'
+[DICT] (10/8) > {val3} [STR]  :  '1234.56'
+[DICT] (10/9) > {val4} [STR]  :  'ABC, param1, param2, XYZ'
+[DICT] (10/10) > {val5} [STR]  :  'param1, ABC ; XYZ / param2'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
