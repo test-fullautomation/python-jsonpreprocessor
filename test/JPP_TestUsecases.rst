@@ -201,7 +201,7 @@ Test Use Cases
 
    **JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -211,7 +211,7 @@ Test Use Cases
 
    **JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -221,7 +221,7 @@ Test Use Cases
 
    **JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -231,7 +231,7 @@ Test Use Cases
 
    **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -241,7 +241,7 @@ Test Use Cases
 
    **JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -251,7 +251,7 @@ Test Use Cases
 
    **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -261,7 +261,7 @@ Test Use Cases
 
    **JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -271,7 +271,7 @@ Test Use Cases
 
    **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -281,7 +281,7 @@ Test Use Cases
 
    **JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -291,7 +291,87 @@ Test Use Cases
 
    **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing**
 
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0260**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0261**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0262**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0263**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0264**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0265**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0266**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0267**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -749,9 +829,21 @@ Test Use Cases
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
 
-   **JSON file with composite data structure (nested lists and dictionaries 4)**
+   **JSON file with composite data structure (some lists)**
 
    Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0504**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (some dictionaries)**
+
+   Expected: JsonPreprocessor returns expected value
+
+   *Hint: !!! some parts commented out; to be activated after bugfixes are available*
 
 ----
 
@@ -829,5 +921,5 @@ Test Use Cases
 
 ----
 
-Generated: 17.07.2023 - 20:25:39
+Generated: 18.07.2023 - 13:24:42
 

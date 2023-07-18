@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 17.07.2023
+# 18.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -245,7 +245,7 @@ if CODEDUMP is True:
 
 THISSCRIPT         = oConfig.Get('THISSCRIPT')
 THISSCRIPTNAME     = oConfig.Get('THISSCRIPTNAME')
-REFERENCEPATH      = oConfig.Get('REFERENCEPATH')
+TESTCONFIGPATH     = oConfig.Get('TESTCONFIGPATH')
 OSNAME             = oConfig.Get('OSNAME')
 PLATFORMSYSTEM     = oConfig.Get('PLATFORMSYSTEM')
 PYTHON             = oConfig.Get('PYTHON')
@@ -352,7 +352,7 @@ for dictUsecase in listofdictUsecases:
    EXPECTEDRETURN    = dictUsecase['EXPECTEDRETURN']
 
    # TODO: make this depend on test case; in some BADCASE test cases this might not be wanted:
-   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=REFERENCEPATH)
+   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
 
    # optional ones
    HINT = None

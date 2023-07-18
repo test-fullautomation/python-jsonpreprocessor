@@ -270,9 +270,6 @@ ERR: ${param1}, ABC ; XYZ / ${param2}
 Further test cases
 --------------------------------------------------------------------------------------------------------------
 
-No substitution of composite data types at left hand side of colon (parameter names and key names)
-
---------------------------------------------------------------------------------------------------------------
 NESTED_IMPORTS (incl. file not existing)
 --------------------------------------------------------------------------------------------------------------
 CYCLIC_IMPORT

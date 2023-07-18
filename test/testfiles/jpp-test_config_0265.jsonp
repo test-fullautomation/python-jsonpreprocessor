@@ -13,17 +13,7 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "param1" : [[[[1]]]],
-   //
-   "val1"   : ${param1}[0][0][0][0],
-   "val2"   : "${param1}[0][0][0][0]",
-   "val3"   : ${param1.0.0.0.0},
-   "val4"   : "${param1.0.0.0.0}",
-   //
-   "param2" : [1],
-   "param3" : [0,2],
-   "param4" : [0,1,2],
-   //
-   "val5" : ${lparam4}[${lparam3}[${lparam2}[0]]],
-   "val6" : "${lparam4}[${lparam3}[${lparam2}[0]]]"
+   "param1" : "prefix",
+   "param2" : [1,2,3],
+   "param3" : {"${param1}_${param2}_suffix" : "value"}
 }

@@ -20,7 +20,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 13.07.2023
+# 18.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -76,6 +76,7 @@ class CConfig():
       self.__dictConfig['THISSCRIPTNAME'] = os.path.basename(THISSCRIPT)
       REFERENCEPATH = os.path.dirname(THISSCRIPT) # position of main() script is reference for all relative paths
       self.__dictConfig['REFERENCEPATH']  = REFERENCEPATH
+      self.__dictConfig['TESTCONFIGPATH'] = f"{REFERENCEPATH}/testconfig" # reference for all relative paths inside TestConfig.py
       OSNAME = os.name
       self.__dictConfig['OSNAME']         = OSNAME
       PLATFORMSYSTEM = platform.system()
