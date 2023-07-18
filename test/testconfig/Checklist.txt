@@ -4,7 +4,7 @@ Checklist for implementation of self test cases for JsonPreprocessor
 
 XC-CT/ECA3-Queckenstedt
 
-14.07.2023
+18.07.2023
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -286,9 +286,5 @@ ${AA.BB.CC.DD} : 25
 SPECIAL_CHARACTERS
 --------------------------------------------------------------------------------------------------------------
 missing JSON file
---------------------------------------------------------------------------------------------------------------
-Colon inside string harms parameter substitution
-"test_parameter" : "ABC ${value} : DEF"
-https://github.com/test-fullautomation/python-jsonpreprocessor/issues/92
 --------------------------------------------------------------------------------------------------------------
 

@@ -1912,6 +1912,57 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0505"
+dictUsecase['DESCRIPTION']       = "JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0505.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (5/1) > {param1} [STR]  :  'value : 1'
+[DICT] (5/2) > {param2} [STR]  :  'value : 2'
+[DICT] (5/3) > {val1} [STR]  :  'The values are: 'value :,: 1' and: 'value :,: 2', and so on'
+[DICT] (5/4) > {val2} [STR]  :  'The values are: 'value :,: 1' and: 'value :,: 2', and so on'
+[DICT] (5/5) > {val3} [STR]  :  ':'The values are: 'value :,: 1' and: 'value :,: 2', and so on'::,::'The values are: 'value :,: 1' and: 'value :,: 2', and so on':'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0506"
+dictUsecase['DESCRIPTION']       = "JSON file with composite strings containing several combinations of curly brackets and special characters before"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0506.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (12/1) > {param1} [DICT] (2/1) > {A} [INT]  :  1
+[DICT] (12/1) > {param1} [DICT] (2/2) > {B} [INT]  :  2
+[DICT] (12/2) > {param2} [LIST] (3/1) > [INT]  :  1
+[DICT] (12/2) > {param2} [LIST] (3/2) > [INT]  :  2
+[DICT] (12/2) > {param2} [LIST] (3/3) > [INT]  :  3
+[DICT] (12/3) > {param3} [STR]  :  'value'
+[DICT] (12/4) > {var1} [STR]  :  'value 1 > {'A': 1, 'B': 2}'
+[DICT] (12/5) > {var2} [STR]  :  'value 2 > [1, 2, 3]'
+[DICT] (12/6) > {var3} [STR]  :  'value 3 > value'
+[DICT] (12/7) > {var4} [STR]  :  'value 4 > &{param1}'
+[DICT] (12/8) > {var5} [STR]  :  'value 5 > &{param2}'
+[DICT] (12/9) > {var6} [STR]  :  'value 6 > &{param3}'
+[DICT] (12/10) > {var7} [STR]  :  'value 7 > @{param1}'
+[DICT] (12/11) > {var8} [STR]  :  'value 8 > @{param2}'
+[DICT] (12/12) > {var9} [STR]  :  'value 9 > @{param3}'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0550"
 dictUsecase['DESCRIPTION']       = "JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
