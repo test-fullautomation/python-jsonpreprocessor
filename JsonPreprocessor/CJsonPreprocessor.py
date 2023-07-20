@@ -176,6 +176,10 @@ class CJsonPreprocessor():
 
       Internally used to aggregate imported json files.
         """
+        import builtins
+        import keyword
+        self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
+        self.lDataTypes.append(keyword.kwlist)
         self.lImportedFiles = []
         self.recursive_level = 0
         self.syntax = syntax
@@ -332,6 +336,31 @@ class CJsonPreprocessor():
         sContentCleaned=re.sub(pattern, replacer, sContent)
 
         return sContentCleaned
+
+
+    def __checkParamName(self, sInput: str) -> str:
+        """
+      Checks a parameter name, in case the name is conflict with Python keywords, the temporary prefix 
+      will be added to avoid any potential issues. This temporary prefix is removed when updating returned 
+      Json object.
+
+**Args:**
+
+   **sInput** (*string*)
+
+**Returns:**
+
+   **sInput** (*string*)
+        """
+
+        pattern = "\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}"
+        lParams = re.findall(pattern, sInput)
+        for param in lParams:
+            if "." not in param and param in self.lDataTypes:
+                sInput = re.sub(param, "JPavoidDataType_" + param, sInput, count=1)
+            if "." in param and "JPavoidDataType_" + param.split('.')[0] in globals():
+                sInput = re.sub(param, "JPavoidDataType_" + param, sInput, count=1)
+        return sInput
 
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False) -> list:
@@ -493,6 +522,8 @@ class CJsonPreprocessor():
                     except:
                         raise Exception(f"Could not set variable '{k}' with value '{v}'!")
 
+                    if "JPavoidDataType_" in k:
+                        k = re.sub("JPavoidDataType_", "", k)
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
                     else:
@@ -502,15 +533,20 @@ class CJsonPreprocessor():
                     except:
                         pass
                 else:
+                    if "JPavoidDataType_" in k:
+                        k = re.sub("JPavoidDataType_", "", k)
                     oJson[k] = v
 
             else:
                 if bNested:
+                    if "JPavoidDataType_" in k:
+                        k = re.sub("JPavoidDataType_", "", k) 
                     oJson[k] = v
-
 
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
+                if k in self.lDataTypes:
+                    k = "JPavoidDataType_" + k
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
@@ -518,8 +554,13 @@ class CJsonPreprocessor():
             keyNested = ''
             if re.match('.*\${\s*', k.lower()):
                 keyNested = k
+                pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
                 if re.match("str\(\s*\${.+", k.lower()):
-                    k = re.sub("str\(\s*(\${.+)\s*\)", "\\1", k)
+                    k = re.sub("str\(\s*(" + pattern + ")\s*\)", "\\1", k)
+                if len(re.findall(pattern, k.lower())) > 1 or k.count('{') != k.count('}'):
+                    raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
+          Please check key '{k}' in config file!!!")
+                k = self.__checkParamName(k)
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
 
@@ -535,6 +576,7 @@ class CJsonPreprocessor():
                         if re.match("str\(\s*\${.+", item.lower()):
                             item = re.sub("str\(\s*(\${.+)\s*\)", "\\1", item)
                             bStringValue = True
+                        item = self.__checkParamName(item)
                         itemAfterProcessed = self.__nestedParamHandler(item)
                         tmpItemAfterProcessed = re.sub('\${\s*(.*?)\s*}', '\\1', itemAfterProcessed[0])
                         sExec = "value = " + tmpItemAfterProcessed if isinstance(tmpItemAfterProcessed, str) else \
@@ -560,6 +602,7 @@ class CJsonPreprocessor():
                     if re.search("(str\(\s*" + pattern + "\))", v.lower()):
                         v = re.sub("str\(\s*(" + pattern + ")\s*\)", "\\1", v)
                         bStringValue = True
+                    v = self.__checkParamName(v)
                     valueAfterProcessed = self.__nestedParamHandler(v)
                     for valueProcessed in valueAfterProcessed:
                         tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueProcessed)
@@ -607,10 +650,14 @@ class CJsonPreprocessor():
             for nestedParam in lNestedParam:
                 self.lNestedParams.append(nestedParam[0])
             sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
-        elif re.search(pattern, sInputStr.lower()):
+        elif re.search("^\s*" + pattern + "\s*\]*\}*,*\s*$", sInputStr.lower()):
             sInputStr = re.sub("(" + pattern + ")", "\"\\1\"", sInputStr)
             nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
             self.lNestedParams.append(nestedParam)
+        else:
+            if len(re.findall(pattern, sInputStr.lower()))>1:
+                raise Exception(f"Key name or value is a mix of nested parameters and hard coded parts. \n \
+          The entire expression {sInputStr.strip()} must be enclosed in quotes")
 
         sOutput = sInputStr
         return sOutput
@@ -699,15 +746,15 @@ class CJsonPreprocessor():
                 for item in items:
                     i+=1
                     newSubItem = ""
-                    if re.search("\s*\[[^\[\]]*\]\s*,*\s*", item):
+                    if re.search("^\s*\[[^\[\]]*\]\s*,*\s*", item):
                         subItems = re.split("\s*,\s*", item)
-                        j=0
+                        j=0  
                         for subItem in subItems:
                             j+=1
                             if j<len(subItems):
                                 newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ","
                             else:
-                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem)
+                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) 
                     else:
                         newSubItem = self.__checkAndUpdateKeyValue(item)
                     if i<len(items):
@@ -749,6 +796,8 @@ class CJsonPreprocessor():
 
         if masterFile:
             for k, v in oJson.items():
+                if k in self.lDataTypes:
+                    k = "JPavoidDataType_" + k
                 globals().update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             for k, v in self.lUpdatedParams.items():
@@ -769,6 +818,7 @@ class CJsonPreprocessor():
 
             # Checking availability of nested parameters before updating and replacing.
             for param in self.lNestedParams:
+                param = self.__checkParamName(param)
                 parseNestedParam = self.__nestedParamHandler(param)
                 tmpParseNestedParam = re.sub('\\${\s*(.*?)\s*}', '\\1', parseNestedParam[0])
                 sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
