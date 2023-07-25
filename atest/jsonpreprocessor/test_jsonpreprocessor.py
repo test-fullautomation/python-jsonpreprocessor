@@ -348,15 +348,15 @@ class TestNoneTrueFalseDatatype:
         sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_04.json")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        assert oJsonData['string_null'] == "null"
-        assert oJsonData['string_none'] == '"None"'
-        assert oJsonData['string_true'] == '"True"'
-        assert oJsonData['string_false'] == '"False"'
-        assert oJsonData['convert_null_to_string'] == '"None"'
-        assert oJsonData['convert_none_to_string'] == '"None"'
+        assert oJsonData['string_null'] == 'null'
+        assert oJsonData['string_none'] == 'None'
+        assert oJsonData['string_true'] == 'True'
+        assert oJsonData['string_false'] == 'False'
+        assert oJsonData['convert_null_to_string'] == 'None'
+        assert oJsonData['convert_none_to_string'] == 'None'
         assert oJsonData['convert_float_to_string'] == "1.332"
-        assert oJsonData['convert_true_to_string'] == '"True"'
-        assert oJsonData['convert_false_to_string'] == '"False"'
+        assert oJsonData['convert_true_to_string'] == 'True'
+        assert oJsonData['convert_false_to_string'] == 'False'
         assert oJsonData['params']['global'] == JSONFORMAT_NONE_TRUE_FALSE['params']['global']
         assert oJsonData['preprocessor']['definitions'] == JSONFORMAT_NONE_TRUE_FALSE['preprocessor']['definitions']
 
