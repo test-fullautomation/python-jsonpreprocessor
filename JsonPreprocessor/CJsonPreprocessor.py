@@ -627,9 +627,6 @@ class CJsonPreprocessor():
                                 v = ldict['value']
                         except:
                             raise Exception(f"The variable '{valueProcessed}' is not available!")
-                        
-                    if isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
-                        v = '\"' + v + '\"'
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '':
@@ -709,18 +706,6 @@ class CJsonPreprocessor():
 
       Preprocessed json file(s) as dictionary data structure
         '''
-        def __handleStrNoneTrueFalse(objJson):
-            oJson = {}
-            for k, v in objJson.items():
-                if isinstance(v, dict):
-                    v = __handleStrNoneTrueFalse(v)
-                    oJson[k] = v
-                elif isinstance(v, str) and re.match('^\s*none|true|false\s*$', v.lower()):
-                    v = '\"' + v + '\"'
-                    oJson[k] = v
-                else:
-                    oJson[k] = v
-            return oJson
         
         def __handleListElements(sInput : str) -> str:
             items = re.split("\s*,\s*", sInput)
@@ -824,7 +809,6 @@ class CJsonPreprocessor():
         except Exception as error:
             raise Exception(f"json file '{jFile}': '{error}'")
 
-        oJson = __handleStrNoneTrueFalse(oJson)
         os.chdir(currentDir)
 
         self.__checkDotInParamName(oJson)
