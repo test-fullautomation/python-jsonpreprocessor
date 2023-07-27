@@ -26,12 +26,15 @@
    //
    "val5"   : ${param2}['E']['F']['G']['H'],
    "val6"   : ${param3}['K']['L']['M']['N'],
-   "val7"   : ${param4}['O']['P']['Q']['R']
+   "val7"   : ${param4}['O']['P']['Q']['R'],
    //
-   // currently not working; needs to be activated after some bug fixes:
+   "val8"   : ${param5}['X']['Y']['Z'],
+   "val9"   : "${param5}['X']['Y']['Z']",
+   "val10"  : ${param5.X.Y.Z},
+   "val11"  : "${param5.X.Y.Z}",
    //
-   // "val8"    : ${param5}['${param2}['E']['F']['G']['H']']['${param3}['K']['L']['M']['N']']['${param4}['O']['P']['Q']['R']'],
-   // "val9"    : "${param5}['${param2}['E']['F']['G']['H']']['${param3}['K']['L']['M']['N']']['${param4}['O']['P']['Q']['R']']",
-   // "val10"   : ${param5.${param2.E.F.G.H}.${param3.K.L.M.N}.${param4.O.P.Q.R}},
-   // "val11"   : "${param5.${param2.E.F.G.H}.${param3.K.L.M.N}.${param4.O.P.Q.R}}"
+   "val12"  : ${param5}['${param2}['E']['F']['G']['H']']['${param3}['K']['L']['M']['N']']['${param4}['O']['P']['Q']['R']'],
+   "val13"  : "${param5}['${param2}['E']['F']['G']['H']']['${param3}['K']['L']['M']['N']']['${param4}['O']['P']['Q']['R']']",
+   "val14"  : ${param5.${param2.E.F.G.H}.${param3.K.L.M.N}.${param4.O.P.Q.R}},
+   "val15"  : "${param5.${param2.E.F.G.H}.${param3.K.L.M.N}.${param4.O.P.Q.R}}"
 }

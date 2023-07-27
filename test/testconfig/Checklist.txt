@@ -1,14 +1,14 @@
 **************************************************************************************************************
 
-Checklist for implementation of self test cases for JsonPreprocessor
+Checklist for implementation of self test cases for JsonPreprocessor / parsing concepts
 
 XC-CT/ECA3-Queckenstedt
 
-18.07.2023
+27.07.2023
 
 --------------------------------------------------------------------------------------------------------------
 
-* Dataset to be used for testing
+* Dataset used for testing
 
 // variant info
 "variant_1"            : "VARIANT-1",
@@ -160,111 +160,313 @@ XC-CT/ECA3-Queckenstedt
 
 // we urgently recommend not to mix up standard notation and dotdict notation within the same line of code
 
+
+**************************************************************************************************************
+                                    CONCEPTS
+**************************************************************************************************************
+
+========================
+Error detection (basics)
+========================
+
+(errors sorted by priority of detection):
+
+1. basic syntax violations           > error message: syntax violation ...
+2. missing quotes around expressions > error message: missing quote around expression '...' (previously: "value not found")
+3. parameter not available           > error message: parameter '...' not available
+
+Syntax violations should have highest priority (error handling, error messages).
+* In case of syntax violations, further errors like missing quotes or missing parameters are not relevant.
+* In case of missing quotes around expressions, further errors like missing parameters are not relevant.
+
 --------------------------------------------------------------------------------------------------------------
 
-* value identification (quotes required around expression or not?)
+==================
+Parsing strategies
+==================
 
-// an expression can be:
-// * a value of a parameter
-// * a value of a dictionary key
-// * a list element
-// * a parameter name
-// * a name of a dictionary key
+Level 1: Check the quoting in JSON code
+Level 2: Identify expressions in JSON code
+Level 3: Analyze identified expressions (value identification)
+Level 4: ${} substitution and file imports
 
-// possible errors (sorted by priority of detection):
-// 1. syntax violations                   > error message: syntax violation ...
-// 2. missing quotes around expressions   > error message: missing quote around expression '...' (previously: "value not found")
-// 3. parameter not available             > error message: parameter '...' not available
+--------------------------------------------------------------
 
-// syntax violations should have highest priority (error handling, error messages)
-// in case of syntax violations further errors like missing quotes or missing parameters are not relevant
+Level 1: Check the quoting in JSON code
+=======================================
 
-// errors should be detected in the order listed above
+At this level an expression can be
+a. the name of a parameter,
+b. the value of a parameter
 
-// opening element: '${'
-// closing element: '}' ('}[]' also!)
+In JSON format, names and values are separated by delimiters like colon and comma:
 
-// * rule 1
-// parameter of type 'list'
-// valid dollar operator expressions identified, but with index (in square brackets) defined within the curly brackets
-// => syntax error (index expected to be set outside the curly brackets)
-OK: ${list_param}[0]
-OK: "${list_param}[0]"
-OK: "value_${list_param}[0]"
-ERR: ${list_param[0]}
-ERR: "${list_param[0]}"
-ERR: "value_${list_param[0]}"
+{ <expression> : <expression> , <expression> : <expression> }
 
-// * rule 2
-// expression contains opening elements '${' (n>0) and no, one or more than one closing element '}' (n>=0),
-// more opening elements are counted than closing elements
-// => corresponding closing elements are missing
-// => quotes and missing parameters are irrelevant in this case
-// => syntax error
-ERR: ${param
-ERR: "${param"
-ERR: ${p${ara}m
-ERR: "${p${ara}m"
-ERR: ABC${p${ara}m
-ERR: "ABC${p${ara}m"
-ERR: ABC${p${aram}
-ERR: "ABC${p${aram}"
+or in more datail:
 
-// * rule 3
-// expression contains no, one or more than one opening element '${' (n>=0) and closing elements '}' (n>0),
-// more closing elements are counted than opening elements
-// => with no opening element '${' quotes around expression are required
-OK: "{par}am}"
-ERR: {par}am}
-// => with opening element '${' identifies parameter '${par}' (non greedy search for '}')
-// => detects extra content 'am}' or 'am}[1]' outside any '${}'
-// => identifies composite string
-// => quotes required
-OK: "${par}am}"
-ERR: ${par}am}
-OK: "${par}[0]am}"
-ERR: ${par}[0]am}
-OK: "${par.0}am}"
-ERR: ${par.0}am}
-OK: "${par}[0]am}[1]"
-ERR: ${par}[0]am}[1]
-OK: "${par.0}am.1}"
-ERR: ${par.0}am.1}
+{ <name> : <value> , <name> : <value> }
 
-// * rule 4
-// expression starts with '${' and ends with '}', no further matching '${' and '}' in between
-// => no quotes around expression required, but allowed (string conversion)
-OK: ${param}
-OK: "${param}"
-OK: ${param}[0]
-OK: "${param}[0]"
-OK: ${param.0}
-OK: "${param.0}"
+Example
 
-// * rule 5
-// expression starts with '${' and ends with '}', further matching '${' and '}' in between (nested)
-// => no quotes around expression required, but allowed (string conversion)
-OK: ${p${ara}m}
-OK: "${p${ara}m}"
-OK: ${p${ara}[0]m}[1]
-OK: "${p${ara}[0]m}[1]"
-OK: ${p${ara.0}m.1}
-OK: "${p${ara.0}m.1}"
+{ "param1" : "value1" , "param2" : "value2" }
 
-// * rule 6
-// expression starts with '${' and ends with '}', further matching '${' and '}' in between (not all nested)
-// => identifies composite string
-// => quotes around expression required
-OK: "${param1}${p${ara}m2}"
-ERR: ${param1}${p${ara}m2}
-OK: "${param1}[0]${p${ara}[1]m2}[2]"
-ERR: ${param1}[0]${p${ara}[1]m2}[2]
-OK: "${param1.0}${p${ara.1}m2.2}"
-ERR: ${param1.0}${p${ara.1}m2.2}
-OK:  "ABC, ${param1}, ${param2}, XYZ"
-ERR: ABC, ${param1}, ${param2}, XYZ
-OK:  "${param1}, ABC ; XYZ / ${param2}"
-ERR: ${param1}, ABC ; XYZ / ${param2}
+Values and names are usually encapsulated in quotes. Because of the usage of dollar operator expressions
+in the extended JSONP format this rule is not valid any more, because also this is possible now
+(it's not required to put dollar operator expressions in quotes):
+
+{ "param1" : "value1" , "param2" : ${param1} }
+
+But still the rule is: Every (opening) quote requires a matching (closing) quote.
+
+This would be a syntax error (missing closing quote after 'value1'):
+
+{ "param1" : "value1 , "param2" : ${param1} }
+
+Unfortunately the JSON interpreter puts a higher priority on the identification of important delimiters like colon and comma,
+than on the check of matching quotes. The example above cause the following error message: "Invalid control character"
+(instead of "missing quote"). This really does not help.
+
+Impact: With highest priority every JSONP file needs to be checked if the quotation is valid. If quotes are missing, the
+computation can be stopped already. And it makes no sense any more to continue with the JSON parser. It makes no sense to let
+him try anything in case of quotes are missing. This only causes strange error messages.
+
+Such a pre check can be realized with the help of the Python lexical parser shlex (like described in
+https://github.com/test-fullautomation/python-jsonpreprocessor/issues/106).
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+In case of errors at this level, abort with error message. Otherwise continue with next level.
+
+
+Level 2: Identify expressions in JSON code
+==========================================
+
+If the pre check of level 1 is passed, we need to identify the expressions. Accordingly to the JSON syntax rules we know
+that expressions are separated by colon and comma alternately (starting with colon):
+
+{ <expression> : <expression> , <expression> : <expression> }
+
+We also know that delimiters inside strings belong to names and values and have - in this case - no JSON syntactical meaning any more.
+
+We have to consider, that every expression can either be a hard coded (quoted) string or a dollar operator expression,
+that is not encapsulated in quotes:
+
+Valid:
+{ ${expression} : "expression" , "expression" : ${expression} }
+{ "expression" : "${expression1} , : ${expression2}" }
+
+In this level two rules are involved:
+1. Quotes occur in matching pairs of quotes
+2. The dollar operator syntax '${}'
+
+With the help of these rules it should be possible to check the integrity of the JSON delimiters colon and comma:
+
+Valid (alternative colon and comma):
+{ <expression> : <expression> , <expression> : <expression> }
+
+Invalid:
+{ <expression>  <expression> , <expression> : <expression> }
+{ <expression> : <expression>  <expression> : <expression> }
+{ <expression> : , <expression> : <expression> }
+{ <expression> : <expression> , <expression> , <expression> }
+{ <expression> : <expression> : <expression> : <expression> }
+
+If this check fails, we stop the computation with an error message.
+
+When this check is passed, we know, that the JSON file contains a valid usage of JSON delimiters.
+And from now on we are able to distinguish between names and values:
+
+{ <name> : <value> , <name> : <value> }
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+In case of no errors at this level, we can continue with next level.
+
+
+Level 3: Analyze identified expressions (value identification)
+==============================================================
+
+After the expressions are identified, they need to be analyzed. The main question here is:
+Are quotes required around the identified expression or not (accordingly to the JSONP format syntax rules).
+If required quotes are missing: Abort with expression check error message. Otherwise continue.
+
+Valid:
+{ "name1" : "value" , "name2" : ${value} }
+
+Invalid:
+{ "name1" : "value" , "name2" : ${value1} ${value2} }
+{ "name1" : "value" , "name2" : The value is ${value} }
+
+This is also invalid (colon within value, that is not encapsulated in quotes by mistake),
+but this is a level 2 error and must have been detected earlier:
+{ "name1" : "value" , "name2" : The value is: ${value} }
+
+Valid:
+{ "name1" : "value" , "name2" : "The value is: ${value}" }
+
+
+Value identification: quotes required around a dollar operator expression or not?
+---------------------------------------------------------------------------------
+
+An dollar operator expression can represent:
+
+* a parameter name
+* a list element
+* a name of a dictionary key
+* a value of a parameter
+* a value of a dictionary key
+
+Syntax elements:
+
+* Opening element: '${'
+* Closing element: '}' ('}[]' also!)
+
+Issues related to dollar operator expressions can be identified with the following 6 rules:
+
+* rule 1
+
+   Parameter of type 'list'
+   Valid dollar operator expressions identified, but with index (in square brackets) defined within the curly brackets
+   => syntax error (index expected to be set outside the curly brackets)
+   OK: ${list_param}[0]
+   OK: "${list_param}[0]"
+   OK: "value_${list_param}[0]"
+   ERR: ${list_param[0]}
+   ERR: "${list_param[0]}"
+   ERR: "value_${list_param[0]}"
+
+* rule 2
+
+   Expression contains opening elements '${' (n>0) and no, one or more than one closing element '}' (n>=0)
+   More opening elements are counted than closing elements
+   => Corresponding closing elements are missing
+   => Quotes and missing parameters are irrelevant in this case
+   => Syntax error
+   ERR: ${param
+   ERR: "${param"
+   ERR: ${p${ara}m
+   ERR: "${p${ara}m"
+   ERR: ABC${p${ara}m
+   ERR: "ABC${p${ara}m"
+   ERR: ABC${p${aram}
+   ERR: "ABC${p${aram}"
+
+* rule 3
+
+   Expression contains no, one or more than one opening element '${' (n>=0) and closing elements '}' (n>0)
+   More closing elements are counted than opening elements
+   => With no opening element '${' quotes around expression are required
+   OK: "{par}am}"
+   ERR: {par}am}
+   => With opening element '${' identifies parameter '${par}' (non greedy search for '}')
+   => Detects extra content 'am}' or 'am}[1]' outside any '${}'
+   => Identifies composite string
+   => Quotes required
+   OK: "${par}am}"
+   ERR: ${par}am}
+   OK: "${par}[0]am}"
+   ERR: ${par}[0]am}
+   OK: "${par.0}am}"
+   ERR: ${par.0}am}
+   OK: "${par}[0]am}[1]"
+   ERR: ${par}[0]am}[1]
+   OK: "${par.0}am.1}"
+   ERR: ${par.0}am.1}
+
+* rule 4
+
+   Expression starts with '${' and ends with '}', no further matching '${' and '}' in between
+   => No quotes around expression required, but allowed (string conversion)
+   OK: ${param}
+   OK: "${param}"
+   OK: ${param}[0]
+   OK: "${param}[0]"
+   OK: ${param.0}
+   OK: "${param.0}"
+
+* rule 5
+
+   Expression starts with '${' and ends with '}', further matching '${' and '}' in between (nested)
+   => No quotes around expression required, but allowed (string conversion)
+   OK: ${p${ara}m}
+   OK: "${p${ara}m}"
+   OK: ${p${ara}[0]m}[1]
+   OK: "${p${ara}[0]m}[1]"
+   OK: ${p${ara.0}m.1}
+   OK: "${p${ara.0}m.1}"
+
+* rule 6
+
+   Expression starts with '${' and ends with '}', further matching '${' and '}' in between (not all nested)
+   => Identifies composite string
+   => Quotes around expression required
+   OK: "${param1}${p${ara}m2}"
+   ERR: ${param1}${p${ara}m2}
+   OK: "${param1}[0]${p${ara}[1]m2}[2]"
+   ERR: ${param1}[0]${p${ara}[1]m2}[2]
+   OK: "${param1.0}${p${ara.1}m2.2}"
+   ERR: ${param1.0}${p${ara.1}m2.2}
+   OK:  "ABC, ${param1}, ${param2}, XYZ"
+   ERR: ABC, ${param1}, ${param2}, XYZ
+   OK:  "${param1}, ABC ; XYZ / ${param2}"
+   ERR: ${param1}, ABC ; XYZ / ${param2}
+
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+If also this check is passed, we know:
+
+* We have no basic syntax issues related to missing quotes
+* We have no JSON syntax issues related to the positions of delimiters
+* We have no syntax issues related to dollar operator expressions ${}
+
+Only in this case we continue with next level.
+
+
+Level 4: ${} substitution and file imports
+==========================================
+
+1. Resolve all dollar operator expressions ${} recursively; check availability of parameters
+2. Resolve file imports; check availability of parameters
+3. Create the final data structure (returned dictionary containing all values)
+
+Possible errors at this level:
+
+* Referenced parameter not defined
+* Imported file does not exist
+
+(nothing else!)
+
+
+Questions:
+==========
+
+* Can it happen that the substitution of a dollar operator expression causes a new syntax error?
+
+* For exactly what shall we need the JSON parser now? All things are already parsed. I would assume now,
+  that the dictionary to be returned, exists already.
+
+
+Outlook:
+========
+
+In my opinion it would be helpful to have the possibility - maybe with the help of an additional optional
+parameter - to activate further debug output, that is the current content of the internal data structure
+at every level described above. Without this I have no idea how an effective debugging shall be possible.
+
 
 --------------------------------------------------------------------------------------------------------------
 Further test cases (TODO)

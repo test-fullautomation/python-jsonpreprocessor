@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 26.07.2023
+# 27.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -1589,7 +1589,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0367.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1603,7 +1603,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0368.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1617,7 +1617,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0369.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1631,7 +1631,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0370.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Expecting value:"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1645,7 +1645,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 5"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0371.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Expecting property name enclosed in double quotes"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1872,12 +1872,12 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (10/3) > {val2} [STR]  :  '1'
 [DICT] (10/4) > {val3} [INT]  :  1
 [DICT] (10/5) > {val4} [STR]  :  '1'
-[DICT] (10/6) > {param2} [LIST] (1/1) > [INT]  :  1
-[DICT] (10/7) > {param3} [LIST] (2/1) > [INT]  :  0
-[DICT] (10/7) > {param3} [LIST] (2/2) > [INT]  :  2
-[DICT] (10/8) > {param4} [LIST] (3/1) > [INT]  :  0
-[DICT] (10/8) > {param4} [LIST] (3/2) > [INT]  :  1
-[DICT] (10/8) > {param4} [LIST] (3/3) > [INT]  :  2
+[DICT] (10/6) > {lparam2} [LIST] (1/1) > [INT]  :  1
+[DICT] (10/7) > {lparam3} [LIST] (2/1) > [INT]  :  0
+[DICT] (10/7) > {lparam3} [LIST] (2/2) > [INT]  :  2
+[DICT] (10/8) > {lparam4} [LIST] (3/1) > [INT]  :  0
+[DICT] (10/8) > {lparam4} [LIST] (3/2) > [INT]  :  1
+[DICT] (10/8) > {lparam4} [LIST] (3/3) > [INT]  :  2
 [DICT] (10/9) > {val5} [INT]  :  2
 [DICT] (10/10) > {val6} [STR]  :  '2'
 """
@@ -1890,23 +1890,31 @@ dictUsecase['DESCRIPTION']       = "JSON file with composite data structure (som
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
 dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
 dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = "!!! some parts commented out; to be activated after bugfixes are available"
+dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0504.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (12/1) > {param1} [DICT] (1/1) > {A} [DICT] (1/1) > {B} [DICT] (1/1) > {C} [DICT] (1/1) > {D} [FLOAT]  :  1.23
-[DICT] (12/2) > {param2} [DICT] (1/1) > {E} [DICT] (1/1) > {F} [DICT] (1/1) > {G} [DICT] (1/1) > {H} [STR]  :  'X'
-[DICT] (12/3) > {param3} [DICT] (1/1) > {K} [DICT] (1/1) > {L} [DICT] (1/1) > {M} [DICT] (1/1) > {N} [STR]  :  'Y'
-[DICT] (12/4) > {param4} [DICT] (1/1) > {O} [DICT] (1/1) > {P} [DICT] (1/1) > {Q} [DICT] (1/1) > {R} [STR]  :  'Z'
-[DICT] (12/5) > {param5} [DICT] (1/1) > {X} [DICT] (1/1) > {Y} [DICT] (1/1) > {Z} [INT]  :  345
-[DICT] (12/6) > {val1} [FLOAT]  :  1.23
-[DICT] (12/7) > {val2} [STR]  :  '1.23'
-[DICT] (12/8) > {val3} [FLOAT]  :  1.23
-[DICT] (12/9) > {val4} [STR]  :  '1.23'
-[DICT] (12/10) > {val5} [STR]  :  'X'
-[DICT] (12/11) > {val6} [STR]  :  'Y'
-[DICT] (12/12) > {val7} [STR]  :  'Z'
+[DICT] (20/1) > {param1} [DICT] (1/1) > {A} [DICT] (1/1) > {B} [DICT] (1/1) > {C} [DICT] (1/1) > {D} [FLOAT]  :  1.23
+[DICT] (20/2) > {param2} [DICT] (1/1) > {E} [DICT] (1/1) > {F} [DICT] (1/1) > {G} [DICT] (1/1) > {H} [STR]  :  'X'
+[DICT] (20/3) > {param3} [DICT] (1/1) > {K} [DICT] (1/1) > {L} [DICT] (1/1) > {M} [DICT] (1/1) > {N} [STR]  :  'Y'
+[DICT] (20/4) > {param4} [DICT] (1/1) > {O} [DICT] (1/1) > {P} [DICT] (1/1) > {Q} [DICT] (1/1) > {R} [STR]  :  'Z'
+[DICT] (20/5) > {param5} [DICT] (1/1) > {X} [DICT] (1/1) > {Y} [DICT] (1/1) > {Z} [INT]  :  345
+[DICT] (20/6) > {val1} [FLOAT]  :  1.23
+[DICT] (20/7) > {val2} [STR]  :  '1.23'
+[DICT] (20/8) > {val3} [FLOAT]  :  1.23
+[DICT] (20/9) > {val4} [STR]  :  '1.23'
+[DICT] (20/10) > {val5} [STR]  :  'X'
+[DICT] (20/11) > {val6} [STR]  :  'Y'
+[DICT] (20/12) > {val7} [STR]  :  'Z'
+[DICT] (20/13) > {val8} [INT]  :  345
+[DICT] (20/14) > {val9} [STR]  :  '345'
+[DICT] (20/15) > {val10} [INT]  :  345
+[DICT] (20/16) > {val11} [STR]  :  '345'
+[DICT] (20/17) > {val12} [INT]  :  345
+[DICT] (20/18) > {val13} [STR]  :  '345'
+[DICT] (20/19) > {val14} [INT]  :  345
+[DICT] (20/20) > {val15} [STR]  :  '345'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
