@@ -302,7 +302,11 @@ Level 3: Analyze identified expressions (value identification)
 After the expressions are identified, they need to be analyzed. The main question here is:
 Are quotes required around the identified expression or not (accordingly to the JSONP format syntax rules).
 
-If required quotes are missing: Abort with expression check error message. Otherwise continue.
+An expression can consist of only one dollar operator expression '${...}', but can also consist of
+several sequencing dollar operator expressions '${...}${...}'. In first case the expression can be encapsulated
+in quotes, but it's not a must. In second case we have a composite string that must be encapsulated in quotes.
+
+If required quotes around expressions are missing: Abort with error message. Otherwise continue.
 
 Valid:
 { "name1" : "value" , "name2" : ${value} }
@@ -314,6 +318,11 @@ Reason: This '${value1}${value2.A.B}' is an expression:
 * with no blanks inside (therefore identified as one word),
 * that starts and ends with a dollar operator expression, that is interrupted in between (here two sequencing ${} are inside (not nested!)).
 Therefore this expression is a composite string and must be encapsulated in quotes.
+
+This is also invalid (additional comma or blank in between dollar operator expressions):
+{ "name1" : "value" , "name2" : ${value1},${value2.A.B} }
+{ "name1" : "value" , "name2" : ${value1} ${value2.A.B} }
+But this is expected to be a level 2 error!
 
 
 Value identification: quotes required around a dollar operator expression or not?
