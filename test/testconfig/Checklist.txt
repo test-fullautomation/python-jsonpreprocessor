@@ -441,16 +441,26 @@ Only in this case we continue with next level.
 Level 4: ${} substitution and file imports
 ==========================================
 
+In this level we know that we have valid JSON code. But this statement only belongs to the main JSON file, and not
+to JSON files, that shall be imported.
+
+This level is the earliest moment in time, where we are able to resolve file imports and dollar operator expressions
+(because this requires a valid syntax).
+
+For every imported file, the check of all levels 1 - 4 have to be repeated (recursion). Abort computation in case of any error.
+
+Steps:
+
 1. Resolve file imports; check availability of parameters
 2. Resolve all dollar operator expressions ${} recursively; check availability of parameters
 3. Create the final data structure (returned dictionary containing all values)
 
-Possible errors at this level:
+Possible new errors at this level:
 
 * Referenced parameter not defined
 * Imported file does not exist
 
-(nothing else!)
+(together with errors at earlier levels in imported files)
 
 
 Questions:
