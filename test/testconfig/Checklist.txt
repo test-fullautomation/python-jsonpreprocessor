@@ -4,7 +4,7 @@ Checklist for implementation of self test cases for JsonPreprocessor / parsing c
 
 XC-CT/ECA3-Queckenstedt
 
-27.07.2023
+28.07.2023
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -171,13 +171,16 @@ Error detection (basics)
 
 (errors sorted by priority of detection):
 
-1. basic syntax violations           > error message: syntax violation ...
-2. missing quotes around expressions > error message: missing quote around expression '...' (previously: "value not found")
-3. parameter not available           > error message: parameter '...' not available
+Level 1: Basic syntax violations (e.g. quotes mismatch)    > error message: syntax violation ...
+Level 2: JSON delimiters errors                            > error message: JSON delimiter mismatch ...
+Level 3: Missing quotes around dollar operator expressions > error message: missing quote around expression ...
+Level 4: Parameter or imported file not available          > error message: parameter / imported file '...' not available
 
-Syntax violations should have highest priority (error handling, error messages).
-* In case of syntax violations, further errors like missing quotes or missing parameters are not relevant.
-* In case of missing quotes around expressions, further errors like missing parameters are not relevant.
+Basic syntax violations (level 1) should have the highest priority of error handling.
+
+At every level the rules are:
+* The computation aborts with error message
+* All further possible errors at lower levels are not relevant any more
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -186,7 +189,7 @@ Parsing strategies
 ==================
 
 Level 1: Check the quoting in JSON code
-Level 2: Identify expressions in JSON code
+Level 2: Identify delimiters and expressions in JSON code
 Level 3: Analyze identified expressions (value identification)
 Level 4: ${} substitution and file imports
 
@@ -196,8 +199,8 @@ Level 1: Check the quoting in JSON code
 =======================================
 
 At this level an expression can be
-a. the name of a parameter,
-b. the value of a parameter
+a) the name of a parameter,
+b) the value of a parameter
 
 In JSON format, names and values are separated by delimiters like colon and comma:
 
@@ -212,24 +215,24 @@ Example
 { "param1" : "value1" , "param2" : "value2" }
 
 Values and names are usually encapsulated in quotes. Because of the usage of dollar operator expressions
-in the extended JSONP format this rule is not valid any more, because also this is possible now
-(it's not required to put dollar operator expressions in quotes):
+in the extended JSONP format this rule is not valid any more, because it is also possible now
+to insert dollar operator expressions that are not encapsulated in quotes:
 
 { "param1" : "value1" , "param2" : ${param1} }
 
 But still the rule is: Every (opening) quote requires a matching (closing) quote.
 
-This would be a syntax error (missing closing quote after 'value1'):
+This would be a syntax error (missing closing quote after 'param1'):
 
-{ "param1" : "value1 , "param2" : ${param1} }
+{ "param1 : "value1" , "param2" : ${param1} }
 
 Unfortunately the JSON interpreter puts a higher priority on the identification of important delimiters like colon and comma,
-than on the check of matching quotes. The example above cause the following error message: "Invalid control character"
+than on the check of matching quotes. The example above cause the following error message: "Expecting ':' delimiter"
 (instead of "missing quote"). This really does not help.
 
-Impact: With highest priority every JSONP file needs to be checked if the quotation is valid. If quotes are missing, the
-computation can be stopped already. And it makes no sense any more to continue with the JSON parser. It makes no sense to let
-him try anything in case of quotes are missing. This only causes strange error messages.
+Therefore: In every JSONP file the quotations should be checked at first. If quotes are missing, the computation can be stopped
+already. And it makes no sense any more to continue with the JSON parser. It makes no sense to let him try doing anything in case of
+quotes are missing. This only causes misleading error messages.
 
 Such a pre check can be realized with the help of the Python lexical parser shlex (like described in
 https://github.com/test-fullautomation/python-jsonpreprocessor/issues/106).
@@ -243,15 +246,16 @@ Up to now no file imports are resolved!
 In case of errors at this level, abort with error message. Otherwise continue with next level.
 
 
-Level 2: Identify expressions in JSON code
-==========================================
+Level 2: Identify delimiters and expressions in JSON code
+=========================================================
 
-If the pre check of level 1 is passed, we need to identify the expressions. Accordingly to the JSON syntax rules we know
-that expressions are separated by colon and comma alternately (starting with colon):
+If the pre check of level 1 is passed, we need to identify the delimiters and expressions. Accordingly to the JSON syntax rules
+we know that expressions are separated by colon and comma alternately (starting with colon):
 
 { <expression> : <expression> , <expression> : <expression> }
 
-We also know that delimiters inside strings belong to names and values and have - in this case - no JSON syntactical meaning any more.
+We also know that delimiters inside strings belong to names and values and have - in this case - no JSON syntactical
+meaning any more.
 
 We have to consider, that every expression can either be a hard coded (quoted) string or a dollar operator expression,
 that is not encapsulated in quotes:
@@ -261,8 +265,8 @@ Valid:
 { "expression" : "${expression1} , : ${expression2}" }
 
 In this level two rules are involved:
-1. Quotes occur in matching pairs of quotes
-2. The dollar operator syntax '${}'
+1. Alternative occurrence of colon and comma
+2. The dollar operator syntax '${...}' / '${...}[...]'
 
 With the help of these rules it should be possible to check the integrity of the JSON delimiters colon and comma:
 
@@ -297,21 +301,19 @@ Level 3: Analyze identified expressions (value identification)
 
 After the expressions are identified, they need to be analyzed. The main question here is:
 Are quotes required around the identified expression or not (accordingly to the JSONP format syntax rules).
+
 If required quotes are missing: Abort with expression check error message. Otherwise continue.
 
 Valid:
 { "name1" : "value" , "name2" : ${value} }
+{ "name1" : "value" , "name2" : "${value1}${value2.A.B}" }
 
 Invalid:
-{ "name1" : "value" , "name2" : ${value1} ${value2} }
-{ "name1" : "value" , "name2" : The value is ${value} }
-
-This is also invalid (colon within value, that is not encapsulated in quotes by mistake),
-but this is a level 2 error and must have been detected earlier:
-{ "name1" : "value" , "name2" : The value is: ${value} }
-
-Valid:
-{ "name1" : "value" , "name2" : "The value is: ${value}" }
+{ "name1" : "value" , "name2" : ${value1}${value2.A.B} }
+Reason: This '${value1}${value2.A.B}' is an expression:
+* with no blanks inside (therefore identified as one word),
+* that starts and ends with a dollar operator expression, that is interrupted in between (here two sequencing ${} are inside (not nested!)).
+Therefore this expression is a composite string and must be encapsulated in quotes.
 
 
 Value identification: quotes required around a dollar operator expression or not?
@@ -439,8 +441,8 @@ Only in this case we continue with next level.
 Level 4: ${} substitution and file imports
 ==========================================
 
-1. Resolve all dollar operator expressions ${} recursively; check availability of parameters
-2. Resolve file imports; check availability of parameters
+1. Resolve file imports; check availability of parameters
+2. Resolve all dollar operator expressions ${} recursively; check availability of parameters
 3. Create the final data structure (returned dictionary containing all values)
 
 Possible errors at this level:
