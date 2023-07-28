@@ -180,7 +180,7 @@ class CJsonPreprocessor():
         self.recursive_level = 0
         self.syntax = syntax
         self.currentCfg = currentCfg
-        self.lUpdatedParams = {}
+        self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
 
