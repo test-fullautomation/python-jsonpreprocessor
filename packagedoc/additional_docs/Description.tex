@@ -24,18 +24,13 @@ A basic Python script to use the \pkg\ can look like this:
 from JsonPreprocessor.CJsonPreprocessor import CJsonPreprocessor
 import pprint
 
-json_preprocessor = CJsonPreprocessor(syntax="python")
+json_preprocessor = CJsonPreprocessor()
 try:
    values = json_preprocessor.jsonLoad("./file.jsonp")
    pprint.pprint(values)
 except Exception as reason:
    print(f"'{reason}'")
 \end{pythoncode}
-
-Without setting the syntax to Python, the usage of Python keywords within JSON files causes an exception.
-
-\textbf{!!! Caution}: This will be changed:
-\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/84}{issues/84} \textbf{!!!}
 
 \textbf{!!! Caution:} relative path bug:
 \href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/83}{issues/83} \textbf{!!!}

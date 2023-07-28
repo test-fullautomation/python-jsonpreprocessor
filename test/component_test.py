@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 18.07.2023
+# 28.07.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -318,7 +318,7 @@ nCntUnknownUsecases = 0
 # !!! the object under test !!!
 oJsonPreprocessor = None
 if RECREATEINSTANCE is not True:
-   oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+   oJsonPreprocessor = CJsonPreprocessor()
 #
 # The default behavior is: The object under test is created only once for all test cases!
 # Every test case uses the same JsonPreprocessor class object. This is also like a stress test,
@@ -402,7 +402,7 @@ for dictUsecase in listofdictUsecases:
    # -- test case execution
    if RECREATEINSTANCE is True:
       # !!! the object under test !!!
-      oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+      oJsonPreprocessor = CJsonPreprocessor()
    dictReturned = None
    sException   = None
    try:
