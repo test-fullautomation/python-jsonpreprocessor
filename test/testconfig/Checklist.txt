@@ -303,8 +303,9 @@ After the expressions are identified, they need to be analyzed. The main questio
 Are quotes required around the identified expression or not (accordingly to the JSONP format syntax rules).
 
 An expression can consist of only one dollar operator expression '${...}', but can also consist of
-several sequencing dollar operator expressions '${...}${...}'. In first case the expression can be encapsulated
-in quotes, but it's not a must. In second case we have a composite string that must be encapsulated in quotes.
+several sequencing dollar operator expressions '${...}${...}' (in this special case without blanks inside!).
+In first case the expression can be encapsulated in quotes, but it's not a must. In second case we have
+a composite string that must be encapsulated in quotes.
 
 If required quotes around expressions are missing: Abort with error message. Otherwise continue.
 
@@ -314,15 +315,19 @@ Valid:
 
 Invalid:
 { "name1" : "value" , "name2" : ${value1}${value2.A.B} }
+
 Reason: This '${value1}${value2.A.B}' is an expression:
-* with no blanks inside (therefore identified as one word),
-* that starts and ends with a dollar operator expression, that is interrupted in between (here two sequencing ${} are inside (not nested!)).
+* with no blanks inside (therefore identified as one word; the next delimiter is therefore expected at the end of the word
+  at the earliest),
+* that starts and ends with a dollar operator expression, that is interrupted in between
+  (means: two sequencing ${...} are inside (not nested!)).
 Therefore this expression is a composite string and must be encapsulated in quotes.
 
-This is also invalid (additional comma or blank in between dollar operator expressions):
+This is also invalid (additional comma or blank in between dollar operator expressions; means: we have two separate
+(and valid) expressions now):
 { "name1" : "value" , "name2" : ${value1},${value2.A.B} }
 { "name1" : "value" , "name2" : ${value1} ${value2.A.B} }
-But this is expected to be a level 2 error!
+This is expected to be a level 2 error and must not occur on this level!
 
 
 Value identification: quotes required around a dollar operator expression or not?
