@@ -580,7 +580,7 @@ class CJsonPreprocessor():
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '':
-                self.lUpdatedParams.update({k:v})
+                self.dUpdatedParams.update({k:v})
 
         return oJson, bNested
 
@@ -751,7 +751,7 @@ class CJsonPreprocessor():
             for k, v in oJson.items():
                 globals().update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
-            for k, v in self.lUpdatedParams.items():
+            for k, v in self.dUpdatedParams.items():
                 if '[' in k:
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
