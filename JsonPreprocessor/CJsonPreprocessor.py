@@ -160,7 +160,7 @@ class CJsonPreprocessor():
    - Allow Python data types ``True``, ``False`` and ``None``
     """
 
-    def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
+    def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
         """
    Constructor
 
