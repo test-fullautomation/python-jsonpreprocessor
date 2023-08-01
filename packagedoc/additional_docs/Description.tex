@@ -32,6 +32,9 @@ except Exception as reason:
    print(f"'{reason}'")
 \end{pythoncode}
 
+\textbf{!!! Caution:} relative path bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/83}{issues/83} \textbf{!!!}
+
 The main method of the \pkg\ is: \pcode{jsonLoad}. Input is the path and the name of a JSON file.
 Output is a dictionary containing all values parsed from this JSON file.
 
@@ -44,13 +47,14 @@ In the following sections we concentrate on the content of the JSON files and th
 
 The way to get these results is in every case the same: the example script listed above.
 
+
 % --------------------------------------------------------------------------------------------------------------
 
 \section{Standard JSON format}
 
 The \pkg\ supports JSON files with standard extension \plog{.json} and standard content.
 
-JSON file:
+\textbullet\ JSON file:
 
 \begin{pythoncode}
 {
@@ -59,7 +63,7 @@ JSON file:
 }
 \end{pythoncode}
 
-Output:
+\textbf{Outcome:}
 
 \begin{pythonlog}
 {'param1': 'value1', 'param2': 'value2'}
@@ -90,6 +94,7 @@ This content produces the following output:
  'param_04': ['A', 'B', 'C'],
  'param_05': {'A': 1, 'B': 2, 'C': 3}}
 \end{pythonlog}
+
 
 % --------------------------------------------------------------------------------------------------------------
 
@@ -138,6 +143,7 @@ The output contains all keywords in Python style only:
  'param_11': None}
 \end{pythonlog}
 
+
 % --------------------------------------------------------------------------------------------------------------
 
 \newpage
@@ -160,6 +166,7 @@ Comments can be added to JSON files with \pcode{//}:
 \end{pythoncode}
 
 All lines starting with \pcode{//}, are ignored by the \pkg. The output of this example is the same than in the previous example.
+
 
 % --------------------------------------------------------------------------------------------------------------
 
@@ -267,6 +274,7 @@ The file \plog{componentB.jsonp} produces the following output:
 \end{pythonlog}
 
 It can be seen that the returned dictionary contains both the parameters from the loaded JSON file and the parameters imported by the loaded JSON file.
+
 
 % --------------------------------------------------------------------------------------------------------------
 
@@ -701,6 +709,7 @@ These are the JSON files:
 \newpage
 
 \textbullet \plog{featureA.jsonp}
+
 \begin{pythoncode}
 {
    // parameters required for feature A
@@ -713,6 +722,7 @@ These are the JSON files:
 \vspace{2ex}
 
 \textbullet \plog{featureB.jsonp}
+
 \begin{pythoncode}
 {
    // parameters required for feature B
@@ -725,6 +735,7 @@ These are the JSON files:
 \vspace{2ex}
 
 \textbullet \plog{featureC.jsonp}
+
 \begin{pythoncode}
 {
    // parameters required for feature C
@@ -766,7 +777,334 @@ previously added keys of this dictionary!
 
 % --------------------------------------------------------------------------------------------------------------
 
-% Next: dot notation
+\newpage
+
+\section{\texttt{dotdict} notation}
+
+Up to now we have accessed dictionary keys in this way (standard notation):
+
+\begin{pythoncode}
+${dictionary}['key']['sub_key']
+\end{pythoncode}
+
+Additionally to this standard notation, the \pkg\ supports the so called \textit{dotdict} notation where keys
+are handled as attributes:
+
+\begin{pythoncode}
+${dictionary.key.sub_key}
+\end{pythoncode}
+
+In standard notation keys are encapsulated in square brackets and all together is placed \textit{outside} the curly brackets.
+In dotdict notation the dictionary name and the keys are separated by dots from each other. All together is placed \textit{inside}
+the curly brackets.
+
+In standard notation key names are allowed to contain dots:
+
+\begin{pythoncode}
+${dictionary}['key']['sub.key']
+\end{pythoncode}
+
+In dotdict notation this would cause ambiguities:
+
+\begin{pythoncode}
+${dictionary.key.sub.key}
+\end{pythoncode}
+
+Therefore it is not possible to implement in this way! In case you need to have dots inside key names, you must use the standard notation.
+We recommend to prefer underlines as separator - like done in the examples in this document.
+
+\textit{Do you really need dots inside key names?}
+
+Please keep in mind: The dotdict notation is a reduced one. Because of parts are missing (e.g. the single quotes around key names),
+the outcome can be code that is really hard to capture.
+
+In the following example we create a composite data structure and demonstate how to access single elements in both notations.
+
+\vspace{2ex}
+
+\textbullet\ JSON file:
+
+\begin{pythoncode}
+{
+   // composite data structure
+   "params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+                "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+               //
+               {"dict_2_key_1" : "dict_2_key_1 value",
+                "dict_2_key_2" : {"dict_2_A_key_1" : "dict_2_A_key_1 value",
+                                  "dict_2_A_key_2" : ["dict_2_A_key_2 value 1", "dict_2_A_key_2 value 2"]}}],
+   //
+   // access to single elements of composite data structure
+   //
+   // a) standard notation
+   "dict_1_key_2_value_2_standard" : ${params}[0]['dict_1_key_2'][1],
+   // b) dotdict notation
+   // "dict_1_key_2_value_2_dotdict" : ${params.0.dict_1_key_2.1},
+   // -> 'The variable '${params}['0']['dict_1_key_2']['1']' is not available!'
+   //
+   // c) standard notation
+   "dict_2_A_key_2_value_2_standard" : ${params}[1]['dict_2_key_2']['dict_2_A_key_2'][1]
+   // d) dotdict notation
+   // "dict_2_A_key_2_value_2_dotdict" : ${params.1.dict_2_key_2.dict_2_A_key_2.1}
+   // -> 'The variable '${params}['1']['dict_2_key_2']['dict_2_A_key_2']['1']' is not available!'
+}
+\end{pythoncode}
+
+\textbf{!!! Caution:} dotdict bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/89}{issues/89} \textbf{!!!}
+
+\newpage
+
+\textbf{Outcome:}
+
+In case of the composite data structure becomes more and more nested (and if also the key names contain numbers), understanding
+the expressions (like \pcode{$\{params.1.dict_2_key_2.dict_2_A_key_2.1\}}) becomes more and more challenging!
+
+\vspace{2ex}
+
+\begin{pythonlog}
+{'dict_1_key_2_value_2_standard': 'dict_1_key_2 value 2',
+ 'dict_2_A_key_2_value_2_standard': 'dict_2_A_key_2 value 2',
+ 'params': [{'dict_1_key_1': 'dict_1_key_1 value',
+             'dict_1_key_2': ['dict_1_key_2 value 1', 'dict_1_key_2 value 2']},
+            {'dict_2_key_1': 'dict_2_key_1 value',
+             'dict_2_key_2': {'dict_2_A_key_1': 'dict_2_A_key_1 value',
+                              'dict_2_A_key_2': ['dict_2_A_key_2 value 1',
+                                                 'dict_2_A_key_2 value 2']}}]}
+\end{pythonlog}
 
 % --------------------------------------------------------------------------------------------------------------
+% === to be reworked and extended after issued are solved
+% --------------------------------------------------------------------------------------------------------------
+
+
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{Substitution of dollar operator expressions}
+
+Like shown in previous examples, existing parameters are accessed by a dollar operator and a pair of curly brackets (\pcode{$\{...\}}) with the parameter name inside.
+
+We discussed use cases, where the entire expression of the left hand side of the colon and also the entire expression of the right hand side of the colon
+have been either hard coded strings, encapsulated in quotes, or dollar operator expressions, not encapsulated in quotes.
+
+Also a mix of both is possible!
+
+Outcome is a hard coded string, encapsulated in quotes, with parts represented by one or more than one dollar operator expression. This can be used to create
+new content very dynamically: On the right hand side of the colon new string values can be created; on the left hand side of the colon this mechanism
+generates dynamic parameter names.
+
+\vspace{2ex}
+
+\textbullet\ JSON file:
+
+\begin{pythoncode}
+{
+   "project"     : "Test",
+   "version"     : 1.23,
+   "item_number" : 1,
+   "component"   : "componentA",
+   //
+   "${project}_message_${item_number}" : "Component '${component}' has version ${version}"
+}
+\end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Outcome:}
+
+\begin{pythonlog}
+{'component': 'componentA',
+ 'item_number': 1,
+ 'project': 'Test',
+ 'project)_message_str(1': "Component 'componentA' has version 1.23",
+ 'version': 1.23}
+\end{pythonlog}
+
+\textbf{!!! Caution:} substitution bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/91}{issues/91} \textbf{!!!}
+
+\textit{We recommend to use simple data types for this kind of substitution only!}
+
+But nevertheless, on the right hand side of the colon also composite data types are possible. Here it might makes sense to use them.
+But on the left hand side of the colon only simple data types are allowed. Because it makes no sense to create
+parameter names based on composite data types. Most probably this would cause invalid key names.
+
+To demonstrate this, we change the JSON file to:
+
+\begin{pythoncode}
+{
+   "component"      : "componentA",
+   "composite_data" : ["AB", 12, True, null, {"kA" : "kAval", "kB" : "kBval"}],
+   //
+   "test_parameter" : "Key values of component '${component}' are ${composite_data}"
+}
+\end{pythoncode}
+
+\textbf{!!! Caution:} substitution bug:
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/92}{issues/92} \textbf{!!!}
+
+Not working currently:
+\begin{pythoncode}
+   "test_parameter" : "Key values of component '${component}' are: ${composite_data}"
+\end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Outcome:}
+
+\begin{pythonlog}
+{'component': 'componentA',
+ 'composite_data': ['AB', 12, True, None, {'kA': 'kAval', 'kB': 'kBval'}],
+ 'test_parameter': "Key values of component 'componentA' are ['AB', 12, True, "
+                   "None, {'kA': 'kAval', 'kB': 'kBval'}]"}
+\end{pythonlog}
+
+\newpage
+
+Now we try to do the same on the left hand side of the colon:
+
+\begin{pythoncode}
+{
+   "value"          : "string value",
+   "composite_data" : ["AB", 12, True, null, {"kA" : "kAval", "kB" : "kBval"}],
+   //
+   "test_parameter_${composite_data}" : ${value}
+}
+\end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Outcome:}
+
+\begin{pythonlog}
+!!! Error message expected; still under development !!!
+\end{pythonlog}
+
+\textbf{!!! Caution:}
+\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/69#issuecomment-1589581903}{issues/69 issuecomment-1589581903} \textbf{!!!}
+
+
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{Implicite creation of dictionaries}
+
+Up to now we have discussed two different ways of creating nested dictionaries.
+
+The first one is \q{on the fly}, like:
+
+\begin{pythoncode}
+{
+   "project_values" : {"keyA" : "keyA value",
+                       "keyB" : {"keyB1" : "keyB1 value",
+                                 "keyB2" : {"keyB21" : "keyB21 value",
+                                            "keyB22" : "keyB22 value"}}}
+}
+\end{pythoncode}
+
+In case of it is required to split the definition into several files, we have to add keys (and also the initialization) line by line:
+
+\begin{pythoncode}
+{
+   "project_values" : {},
+   ${project_values}['keyA'] : "keyA value",
+   ${project_values}['keyB'] : {},
+   ${project_values}['keyB']['keyB1'] : "keyB1 value",
+   ${project_values}['keyB']['keyB2'] : {},
+   ${project_values}['keyB']['keyB2']['keyB21'] : "keyB21 value",
+   ${project_values}['keyB']['keyB2']['keyB22'] : "keyB22 value"
+}
+\end{pythoncode}
+
+The result will be the same as in the previous example.
+
+It can be seen now that this way of creating nested dictionaries is rather long winded, because every inititialization of a dictionary
+requires a separate line of code (at every level).
+
+To shorten the code, the \pkg\ supports an implicite creation of dictionaries.
+
+This is the resulting code in standard notation:
+
+\begin{pythoncode}
+{
+   ${project_values}['keyA'] : "keyA value",
+   ${project_values}['keyB']['keyB1'] : "keyB1 value",
+   ${project_values}['keyB']['keyB2']['keyB21'] : "keyB21 value",
+   ${project_values}['keyB']['keyB2']['keyB22'] : "keyB22 value"
+}
+\end{pythoncode}
+
+\vspace{2ex}
+
+And the same in dotdict notation (with precondition, that no key name contains a dot):
+
+\begin{pythoncode}
+{
+   ${project_values.keyA} : "keyA value",
+   ${project_values.keyB.keyB1} : "keyB1 value",
+   ${project_values.keyB.keyB2.keyB21} : "keyB21 value",
+   ${project_values.keyB.keyB2.keyB22} : "keyB22 value"
+}
+\end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Caution:}
+
+We urgently recommend \textit{not} to mixup both styles in one line of code. In case of keys contain a list and also numerical indices are involved,
+we recommend to prefer the standard notation. 
+
+Please be aware of: In case of a missing level in between an expression like 
+
+\begin{pythoncode}
+{
+   ${project_values.keyB.keyB2.keyB22} : "keyB22 value"
+}
+\end{pythoncode}
+
+you will \textit{not} get an error message! The entire data structure will be created implicitely. The impact is that this method
+is very susceptible to typing mistakes.
+
+The implicite creation of data structures does not work with lists! In case you use a list index out of range, you will get
+a corresponding error message.
+
+
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{VSCodium support}
+
+Above we mentioned that the JSON syntax extensions introduced by the \pkg, harm the syntax highlighting of editors.
+
+Either we give the JSON files the extension \pcode{.json}, then an editor expects a JSON file in standard syntax,
+or we change the extension to \pcode{.jsonp}, but in this case an editor usually does not know how to display a file of such type.
+
+In case you use \href{https://vscodium.com/}{VSCodium}, you can install a
+\href{https://github.com/test-fullautomation/vscode-jsonp}{jsonp extension}. 
+
+With this extension the VSCodium editor will be able to display \pcode{.jsonp} files properly.
+
+\vspace{2ex}
+
+\textbf{Some Impressions:}
+
+\includegraphics{./pictures/screenshot1.png}
+
+\vspace{2ex}
+
+\includegraphics{./pictures/screenshot2.png}
+
+
+
+% --------------------------------------------------------------------------------------------------------------
+% TODO:
+% - extended use of nested parameters
+% --------------------------------------------------------------------------------------------------------------
+
+
+
 
