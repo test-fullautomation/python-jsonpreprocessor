@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_05_SYNTAX_VIOLATIONS_BADCASE.py
+# test_05_VALUE_DETECTION_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 04.07.2023 - 16:17:36
+# 18.07.2023 - 15:09:36
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_SYNTAX_VIOLATIONS_BADCASE:
+class Test_VALUE_DETECTION_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (1)",]
+      "Description", ["JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)",]
    )
-   def test_JPP_0900(self, Description):
-      nReturn = CExecute.Execute("JPP_0900")
+   def test_JPP_0300(self, Description):
+      nReturn = CExecute.Execute("JPP_0300")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (2)",]
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)",]
    )
-   def test_JPP_0901(self, Description):
-      nReturn = CExecute.Execute("JPP_0901")
+   def test_JPP_0301(self, Description):
+      nReturn = CExecute.Execute("JPP_0301")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (3)",]
+      "Description", ["JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)",]
    )
-   def test_JPP_0902(self, Description):
-      nReturn = CExecute.Execute("JPP_0902")
+   def test_JPP_0302(self, Description):
+      nReturn = CExecute.Execute("JPP_0302")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (4): file is completely empty",]
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)",]
    )
-   def test_JPP_0903(self, Description):
-      nReturn = CExecute.Execute("JPP_0903")
+   def test_JPP_0303(self, Description):
+      nReturn = CExecute.Execute("JPP_0303")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)",]
    )
-   def test_JPP_0904(self, Description):
-      nReturn = CExecute.Execute("JPP_0904")
+   def test_JPP_0304(self, Description):
+      nReturn = CExecute.Execute("JPP_0304")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

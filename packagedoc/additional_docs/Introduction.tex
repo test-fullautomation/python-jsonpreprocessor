@@ -27,18 +27,18 @@ The \pkg\ extends the JSON format by the following features:
          \pcode{false} and \pcode{null})
 \end{enumerate}
 
-The main goal behind the \pkg\ is to support huge sets of parameters for complex projects. Like in usual programming languages code comments are useful
-to explain the meaning of the defined parameters.
+The main goal of the \pkg\ is to support huge sets of parameters for complex projects. And the features of the \pkg\ support this complexity:
 
-Splitting all required parameters into several JSON files - that can import each other - enables to distinguish e.g. between local and global parameters
-or between specific and common parameters. Another advantage of a file split is: Smaller files with a more specific content are easier to maintain than
-a huge single file that contains all.
-
-A possible use case for a file split would be to have a software containing several different components with each component requires an individual set of
-parameters - and therefore an own JSON file. Additionally all components also require a common set of parameters. In this case all common parameters can be defined
-within an own JSON file that is imported into all other JSON files containing the specific values. This procedure avoids redundancy in parameter definitions.
-
-Another useful side effect is that parameters can be initialized in common JSON files and overwritten in specific JSON files that import the common ones.
+\begin{enumerate}
+   \item Like in usual programming languages code comments are useful to explain the meaning of the defined parameters.
+   \item Splitting all required parameters into several JSON files - that can import each other - enables to distinguish e.g. between local and global parameters
+         or between specific and common parameters. Another advantage of a file split is: Smaller files with a more specific content are easier to maintain than
+         a huge single file that contains all.
+   \item A possible use case for a file split would be to have a software containing several different components with each component requires an individual set of
+         parameters - and therefore an own JSON file. Additionally all components also require a common set of parameters. In this case all common parameters can be defined
+         within an own JSON file that is imported into all other JSON files containing the specific values. This procedure avoids redundancy in parameter definitions.
+   \item Parameters can be initialized in common JSON files and overwritten in specific JSON files that import the common ones.
+\end{enumerate}
 
 But this has consequences: The new features cause some deviations from JSON standard. 
 

@@ -14,10 +14,7 @@
 //**************************************************************************
 {
    // taking over the already defined basic data types
-   "[import]" : "./jpp-test_config_0001.jsonp",
+   "[import]" : "./jpp-test_config_testdata_1.jsonp",
    //
-   "string_01" : "ABC",
-   "string_02" : "DEF",
-   "composite_param_name_1_${string_01}_${string_02}" : "(1.01)--'${string_01}'--(1.02)--'${string_02}'",
-   "${string_01}_composite_param_name_2_${string_02}" : "(2.01)--'${string_01}'--(2.02)--'${string_02}'"
+   "${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE-2 (new value)"
 }
