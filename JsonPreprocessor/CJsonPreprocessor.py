@@ -500,8 +500,9 @@ class CJsonPreprocessor():
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
-                    except:
-                        raise Exception(f"Could not set variable '{k}' with value '{v}'!")
+                    except Exception as error:
+                        errorMsg = f"Could not set variable '{k}' with value '{v}'! Reason: {error}"
+                        raise Exception(errorMsg)
 
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
