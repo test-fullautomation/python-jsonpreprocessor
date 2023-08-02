@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 27.07.2023
+# 02.08.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -2023,7 +2023,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0951.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid control character"
+dictUsecase['EXPECTEDEXCEPTION'] = "No closing quotation in line"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
