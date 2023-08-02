@@ -611,16 +611,37 @@ class CJsonPreprocessor():
 
       Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
         '''
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
-        if re.match("\s*\".+\"\s*", sInputStr.lower()) and re.search("(" + pattern + ")*", sInputStr.lower()):
-            lNestedParam = re.findall("(" + pattern + ")", sInputStr)
-            for nestedParam in lNestedParam:
-                self.lNestedParams.append(nestedParam[0])
-            sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
-        elif re.search(pattern, sInputStr.lower()):
-            sInputStr = re.sub("(" + pattern + ")", "\"\\1\"", sInputStr)
-            nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
-            self.lNestedParams.append(nestedParam)
+        nestedPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
+        valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
+        valueNumberPattern = "[0-9\.]+"
+
+        if "${" in sInputStr:
+            if re.match("\s*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
+                and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
+                lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
+                for nestedParam in lNestedParam:
+                    self.lNestedParams.append(nestedParam[0])
+                sInputStr = re.sub("(" + nestedPattern + ")", "str(\\1)", sInputStr)
+            elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
+                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+                self.lNestedParams.append(nestedParam)
+            elif "," in sInputStr:
+                listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
+                            "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
+                if re.match(listPattern, sInputStr.lower()):
+                    items = sInputStr.split(",")
+                    for item in items:
+                        if "${" in item and not re.match("^\s*" + nestedPattern + "\]*}*\s*$", item):
+                            raise Exception(f"Invalid nested parameter format: {item}")
+                        
+                lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
+                for nestedParam in lNestedParam:
+                    self.lNestedParams.append(nestedParam[0])    
+                sInputStr = re.sub("(\"\s*" + nestedPattern + "\s*\")", "str(\\1)", sInputStr)
+                sInputStr = re.sub("[^\(](" + nestedPattern + ")", "\"\\1\"", sInputStr)
+            else:
+                raise Exception(f"Invalid nested parameter format: {sInputStr}")
 
         sOutput = sInputStr
         return sOutput
