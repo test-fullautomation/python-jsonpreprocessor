@@ -160,7 +160,7 @@ class CJsonPreprocessor():
    - Allow Python data types ``True``, ``False`` and ``None``
     """
 
-    def __init__(self, syntax: CSyntaxType = CSyntaxType.json , currentCfg : dict = {}) -> None:
+    def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
         """
    Constructor
 
@@ -184,6 +184,16 @@ class CJsonPreprocessor():
         self.recursive_level = 0
         self.syntax = syntax
         self.currentCfg = currentCfg
+        self.dUpdatedParams = {}
+        self.lNestedParams = []
+        self.lDotInParamName = []
+
+    def __reset(self) -> None:
+        '''
+   Reset initial variables which are set in constructor method after master Json file is loaded.
+        '''
+        self.lImportedFiles = []
+        self.recursive_level = 0
         self.lUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
@@ -623,7 +633,7 @@ class CJsonPreprocessor():
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '':
-                self.lUpdatedParams.update({k:v})
+                self.dUpdatedParams.update({k:v})
 
         return oJson, bNested
 
@@ -711,6 +721,18 @@ class CJsonPreprocessor():
                 else:
                     oJson[k] = v
             return oJson
+        
+        def __handleListElements(sInput : str) -> str:
+            items = re.split("\s*,\s*", sInput)
+            j=0
+            newItem = ""
+            for item in items:
+                j+=1
+                if j<len(items):
+                    newItem = newItem + self.__checkAndUpdateKeyValue(item) + ","
+                else:
+                    newItem = newItem + self.__checkAndUpdateKeyValue(item)
+            return newItem
 
         jFile=jFile.strip()
 
@@ -746,15 +768,28 @@ class CJsonPreprocessor():
                 for item in items:
                     i+=1
                     newSubItem = ""
-                    if re.search("^\s*\[[^\[\]]*\]\s*,*\s*", item):
-                        subItems = re.split("\s*,\s*", item)
-                        j=0  
-                        for subItem in subItems:
-                            j+=1
-                            if j<len(subItems):
-                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) + ","
-                            else:
-                                newSubItem = newSubItem + self.__checkAndUpdateKeyValue(subItem) 
+                    if re.search("^\s*\[.+\]\s*,*\s*$", item) and item.count('[')==item.count(']'):
+                        item = item.strip()
+                        bLastElement = True
+                        if item.endswith(","):
+                            bLastElement = False
+                        item = re.sub("^\[", "", item)
+                        item = re.sub("\s*\]\s*,*$", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = "[" + newSubItem + "]" if bLastElement else "[" + newSubItem + "],"
+                    elif re.search("^\s*\[.*\${.+", item):
+                        item = item.strip()
+                        item = re.sub("^\[", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = "[" + newSubItem
+                    elif re.search("]\s*,*\s*", item) and item.count('[') < item.count(']'):
+                        item = item.rstrip()
+                        bLastElement = True
+                        if item.endswith(","):
+                            bLastElement = False
+                        item = re.sub("\s*\]\s*,*$", "", item)
+                        newSubItem = __handleListElements(item)
+                        newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
                     else:
                         newSubItem = self.__checkAndUpdateKeyValue(item)
                     if i<len(items):
@@ -800,7 +835,7 @@ class CJsonPreprocessor():
                     k = "JPavoidDataType_" + k
                 globals().update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
-            for k, v in self.lUpdatedParams.items():
+            for k, v in self.dUpdatedParams.items():
                 if '[' in k:
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
@@ -828,5 +863,7 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                 except:
                     raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
+                
+            self.__reset()
 
         return oJson
