@@ -761,7 +761,7 @@ class CJsonPreprocessor():
             try:
                 listDummy = shlex.split(line)
             except Exception as error:
-                raise Exception(f"\n[shlex exception]\n {str(error)} \nin line: '{line}'")
+                raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search("\${.+}", line):
                 items = re.split("\s*:\s*", line)
