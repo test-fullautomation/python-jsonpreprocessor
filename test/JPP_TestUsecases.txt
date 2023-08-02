@@ -352,7 +352,6 @@ Expectation: JsonPreprocessor returns expected value
 Test JPP_0504 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite data structure (some dictionaries)
 Expectation: JsonPreprocessor returns expected value
-Hint.......: !!! some parts commented out; to be activated after bugfixes are available
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0505 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
@@ -392,5 +391,5 @@ Test JPP_0954 / COMMON_SYNTAX_VIOLATIONS / BADCASE
 Description: JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 18.07.2023 - 15:09:36
+Generated: 02.08.2023 - 14:43:07
 

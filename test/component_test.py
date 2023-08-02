@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 28.07.2023
+# 02.08.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -366,7 +366,7 @@ for dictUsecase in listofdictUsecases:
    TESTFULLNAME    = f"{TESTID}-({SECTION})-[{SUBSECTION}]"
    TESTLOGFILE_TXT = f"{TESTLOGFILESFOLDER}/{TESTFULLNAME}.log"
 
-   sOut = f"====== [TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
+   sOut = f"====== [START OF TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
    print(COLBY + sOut)
    print()
    oSelfTestLogFile.Write(sOut, 1)

@@ -843,8 +843,6 @@ Test Use Cases
 
    Expected: JsonPreprocessor returns expected value
 
-   *Hint: !!! some parts commented out; to be activated after bugfixes are available*
-
 ----
 
 * **Test JPP_0505**
@@ -941,5 +939,5 @@ Test Use Cases
 
 ----
 
-Generated: 18.07.2023 - 15:09:36
+Generated: 02.08.2023 - 14:43:07
 
