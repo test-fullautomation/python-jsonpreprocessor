@@ -51,6 +51,7 @@ import re
 import sys
 import platform
 import copy
+import shlex
 
 class CSyntaxType():
     python = "python"
@@ -756,6 +757,11 @@ class CJsonPreprocessor():
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
                 continue
+            try:
+                listDummy = shlex.split(line)
+            except Exception as error:
+                raise Exception(f"\n[shlex exception]\n {str(error)} \nin line: '{line}'")
+
             if re.search("\${.+}", line):
                 items = re.split("\s*:\s*", line)
                 newLine = ""
