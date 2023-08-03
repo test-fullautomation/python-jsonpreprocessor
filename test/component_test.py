@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.06.2023
+# 02.08.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -131,7 +131,10 @@ def AnalyzeReturnedValues(EXPECTEDRETURN=None, dictReturned=None):
 
    if len(listErrors) == 0:
       bSuccess = True
-      sResult  = "JsonPreprocessor returned expected values."
+      if EXPECTEDRETURN is None:
+         sResult  = "No values returned from JsonPreprocessor (like expected)."
+      else:
+         sResult  = "JsonPreprocessor returned expected values."
    else:
       bSuccess = False
       sResult  = "JsonPreprocessor did not return expected values."
@@ -169,7 +172,10 @@ def AnalyzeExceptions(EXPECTEDEXCEPTION=None, sException=None):
 
    if len(listErrors) == 0:
       bSuccess = True
-      sResult  = "JsonPreprocessor threw expected exception."
+      if EXPECTEDEXCEPTION is None:
+         sResult  = "No exception thrown from JsonPreprocessor (like expected)."
+      else:
+         sResult  = "JsonPreprocessor threw expected exception."
    else:
       bSuccess = False
       sResult  = "JsonPreprocessor did not throw expected exception."
@@ -239,7 +245,7 @@ if CODEDUMP is True:
 
 THISSCRIPT         = oConfig.Get('THISSCRIPT')
 THISSCRIPTNAME     = oConfig.Get('THISSCRIPTNAME')
-REFERENCEPATH      = oConfig.Get('REFERENCEPATH')
+TESTCONFIGPATH     = oConfig.Get('TESTCONFIGPATH')
 OSNAME             = oConfig.Get('OSNAME')
 PLATFORMSYSTEM     = oConfig.Get('PLATFORMSYSTEM')
 PYTHON             = oConfig.Get('PYTHON')
@@ -247,6 +253,7 @@ PYTHONVERSION      = oConfig.Get('PYTHONVERSION')
 TESTLOGFILESFOLDER = oConfig.Get('TESTLOGFILESFOLDER')
 SELFTESTLOGFILE    = oConfig.Get('SELFTESTLOGFILE')
 TESTID             = oConfig.Get('TESTID')
+RECREATEINSTANCE   = oConfig.Get('RECREATEINSTANCE')
 
 # -- start logging
 oSelfTestLogFile = CFile(SELFTESTLOGFILE)
@@ -256,12 +263,17 @@ print()
 
 nNrOfUsecases = 0
 
+# 'listofdictUsecases' is imported directly from test/testconfig/TestConfig.py
+
 if TESTID is not None:
+   listTESTIDs = TESTID.split(';')
    listofdictUsecasesSubset = []
-   for dictUsecase in listofdictUsecases:
-      if TESTID == dictUsecase['TESTID']:
-         listofdictUsecasesSubset.append(dictUsecase)
-         break # currently assumed that there is only one TESTID provided (maybe later more than one)
+   for sTESTID in listTESTIDs:
+      sTESTID = sTESTID.strip()
+      for dictUsecase in listofdictUsecases:
+         if sTESTID == dictUsecase['TESTID']:
+            listofdictUsecasesSubset.append(dictUsecase)
+   # eof for sTESTID in listTESTIDs:
    if len(listofdictUsecasesSubset) == 0:
       bSuccess = False
       sResult  = f"Test ID '{TESTID}' not defined"
@@ -304,16 +316,19 @@ nCntUnknownUsecases = 0
 
 # --------------------------------------------------------------------------------------------------------------
 # !!! the object under test !!!
-oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+oJsonPreprocessor = None
+if RECREATEINSTANCE is not True:
+   oJsonPreprocessor = CJsonPreprocessor()
 #
-# The current philosophy is: The object under test is created only once for all test cases!
+# The default behavior is: The object under test is created only once for all test cases!
 # Every test case uses the same JsonPreprocessor class object. This is also like a stress test,
 # to see how stable the JsonPreprocessor is.
 #
-# An alternative way would be to create a JsonPreprocessor class object for every test case separately
+# An alternative way is to create a JsonPreprocessor class object for every test case separately
 # (= create at the beginning, destroy at the end of a test case).
+# Every test case uses an own JsonPreprocessor class object
 #
-# TODO: A command line switch could be implemented to toggle between both ways.
+# This depends on the switch RECREATEINSTANCE (command line)
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -337,7 +352,7 @@ for dictUsecase in listofdictUsecases:
    EXPECTEDRETURN    = dictUsecase['EXPECTEDRETURN']
 
    # TODO: make this depend on test case; in some BADCASE test cases this might not be wanted:
-   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=REFERENCEPATH)
+   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
 
    # optional ones
    HINT = None
@@ -351,7 +366,7 @@ for dictUsecase in listofdictUsecases:
    TESTFULLNAME    = f"{TESTID}-({SECTION})-[{SUBSECTION}]"
    TESTLOGFILE_TXT = f"{TESTLOGFILESFOLDER}/{TESTFULLNAME}.log"
 
-   sOut = f"====== [TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
+   sOut = f"====== [START OF TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
    print(COLBY + sOut)
    print()
    oSelfTestLogFile.Write(sOut, 1)
@@ -385,6 +400,9 @@ for dictUsecase in listofdictUsecases:
 
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    # -- test case execution
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      oJsonPreprocessor = CJsonPreprocessor()
    dictReturned = None
    sException   = None
    try:
@@ -395,6 +413,9 @@ for dictUsecase in listofdictUsecases:
       oSelfTestLogFile.Write("JsonPreprocessor threw exception:", 1)
       oSelfTestLogFile.Write(sException)
       oSelfTestLogFile.Write()
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      del oJsonPreprocessor
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    listReturnedLines = PrettyPrint(dictReturned, bToConsole=False)
@@ -460,6 +481,12 @@ for dictUsecase in listofdictUsecases:
       listTestsNotPassed.append(TESTFULLNAME)
 
 # eof for dictUsecase in listofdictUsecases:
+
+try:
+   # !!! the object under test !!!
+   del oJsonPreprocessor
+except:
+   pass
 
 # --------------------------------------------------------------------------------------------------------------
 
