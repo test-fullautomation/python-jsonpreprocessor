@@ -22,7 +22,8 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 02.08.2023
+VERSION      = "0.1.0"
+VERSION_DATE = "03.08.2023"
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -199,14 +200,19 @@ except Exception as ex:
    print()
    sys.exit(ERROR)
 
-# --------------------------------------------------------------------------------------------------------------
-# some special functions
-# (with premature end of execution = no test execution)
-# --------------------------------------------------------------------------------------------------------------
+# update version and date of this app
+oConfig.Set("VERSION", VERSION)
+oConfig.Set("VERSION_DATE", VERSION_DATE)
+THISSCRIPTNAME = oConfig.Get('THISSCRIPTNAME')
+THISSCRIPTFULLNAME = f"{THISSCRIPTNAME} v. {VERSION} / {VERSION_DATE}"
+oConfig.Set("THISSCRIPTFULLNAME", THISSCRIPTFULLNAME)
+
+# dump configuration values to screen
+listConfigLines = oConfig.DumpConfig()
 
 CONFIGDUMP = oConfig.Get('CONFIGDUMP')
 if CONFIGDUMP is True:
-   # currently config is already dumped in constructor of CConfig; => nothing more to do here
+   # if that's all, we have nothing more to do
    sys.exit(SUCCESS)
 
 # --------------------------------------------------------------------------------------------------------------
@@ -257,6 +263,10 @@ RECREATEINSTANCE   = oConfig.Get('RECREATEINSTANCE')
 
 # -- start logging
 oSelfTestLogFile = CFile(SELFTESTLOGFILE)
+NOW = time.strftime('%d.%m.%Y - %H:%M:%S')
+oSelfTestLogFile.Write(f"{THISSCRIPTNAME} started at: {NOW}\n")
+oSelfTestLogFile.Write(listConfigLines) # from DumpConfig() called above
+oSelfTestLogFile.Write()
 
 print("Executing test cases")
 print()
