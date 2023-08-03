@@ -189,7 +189,7 @@ def AnalyzeExceptions(EXPECTEDEXCEPTION=None, sException=None):
 # --------------------------------------------------------------------------------------------------------------
 # [TESTCONFIG]
 
-# -- initialize configuration
+# -- initialize and dump test configuration
 
 oConfig = None
 try:
@@ -207,6 +207,18 @@ THISSCRIPTNAME = oConfig.Get('THISSCRIPTNAME')
 THISSCRIPTFULLNAME = f"{THISSCRIPTNAME} v. {VERSION} / {VERSION_DATE}"
 oConfig.Set("THISSCRIPTFULLNAME", THISSCRIPTFULLNAME)
 
+# add information about system under test
+try:
+   # not yet implemented officially
+   oJsonPreprocessor = CJsonPreprocessor()
+   sut_version = oJsonPreprocessor.get_version()
+   sut_version_date = oJsonPreprocessor.get_version_date()
+   del oJsonPreprocessor
+   SUT_FULL_NAME = f"JsonPreprocessor v. {sut_version} / {sut_version_date}"
+   oConfig.Set("SUT_FULL_NAME", SUT_FULL_NAME)
+except:
+   pass
+
 # dump configuration values to screen
 listConfigLines = oConfig.DumpConfig()
 
@@ -215,39 +227,13 @@ if CONFIGDUMP is True:
    # if that's all, we have nothing more to do
    sys.exit(SUCCESS)
 
+
 # --------------------------------------------------------------------------------------------------------------
-# [CODEDUMP]
-
-CODEDUMP = oConfig.Get('CODEDUMP')
-if CODEDUMP is True:
-   oCodeGenerator = None
-   try:
-      oCodeGenerator = CGenCode(oConfig)
-   except Exception as ex:
-      print()
-      printerror(CString.FormatResult("(main)", None, str(ex)))
-      print()
-      sys.exit(ERROR)
-
-   bSuccess, sResult = oCodeGenerator.GenCode()
-   if bSuccess is not True:
-      print()
-      printerror(CString.FormatResult("(main)", bSuccess, sResult))
-      print()
-      sys.exit(ERROR)
-
-   print(COLBG + f"{sResult}\n")
-
-   # after code dump nothing more to do here
-   sys.exit(SUCCESS)
-
-
-# **************************************************************************************************************
-# [EXECUTION]
-# **************************************************************************************************************
+# [PRELIMINARIES]
+# --------------------------------------------------------------------------------------------------------------
 #TM***
 
-# -- get some configuration values required for execution
+# -- access to configuration
 
 THISSCRIPT         = oConfig.Get('THISSCRIPT')
 THISSCRIPTNAME     = oConfig.Get('THISSCRIPTNAME')
@@ -268,12 +254,11 @@ oSelfTestLogFile.Write(f"{THISSCRIPTNAME} started at: {NOW}\n")
 oSelfTestLogFile.Write(listConfigLines) # from DumpConfig() called above
 oSelfTestLogFile.Write()
 
-print("Executing test cases")
-print()
+# -- prepare TESTIDs
 
-nNrOfUsecases = 0
+# ('listofdictUsecases' is imported directly from test/testconfig/TestConfig.py)
 
-# 'listofdictUsecases' is imported directly from test/testconfig/TestConfig.py
+TESTID = oConfig.Get('TESTID')
 
 if TESTID is not None:
    listTESTIDs = TESTID.split(';')
@@ -287,7 +272,13 @@ if TESTID is not None:
    if len(listofdictUsecasesSubset) == 0:
       bSuccess = False
       sResult  = f"Test ID '{TESTID}' not defined"
-      printerror(CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult))
+      sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      printerror(sResult)
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
       sys.exit(ERROR)
    del listofdictUsecases
    listofdictUsecases = listofdictUsecasesSubset
@@ -310,11 +301,61 @@ for dictUsecase in listofdictUsecases:
 if len(listDuplicates) > 0:
    sDuplicates = "[" + ", ".join(listDuplicates) + "]"
    bSuccess = False
-   sResult  = f"Duplicate test IDs found: {sDuplicates}\nTest IDs are used to identify and select test cases. They have to be unique"
-   printerror(CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult))
+   sResult  = f"Duplicate test IDs found in test configuration: {sDuplicates}\nTest IDs are used to identify and select test cases. They have to be unique"
+   sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+   print()
+   printerror(sResult)
+   print()
+   oSelfTestLogFile.Write(sResult, 1)
+   del oSelfTestLogFile
    sys.exit(ERROR)
 
+
 # --------------------------------------------------------------------------------------------------------------
+# [CODEDUMP]
+# special function (with premature end of execution = no test execution)
+# --------------------------------------------------------------------------------------------------------------
+#TM***
+
+CODEDUMP = oConfig.Get('CODEDUMP')
+if CODEDUMP is True:
+   oCodeGenerator = None
+   try:
+      oCodeGenerator = CGenCode(oConfig)
+   except Exception as ex:
+      bSuccess = None
+      sResult  = str(ex)
+      sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
+      sys.exit(ERROR)
+
+   bSuccess, sResult = oCodeGenerator.GenCode()
+   if bSuccess is not True:
+      sResult = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
+      sys.exit(ERROR)
+
+   print(COLBG + f"{sResult}\n")
+
+   # after code dump nothing more to do here
+   sys.exit(SUCCESS)
+
+
+# --------------------------------------------------------------------------------------------------------------
+# [EXECUTION]
+# --------------------------------------------------------------------------------------------------------------
+#TM***
+
+print("Executing test cases")
+print()
 
 nNrOfUsecases = len(listofdictUsecases)
 
@@ -347,11 +388,12 @@ listTestsNotPassed = []
 for dictUsecase in listofdictUsecases:
 
    # debug
-   # PrettyPrint(dictUsecase)
+   # PrettyPrint(dictUsecase, sPrefix="dictUsecase")
+   # print()
 
    nCntUsecases = nCntUsecases + 1
 
-   # required ones
+   # get required parameters
    TESTID            = dictUsecase['TESTID']
    DESCRIPTION       = dictUsecase['DESCRIPTION']
    EXPECTATION       = dictUsecase['EXPECTATION']
@@ -364,7 +406,7 @@ for dictUsecase in listofdictUsecases:
    # TODO: make this depend on test case; in some BADCASE test cases this might not be wanted:
    JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
 
-   # optional ones
+   # get optional parameters
    HINT = None
    if "HINT" in dictUsecase:
       HINT = dictUsecase['HINT']
@@ -372,7 +414,7 @@ for dictUsecase in listofdictUsecases:
    if "COMMENT" in dictUsecase:
       COMMENT = dictUsecase['COMMENT']
 
-   # derived ones
+   # get derived parameters
    TESTFULLNAME    = f"{TESTID}-({SECTION})-[{SUBSECTION}]"
    TESTLOGFILE_TXT = f"{TESTLOGFILESFOLDER}/{TESTFULLNAME}.log"
 
@@ -503,7 +545,7 @@ except:
 # paranoia check
 if ( (nCntPassedUsecases + nCntFailedUsecases + nCntUnknownUsecases != nCntUsecases) or (nNrOfUsecases != nCntUsecases) ):
    print()
-   sOut = CString.FormatResult(THISSCRIPTNAME, bSuccess=False, sResult="Internal counter mismatch")
+   sOut = CString.FormatResult(THISSCRIPTNAME, bSuccess=None, sResult="Internal counter mismatch")
    printerror(sOut)
    oSelfTestLogFile.Write(sOut)
    sOut = f"Defined  : {nNrOfUsecases}"
