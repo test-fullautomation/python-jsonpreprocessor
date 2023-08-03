@@ -701,6 +701,8 @@ class CJsonPreprocessor():
         try:
             sJsonData= self.__load_and_removeComments(os.path.abspath(jFile))
         except Exception as reason:
+            if masterFile:
+                self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
         sJsonDataUpdated = ""
@@ -775,6 +777,8 @@ class CJsonPreprocessor():
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
+            if masterFile:
+                self.__reset()
             raise Exception(f"json file '{jFile}': '{error}'")
 
         oJson = __handleStrNoneTrueFalse(oJson)
@@ -812,6 +816,7 @@ class CJsonPreprocessor():
                     ldict = {}
                     exec(sExec, globals(), ldict)
                 except:
+                    self.__reset()
                     raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
                 
             self.__reset()
