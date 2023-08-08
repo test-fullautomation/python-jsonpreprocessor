@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 07.08.2023
+# 08.08.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -578,7 +578,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (21/20) > {milestone} [STR]  :  'milestone'
 [DICT] (21/21) > {variant_1} [STR]  :  'VARIANT-1 (new value)'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -592,37 +592,35 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0201.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (22/1) > {variant_1} [STR]  :  'VARIANT-1'
-[DICT] (22/2) > {variant_2} [STR]  :  'VARIANT-2'
-[DICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DICT] (22/4) > {list_variant_index} [INT]  :  0
-[DICT] (22/5) > {variant_number} [STR]  :  '1'
-[DICT] (22/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
-[DICT] (22/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
-[DICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE-1'
-[DICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE-2'
-[DICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE-3'
-[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DICT] (22/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
-[DICT] (22/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
-[DICT] (22/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
-[DICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DICT] (22/22) > {milestone_2} [STR]  :  'MILESTONE-2 (new value)'
+[DICT] (21/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (21/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (21/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DICT] (21/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DICT] (21/4) > {list_variant_index} [INT]  :  0
+[DICT] (21/5) > {variant_number} [STR]  :  '1'
+[DICT] (21/6) > {dict_variants} [DICT] (2/1) > {variant_1} [STR]  :  'VARIANT-1'
+[DICT] (21/6) > {dict_variants} [DICT] (2/2) > {variant_2} [STR]  :  'VARIANT-2'
+[DICT] (21/7) > {variant_key_1} [STR]  :  'variant_1'
+[DICT] (21/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DICT] (21/9) > {ARIAN} [STR]  :  'ARIAN'
+[DICT] (21/10) > {VARIANT} [STR]  :  'VARIANT'
+[DICT] (21/11) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (21/12) > {milestone_2} [STR]  :  'MILESTONE-2 (new value)'
+[DICT] (21/13) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (21/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DICT] (21/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DICT] (21/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DICT] (21/15) > {list_milestone_index} [INT]  :  1
+[DICT] (21/16) > {milestone_number} [STR]  :  '2'
+[DICT] (21/17) > {dict_milestones} [DICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE-1'
+[DICT] (21/17) > {dict_milestones} [DICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE-2'
+[DICT] (21/17) > {dict_milestones} [DICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE-3'
+[DICT] (21/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DICT] (21/19) > {innermost_milestone_name} [STR]  :  'est'
+[DICT] (21/20) > {ilesto} [STR]  :  'ilesto'
+[DICT] (21/21) > {milestone} [STR]  :  'milestone'
 """
-
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1009,7 +1007,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0252.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1658,125 +1656,13 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0450"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (1)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0451"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (2)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0451.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0452"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (3)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0452.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0453"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (4)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0453.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0454"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (5)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0454.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0455"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (6)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0455.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0456"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (7)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0456.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0457"
-dictUsecase['DESCRIPTION']       = "JSON file with Python keywords used as parameter names (8)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0457.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected Python keyword as parameter name (placeholder)"
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0458"
 dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing not allowed special characters"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0458.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected characters in parameter name (placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
