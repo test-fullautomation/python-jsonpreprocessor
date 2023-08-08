@@ -14,5 +14,5 @@
 //**************************************************************************
 
 {
-  "${preprocessor}['definitions']['preproTest'][${preprocessor}['definitions']['preproStructure']['variable_02']]": ${params}['glo']['globalString']
+  ${preprocessor}['definitions']['preproTest'][${preprocessor}['definitions']['preproStructure']['variable_02']]: ${params}['glo']['globalString']
 }

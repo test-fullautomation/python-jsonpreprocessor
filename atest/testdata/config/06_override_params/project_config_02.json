@@ -23,7 +23,7 @@
    "Project":"JsonPreprocessor",
    "Descriptioin":"Json Preprocessor Acceptance Test",
    "[import]": "./common/definitions_common.json",
-   "${gPreproString}": "Override string param in imported file.",
+   ${gPreproString}: "Override string param in imported file.",
    "params":{
      "global":{
 	   "dSUT":{

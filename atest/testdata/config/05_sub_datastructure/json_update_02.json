@@ -15,6 +15,6 @@
 
 {
   ${params}['glo']['globalString']: "Welcome to Jsonpreprocessor Acceptance Test",
-  "${preprocessor}['definitions']['preproStructure']['variable_01']": 0.192,
+  ${preprocessor}['definitions']['preproStructure']['variable_01']: 0.192,
   ${Project}: "Acceptance Testing"
 }
