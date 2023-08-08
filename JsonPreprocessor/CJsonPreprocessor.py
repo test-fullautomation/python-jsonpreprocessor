@@ -576,7 +576,7 @@ class CJsonPreprocessor():
                     ldict = {}
                     exec(sExec, globals(), ldict)
                     if bStringValue:
-                        sInputStr = re.sub("(\$" + pattern + ")", str(ldict['value']), sInputStr)
+                        sInputStr = re.sub("(\$" + pattern + ")", str(ldict['value']), sInputStr, count=1)
                     else:
                         sInputStr = re.sub("\$\$", "$", sInputStr)
                         sInputStr = ldict['value']
