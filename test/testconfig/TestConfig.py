@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 08.08.2023
+# 09.08.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -235,15 +235,15 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/52) > {param_100} [LIST] (51/26) > [STR]  :  '4.56'
 [DICT] (53/52) > {param_100} [LIST] (51/27) > [STR]  :  '4.56'
 [DICT] (53/52) > {param_100} [LIST] (51/28) > [BOOL]  :  True
-[DICT] (53/52) > {param_100} [LIST] (51/29) > [STR]  :  'true'
+[DICT] (53/52) > {param_100} [LIST] (51/29) > [STR]  :  'True'
 [DICT] (53/52) > {param_100} [LIST] (51/30) > [STR]  :  'true'
 [DICT] (53/52) > {param_100} [LIST] (51/31) > [STR]  :  'true'
 [DICT] (53/52) > {param_100} [LIST] (51/32) > [BOOL]  :  False
-[DICT] (53/52) > {param_100} [LIST] (51/33) > [STR]  :  'false'
+[DICT] (53/52) > {param_100} [LIST] (51/33) > [STR]  :  'False'
 [DICT] (53/52) > {param_100} [LIST] (51/34) > [STR]  :  'false'
 [DICT] (53/52) > {param_100} [LIST] (51/35) > [STR]  :  'false'
-[DICT] (53/52) > {param_100} [LIST] (51/36) > [BOOL]  :  None
-[DICT] (53/52) > {param_100} [LIST] (51/37) > [STR]  :  'null'
+[DICT] (53/52) > {param_100} [LIST] (51/36) > [NONE]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/37) > [STR]  :  'None'
 [DICT] (53/52) > {param_100} [LIST] (51/38) > [STR]  :  'null'
 [DICT] (53/52) > {param_100} [LIST] (51/39) > [STR]  :  'null'
 [DICT] (53/52) > {param_100} [LIST] (51/40) > [BOOL]  :  True
@@ -254,7 +254,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/52) > {param_100} [LIST] (51/45) > [STR]  :  'False'
 [DICT] (53/52) > {param_100} [LIST] (51/46) > [STR]  :  'False'
 [DICT] (53/52) > {param_100} [LIST] (51/47) > [STR]  :  'False'
-[DICT] (53/52) > {param_100} [LIST] (51/48) > [BOOL]  :  None
+[DICT] (53/52) > {param_100} [LIST] (51/48) > [NONE]  :  None
 [DICT] (53/52) > {param_100} [LIST] (51/49) > [STR]  :  'None'
 [DICT] (53/52) > {param_100} [LIST] (51/50) > [STR]  :  'None'
 [DICT] (53/52) > {param_100} [LIST] (51/51) > [STR]  :  'None'
@@ -286,15 +286,15 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/53) > {param_101} [LIST] (51/26) > [STR]  :  '4.56'
 [DICT] (53/53) > {param_101} [LIST] (51/27) > [STR]  :  '4.56'
 [DICT] (53/53) > {param_101} [LIST] (51/28) > [BOOL]  :  True
-[DICT] (53/53) > {param_101} [LIST] (51/29) > [STR]  :  'true'
+[DICT] (53/53) > {param_101} [LIST] (51/29) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/30) > [STR]  :  'true'
 [DICT] (53/53) > {param_101} [LIST] (51/31) > [STR]  :  'true'
 [DICT] (53/53) > {param_101} [LIST] (51/32) > [BOOL]  :  False
-[DICT] (53/53) > {param_101} [LIST] (51/33) > [STR]  :  'false'
+[DICT] (53/53) > {param_101} [LIST] (51/33) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/34) > [STR]  :  'false'
 [DICT] (53/53) > {param_101} [LIST] (51/35) > [STR]  :  'false'
-[DICT] (53/53) > {param_101} [LIST] (51/36) > [BOOL]  :  None
-[DICT] (53/53) > {param_101} [LIST] (51/37) > [STR]  :  'null'
+[DICT] (53/53) > {param_101} [LIST] (51/36) > [NONE]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/37) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/38) > [STR]  :  'null'
 [DICT] (53/53) > {param_101} [LIST] (51/39) > [STR]  :  'null'
 [DICT] (53/53) > {param_101} [LIST] (51/40) > [BOOL]  :  True
@@ -305,12 +305,12 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/53) > {param_101} [LIST] (51/45) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/46) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/47) > [STR]  :  'False'
-[DICT] (53/53) > {param_101} [LIST] (51/48) > [BOOL]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/48) > [NONE]  :  None
 [DICT] (53/53) > {param_101} [LIST] (51/49) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/50) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/51) > [STR]  :  'None'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
