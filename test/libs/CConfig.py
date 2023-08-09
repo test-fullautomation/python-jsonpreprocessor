@@ -20,7 +20,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023
+# 03.08.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ class CConfig():
       self.__dictConfig['SELFTESTLOGFILE']    = SELFTESTLOGFILE
 
       # dump of basic configuration parameters to console
-      self.DumpConfig()
+      # self.DumpConfig() # done in main script now!
 
    # eof def __init__(self, sCalledBy=None):
 
@@ -146,12 +146,16 @@ class CConfig():
 
    def DumpConfig(self):
       """Prints all configuration values to console."""
+      listFormattedOutputLines = []
       # -- printing configuration to console
       print()
       # PrettyPrint(self.__dictConfig, sPrefix="Config")
       for key, value in self.__dictConfig.items():
-         print(key.rjust(30, ' ') + " : " + str(value))
+         sLine = key.rjust(30, ' ') + " : " + str(value)
+         print(sLine)
+         listFormattedOutputLines.append(sLine)
       print()
+      return listFormattedOutputLines
    # eof def DumpConfig(self):
 
    # --------------------------------------------------------------------------------------------------------------
@@ -183,6 +187,16 @@ class CConfig():
       else:
          return self.__dictConfig[sName]
    # eof def Get(self, sName=None):
+
+   # --------------------------------------------------------------------------------------------------------------
+   #TM***
+
+   def Set(self, sName=None, sValue=None):
+      """Sets a new configuration parameter."""
+      sName  = f"{sName}"
+      sValue = f"{sValue}"
+      self.__dictConfig[sName] = sValue
+   # eof def Set(self, sName=None, sValue=None):
 
    # --------------------------------------------------------------------------------------------------------------
    #TM***
