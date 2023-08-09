@@ -35,6 +35,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0003**
+
+  [DATA_TYPES / GOODCASE]
+
+   **JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list**
+
+   Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+
+----
+
 * **Test JPP_0100**
 
   [DATA_INTEGRITY / GOODCASE]
@@ -95,11 +105,41 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0251**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0253**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0255**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
    **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0257**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -115,6 +155,18 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0300**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 1*
+
+----
+
 * **Test JPP_0361**
 
   [VALUE_DETECTION / BADCASE]
@@ -124,6 +176,40 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Hint: Checklist rule 3 / pattern 1*
+
+----
+
+* **Test JPP_0500**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (nested lists and dictionaries 1)**
+
+   Expected: JsonPreprocessor returns expected value
+
+   *Hint: Standard notation*
+
+----
+
+* **Test JPP_0502**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)**
+
+   Expected: JsonPreprocessor returns expected value
+
+   *Hint: Standard notation*
+
+----
+
+* **Test JPP_0506**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite strings containing several combinations of curly brackets and special characters before**
+
+   Expected: JsonPreprocessor returns expected value
 
 ----
 
@@ -187,5 +273,5 @@ Test Use Cases
 
 ----
 
-Generated: 08.08.2023 - 15:09:12
+Generated: 09.08.2023 - 11:47:23
 

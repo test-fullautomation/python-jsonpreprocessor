@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_03_PARAMETER_SUBSTITUTION_GOODCASE.py
+# test_06_VALUE_DETECTION_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,22 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PARAMETER_SUBSTITUTION_GOODCASE:
+class Test_VALUE_DETECTION_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / string parameter substitution in parameter value",]
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)",]
    )
-   def test_JPP_0200(self, Description):
-      nReturn = CExecute.Execute("JPP_0200")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / string parameter substitution in parameter name",]
-   )
-   def test_JPP_0201(self, Description):
-      nReturn = CExecute.Execute("JPP_0201")
+   def test_JPP_0361(self, Description):
+      nReturn = CExecute.Execute("JPP_0361")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_03_PARAMETER_SUBSTITUTION_GOODCASE.py
+# test_07_COMPOSITE_EXPRESSIONS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
@@ -27,22 +27,30 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PARAMETER_SUBSTITUTION_GOODCASE:
+class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / string parameter substitution in parameter value",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 1)",]
    )
-   def test_JPP_0200(self, Description):
-      nReturn = CExecute.Execute("JPP_0200")
+   def test_JPP_0500(self, Description):
+      nReturn = CExecute.Execute("JPP_0500")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / string parameter substitution in parameter name",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)",]
    )
-   def test_JPP_0201(self, Description):
-      nReturn = CExecute.Execute("JPP_0201")
+   def test_JPP_0502(self, Description):
+      nReturn = CExecute.Execute("JPP_0502")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with composite strings containing several combinations of curly brackets and special characters before",]
+   )
+   def test_JPP_0506(self, Description):
+      nReturn = CExecute.Execute("JPP_0506")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

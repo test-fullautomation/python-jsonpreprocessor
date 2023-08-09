@@ -993,7 +993,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0251.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1021,7 +1021,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0253.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1077,7 +1077,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0257.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1239,7 +1239,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (4/3) > {val2} [STR]  :  '3.4'
 [DICT] (4/4) > {val3} [STR]  :  'value_56'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1692,7 +1692,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (2/1) > {params} [LIST] (2/2) > [DICT] (2/2) > {dict_2_key_2} [DICT] (2/2) > {dict_2_A_key_2} [LIST] (3/3) > [DICT] (2/2) > {dict_2_A_key_2_subkey_2} [LIST] (2/2) > [STR]  :  'value_2'
 [DICT] (2/2) > {param} [STR]  :  'value_2'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1744,7 +1744,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (2/1) > {params} [LIST] (2/2) > [DICT] (2/2) > {dict_2_key_2} [DICT] (2/2) > {dict.2.A.key.2} [LIST] (3/3) > [DICT] (2/2) > {dict_2_A_key_2_subkey_2} [LIST] (2/2) > [STR]  :  'value_2'
 [DICT] (2/2) > {param} [STR]  :  'value_2'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1857,7 +1857,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (12/11) > {var8} [STR]  :  'value 8 > @{param2}'
 [DICT] (12/12) > {var9} [STR]  :  'value 9 > @{param3}'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

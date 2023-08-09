@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 08.08.2023 - 15:09:12
+# 09.08.2023 - 11:47:23
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -40,10 +40,34 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing",]
+   )
+   def test_JPP_0251(self, Description):
+      nReturn = CExecute.Execute("JPP_0251")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing",]
+   )
+   def test_JPP_0253(self, Description):
+      nReturn = CExecute.Execute("JPP_0253")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing",]
    )
    def test_JPP_0255(self, Description):
       nReturn = CExecute.Execute("JPP_0255")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing",]
+   )
+   def test_JPP_0257(self, Description):
+      nReturn = CExecute.Execute("JPP_0257")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
