@@ -103,6 +103,39 @@ Expected: All parameters referenced by dollar operator are resolved correctly, w
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
 <font size="2" face="Arial" color="#595959">
 <b>
+JPP_0003
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+DATA_TYPES
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#008000">
+GOODCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list</b><br>
+Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+4
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
 JPP_0100
 </b></font></td>
 
@@ -130,7 +163,7 @@ Expected: JsonPreprocessor returns empty dictionary
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-4
+5
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -163,7 +196,7 @@ Expected: String is returned unchanged
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-5
+6
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -196,7 +229,7 @@ Expected: String is returned unchanged (but with masked special characters and e
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-6
+7
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -229,7 +262,7 @@ Expected: JsonPreprocessor creates a new string with all dollar operator express
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-7
+8
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -262,7 +295,7 @@ Expected: JsonPreprocessor creates a new string with all dollar operator express
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-8
+9
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -295,7 +328,73 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-9
+10
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0251
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+PARAMETER_SUBSTITUTION
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#FF0000">
+BADCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing</b><br>
+Expected: No values are returned, and JsonPreprocessor throws an exception
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+11
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0253
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+PARAMETER_SUBSTITUTION
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#FF0000">
+BADCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing</b><br>
+Expected: No values are returned, and JsonPreprocessor throws an exception
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+12
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -328,7 +427,40 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-10
+13
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0257
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+PARAMETER_SUBSTITUTION
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#FF0000">
+BADCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing</b><br>
+Expected: No values are returned, and JsonPreprocessor throws an exception
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+14
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -361,7 +493,41 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-11
+15
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0300
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+VALUE_DETECTION
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#008000">
+GOODCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)</b><br>
+Expected: JsonPreprocessor returns values
+
+<br>
+Checklist rule 1
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+16
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -395,7 +561,108 @@ Checklist rule 3 / pattern 1
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-12
+17
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0500
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+COMPOSITE_EXPRESSIONS
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#008000">
+GOODCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with composite data structure (nested lists and dictionaries 1)</b><br>
+Expected: JsonPreprocessor returns expected value
+
+<br>
+Standard notation
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+18
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0502
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+COMPOSITE_EXPRESSIONS
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#008000">
+GOODCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)</b><br>
+Expected: JsonPreprocessor returns expected value
+
+<br>
+Standard notation
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+19
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+JPP_0506
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+COMPOSITE_EXPRESSIONS
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#008000">
+GOODCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with composite strings containing several combinations of curly brackets and special characters before</b><br>
+Expected: JsonPreprocessor returns expected value
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+20
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -428,7 +695,7 @@ Expected: JsonPreprocessor returns remaining content of JSON file (valid paramet
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-13
+21
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -461,7 +728,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-14
+22
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -494,7 +761,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-15
+23
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -527,7 +794,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-16
+24
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -560,7 +827,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
 <font size="2" face="Arial" color="#FF0000">
 <b>
-17
+25
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -593,7 +860,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 </tbody></table></div>
 <div>&nbsp;</div>
 <hr width="100%" color="#FF8C00" align="center">
-<div align="center"><font size="2" color="#27408B">Generated: 08.08.2023 - 15:09:12</font></div>
+<div align="center"><font size="2" color="#27408B">Generated: 09.08.2023 - 11:47:23</font></div>
 <div>&nbsp;</div>
 </body></html>
 

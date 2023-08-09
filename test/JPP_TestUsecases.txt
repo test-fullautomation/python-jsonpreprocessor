@@ -23,6 +23,10 @@ Test JPP_0002 / DATA_TYPES / GOODCASE
 Description: JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types
 Expectation: All parameters referenced by dollar operator are resolved correctly, with their correct data types
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0003 / DATA_TYPES / GOODCASE
+Description: JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
+Expectation: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0100 / DATA_INTEGRITY / GOODCASE
 Description: JSON file is empty (single pair of brackets only)
 Expectation: JsonPreprocessor returns empty dictionary
@@ -47,18 +51,49 @@ Test JPP_0250 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0251 / PARAMETER_SUBSTITUTION / BADCASE
+Description: JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0253 / PARAMETER_SUBSTITUTION / BADCASE
+Description: JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0255 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0257 / PARAMETER_SUBSTITUTION / BADCASE
+Description: JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0259 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0300 / VALUE_DETECTION / GOODCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
+Expectation: JsonPreprocessor returns values
+Hint.......: Checklist rule 1
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0361 / VALUE_DETECTION / BADCASE
 Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 3 / pattern 1
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0500 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 1)
+Expectation: JsonPreprocessor returns expected value
+Hint.......: Standard notation
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0502 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+Expectation: JsonPreprocessor returns expected value
+Hint.......: Standard notation
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0506 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite strings containing several combinations of curly brackets and special characters before
+Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0900 / COMMON_SYNTAX_VIOLATIONS / GOODCASE
 Description: JSON file with syntax error, that is commented out
@@ -84,5 +119,5 @@ Test JPP_0954 / COMMON_SYNTAX_VIOLATIONS / BADCASE
 Description: JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 08.08.2023 - 15:09:12
+Generated: 09.08.2023 - 11:47:23
 

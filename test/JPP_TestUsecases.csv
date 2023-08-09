@@ -2,15 +2,23 @@ sep=|
 TESTID|SECTION|SUBSECTION|DESCRIPTION
 JPP_0001|DATA_TYPES|GOODCASE|JSON file with parameters of different data types (basic and composite)
 JPP_0002|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types
+JPP_0003|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
 JPP_0100|DATA_INTEGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
 JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
 JPP_0102|DATA_INTEGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
 JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
 JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
 JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
+JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
+JPP_0253|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
 JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
 JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
+JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0361|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
+JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
+JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several combinations of curly brackets and special characters before
 JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
 JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
