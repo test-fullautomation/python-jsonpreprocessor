@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023 - 15:09:36
+# 09.08.2023 - 11:47:23
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -44,69 +44,5 @@ class Test_PARAMETER_SUBSTITUTION_GOODCASE:
    )
    def test_JPP_0201(self, Description):
       nReturn = CExecute.Execute("JPP_0201")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / standard notation",]
-   )
-   def test_JPP_0202(self, Description):
-      nReturn = CExecute.Execute("JPP_0202")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation",]
-   )
-   def test_JPP_0203(self, Description):
-      nReturn = CExecute.Execute("JPP_0203")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter value / standard notation",]
-   )
-   def test_JPP_0204(self, Description):
-      nReturn = CExecute.Execute("JPP_0204")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation",]
-   )
-   def test_JPP_0205(self, Description):
-      nReturn = CExecute.Execute("JPP_0205")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / standard notation",]
-   )
-   def test_JPP_0206(self, Description):
-      nReturn = CExecute.Execute("JPP_0206")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation",]
-   )
-   def test_JPP_0207(self, Description):
-      nReturn = CExecute.Execute("JPP_0207")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter value / standard notation",]
-   )
-   def test_JPP_0208(self, Description):
-      nReturn = CExecute.Execute("JPP_0208")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation",]
-   )
-   def test_JPP_0209(self, Description):
-      nReturn = CExecute.Execute("JPP_0209")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

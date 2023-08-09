@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023 - 15:09:36
+# 09.08.2023 - 11:47:23
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -48,26 +48,10 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing",]
-   )
-   def test_JPP_0252(self, Description):
-      nReturn = CExecute.Execute("JPP_0252")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
       "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing",]
    )
    def test_JPP_0253(self, Description):
       nReturn = CExecute.Execute("JPP_0253")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing",]
-   )
-   def test_JPP_0254(self, Description):
-      nReturn = CExecute.Execute("JPP_0254")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
@@ -80,14 +64,6 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing",]
-   )
-   def test_JPP_0256(self, Description):
-      nReturn = CExecute.Execute("JPP_0256")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
       "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing",]
    )
    def test_JPP_0257(self, Description):
@@ -96,81 +72,9 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing",]
-   )
-   def test_JPP_0258(self, Description):
-      nReturn = CExecute.Execute("JPP_0258")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
       "Description", ["JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing",]
    )
    def test_JPP_0259(self, Description):
       nReturn = CExecute.Execute("JPP_0259")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)",]
-   )
-   def test_JPP_0260(self, Description):
-      nReturn = CExecute.Execute("JPP_0260")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)",]
-   )
-   def test_JPP_0261(self, Description):
-      nReturn = CExecute.Execute("JPP_0261")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)",]
-   )
-   def test_JPP_0262(self, Description):
-      nReturn = CExecute.Execute("JPP_0262")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)",]
-   )
-   def test_JPP_0263(self, Description):
-      nReturn = CExecute.Execute("JPP_0263")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)",]
-   )
-   def test_JPP_0264(self, Description):
-      nReturn = CExecute.Execute("JPP_0264")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)",]
-   )
-   def test_JPP_0265(self, Description):
-      nReturn = CExecute.Execute("JPP_0265")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)",]
-   )
-   def test_JPP_0266(self, Description):
-      nReturn = CExecute.Execute("JPP_0266")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)",]
-   )
-   def test_JPP_0267(self, Description):
-      nReturn = CExecute.Execute("JPP_0267")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

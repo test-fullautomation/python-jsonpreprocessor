@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_09_COMPOSITE_EXPRESSIONS_BADCASE.py
+# test_07_COMPOSITE_EXPRESSIONS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023 - 15:09:36
+# 09.08.2023 - 11:47:23
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,30 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMPOSITE_EXPRESSIONS_BADCASE:
+class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 1)",]
    )
-   def test_JPP_0550(self, Description):
-      nReturn = CExecute.Execute("JPP_0550")
+   def test_JPP_0500(self, Description):
+      nReturn = CExecute.Execute("JPP_0500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)",]
+   )
+   def test_JPP_0502(self, Description):
+      nReturn = CExecute.Execute("JPP_0502")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with composite strings containing several combinations of curly brackets and special characters before",]
+   )
+   def test_JPP_0506(self, Description):
+      nReturn = CExecute.Execute("JPP_0506")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
