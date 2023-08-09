@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_09_COMPOSITE_EXPRESSIONS_BADCASE.py
+# test_06_COMMON_SYNTAX_VIOLATIONS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023 - 15:09:36
+# 08.08.2023 - 15:09:12
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMPOSITE_EXPRESSIONS_BADCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
    @pytest.mark.parametrize(
-      "Description", ["JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)",]
+      "Description", ["JSON file with syntax error, that is commented out",]
    )
-   def test_JPP_0550(self, Description):
-      nReturn = CExecute.Execute("JPP_0550")
+   def test_JPP_0900(self, Description):
+      nReturn = CExecute.Execute("JPP_0900")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

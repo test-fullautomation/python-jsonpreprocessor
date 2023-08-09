@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_10_COMMON_SYNTAX_VIOLATIONS_GOODCASE.py
+# test_05_VALUE_DETECTION_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.07.2023 - 15:09:36
+# 08.08.2023 - 15:09:12
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMMON_SYNTAX_VIOLATIONS_GOODCASE:
+class Test_VALUE_DETECTION_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error, that is commented out",]
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)",]
    )
-   def test_JPP_0900(self, Description):
-      nReturn = CExecute.Execute("JPP_0900")
+   def test_JPP_0361(self, Description):
+      nReturn = CExecute.Execute("JPP_0361")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
