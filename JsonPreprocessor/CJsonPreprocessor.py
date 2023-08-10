@@ -195,7 +195,7 @@ class CJsonPreprocessor():
         '''
         self.lImportedFiles = []
         self.recursive_level = 0
-        self.lUpdatedParams = {}
+        self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
 
@@ -535,6 +535,7 @@ class CJsonPreprocessor():
                     try:
                         exec(sExec, globals())
                     except Exception as error:
+                        self.__reset()
                         errorMsg = f"Could not set variable '{k}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
 
@@ -581,6 +582,7 @@ class CJsonPreprocessor():
                         sInputStr = re.sub("\$\$", "$", sInputStr)
                         sInputStr = ldict['value']
                 except:
+                    self.__reset()
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
             return sInputStr
 
