@@ -695,17 +695,29 @@ class CJsonPreprocessor():
             elif "," in sInputStr:
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
-                if re.match(listPattern, sInputStr.lower()):
-                    items = sInputStr.split(",")
-                    for item in items:
-                        if "${" in item and not re.match("^\s*" + nestedPattern + "\]*}*\s*$", item):
-                            raise Exception(f"Invalid nested parameter format: {item}")
-                        
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
                 for nestedParam in lNestedParam:
-                    self.lNestedParams.append(nestedParam[0])    
-                sInputStr = re.sub("(\"\s*" + nestedPattern + "\s*\")", "str(\\1)", sInputStr)
-                sInputStr = re.sub("[^\(](" + nestedPattern + ")", "\"\\1\"", sInputStr)
+                    self.lNestedParams.append(nestedParam[0])
+                if re.match(listPattern, sInputStr.lower()):
+                    items = sInputStr.split(",")
+                    newInputStr = ''
+                    for item in items:
+                        tmpItem = item
+                        if "${" in item:
+                            if not re.match("^\s*\"*" + nestedPattern + "\"*\]*}*\s*$", item):
+                                raise Exception(f"Invalid nested parameter format: {item}")
+                            elif re.match("^\s*\".*" + nestedPattern + ".*\"\s*$", item):
+                                item = re.sub("(" + nestedPattern + ")", "str(\\1)", item)
+                                tmpList = []
+                                for subItem in re.findall("(str\(" + nestedPattern + "\))", item):
+                                    tmpList.append(subItem[0])
+                                item = __recursiveNestedHandling(item, tmpList)
+                            elif re.match("^\s*" + nestedPattern + "\s*\]*}*\s*$", item):
+                                item = re.sub("(" + nestedPattern + ")", "\"\\1\"", item)
+                                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", item)
+                                self.lNestedParams.append(nestedParam)
+                        newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
+                sInputStr = newInputStr
             else:
                 raise Exception(f"Invalid nested parameter format: {sInputStr}")
 
