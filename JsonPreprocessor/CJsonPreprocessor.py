@@ -846,6 +846,8 @@ class CJsonPreprocessor():
                         self.lNestedParams.remove(nestedParam)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
+                if "${" in line:
+                    raise Exception(f"Invalid nested parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         currentDir = os.getcwd()
