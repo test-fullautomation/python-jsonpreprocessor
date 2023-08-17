@@ -167,6 +167,66 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0350**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 1 / pattern 1*
+
+----
+
+* **Test JPP_0351**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 1 / pattern 2*
+
+----
+
+* **Test JPP_0352**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 1 / pattern 3*
+
+----
+
+* **Test JPP_0353**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 1*
+
+----
+
+* **Test JPP_0354**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 2*
+
+----
+
 * **Test JPP_0361**
 
   [VALUE_DETECTION / BADCASE]
@@ -273,5 +333,5 @@ Test Use Cases
 
 ----
 
-Generated: 09.08.2023 - 17:28:15
+Generated: 17.08.2023 - 14:06:12
 

@@ -76,6 +76,31 @@ Description: JSON file with parameter of type 'list' / index (in square brackets
 Expectation: JsonPreprocessor returns values
 Hint.......: Checklist rule 1
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0350 / VALUE_DETECTION / BADCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 1 / pattern 1
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0351 / VALUE_DETECTION / BADCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 1 / pattern 2
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0352 / VALUE_DETECTION / BADCASE
+Description: JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 1 / pattern 3
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0353 / VALUE_DETECTION / BADCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2 / pattern 1
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0354 / VALUE_DETECTION / BADCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2 / pattern 2
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0361 / VALUE_DETECTION / BADCASE
 Description: JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -119,5 +144,5 @@ Test JPP_0954 / COMMON_SYNTAX_VIOLATIONS / BADCASE
 Description: JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 09.08.2023 - 17:28:15
+Generated: 17.08.2023 - 14:06:12
 

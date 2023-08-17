@@ -15,6 +15,11 @@ JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index 
 JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
 JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
+JPP_0350|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 1)
+JPP_0351|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 2)
+JPP_0352|VALUE_DETECTION|BADCASE|JSON file with parameter of type 'list' / index (in square brackets) defined inside the curly brackets (invalid syntax 3)
+JPP_0353|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 1)
+JPP_0354|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 2)
 JPP_0361|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
 JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
