@@ -717,7 +717,7 @@ class CJsonPreprocessor():
                                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", item)
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
-                sInputStr = newInputStr
+                    sInputStr = newInputStr
             else:
                 raise Exception(f"Invalid nested parameter format: {sInputStr}")
 
