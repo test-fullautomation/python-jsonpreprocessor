@@ -398,7 +398,7 @@ class CJsonPreprocessor():
                 sParam = '$${' + lParams[0] + '}'
                 lParams.pop(0)
                 for item in lParams:
-                    sParam = sParam + "['" + item + "']"
+                    sParam = sParam + "[" + item + "]" if re.match("^\d+$", item) else sParam + "['" + item + "']"
                 sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
                 referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
             tmpReferVar = re.sub("\$", "\\$", referVar)
