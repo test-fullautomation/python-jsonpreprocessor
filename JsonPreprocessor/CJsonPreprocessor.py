@@ -697,7 +697,9 @@ class CJsonPreprocessor():
 
             return sInputStr
 
-        nestedPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        variablePattern = "[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*"
+        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+        nestedPattern = "\${\s*" + variablePattern + "\s*}(" + dictPattern +")*"
         valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = "[0-9\.]+"
 
@@ -705,12 +707,27 @@ class CJsonPreprocessor():
             if re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
-                for nestedParam in lNestedParam:
-                    self.lNestedParams.append(nestedParam[0])
-                sInputStr = re.sub("(" + nestedPattern + ")", "str(\\1)", sInputStr)
+                lNestedBase = []
                 tmpList = []
-                for item in re.findall("(str\(" + nestedPattern + "\))", sInputStr):
-                    tmpList.append(item[0])
+                for nestedParam in lNestedParam:
+                    if nestedParam[0].count("${") > 1:
+                        tmpNested = nestedParam[0]
+                        lNestedBase.append(re.findall("\[\s*(\${\s*" + variablePattern + "\s*})\s*\]", tmpNested)[0])
+                        for item in re.findall("\[\s*(\${\s*" + variablePattern + "\s*})\s*\]", tmpNested):
+                            pattern = re.sub(r'([$()\[\]])', r'\\\1', item)
+                            tmpNested = re.sub("(" + pattern + ")", "str(\\1)", tmpNested)
+                            sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
+                        pattern = re.sub(r'([$()\[\]])', r'\\\1', tmpNested)
+                        sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
+                        tmpList.append("str(" + tmpNested + ")")
+                    else:
+                        tmpList.append("str(" + nestedParam[0] + ")")
+                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam[0])
+                        sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
+                        lNestedBase.append(nestedParam[0])
+                for nestedBase in lNestedBase:
+                    self.lNestedParams.append(nestedBase)
+
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
             elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
