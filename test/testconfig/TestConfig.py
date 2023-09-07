@@ -706,7 +706,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (22/21) > {milestone} [STR]  :  'milestone'
 [DICT] (22/22) > {VAR-VARIANT-1_MS-MILESTONE-2_param} [STR]  :  'value'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
