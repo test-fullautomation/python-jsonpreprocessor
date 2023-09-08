@@ -398,7 +398,7 @@ class CJsonPreprocessor():
                 sParam = '$${' + lParams[0] + '}'
                 lParams.pop(0)
                 for item in lParams:
-                    sParam = sParam + "['" + item + "']"
+                    sParam = sParam + "[" + item + "]" if re.match("^\d+$", item) else sParam + "['" + item + "']"
                 sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
                 referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
             tmpReferVar = re.sub("\$", "\\$", referVar)
@@ -527,10 +527,32 @@ class CJsonPreprocessor():
       Output Json object as dictionary with all variables resolved.
         '''
 
+        def __checkAndCreateNewElement(sKey: str):
+            '''
+        This method check and create new elements if they are not exist.
+            '''
+            rootKey = re.sub("\[.*\]", "", sKey)
+            subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
+            if len(subElements) <= 1:
+                return
+            else:
+                for index, element in enumerate(subElements):
+                    if index < len(subElements) - 1:
+                        rootKey = rootKey + "['" + element + "']"
+                        sExec = "dumpData = " + rootKey
+                        try:
+                            exec(sExec)
+                        except:
+                            sExec = rootKey + " = {}"
+                            exec(sExec, globals())
+                    else:
+                        continue
+
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
                 del oJson[keyNested]
                 if '[' in k:
+                    __checkAndCreateNewElement(k)
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
@@ -553,12 +575,14 @@ class CJsonPreprocessor():
                     if "JPavoidDataType_" in k:
                         k = re.sub("JPavoidDataType_", "", k)
                     oJson[k] = v
+                    globals().update({k:v})
 
             else:
                 if bNested:
                     if "JPavoidDataType_" in k:
                         k = re.sub("JPavoidDataType_", "", k) 
                     oJson[k] = v
+                    globals().update({k:v})
 
         def __loadNestedValue(sInputStr: str):
             bStringValue = False
@@ -593,7 +617,7 @@ class CJsonPreprocessor():
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             if re.search("(str\(" + pattern + "\))", k.lower()):
@@ -608,7 +632,7 @@ class CJsonPreprocessor():
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
                 k = re.sub("\$\$", "$", k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
-            elif len(re.findall(pattern, k.lower())) > 1 or k.count('{') != k.count('}'):
+            elif k.count('{') != k.count('}'):
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
         Please check key '{k}' in config file!!!")
 
@@ -661,7 +685,7 @@ class CJsonPreprocessor():
             '''
             tmpList = []
             for item in lNestedParam:
-                item = re.sub(r'([$()])', r'\\\1', item)
+                item = re.sub(r'([$()\[\]])', r'\\\1', item)
                 pattern = "(\${\s*[0-9A-Za-z\-_]*" + item + "[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*)"
                 if re.search(pattern, sInputStr):
                     sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
@@ -673,7 +697,9 @@ class CJsonPreprocessor():
 
             return sInputStr
 
-        nestedPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
+        variablePattern = "[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*"
+        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+        nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
         valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = "[0-9\.]+"
 
@@ -681,31 +707,72 @@ class CJsonPreprocessor():
             if re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
-                for nestedParam in lNestedParam:
-                    self.lNestedParams.append(nestedParam[0])
-                sInputStr = re.sub("(" + nestedPattern + ")", "str(\\1)", sInputStr)
+                lNestedBase = []
                 tmpList = []
-                for item in re.findall("(str\(" + nestedPattern + "\))", sInputStr):
-                    tmpList.append(item[0])
+                for nestedParam in lNestedParam:
+                    if nestedParam[0].count("${") > 1:
+                        tmpNested = nestedParam[0]
+                        if "[" in tmpNested:
+                            pattern = "\[\s*(\${\s*" + variablePattern + "\s*})\s*\]"
+                            lNestedBase.append(re.findall(pattern, tmpNested)[0])
+                            for item in re.findall(pattern, tmpNested):
+                                patternItem = re.sub(r'([$()\[\]])', r'\\\1', item)
+                                tmpNested = re.sub("(" + patternItem + ")", "str(\\1)", tmpNested)
+                                sInputStr = re.sub("(" + patternItem + ")", "str(\\1)", sInputStr)
+                            pattern = re.sub(r'([$()\[\]])', r'\\\1', tmpNested)
+                            sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
+                            tmpList.append("str(" + tmpNested + ")")
+                        else:
+                            pattern = "(\${\s*" + variablePattern + "\s*})"
+                            lNestedBase.append(re.findall(pattern, tmpNested)[0])
+                            for item in re.findall(pattern, tmpNested):
+                                patternItem = re.sub(r'([$()\[\]])', r'\\\1', item)
+                                tmpNested = re.sub("(" + patternItem + ")", "str(\\1)", tmpNested)
+                                sInputStr = re.sub("(" + patternItem + ")", "str(\\1)", sInputStr)
+                            pattern = re.sub(r'([$()\[\]])', r'\\\1', tmpNested)
+                            sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
+                            tmpList.append("str(" + tmpNested + ")")
+                    else:
+                        tmpList.append("str(" + nestedParam[0] + ")")
+                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam[0])
+                        sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
+                        lNestedBase.append(nestedParam[0])
+                for nestedBase in lNestedBase:
+                    self.lNestedParams.append(nestedBase)
+
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
             elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
+            elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and sInputStr.count("${")>1:
+                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
             elif "," in sInputStr:
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
-                if re.match(listPattern, sInputStr.lower()):
-                    items = sInputStr.split(",")
-                    for item in items:
-                        if "${" in item and not re.match("^\s*" + nestedPattern + "\]*}*\s*$", item):
-                            raise Exception(f"Invalid nested parameter format: {item}")
-                        
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
                 for nestedParam in lNestedParam:
-                    self.lNestedParams.append(nestedParam[0])    
-                sInputStr = re.sub("(\"\s*" + nestedPattern + "\s*\")", "str(\\1)", sInputStr)
-                sInputStr = re.sub("[^\(](" + nestedPattern + ")", "\"\\1\"", sInputStr)
+                    self.lNestedParams.append(nestedParam[0])
+                if re.match(listPattern, sInputStr.lower()):
+                    items = sInputStr.split(",")
+                    newInputStr = ''
+                    for item in items:
+                        tmpItem = item
+                        if "${" in item:
+                            if not re.match("^\s*\"*" + nestedPattern + "\"*\]*}*\s*$", item):
+                                raise Exception(f"Invalid nested parameter format: {item}")
+                            elif re.match("^\s*\".*" + nestedPattern + ".*\"\s*$", item):
+                                item = re.sub("(" + nestedPattern + ")", "str(\\1)", item)
+                                tmpList = []
+                                for subItem in re.findall("(str\(" + nestedPattern + "\))", item):
+                                    tmpList.append(subItem[0])
+                                item = __recursiveNestedHandling(item, tmpList)
+                            elif re.match("^\s*" + nestedPattern + "\s*\]*}*\s*$", item):
+                                item = re.sub("(" + nestedPattern + ")", "\"\\1\"", item)
+                                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", item)
+                                self.lNestedParams.append(nestedParam)
+                        newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
+                    sInputStr = newInputStr
             else:
                 raise Exception(f"Invalid nested parameter format: {sInputStr}")
 
@@ -780,7 +847,7 @@ class CJsonPreprocessor():
                 self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         sJsonDataUpdated = ""
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
@@ -834,6 +901,8 @@ class CJsonPreprocessor():
                         self.lNestedParams.remove(nestedParam)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
+                if "${" in line:
+                    raise Exception(f"Invalid nested parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         currentDir = os.getcwd()

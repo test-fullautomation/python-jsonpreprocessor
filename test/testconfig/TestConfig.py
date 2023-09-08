@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 09.08.2023
+# 07.09.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -277,35 +277,35 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/53) > {param_101} [LIST] (51/17) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/18) > [STR]  :  'string'
 [DICT] (53/53) > {param_101} [LIST] (51/19) > [STR]  :  'string'
-[DICT] (53/53) > {param_101} [LIST] (51/20) > [INT]  :  123
+[DICT] (53/53) > {param_101} [LIST] (51/20) > [STR]  :  '123'
 [DICT] (53/53) > {param_101} [LIST] (51/21) > [STR]  :  '123'
 [DICT] (53/53) > {param_101} [LIST] (51/22) > [STR]  :  '123'
 [DICT] (53/53) > {param_101} [LIST] (51/23) > [STR]  :  '123'
-[DICT] (53/53) > {param_101} [LIST] (51/24) > [FLOAT]  :  4.56
+[DICT] (53/53) > {param_101} [LIST] (51/24) > [STR]  :  '4.56'
 [DICT] (53/53) > {param_101} [LIST] (51/25) > [STR]  :  '4.56'
 [DICT] (53/53) > {param_101} [LIST] (51/26) > [STR]  :  '4.56'
 [DICT] (53/53) > {param_101} [LIST] (51/27) > [STR]  :  '4.56'
-[DICT] (53/53) > {param_101} [LIST] (51/28) > [BOOL]  :  True
+[DICT] (53/53) > {param_101} [LIST] (51/28) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/29) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/30) > [STR]  :  'true'
 [DICT] (53/53) > {param_101} [LIST] (51/31) > [STR]  :  'true'
-[DICT] (53/53) > {param_101} [LIST] (51/32) > [BOOL]  :  False
+[DICT] (53/53) > {param_101} [LIST] (51/32) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/33) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/34) > [STR]  :  'false'
 [DICT] (53/53) > {param_101} [LIST] (51/35) > [STR]  :  'false'
-[DICT] (53/53) > {param_101} [LIST] (51/36) > [NONE]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/36) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/37) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/38) > [STR]  :  'null'
 [DICT] (53/53) > {param_101} [LIST] (51/39) > [STR]  :  'null'
-[DICT] (53/53) > {param_101} [LIST] (51/40) > [BOOL]  :  True
+[DICT] (53/53) > {param_101} [LIST] (51/40) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/41) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/42) > [STR]  :  'True'
 [DICT] (53/53) > {param_101} [LIST] (51/43) > [STR]  :  'True'
-[DICT] (53/53) > {param_101} [LIST] (51/44) > [BOOL]  :  False
+[DICT] (53/53) > {param_101} [LIST] (51/44) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/45) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/46) > [STR]  :  'False'
 [DICT] (53/53) > {param_101} [LIST] (51/47) > [STR]  :  'False'
-[DICT] (53/53) > {param_101} [LIST] (51/48) > [NONE]  :  None
+[DICT] (53/53) > {param_101} [LIST] (51/48) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/49) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/50) > [STR]  :  'None'
 [DICT] (53/53) > {param_101} [LIST] (51/51) > [STR]  :  'None'
@@ -661,9 +661,9 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
 [DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
 [DICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DICT] (22/22) > {VAR-VARIANT-1_MS-milestone_2_param} [STR]  :  'value'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-MILESTONE-2_param} [STR]  :  'value'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -704,9 +704,9 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
 [DICT] (22/20) > {ilesto} [STR]  :  'ilesto'
 [DICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DICT] (22/22) > {VAR-VARIANT-1_MS-milestone_2_param} [STR]  :  'value'
+[DICT] (22/22) > {VAR-VARIANT-1_MS-MILESTONE-2_param} [STR]  :  'value'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -749,7 +749,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (22/21) > {milestone} [STR]  :  'milestone'
 [DICT] (22/22) > {param} [STR]  :  'VAR-VARIANT-1_MS-MILESTONE-2 value'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1007,7 +1007,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0252.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1035,7 +1035,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0254.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1253,21 +1253,21 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0301.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (13/1) > {par1} [FLOAT]  :  1.23
-[DICT] (13/1) > {par2} [LIST] (2/1) > [STR]  :  'A'
-[DICT] (13/1) > {par2} [LIST] (2/2) > [STR]  :  'B'
-[DICT] (13/2) > {par3} [LIST] (1/1) > [STR]  :  'par'
-[DICT] (13/3) > {ara} [STR]  :  'ara'
-[DICT] (13/4) > {param} [STR]  :  'param'
-[DICT] (13/5) > {param2} [LIST] (1/1) > [STR]  :  'par'
-[DICT] (13/6) > {val1} [STR]  :  '{par1}am}'
-[DICT] (13/6) > {val2} [STR]  :  'param}'
-[DICT] (13/6) > {val3} [STR]  :  'param}'
-[DICT] (13/6) > {val4} [STR]  :  'param}'
-[DICT] (13/6) > {val5} [STR]  :  'param2}[0]'
-[DICT] (13/6) > {val6} [STR]  :  'param2.0}'
+[DICT] (12/1) > {par1} [FLOAT]  :  1.23
+[DICT] (12/2) > {par2} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (12/2) > {par2} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (12/3) > {par3} [LIST] (1/1) > [STR]  :  'par'
+[DICT] (12/4) > {ara} [STR]  :  'ara'
+[DICT] (12/5) > {param} [STR]  :  'param'
+[DICT] (12/6) > {param2} [LIST] (1/1) > [STR]  :  'par'
+[DICT] (12/7) > {val1} [STR]  :  '{par1}am}'
+[DICT] (12/8) > {val2} [STR]  :  '1.23am}'
+[DICT] (12/9) > {val3} [STR]  :  'param}'
+[DICT] (12/10) > {val4} [STR]  :  'param}'
+[DICT] (12/11) > {val5} [STR]  :  'param2}[0]'
+[DICT] (12/12) > {val6} [STR]  :  'param2.0}'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1290,7 +1290,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (8/7) > {val5} [INT]  :  123
 [DICT] (8/8) > {val6} [STR]  :  '123'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1305,7 +1305,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0303.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (10/1) > {ara} [STR]  :  'ara'
-[DICT] (10/2) > {lara} [STR]  :  'ara'
+[DICT] (10/2) > {lara} [LIST] (1/1) > [STR]  :  'ara'
 [DICT] (10/3) > {param} [INT]  :  123
 [DICT] (10/4) > {param} [LIST] (1/1) > [FLOAT]  :  4.56
 [DICT] (10/5) > {val1} [INT]  :  123
@@ -1333,7 +1333,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (10/2) > {param2} [STR]  :  'param2'
 [DICT] (10/3) > {param3} [LIST] (2/1) > [INT]  :  123
 [DICT] (10/3) > {param3} [LIST] (2/2) > [FLOAT]  :  4.56
-[DICT] (10/4) > {lara} [LIST] (1/1) > [STR]  :  "ara"
+[DICT] (10/4) > {lara} [LIST] (1/1) > [STR]  :  'ara'
 [DICT] (10/5) > {ara} [STR]  :  'ara'
 [DICT] (10/6) > {val1} [STR]  :  'param1param2'
 [DICT] (10/7) > {val2} [STR]  :  '1234.56'
@@ -1341,7 +1341,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (10/9) > {val4} [STR]  :  'ABC, param1, param2, XYZ'
 [DICT] (10/10) > {val5} [STR]  :  'param1, ABC ; XYZ / param2'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -1354,9 +1354,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0350.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1368,9 +1368,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0351.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1382,9 +1382,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0352.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1396,9 +1396,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0353.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1410,9 +1410,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0354.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1452,9 +1452,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 5"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0357.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1480,9 +1480,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 7"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0359.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "invalid syntax (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1592,9 +1592,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0367.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1606,9 +1606,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0368.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1620,9 +1620,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0369.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1634,9 +1634,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0370.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1648,9 +1648,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 6 / pattern 5"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0371.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Key name or value is a mix of nested parameters and hard coded parts"
+dictUsecase['EXPECTEDEXCEPTION'] = "The double quotes are missing"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -1718,7 +1718,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (2/1) > {params} [LIST] (2/2) > [DICT] (2/2) > {dict_2_key_2} [DICT] (2/2) > {dict_2_A_key_2} [LIST] (3/3) > [DICT] (2/2) > {dict_2_A_key_2_subkey_2} [LIST] (2/2) > [STR]  :  'value_2'
 [DICT] (2/2) > {param} [STR]  :  'value_2'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1868,11 +1868,11 @@ dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor
 dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Dotdict notation (ambiguous in this case)"
-dictUsecase['COMMENT']           = "Needs clarification!"
+dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0550.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "detected ambiguous expression (= variable not found) (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "is not available"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
