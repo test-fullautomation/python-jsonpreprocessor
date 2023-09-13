@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_08_COMMON_SYNTAX_VIOLATIONS_GOODCASE.py
+# test_11_IMPLICIT_CREATION_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.08.2023 - 17:28:15
+# 13.09.2023 - 10:58:36
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMMON_SYNTAX_VIOLATIONS_GOODCASE:
+class Test_IMPLICIT_CREATION_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error, that is commented out",]
+      "Description", ["JSON file with dictionary keys to be created implicitly",]
    )
-   def test_JPP_0900(self, Description):
-      nReturn = CExecute.Execute("JPP_0900")
+   def test_JPP_1000(self, Description):
+      nReturn = CExecute.Execute("JPP_1000")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

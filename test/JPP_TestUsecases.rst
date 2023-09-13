@@ -95,6 +95,36 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0202**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0203**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0204**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
 * **Test JPP_0250**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
@@ -115,11 +145,31 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0252**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0253**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
    **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0254**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -164,6 +214,42 @@ Test Use Cases
    Expected: JsonPreprocessor returns values
 
    *Hint: Checklist rule 1*
+
+----
+
+* **Test JPP_0301**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 3*
+
+----
+
+* **Test JPP_0302**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 4*
+
+----
+
+* **Test JPP_0304**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 6*
 
 ----
 
@@ -227,6 +313,30 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0357**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 5*
+
+----
+
+* **Test JPP_0359**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 7*
+
+----
+
 * **Test JPP_0361**
 
   [VALUE_DETECTION / BADCASE]
@@ -239,6 +349,66 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0367**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 6 / pattern 1*
+
+----
+
+* **Test JPP_0368**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 6 / pattern 2*
+
+----
+
+* **Test JPP_0369**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 6 / pattern 3*
+
+----
+
+* **Test JPP_0370**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 6 / pattern 4*
+
+----
+
+* **Test JPP_0371**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 6 / pattern 5*
+
+----
+
 * **Test JPP_0500**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -248,6 +418,18 @@ Test Use Cases
    Expected: JsonPreprocessor returns expected value
 
    *Hint: Standard notation*
+
+----
+
+* **Test JPP_0501**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (nested lists and dictionaries 2)**
+
+   Expected: JsonPreprocessor returns expected value
+
+   *Hint: Dotdict notation*
 
 ----
 
@@ -270,6 +452,18 @@ Test Use Cases
    **JSON file with composite strings containing several combinations of curly brackets and special characters before**
 
    Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0550**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Dotdict notation (ambiguous in this case)*
 
 ----
 
@@ -333,5 +527,15 @@ Test Use Cases
 
 ----
 
-Generated: 17.08.2023 - 14:06:12
+* **Test JPP_1000**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with dictionary keys to be created implicitly**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+Generated: 13.09.2023 - 10:58:36
 

@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.08.2023 - 17:28:15
+# 13.09.2023 - 10:58:36
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -48,10 +48,26 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing",]
+   )
+   def test_JPP_0252(self, Description):
+      nReturn = CExecute.Execute("JPP_0252")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing",]
    )
    def test_JPP_0253(self, Description):
       nReturn = CExecute.Execute("JPP_0253")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing",]
+   )
+   def test_JPP_0254(self, Description):
+      nReturn = CExecute.Execute("JPP_0254")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
