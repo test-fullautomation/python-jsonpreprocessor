@@ -20,7 +20,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 03.08.2023
+# 13.09.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ class CConfig():
       # -- configuration init
       self.__dictConfig = {}
 
-      # -- configuration: basic environment
+      # -- configuration: common environment
 
       THISSCRIPT = CString.NormalizePath(sCalledBy)
       self.__dictConfig['THISSCRIPT']     = THISSCRIPT
@@ -77,14 +77,11 @@ class CConfig():
       REFERENCEPATH = os.path.dirname(THISSCRIPT) # position of main() script is reference for all relative paths
       self.__dictConfig['REFERENCEPATH']  = REFERENCEPATH
       self.__dictConfig['TESTCONFIGPATH'] = f"{REFERENCEPATH}/testconfig" # reference for all relative paths inside TestConfig.py
-      OSNAME = os.name
-      self.__dictConfig['OSNAME']         = OSNAME
-      PLATFORMSYSTEM = platform.system()
-      self.__dictConfig['PLATFORMSYSTEM'] = PLATFORMSYSTEM
+      self.__dictConfig['OSNAME']         = os.name
+      self.__dictConfig['PLATFORMSYSTEM'] = platform.system()
       PYTHON = CString.NormalizePath(sys.executable)
       self.__dictConfig['PYTHON']         = PYTHON
-      PYTHONPATH = os.path.dirname(PYTHON)
-      self.__dictConfig['PYTHONPATH']     = PYTHONPATH
+      self.__dictConfig['PYTHONPATH']     = os.path.dirname(PYTHON)
       self.__dictConfig['PYTHONVERSION']  = sys.version
 
       # -- configuration: command line
@@ -103,38 +100,48 @@ class CConfig():
          TESTID = str(oCmdLineArgs.testid).strip()
       self.__dictConfig['TESTID'] = TESTID
 
-      bCodeDump = False
+      CODEDUMP = False
       if oCmdLineArgs.codedump != None:
-         bCodeDump = oCmdLineArgs.codedump
-      self.__dictConfig['CODEDUMP'] = bCodeDump
+         CODEDUMP = oCmdLineArgs.codedump
+      self.__dictConfig['CODEDUMP'] = CODEDUMP
       # if True: script quits after config dump
 
-      bConfigDump = False
+      CONFIGDUMP = False
       if oCmdLineArgs.configdump != None:
-         bConfigDump = oCmdLineArgs.configdump
-      self.__dictConfig['CONFIGDUMP'] = bConfigDump
+         CONFIGDUMP = oCmdLineArgs.configdump
+      self.__dictConfig['CONFIGDUMP'] = CONFIGDUMP
       # if True: script quits after config dump
 
-      bRecreateInstance = False
+      RECREATEINSTANCE = False
       if oCmdLineArgs.recreateinstance != None:
-         bRecreateInstance = oCmdLineArgs.recreateinstance
-      self.__dictConfig['RECREATEINSTANCE'] = bRecreateInstance
+         RECREATEINSTANCE = oCmdLineArgs.recreateinstance
+      self.__dictConfig['RECREATEINSTANCE'] = RECREATEINSTANCE
 
-      # self test log file: default settings
-      TESTLOGFILESFOLDER = f"{REFERENCEPATH}/testlogfiles"
-      SELFTESTLOGFILE    = f"{TESTLOGFILESFOLDER}/JPP_SelfTest.log"
+      # -- log file and output folders
+      sLogFileName = "JPP_SelfTest.log"
+      if TESTID is not None:
+         if ';' not in TESTID:
+            # in case of a single TESTID is given in command line, we add this ID to the log file name
+            # (support of pytest, where every test case is executed separately)
+            sLogFileName = f"JPP_SelfTest_{TESTID}.log"
+
+      SELFTESTLOGFILE = f"{REFERENCEPATH}/testlogfiles/{sLogFileName}"
+
       if oCmdLineArgs.logfile != None:
-         SELFTESTLOGFILE = oCmdLineArgs.logfile
-         SELFTESTLOGFILE = CString.NormalizePath(SELFTESTLOGFILE, sReferencePathAbs=REFERENCEPATH)
-         TESTLOGFILESFOLDER = os.path.dirname(SELFTESTLOGFILE)
+         # command line overwrites default log file location
+         SELFTESTLOGFILE = CString.NormalizePath(oCmdLineArgs.logfile, sReferencePathAbs=REFERENCEPATH)
 
+      TESTLOGFILESFOLDER = os.path.dirname(SELFTESTLOGFILE)
+      # update default values in config
+      self.__dictConfig['SELFTESTLOGFILE']    = SELFTESTLOGFILE
+      self.__dictConfig['TESTLOGFILESFOLDER'] = TESTLOGFILESFOLDER
+
+      # -- create output folder
       oFolder = CFolder(TESTLOGFILESFOLDER)
       bSuccess, sResult = oFolder.Create(bOverwrite=False, bRecursive=True)
       del oFolder
       if bSuccess is not True:
          raise Exception(CString.FormatResult(sMethod, bSuccess, sResult))
-      self.__dictConfig['TESTLOGFILESFOLDER'] = TESTLOGFILESFOLDER
-      self.__dictConfig['SELFTESTLOGFILE']    = SELFTESTLOGFILE
 
       # dump of basic configuration parameters to console
       # self.DumpConfig() # done in main script now!

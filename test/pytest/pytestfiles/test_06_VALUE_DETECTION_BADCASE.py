@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 17.08.2023 - 14:06:12
+# 13.09.2023 - 10:58:36
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -72,9 +72,65 @@ class Test_VALUE_DETECTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)",]
+   )
+   def test_JPP_0357(self, Description):
+      nReturn = CExecute.Execute("JPP_0357")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)",]
+   )
+   def test_JPP_0359(self, Description):
+      nReturn = CExecute.Execute("JPP_0359")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)",]
    )
    def test_JPP_0361(self, Description):
       nReturn = CExecute.Execute("JPP_0361")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 1)",]
+   )
+   def test_JPP_0367(self, Description):
+      nReturn = CExecute.Execute("JPP_0367")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 2)",]
+   )
+   def test_JPP_0368(self, Description):
+      nReturn = CExecute.Execute("JPP_0368")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 3)",]
+   )
+   def test_JPP_0369(self, Description):
+      nReturn = CExecute.Execute("JPP_0369")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 4)",]
+   )
+   def test_JPP_0370(self, Description):
+      nReturn = CExecute.Execute("JPP_0370")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 5)",]
+   )
+   def test_JPP_0371(self, Description):
+      nReturn = CExecute.Execute("JPP_0371")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

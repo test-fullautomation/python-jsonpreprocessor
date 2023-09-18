@@ -22,8 +22,8 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-VERSION      = "0.7.0"
-VERSION_DATE = "07.09.2023"
+VERSION      = "0.9.0"
+VERSION_DATE = "13.09.2023"
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -403,7 +403,6 @@ for dictUsecase in listofdictUsecases:
    EXPECTEDEXCEPTION = dictUsecase['EXPECTEDEXCEPTION']
    EXPECTEDRETURN    = dictUsecase['EXPECTEDRETURN']
 
-   # TODO: make this depend on test case; in some BADCASE test cases this might not be wanted:
    JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
 
    # get optional parameters

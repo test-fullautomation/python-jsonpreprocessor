@@ -509,6 +509,32 @@ class CJsonPreprocessor():
         else:
             return self.__handleDotdictFormat(lInputListParams, lParams)
 
+    def __checkAndCreateNewElement(self, sKey: str, value):
+        '''
+    This method check and create new elements if they are not exist.
+        '''
+        rootKey = re.sub("\[.*\]", "", sKey)
+        subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
+        if len(subElements) <= 1:
+            return
+        else:
+            for index, element in enumerate(subElements):
+                if index < len(subElements) - 1:
+                    rootKey = rootKey + "['" + element + "']"
+                    sExec = "dumpData = " + rootKey
+                    try:
+                        exec(sExec)
+                    except:
+                        sExec = rootKey + " = {}"
+                        try:
+                            exec(sExec, globals())
+                        except Exception as error:
+                            self.__reset()
+                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            raise Exception(errorMsg)
+                else:
+                    continue
+
     def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
         '''
    This method replaces all nested parameters in key and value of a json object .
@@ -527,32 +553,11 @@ class CJsonPreprocessor():
       Output Json object as dictionary with all variables resolved.
         '''
 
-        def __checkAndCreateNewElement(sKey: str):
-            '''
-        This method check and create new elements if they are not exist.
-            '''
-            rootKey = re.sub("\[.*\]", "", sKey)
-            subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
-            if len(subElements) <= 1:
-                return
-            else:
-                for index, element in enumerate(subElements):
-                    if index < len(subElements) - 1:
-                        rootKey = rootKey + "['" + element + "']"
-                        sExec = "dumpData = " + rootKey
-                        try:
-                            exec(sExec)
-                        except:
-                            sExec = rootKey + " = {}"
-                            exec(sExec, globals())
-                    else:
-                        continue
-
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
                 del oJson[keyNested]
                 if '[' in k:
-                    __checkAndCreateNewElement(k)
+                    self.__checkAndCreateNewElement(k, v)
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
@@ -936,6 +941,14 @@ class CJsonPreprocessor():
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             for k, v in self.dUpdatedParams.items():
                 if '[' in k:
+                    rootElement = k.split('[', 1)[0]
+                    if rootElement in oJson:
+                        self.__checkAndCreateNewElement(k, v)
+                        sExec = "oJson['" + rootElement + "'] = " + rootElement
+                        try:
+                            exec(sExec)
+                        except:
+                            pass
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
                     else:
