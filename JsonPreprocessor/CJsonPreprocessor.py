@@ -778,19 +778,14 @@ class CJsonPreprocessor():
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
 
-        jFile=jFile.strip()
-
-        if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
-            jFile = CString.NormalizePath(jFile)
-
+        jFile = CString.NormalizePath(jFile.strip())
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
         self.lImportedFiles.append(jFile)
         self.jsonPath = os.path.dirname(jFile)
-
         try:
-            sJsonData= self.__load_and_removeComments(os.path.abspath(jFile))
+            sJsonData= self.__load_and_removeComments(jFile)
         except Exception as reason:
             if masterFile:
                 self.__reset()
