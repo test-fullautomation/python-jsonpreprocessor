@@ -778,7 +778,7 @@ class CJsonPreprocessor():
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
 
-        jFile = CString.NormalizePath(jFile.strip())
+        jFile = CString.NormalizePath(jFile)
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
