@@ -53,6 +53,8 @@ import platform
 import copy
 import shlex
 
+from PythonExtensionsCollection.String.CString import CString
+
 class CSyntaxType():
     python = "python"
     json = "json"
@@ -181,6 +183,7 @@ class CJsonPreprocessor():
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.lDataTypes.append(keyword.kwlist)
+        self.jsonPath = ''
         self.lImportedFiles = []
         self.recursive_level = 0
         self.syntax = syntax
@@ -193,73 +196,12 @@ class CJsonPreprocessor():
         '''
    Reset initial variables which are set in constructor method after master Json file is loaded.
         '''
+        self.jsonPath = ''
         self.lImportedFiles = []
         self.recursive_level = 0
         self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
-
-    def __sNormalizePath(self, sPath : str) -> str:
-        """
-   Python struggles with
-
-      - UNC paths
-
-         e.g. ``\\hi-z4939\ccstg\....``
-
-      - escape sequences in windows paths
-
-         e.g. ``c:\autotest\tuner   \t`` will be interpreted as tab, the result
-      after processing it with an regexp would be ``c:\autotest   uner``
-
-   In order to solve this problems any slash will be replaced from backslash
-   to slash, only the two UNC backslashes must be kept if contained.
-
-**Args:**
-
-   **sPath** (*string*)
-
-      Absolute or relative path as input.
-
-      Allows environment variables with ``%variable%`` or ``${variable}`` syntax.
-
-**Returns:**
-
-   **sPath** (*string*)
-
-      Normalized path as string
-        """
-        # make all backslashes to slash, but mask
-        # UNC indicator \\ before and restore after.
-        def __mkslash(sPath : str) -> str:
-            if sPath.strip()=='':
-                return ''
-
-            sNPath=re.sub(r"\\\\",r"#!#!#",sPath.strip())
-            sNPath=re.sub(r"\\",r"/",sNPath)
-            sNPath=re.sub(r"#!#!#",r"\\\\",sNPath)
-
-            return sNPath
-            if sPath.strip()=='':
-                return ''
-
-        # TML Syntax uses %Name%-syntax to reference an system- or framework
-        # environment variable. Linux requires ${Name} to do the same.
-        # Therefore change on Linux systems to ${Name}-syntax to make
-        # expandvars working here, too.
-        # This makes same TML code working on both platforms
-        if platform.system().lower()!="windows":
-            sPath=re.sub("%(.*?)%","${\\1}",sPath)
-
-        #in a windows system normpath turns all slashes to backslash
-        #this is unwanted. Therefore turn back after normpath execution.
-        sNPath=os.path.normpath(os.path.expandvars(sPath.strip()))
-        #make all backslashes to slash, but mask
-        #UNC indicator \\ before and restore after.
-        sNPath=__mkslash(sNPath)
-
-        return sNPath
-
 
     def __processImportFiles(self, input_data : dict) -> dict:
         '''
@@ -283,7 +225,8 @@ class CJsonPreprocessor():
 
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
-                abs_path_file = os.path.abspath(value)
+                currJsonPath = self.jsonPath
+                abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
 
                 # Use recursive_level and lImportedFiles to avoid cyclic import
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
@@ -294,6 +237,7 @@ class CJsonPreprocessor():
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
+                self.jsonPath = currJsonPath
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
                     for k2, v2 in oJsonImport.items():
@@ -834,19 +778,14 @@ class CJsonPreprocessor():
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
 
-        jFile=jFile.strip()
-
-        if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
-            jFile=self.__sNormalizePath(os.path.dirname(sys.argv[0])+"/"+jFile)
-
+        jFile = CString.NormalizePath(jFile)
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
-        self.lImportedFiles.append(os.path.abspath(jFile))
-        (jsonPath,tail)=os.path.split(jFile)
-
+        self.lImportedFiles.append(jFile)
+        self.jsonPath = os.path.dirname(jFile)
         try:
-            sJsonData= self.__load_and_removeComments(os.path.abspath(jFile))
+            sJsonData= self.__load_and_removeComments(jFile)
         except Exception as reason:
             if masterFile:
                 self.__reset()
@@ -907,11 +846,8 @@ class CJsonPreprocessor():
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    raise Exception(f"Invalid nested parameter format in line: {line.strip()}")
+                    raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
-
-        currentDir = os.getcwd()
-        os.chdir(jsonPath)
 
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
@@ -928,8 +864,6 @@ class CJsonPreprocessor():
             if masterFile:
                 self.__reset()
             raise Exception(f"json file '{jFile}': '{error}'")
-
-        os.chdir(currentDir)
 
         self.__checkDotInParamName(oJson)
 
