@@ -500,7 +500,7 @@ class CJsonPreprocessor():
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
                 del oJson[keyNested]
-                if re.search("[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\[.+\]", k):
+                if re.match("^[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\[.+\]+$", k):
                     self.__checkAndCreateNewElement(k, v)
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
