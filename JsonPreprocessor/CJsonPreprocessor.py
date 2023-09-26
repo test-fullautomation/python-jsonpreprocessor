@@ -846,7 +846,7 @@ class CJsonPreprocessor():
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    raise Exception(f"Invalid nested parameter format in line: {line.strip()}")
+                    raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         CJSONDecoder = None
