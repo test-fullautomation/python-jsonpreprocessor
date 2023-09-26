@@ -500,7 +500,7 @@ class CJsonPreprocessor():
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
                 del oJson[keyNested]
-                if '[' in k:
+                if re.search("[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\[.+\]", k):
                     self.__checkAndCreateNewElement(k, v)
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
@@ -523,6 +523,10 @@ class CJsonPreprocessor():
                 else:
                     if "JPavoidDataType_" in k:
                         k = re.sub("JPavoidDataType_", "", k)
+                    elif re.search("[\[\]\(\)\s{}]", k):
+                        errorMsg = f"Setting value '{v}' for parameter '{k}' is not permissible \
+when substituting parameters of composite data types in dictionary key names!"
+                        raise Exception(errorMsg)
                     oJson[k] = v
                     globals().update({k:v})
 
