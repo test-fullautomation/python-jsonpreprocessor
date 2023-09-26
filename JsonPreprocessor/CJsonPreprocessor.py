@@ -778,19 +778,14 @@ class CJsonPreprocessor():
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
 
-        jFile=jFile.strip()
-
-        if not re.match("^[a-zA-Z]:",jFile) and not re.match("^[\\/]",jFile):
-            jFile = CString.NormalizePath(jFile)
-
+        jFile = CString.NormalizePath(jFile)
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
         self.lImportedFiles.append(jFile)
         self.jsonPath = os.path.dirname(jFile)
-
         try:
-            sJsonData= self.__load_and_removeComments(os.path.abspath(jFile))
+            sJsonData= self.__load_and_removeComments(jFile)
         except Exception as reason:
             if masterFile:
                 self.__reset()
@@ -851,7 +846,7 @@ class CJsonPreprocessor():
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    raise Exception(f"Invalid nested parameter format in line: {line.strip()}")
+                    raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         CJSONDecoder = None
