@@ -782,7 +782,7 @@ when substituting parameters of composite data types in dictionary key names!"
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
 
-        jFile = CString.NormalizePath(jFile)
+        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
