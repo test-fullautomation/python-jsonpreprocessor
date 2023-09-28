@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 13.09.2023 - 10:58:36
+# 28.09.2023 - 11:51:44
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,6 +52,14 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0502(self, Description):
       nReturn = CExecute.Execute("JPP_0502")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)",]
+   )
+   def test_JPP_0505(self, Description):
+      nReturn = CExecute.Execute("JPP_0505")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value

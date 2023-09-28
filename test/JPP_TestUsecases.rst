@@ -445,6 +445,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0505**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0506**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -537,5 +547,5 @@ Test Use Cases
 
 ----
 
-Generated: 13.09.2023 - 10:58:36
+Generated: 28.09.2023 - 11:51:44
 

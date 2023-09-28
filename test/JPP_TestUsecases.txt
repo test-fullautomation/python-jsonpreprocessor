@@ -191,6 +191,10 @@ Description: JSON file with composite data structure (nested lists and dictionar
 Expectation: JsonPreprocessor returns expected value
 Hint.......: Standard notation
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0505 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0506 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite strings containing several combinations of curly brackets and special characters before
 Expectation: JsonPreprocessor returns expected value
@@ -228,5 +232,5 @@ Test JPP_1000 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with dictionary keys to be created implicitly
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 13.09.2023 - 10:58:36
+Generated: 28.09.2023 - 11:51:44
 

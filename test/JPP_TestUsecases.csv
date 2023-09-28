@@ -39,6 +39,7 @@ JPP_0371|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' an
 JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
 JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 2)
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+JPP_0505|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
 JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several combinations of curly brackets and special characters before
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
