@@ -873,7 +873,7 @@ when substituting parameters of composite data types in dictionary key names!"
         except Exception as error:
             if masterFile:
                 self.__reset()
-            raise Exception(f"json file '{jFile}': '{error}'")
+            raise Exception(f"JSON file: {jFile}\n{error}")
 
         self.__checkDotInParamName(oJson)
 
