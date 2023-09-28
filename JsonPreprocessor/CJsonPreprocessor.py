@@ -806,10 +806,16 @@ when substituting parameters of composite data types in dictionary key names!"
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line):
+                tmpList = re.findall("(\"[^\"]+\")", line)
+                line = re.sub("(\"[^\"]+\")", "__handleColonsInLine__", line)
                 items = re.split("\s*:\s*", line)
                 newLine = ""
                 i=0
                 for item in items:
+                    if "__handleColonsInLine__" in item:
+                        while "__handleColonsInLine__" in item:
+                            item = re.sub("__handleColonsInLine__", tmpList[0], item, count=1)
+                            tmpList.pop(0)
                     i+=1
                     newSubItem = ""
                     if re.search("^\s*\[.+\]\s*,*\s*$", item) and item.count('[')==item.count(']'):
