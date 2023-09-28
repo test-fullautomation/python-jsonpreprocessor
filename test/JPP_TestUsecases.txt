@@ -232,5 +232,9 @@ Test JPP_1000 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with dictionary keys to be created implicitly
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 28.09.2023 - 11:51:44
+Test JPP_1150 / CYCLIC_IMPORTS / BADCASE
+Description: JSON file with cyclic imports
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Generated: 28.09.2023 - 12:29:40
 

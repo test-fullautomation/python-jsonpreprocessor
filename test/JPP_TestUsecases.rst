@@ -547,5 +547,15 @@ Test Use Cases
 
 ----
 
-Generated: 28.09.2023 - 11:51:44
+* **Test JPP_1150**
+
+  [CYCLIC_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 28.09.2023 - 12:29:40
 

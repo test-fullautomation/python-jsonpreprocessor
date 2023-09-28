@@ -2000,10 +2000,21 @@ dictUsecase['EXPECTEDRETURN']    = """
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
-
-
-
-
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1150"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "CYCLIC_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1150.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 
 
