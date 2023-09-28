@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 13.09.2023
+# 28.09.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1989,9 +1989,13 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1000.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (2/1) > {dTestDict} [DICT] (3/1) > {kVal_1} [STR]  :  'Val_1'
-[DICT] (2/1) > {dTestDict} [DICT] (3/2) > {kVal_2} [DICT] (1/1) > {I-am-not-existing-1} [DICT] (1/1) > {I-am-not-existing-2} [STR]  :  'Val_1'
-[DICT] (2/1) > {dTestDict} [DICT] (3/3) > {kVal_3} [DICT] (1/1) > {I-am-not-existing-3} [DICT] (1/1) > {I-am-not-existing-4} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/1) > {kVal_1} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/2) > {kVal_2} [DICT] (1/1) > {I-am-not-existing-1} [DICT] (1/1) > {I-am-not-existing-2} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/3) > {kVal_3} [DICT] (1/1) > {I-am-not-existing-3} [DICT] (1/1) > {I-am-not-existing-4} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/1) > {A} [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/1) > [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/2) > [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/3) > [INT]  :  3
 [DICT] (2/2) > {Val_1} [STR]  :  'Val_1'
 """
 listofdictUsecases.append(dictUsecase)
