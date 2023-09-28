@@ -551,11 +551,21 @@ Test Use Cases
 
   [CYCLIC_IMPORTS / BADCASE]
 
-   **JSON file with cyclic imports**
+   **JSON file with cyclic imports (JSON file imports itself)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-Generated: 28.09.2023 - 12:29:40
+* **Test JPP_1151**
+
+  [CYCLIC_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports another file, that is already imported)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 28.09.2023 - 15:28:52
 

@@ -1992,10 +1992,12 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (2/1) > {dTestDict} [DICT] (4/1) > {kVal_1} [STR]  :  'Val_1'
 [DICT] (2/1) > {dTestDict} [DICT] (4/2) > {kVal_2} [DICT] (1/1) > {I-am-not-existing-1} [DICT] (1/1) > {I-am-not-existing-2} [STR]  :  'Val_1'
 [DICT] (2/1) > {dTestDict} [DICT] (4/3) > {kVal_3} [DICT] (1/1) > {I-am-not-existing-3} [DICT] (1/1) > {I-am-not-existing-4} [STR]  :  'Val_1'
-[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/1) > {A} [INT]  :  1
-[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/1) > [INT]  :  1
-[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/2) > [INT]  :  2
-[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (2/2) > {B} [LIST] (3/3) > [INT]  :  3
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/1) > {A} [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/1) > [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/2) > [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/1) > {C} [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/1) > [INT]  :  3
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/2) > [INT]  :  4
 [DICT] (2/2) > {Val_1} [STR]  :  'Val_1'
 """
 listofdictUsecases.append(dictUsecase)
@@ -2004,13 +2006,27 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1150"
-dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (JSON file imports itself)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "CYCLIC_IMPORTS"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1150.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1151"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (JSON file imports another file, that is already imported)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "CYCLIC_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1151.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)

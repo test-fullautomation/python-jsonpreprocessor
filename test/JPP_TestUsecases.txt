@@ -233,8 +233,12 @@ Description: JSON file with dictionary keys to be created implicitly
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1150 / CYCLIC_IMPORTS / BADCASE
-Description: JSON file with cyclic imports
+Description: JSON file with cyclic imports (JSON file imports itself)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 28.09.2023 - 12:29:40
+Test JPP_1151 / CYCLIC_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports another file, that is already imported)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Generated: 28.09.2023 - 15:28:52
 

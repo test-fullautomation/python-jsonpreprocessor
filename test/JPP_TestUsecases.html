@@ -1690,7 +1690,40 @@ BADCASE
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
 <font size="2" face="Arial" color="#595959"><i>
-<b>JSON file with cyclic imports</b><br>
+<b>JSON file with cyclic imports (JSON file imports itself)</b><br>
+Expected: No values are returned, and JsonPreprocessor throws an exception
+
+
+</i></font></td>
+
+
+</tr>
+<tr valign="middle" align="left">
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="right">
+<font size="2" face="Arial" color="#FF0000">
+<b>
+51
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#595959">
+<b>
+<a target="_blank" href="https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/testfiles/jpp-test_config_1151.jsonp">JPP_1151</a>
+</b></font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#4169E1">
+CYCLIC_IMPORTS
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
+<font size="2" face="Arial" color="#FF0000">
+BADCASE
+</font></td>
+
+<td colspan="1" valign="center" bgcolor="#F5F5F5" align="left">
+<font size="2" face="Arial" color="#595959"><i>
+<b>JSON file with cyclic imports (JSON file imports another file, that is already imported)</b><br>
 Expected: No values are returned, and JsonPreprocessor throws an exception
 
 
@@ -1702,7 +1735,7 @@ Expected: No values are returned, and JsonPreprocessor throws an exception
 </tbody></table></div>
 <div>&nbsp;</div>
 <hr width="100%" color="#FF8C00" align="center">
-<div align="center"><font size="2" color="#27408B">Generated: 28.09.2023 - 12:29:40</font></div>
+<div align="center"><font size="2" color="#27408B">Generated: 28.09.2023 - 15:28:52</font></div>
 <div>&nbsp;</div>
 </body></html>
 

@@ -14,5 +14,5 @@
 //**************************************************************************
 
 {
-   "[import]" : "../../../../jpp-test_config_1151.jsonp"
+   "[import]" : "./import/cyclic.1/jpp-test_config_cyclic.1.jsonp"
 }
