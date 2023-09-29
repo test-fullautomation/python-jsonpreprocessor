@@ -51,3 +51,4 @@ JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file 
 JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly
 JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
 JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
+JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file

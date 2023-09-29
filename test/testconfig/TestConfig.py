@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 28.09.2023
+# 29.09.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -36,6 +36,7 @@ listofdictUsecases = []
 # the following keys are optional, all other keys are mandatory.
 # dictUsecase['HINT']         = None
 # dictUsecase['COMMENT']      = None
+# dictUsecase['USERAWPATH']   = False # if True, 'JSONFILE' will not be normalized
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -2029,6 +2030,26 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1151.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
 dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1200"
+# In all other use cases the path 'JSONFILE' is normalized before the JsonPreprocessor is called.
+# The reference for relative paths is the position of this file.
+# In this use case the path 'JSONFILE' is not normalized.
+# And the path is relative to the position of the executing script (component_test.py).
+dictUsecase['DESCRIPTION']       = "Relative path to JSON file"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor resolves the relative path and returns values from JSON file"
+dictUsecase['SECTION']           = "PATH_FORMATS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Works with raw path to JSON file (path not normalized internally)"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_1200.jsonp"
+dictUsecase['USERAWPATH']        = True
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = "[DICT] (1/1) > {teststring} [STR]  :  'relative path teststring value'"
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------

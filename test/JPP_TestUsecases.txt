@@ -240,5 +240,10 @@ Test JPP_1151 / CYCLIC_IMPORTS / BADCASE
 Description: JSON file with cyclic imports (JSON file imports another file, that is already imported)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 28.09.2023 - 15:28:52
+Test JPP_1200 / PATH_FORMATS / GOODCASE
+Description: Relative path to JSON file
+Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
+Hint.......: Works with raw path to JSON file (path not normalized internally)
+------------------------------------------------------------------------------------------------------------------------
+Generated: 29.09.2023 - 15:06:38
 

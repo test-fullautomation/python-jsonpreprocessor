@@ -567,5 +567,17 @@ Test Use Cases
 
 ----
 
-Generated: 28.09.2023 - 15:28:52
+* **Test JPP_1200**
+
+  [PATH_FORMATS / GOODCASE]
+
+   **Relative path to JSON file**
+
+   Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
+
+   *Hint: Works with raw path to JSON file (path not normalized internally)*
+
+----
+
+Generated: 29.09.2023 - 15:06:38
 
