@@ -14,8 +14,5 @@
 //**************************************************************************
 
 {
-   ${dTestDict}['kVal_2']['I-am-not-existing-1']['I-am-not-existing-2'] : ${dTestDict}['kVal_1'],
-   // overwrite what has been created implicitly before:
-   ${dTestDict.kVal_3.I-am-not-existing-3.I-am-not-existing-4} : ${dTestDict}['kVal_2']['I-am-not-existing-1']['I-am-not-existing-2'],
-   "[import]"  : "./import.1.1/jpp-test_config_implicit_creation.1.1.1.jsonp"
+   "[import]" : "./import/import.1/import.1.1/jpp-test_config_relative_jsonfile_path.jsonp"
 }

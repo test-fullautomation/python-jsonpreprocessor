@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 13.09.2023
+# 29.09.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -36,6 +36,7 @@ listofdictUsecases = []
 # the following keys are optional, all other keys are mandatory.
 # dictUsecase['HINT']         = None
 # dictUsecase['COMMENT']      = None
+# dictUsecase['USERAWPATH']   = False # if True, 'JSONFILE' will not be normalized
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -1821,13 +1822,13 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0505.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (5/1) > {param1} [STR]  :  'value : 1'
-[DICT] (5/2) > {param2} [STR]  :  'value : 2'
+[DICT] (5/1) > {param1} [STR]  :  'value :,: 1'
+[DICT] (5/2) > {param2} [STR]  :  'value :,: 2'
 [DICT] (5/3) > {val1} [STR]  :  'The values are: 'value :,: 1' and: 'value :,: 2', and so on'
 [DICT] (5/4) > {val2} [STR]  :  'The values are: 'value :,: 1' and: 'value :,: 2', and so on'
 [DICT] (5/5) > {val3} [STR]  :  ':'The values are: 'value :,: 1' and: 'value :,: 2', and so on'::,::'The values are: 'value :,: 1' and: 'value :,: 2', and so on':'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1989,17 +1990,68 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1000.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (2/1) > {dTestDict} [DICT] (3/1) > {kVal_1} [STR]  :  'Val_1'
-[DICT] (2/1) > {dTestDict} [DICT] (3/2) > {kVal_2} [DICT] (1/1) > {I-am-not-existing-1} [DICT] (1/1) > {I-am-not-existing-2} [STR]  :  'Val_1'
-[DICT] (2/1) > {dTestDict} [DICT] (3/3) > {kVal_3} [DICT] (1/1) > {I-am-not-existing-3} [DICT] (1/1) > {I-am-not-existing-4} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/1) > {kVal_1} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/2) > {kVal_2} [DICT] (1/1) > {I-am-not-existing-1} [DICT] (1/1) > {I-am-not-existing-2} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/3) > {kVal_3} [DICT] (1/1) > {I-am-not-existing-3} [DICT] (1/1) > {I-am-not-existing-4} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/1) > {A} [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/1) > [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/2) > [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/1) > {C} [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/1) > [INT]  :  3
+[DICT] (2/1) > {dTestDict} [DICT] (4/4) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/2) > [INT]  :  4
 [DICT] (2/2) > {Val_1} [STR]  :  'Val_1'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
-
-
-
-
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1150"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (JSON file imports itself)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "CYCLIC_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1150.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1151"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (JSON file imports another file, that is already imported)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "CYCLIC_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1151.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1200"
+# In all other use cases the path 'JSONFILE' is normalized before the JsonPreprocessor is called.
+# The reference for relative paths is the position of this file.
+# In this use case the path 'JSONFILE' is not normalized.
+# And the path is relative to the position of the executing script (component_test.py).
+dictUsecase['DESCRIPTION']       = "Relative path to JSON file"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor resolves the relative path and returns values from JSON file"
+dictUsecase['SECTION']           = "PATH_FORMATS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Works with raw path to JSON file (path not normalized internally)"
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r".\testfiles\jpp-test_config_1200.jsonp"
+dictUsecase['USERAWPATH']        = True
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = "[DICT] (1/1) > {teststring} [STR]  :  'relative path teststring value'"
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 
 

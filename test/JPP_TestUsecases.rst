@@ -445,6 +445,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0505**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0506**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -537,5 +547,37 @@ Test Use Cases
 
 ----
 
-Generated: 13.09.2023 - 10:58:36
+* **Test JPP_1150**
+
+  [CYCLIC_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports itself)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1151**
+
+  [CYCLIC_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports another file, that is already imported)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1200**
+
+  [PATH_FORMATS / GOODCASE]
+
+   **Relative path to JSON file**
+
+   Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
+
+   *Hint: Works with raw path to JSON file (path not normalized internally)*
+
+----
+
+Generated: 29.09.2023 - 15:06:38
 

@@ -20,7 +20,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 23.06.2023
+# 27.09.2023
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -185,11 +185,19 @@ JsonPreprocessor<br>Test Cases
       nCntUsecases = 0
       for dictUsecase in listofdictUsecases:
          nCntUsecases = nCntUsecases + 1
-         TESTID           = dictUsecase['TESTID']
-         DESCRIPTION      = dictUsecase['DESCRIPTION']
-         EXPECTATION      = dictUsecase['EXPECTATION']
-         SECTION          = dictUsecase['SECTION']
-         SUBSECTION       = dictUsecase['SUBSECTION']
+         TESTID      = dictUsecase['TESTID']
+         DESCRIPTION = dictUsecase['DESCRIPTION']
+         EXPECTATION = dictUsecase['EXPECTATION']
+         SECTION     = dictUsecase['SECTION']
+         SUBSECTION  = dictUsecase['SUBSECTION']
+
+         # prepare web server path to JSON file (will be a link inside the HTML use case list)
+         JSONFILE       = dictUsecase['JSONFILE']
+         TESTCONFIGPATH = self.__oConfig.Get('TESTCONFIGPATH')
+         JSONFILE       = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
+         JSONFILEname   = os.path.basename(JSONFILE)
+         JSONFILElink   = f"https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/testfiles/{JSONFILEname}"
+
          # optional ones
          COMMENT = None
          if "COMMENT" in dictUsecase:
@@ -231,7 +239,7 @@ JsonPreprocessor<br>Test Cases
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
 <font size="2" face="Arial" color="#595959">
 <b>
-####TESTID####
+<a target="_blank" href="####JSONFILELINK####">####TESTID####</a>
 </b></font></td>
 
 <td colspan="1" valign="center" bgcolor="#F5F5F5" align="middle">
@@ -255,6 +263,7 @@ Expected: ####EXPECTATION####
 """
          sOut = sHTMLPattern.replace('####CNTUSECASES####', str(nCntUsecases))
          sOut = sOut.replace('####TESTID####', TESTID)
+         sOut = sOut.replace('####JSONFILELINK####', JSONFILElink)
          sOut = sOut.replace('####SECTION####', SECTION)
          sOut = sOut.replace('####SUBSECTION####', SUBSECTION)
          if SUBSECTION == "GOODCASE":
