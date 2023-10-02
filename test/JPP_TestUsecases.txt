@@ -191,6 +191,10 @@ Description: JSON file with composite data structure (nested lists and dictionar
 Expectation: JsonPreprocessor returns expected value
 Hint.......: Standard notation
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0505 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0506 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite strings containing several combinations of curly brackets and special characters before
 Expectation: JsonPreprocessor returns expected value
@@ -228,5 +232,18 @@ Test JPP_1000 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with dictionary keys to be created implicitly
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 13.09.2023 - 10:58:36
+Test JPP_1150 / CYCLIC_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports itself)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1151 / CYCLIC_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports another file, that is already imported)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1200 / PATH_FORMATS / GOODCASE
+Description: Relative path to JSON file
+Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
+Hint.......: Works with raw path to JSON file (path not normalized internally)
+------------------------------------------------------------------------------------------------------------------------
+Generated: 29.09.2023 - 15:06:38
 

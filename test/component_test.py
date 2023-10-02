@@ -22,8 +22,8 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-VERSION      = "0.9.0"
-VERSION_DATE = "13.09.2023"
+VERSION      = "0.12.0"
+VERSION_DATE = "29.09.2023"
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -403,8 +403,6 @@ for dictUsecase in listofdictUsecases:
    EXPECTEDEXCEPTION = dictUsecase['EXPECTEDEXCEPTION']
    EXPECTEDRETURN    = dictUsecase['EXPECTEDRETURN']
 
-   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
-
    # get optional parameters
    HINT = None
    if "HINT" in dictUsecase:
@@ -412,6 +410,16 @@ for dictUsecase in listofdictUsecases:
    COMMENT = None
    if "COMMENT" in dictUsecase:
       COMMENT = dictUsecase['COMMENT']
+   USERAWPATH = False
+   if "USERAWPATH" in dictUsecase:
+      USERAWPATH = dictUsecase['USERAWPATH']
+
+   if USERAWPATH is not True:
+      # Default is that the path 'JSONFILE' is normalized before the JsonPreprocessor is called.
+      # The reference for relative paths is the position of the file TestConfig.py (TESTCONFIGPATH).
+      # In case of USERAWPATH is True, the path 'JSONFILE' is not normalized.
+      # And the path is relative to the position of the executing script (this script).
+      JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
 
    # get derived parameters
    TESTFULLNAME    = f"{TESTID}-({SECTION})-[{SUBSECTION}]"
