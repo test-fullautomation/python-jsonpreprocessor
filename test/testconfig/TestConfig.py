@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.09.2023
+# 04.10.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1861,6 +1861,55 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0507"
+dictUsecase['DESCRIPTION']       = "JSON file containing several string concatenations in separate lines (1)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0507.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (1/1) > {teststring_1} [STR]  :  'prefix.teststring_1.value.suffix-1.suffix-2.suffix-3'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0508"
+dictUsecase['DESCRIPTION']       = "JSON file containing several string concatenations in separate lines (2)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0508.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (1/1) > {teststring_1} [STR]  :  'teststring_1.value.suffix_1'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# can be combined with previous test cases after issue is solved
+dictUsecase['TESTID']            = "JPP_0509"
+dictUsecase['DESCRIPTION']       = "JSON file containing several parameter assignments in separate lines (different syntax)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0509.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (1/1) > {teststring} [STR]  :  'teststring.value.5'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0550"
@@ -2036,10 +2085,10 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1200"
-# In all other use cases the path 'JSONFILE' is normalized before the JsonPreprocessor is called.
+# In all other use cases the path 'JSONFILE' is normalized by the self test (component_test.py) before the JsonPreprocessor is called.
 # The reference for relative paths is the position of this file.
-# In this use case the path 'JSONFILE' is not normalized.
-# And the path is relative to the position of the executing script (component_test.py).
+# In this use case the path 'JSONFILE' is not normalized by the self test.
+# Therefore the path must be relative to the position of the executing script (in this case: component_test.py).
 dictUsecase['DESCRIPTION']       = "Relative path to JSON file"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor resolves the relative path and returns values from JSON file"
 dictUsecase['SECTION']           = "PATH_FORMATS"
