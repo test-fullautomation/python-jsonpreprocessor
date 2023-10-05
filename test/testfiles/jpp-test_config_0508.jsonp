@@ -13,8 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   // reference: https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/225
-   //
    "teststring_1" : "teststring_1.value",
    "teststring_1" : "${teststring_1}.suffix_1"
 }

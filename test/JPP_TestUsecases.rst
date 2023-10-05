@@ -577,6 +577,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1001**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with dictionary keys to be created implicitly (same key names at all levels)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
   [CYCLIC_IMPORTS / BADCASE]
@@ -609,5 +619,5 @@ Test Use Cases
 
 ----
 
-Generated: 04.10.2023 - 17:39:40
+Generated: 05.10.2023 - 14:27:01
 
