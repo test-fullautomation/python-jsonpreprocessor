@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 28.09.2023 - 11:51:44
+# 04.10.2023 - 17:39:40
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -68,5 +68,29 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0506(self, Description):
       nReturn = CExecute.Execute("JPP_0506")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing several string concatenations in separate lines (1)",]
+   )
+   def test_JPP_0507(self, Description):
+      nReturn = CExecute.Execute("JPP_0507")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing several string concatenations in separate lines (2)",]
+   )
+   def test_JPP_0508(self, Description):
+      nReturn = CExecute.Execute("JPP_0508")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing several parameter assignments in separate lines (different syntax)",]
+   )
+   def test_JPP_0509(self, Description):
+      nReturn = CExecute.Execute("JPP_0509")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

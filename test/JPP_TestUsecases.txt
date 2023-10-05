@@ -199,6 +199,18 @@ Test JPP_0506 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite strings containing several combinations of curly brackets and special characters before
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0507 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing several string concatenations in separate lines (1)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0508 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing several string concatenations in separate lines (2)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0509 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing several parameter assignments in separate lines (different syntax)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
 Description: JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -245,5 +257,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 29.09.2023 - 15:06:38
+Generated: 04.10.2023 - 17:39:40
 
