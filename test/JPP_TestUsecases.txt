@@ -59,6 +59,10 @@ Test JPP_0204 / PARAMETER_SUBSTITUTION / GOODCASE
 Description: JSON file with nested parameter / index parameter substitution in parameter value / standard notation
 Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0205 / PARAMETER_SUBSTITUTION / GOODCASE
+Description: JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
+Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0250 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -261,5 +265,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 05.10.2023 - 14:27:01
+Generated: 09.10.2023 - 11:13:29
 

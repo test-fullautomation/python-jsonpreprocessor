@@ -16,7 +16,7 @@
    // reference: https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/223
    //
    "teststring_1"  : "teststring_1.value",
-   ${teststring_1} : "${teststring_1}.suffix_1",
+   ${teststring_1} : "${teststring_1}.suffix-1",
    ${teststring_1} : "${teststring_1}.suffix-2",
    ${teststring_1} : "prefix.${teststring_1}.suffix-3"
 }

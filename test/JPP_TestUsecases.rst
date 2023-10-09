@@ -125,6 +125,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0205**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
 * **Test JPP_0250**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
@@ -619,5 +629,5 @@ Test Use Cases
 
 ----
 
-Generated: 05.10.2023 - 14:27:01
+Generated: 09.10.2023 - 11:13:29
 
