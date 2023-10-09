@@ -253,8 +253,8 @@ class CJsonPreprocessor():
                     pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
                     if re.search(pattern1, k1):
                         continue
-                    pattern2 = "\${\s*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
-                    if re.match(pattern2, key):
+                    pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
+                    if re.search(pattern2, key):
                         key = k1
                     if k1 == key:
                         if isinstance(out_dict[key], list):
