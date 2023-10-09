@@ -250,6 +250,12 @@ class CJsonPreprocessor():
             else:
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
+                    pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+                    if re.search(pattern1, k1):
+                        continue
+                    pattern2 = "\${\s*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
+                    if re.match(pattern2, key):
+                        key = k1
                     if k1 == key:
                         if isinstance(out_dict[key], list):
                             if out_dict[key][0] != "__handleDuplicatedKey__":
@@ -605,15 +611,26 @@ when substituting parameters of composite data types in dictionary key names!"
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
 
             elif isinstance(v, list):
-                tmpValue = []
-                for item in v:
-                    if isinstance(item, str) and re.search(pattern, item.lower()):
-                        bNested = True
-                        while isinstance(item, str) and "${" in item:
-                            item = __loadNestedValue(item)
+                if v[0] != "__handleDuplicatedKey__":
+                    tmpValue = []
+                    for item in v:
+                        if isinstance(item, str) and re.search(pattern, item.lower()):
+                            bNested = True
+                            while isinstance(item, str) and "${" in item:
+                                item = __loadNestedValue(item)
 
-                    tmpValue.append(item)
-                v = tmpValue
+                        tmpValue.append(item)
+                    v = tmpValue
+                else:
+                    i=1
+                    while i<len(v):
+                        while re.search(pattern, v[i]):
+                            bNested = True
+                            tmpValue = __loadNestedValue(v[i]) 
+                            v[i] = tmpValue
+                        tmpValue = v[i]
+                        i+=1
+                    v = tmpValue
 
             elif isinstance(v, str):
                 if re.search(pattern, v.lower()):
@@ -803,42 +820,31 @@ when substituting parameters of composite data types in dictionary key names!"
                         dInput[k] = v[-1]
                         continue
                     else:
-                        bRecursiveKey = False
-                        i=2
-                        value = v[1]
-                        tmpValue = copy.deepcopy(v)
+                        i=1
                         while i < len(v):
-                            if not re.search(pattern, str(v[i])):
-                                value = v[i]
-                            else:
-                                tmpList = re.findall("(" + pattern + ")", str(v[i]))
-                                for item in tmpList:
-                                    if re.search(tmpPattern, item[0]):
+                            bRecursiveKey = False
+                            if re.search(pattern, str(v[i])):
+                                if isinstance(v[i], str):
+                                    if re.search(tmpPattern, v[i]):
+                                        v[i] = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), v[i])
                                         bRecursiveKey = True
-                                        break
+                                if isinstance(v[i], list):
+                                    newList = []
+                                    for item in v[i]:
+                                        if re.search(tmpPattern, item):
+                                            item = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), item)
+                                            bRecursiveKey = True
+                                        newList.append(item)
+                                    v[i] = newList
+                                    del newList
                                 if bRecursiveKey:
-                                    recursiveKey = v[i]
-                                    break
-                                else:
-                                    value = v[i]
-                            tmpValue.pop(1)
-                            i+=1
-                        if bRecursiveKey:
-                            k1 = k + "__RecursiveInitialValue__"
-                            dInput[k1] = value
-                            v = recursiveKey
-                            if isinstance(v, list):
-                                tmpList = []
-                                for item in v:
-                                    if isinstance(item, str) and re.search(tmpPattern, item):
-                                        item = re.sub(k, k1, item)
-                                    tmpList.append(item)
-                                v = tmpList
+                                    k1 = k + "__RecursiveInitialValue__" + str(i)
+                                    dInput[k1] = v[i] 
                             else:
-                                v = re.sub(k, k1, v)
-                            dInput[k] = v
-                        else:
-                            dInput[k] = v[-1]
+                                k1 = k + "__RecursiveInitialValue__" + str(i)
+                                dInput[k1] = v[i]
+                            i+=1
+                        dInput[k] = v[1] if len(v)==2 else v
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
