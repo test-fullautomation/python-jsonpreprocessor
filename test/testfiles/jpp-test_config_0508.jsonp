@@ -14,5 +14,5 @@
 //**************************************************************************
 {
    "teststring_1" : "teststring_1.value",
-   "teststring_1" : "${teststring_1}.suffix_1"
+   "teststring_1" : "${teststring_1}.suffix-1"
 }

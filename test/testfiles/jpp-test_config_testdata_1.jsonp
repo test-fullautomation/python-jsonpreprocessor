@@ -14,12 +14,12 @@
 //**************************************************************************
 {
    // variant info
-   "variant_1"            : "VARIANT-1",
-   "variant_2"            : "VARIANT-2",
+   "variant_1"            : "VARIANT_1",
+   "variant_2"            : "VARIANT_2",
    "list_variant_numbers" : [1, 2],
    "list_variant_index"   : 0,
    "variant_number"       : "1",
-   "dict_variants"        : {"variant_1" : "VARIANT-1", "variant_2" : "VARIANT-2"},
+   "dict_variants"        : {"variant_1" : "VARIANT_1", "variant_2" : "VARIANT_2"},
    "variant_key_1"        : "variant_1",
    //
    "INNERMOST_VARIANT_VALUE" : "RIA",
@@ -27,13 +27,13 @@
    "VARIANT"                 : "VARIANT",
    //
    // milestone info
-   "milestone_1"            : "MILESTONE-1",
-   "milestone_2"            : "MILESTONE-2",
-   "milestone_3"            : "MILESTONE-3",
+   "milestone_1"            : "MILESTONE_1",
+   "milestone_2"            : "MILESTONE_2",
+   "milestone_3"            : "MILESTONE_3",
    "list_milestone_numbers" : [1, 2, 3],
    "list_milestone_index"   : 1,
    "milestone_number"       : "2",
-   "dict_milestones"        : {"milestone_1" : "MILESTONE-1", "milestone_2" : "MILESTONE-2", "milestone_3" : "MILESTONE-3"},
+   "dict_milestones"        : {"milestone_1" : "MILESTONE_1", "milestone_2" : "MILESTONE_2", "milestone_3" : "MILESTONE_3"},
    "milestone_key_2"        : "milestone_2",
    //
    "innermost_milestone_name" : "est",

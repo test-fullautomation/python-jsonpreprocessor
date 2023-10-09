@@ -11,6 +11,7 @@ JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / strin
 JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
 JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation
 JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
+JPP_0205|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
 JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
 JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
 JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing

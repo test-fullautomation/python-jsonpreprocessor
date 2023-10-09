@@ -16,5 +16,5 @@
    // taking over the already defined basic data types
    "[import]" : "./jpp-test_config_testdata_1.jsonp",
    //
-   "${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE-2 (new value)"
+   "${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
 }
