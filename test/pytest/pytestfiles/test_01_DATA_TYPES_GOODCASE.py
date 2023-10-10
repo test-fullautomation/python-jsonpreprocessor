@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.08.2023 - 17:28:15
+# 10.10.2023 - 13:31:11
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,5 +52,13 @@ class Test_DATA_TYPES_GOODCASE:
    )
    def test_JPP_0003(self, Description):
       nReturn = CExecute.Execute("JPP_0003")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with string values containing dollar operators",]
+   )
+   def test_JPP_0005(self, Description):
+      nReturn = CExecute.Execute("JPP_0005")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
