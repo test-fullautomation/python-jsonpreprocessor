@@ -125,6 +125,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0205**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
 * **Test JPP_0250**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
@@ -465,6 +475,36 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0507**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing several string concatenations in separate lines (1)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0508**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing several string concatenations in separate lines (2)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0509**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing several parameter assignments in separate lines (different syntax)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -547,6 +587,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1001**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with dictionary keys to be created implicitly (same key names at all levels)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
   [CYCLIC_IMPORTS / BADCASE]
@@ -579,5 +629,5 @@ Test Use Cases
 
 ----
 
-Generated: 29.09.2023 - 15:06:38
+Generated: 09.10.2023 - 11:13:29
 

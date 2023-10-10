@@ -250,8 +250,26 @@ class CJsonPreprocessor():
             else:
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
+                    pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+                    if re.search(pattern1, k1):
+                        continue
+                    pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
+                    if re.search(pattern2, key):
+                        key = k1
                     if k1 == key:
-                        del out_dict[k1]
+                        if isinstance(out_dict[key], list):
+                            if out_dict[key][0] != "__handleDuplicatedKey__":
+                                tmpValue = ["__handleDuplicatedKey__", out_dict[key], value]
+                                del out_dict[key]
+                            else:
+                                tmpValue = out_dict[key]
+                                tmpValue.append(value)
+                                del out_dict[key]
+                        else:
+                            tmpValue = ["__handleDuplicatedKey__", out_dict[key], value]
+                            del out_dict[key]
+                        value = tmpValue
+                        out_dict[key] = value
                 del tmpOutdict
                 out_dict[key] = value
         return out_dict
@@ -537,13 +555,18 @@ when substituting parameters of composite data types in dictionary key names!"
                     oJson[k] = v
                     globals().update({k:v})
 
-        def __loadNestedValue(sInputStr: str):
+        def __loadNestedValue(initValue: str, sInputStr: str):
             bStringValue = False
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
                 sInputStr = re.sub("str\(\s*(" + pattern + ")\s*\)", "$\\1", sInputStr)
                 bStringValue = True
-            else:
+            elif re.match("^\s*" + pattern + "\s*$", sInputStr):
                 sInputStr = re.sub("\$", "$$", sInputStr)
+            else:
+                while "str(" in initValue:
+                    initValue = re.sub("str\((" + pattern + ")\)", "\\1", initValue, count=1)
+                raise Exception(f"Invalid syntax! An opened or closed curly brackets are missing in value '{initValue}'.\n \
+          Please check value '{initValue}' in config file!!!")
             sInputStr = self.__checkParamName(sInputStr)
             valueAfterProcessed = self.__nestedParamHandler(sInputStr)
             for valueProcessed in valueAfterProcessed:
@@ -577,7 +600,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 keyNested = k
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(k)
+                    k = __loadNestedValue(keyNested, k)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
@@ -593,26 +616,42 @@ when substituting parameters of composite data types in dictionary key names!"
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
 
             elif isinstance(v, list):
-                tmpValue = []
-                for item in v:
-                    if isinstance(item, str) and re.search(pattern, item.lower()):
-                        bNested = True
-                        while isinstance(item, str) and "${" in item:
-                            item = __loadNestedValue(item)
+                if v[0] != "__handleDuplicatedKey__":
+                    tmpValue = []
+                    for item in v:
+                        if isinstance(item, str) and re.search(pattern, item.lower()):
+                            bNested = True
+                            initItem = item
+                            while isinstance(item, str) and "${" in item:
+                                item = __loadNestedValue(initItem, item)
 
-                    tmpValue.append(item)
-                v = tmpValue
+                        tmpValue.append(item)
+                    v = tmpValue
+                    del tmpValue
+                else:
+                    i=1
+                    while i<len(v):
+                        while re.search(pattern, v[i]):
+                            bNested = True
+                            initItem = v[i]
+                            tmpValue = __loadNestedValue(initItem, v[i]) 
+                            v[i] = tmpValue
+                        tmpValue = v[i]
+                        i+=1
+                    v = tmpValue
+                    del tmpValue
 
             elif isinstance(v, str):
                 if re.search(pattern, v.lower()):
                     bNested = True
+                    initValue = v
                     while isinstance(v, str) and "${" in v:
-                        v = __loadNestedValue(v)
+                        v = __loadNestedValue(initValue, v)
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '':
                 self.dUpdatedParams.update({k:v})
-
+        del tmpJson
         return oJson, bNested
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
@@ -781,6 +820,57 @@ when substituting parameters of composite data types in dictionary key names!"
                 else:
                     newItem = newItem + self.__checkAndUpdateKeyValue(item)
             return newItem
+        
+        def __handleDuplicatedKey(dInput : dict) -> dict:
+            tmpDict = copy.deepcopy(dInput)
+            for k, v in tmpDict.items():
+                if isinstance(v, list) and v[0]=="__handleDuplicatedKey__":
+                    tmpPattern = "\${\s*" + k + "\s*}|\${\s*" + k + "\.|\[\s*'"+ k + "'\s*\]|\." + k + "\.*"
+                    if not re.search(pattern, str(v[-1])) or not re.search(tmpPattern, str(v[-1])):
+                        dInput[k] = v[-1]
+                        continue
+                    else:
+                        i=1
+                        while i < len(v):
+                            bRecursiveKey = False
+                            if re.search(pattern, str(v[i])):
+                                if isinstance(v[i], str):
+                                    if re.search(tmpPattern, v[i]):
+                                        v[i] = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), v[i])
+                                        bRecursiveKey = True
+                                if isinstance(v[i], list):
+                                    newList = []
+                                    for item in v[i]:
+                                        if re.search(tmpPattern, item):
+                                            item = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), item)
+                                            bRecursiveKey = True
+                                        newList.append(item)
+                                    v[i] = newList
+                                    del newList
+                                if bRecursiveKey:
+                                    k1 = k + "__RecursiveInitialValue__" + str(i)
+                                    dInput[k1] = v[i] 
+                            else:
+                                k1 = k + "__RecursiveInitialValue__" + str(i)
+                                dInput[k1] = v[i]
+                            i+=1
+                        dInput[k] = v[1] if len(v)==2 else v
+                if isinstance(v, dict):
+                    dInput[k] = __handleDuplicatedKey(v)
+            del tmpDict
+            return dInput
+        
+        def __removeDuplicatedKey(dInput : dict) -> dict:
+            if isinstance(dInput, dict):
+                for k, v in list(dInput.items()):
+                    if "__RecursiveInitialValue__" in k:
+                        del dInput[k]
+                    else:
+                        __removeDuplicatedKey(v)
+            elif isinstance(dInput, list):
+                for item in dInput:
+                    __removeDuplicatedKey(item)
+
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
         if  not(os.path.isfile(jFile)):
@@ -878,6 +968,7 @@ when substituting parameters of composite data types in dictionary key names!"
         self.__checkDotInParamName(oJson)
 
         if masterFile:
+            oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
                 if k in self.lDataTypes:
                     k = "JPavoidDataType_" + k
@@ -923,5 +1014,5 @@ when substituting parameters of composite data types in dictionary key names!"
                     raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
                 
             self.__reset()
-
+            __removeDuplicatedKey(oJson)
         return oJson

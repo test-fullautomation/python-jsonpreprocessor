@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 13.09.2023 - 10:58:36
+# 05.10.2023 - 14:27:02
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -36,5 +36,13 @@ class Test_IMPLICIT_CREATION_GOODCASE:
    )
    def test_JPP_1000(self, Description):
       nReturn = CExecute.Execute("JPP_1000")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with dictionary keys to be created implicitly (same key names at all levels)",]
+   )
+   def test_JPP_1001(self, Description):
+      nReturn = CExecute.Execute("JPP_1001")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

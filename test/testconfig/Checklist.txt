@@ -4,19 +4,19 @@ Checklist for implementation of self test cases for JsonPreprocessor / parsing c
 
 XC-CT/ECA3-Queckenstedt
 
-28.07.2023
+09.10.2023
 
 --------------------------------------------------------------------------------------------------------------
 
 * Dataset used for testing
 
 // variant info
-"variant_1"            : "VARIANT-1",
-"variant_2"            : "VARIANT-2",
+"variant_1"            : "VARIANT_1",
+"variant_2"            : "VARIANT_2",
 "list_variant_numbers" : [1, 2],
 "list_variant_index"   : 0,
 "variant_number"       : "1",
-"dict_variants"        : {"variant_1" : "VARIANT-1", "variant_2" : "VARIANT-2"},
+"dict_variants"        : {"variant_1" : "VARIANT_1", "variant_2" : "VARIANT_2"},
 "variant_key_1"        : "variant_1",
 //
 "INNERMOST_VARIANT_VALUE" : "RIA",
@@ -24,13 +24,13 @@ XC-CT/ECA3-Queckenstedt
 "VARIANT"                 : "VARIANT",
 //
 // milestone info
-"milestone_1"            : "MILESTONE-1",
-"milestone_2"            : "MILESTONE-2",
-"milestone_3"            : "MILESTONE-3",
+"milestone_1"            : "MILESTONE_1",
+"milestone_2"            : "MILESTONE_2",
+"milestone_3"            : "MILESTONE_3",
 "list_milestone_numbers" : [1, 2, 3],
 "list_milestone_index"   : 1,
 "milestone_number"       : "2",
-"dict_milestones"        : {"milestone_1" : "MILESTONE-1", "milestone_2" : "MILESTONE-2", "milestone_3" : "MILESTONE-3"},
+"dict_milestones"        : {"milestone_1" : "MILESTONE_1", "milestone_2" : "MILESTONE_2", "milestone_3" : "MILESTONE_3"},
 "milestone_key_2"        : "milestone_2",
 //
 "innermost_milestone_name" : "est",
@@ -45,31 +45,31 @@ XC-CT/ECA3-Queckenstedt
 "variant_1" : "${V${A${INNERMOST_VARIANT_VALUE}N}T}-${variant_number} (new value)"
 
 // nested parameter / string parameter substitution in parameter name
-"${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE-2 (new value)"
+"${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
 
 // nested parameter / index parameter substitution in parameter name / standard notation
-"VAR-${variant_${list_variant_numbers}[${list_variant_index}]}_MS-${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
+"VAR_${variant_${list_variant_numbers}[${list_variant_index}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
 
 // nested parameter / index parameter substitution in parameter name / dotdict notation
-"VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${list_milestone_index}}}_param" : "value"
+"VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${list_milestone_index}}}_param" : "value"
 
 // nested parameter / index parameter substitution in parameter value / standard notation
-"param" : "VAR-${variant_${list_variant_numbers}[${list_variant_index}]}_MS-${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
+"param" : "VAR_${variant_${list_variant_numbers}[${list_variant_index}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
 
 // nested parameter / index parameter substitution in parameter value / dotdict notation
-"param" : "VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${list_milestone_index}}} value"
+"param" : "VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${list_milestone_index}}} value"
 
 // nested parameter / key parameter substitution in parameter name / standard notation
-"VAR-${dict_variants}['${variant_key_${variant_number}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+"VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
 
 // nested parameter / key parameter substitution in parameter name / dotdict notation
-"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${milestone_number}}}_param" : "value"
+"VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${milestone_number}}}_param" : "value"
 
 // nested parameter / key parameter substitution in parameter value / standard notation
-"param" : "VAR-${dict_variants}['${variant_key_${variant_number}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}'] value"
+"param" : "VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}'] value"
 
 // nested parameter / key parameter substitution in parameter value / dotdict notation
-"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${milestone_number}}} value"
+"param" : "VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${milestone_number}}} value"
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -79,31 +79,31 @@ XC-CT/ECA3-Queckenstedt
 "variant_1" : "${V${A${IAMNOTEXISTING}N}T}-${variant_number} (new value)"
 
 // nested parameter / string parameter substitution in parameter name / in between parameter not existing
-"${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE-2 (new value)"
+"${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
 
 // nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
-"VAR-${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS-${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
+"VAR_${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
 
 // nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
-"VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}}_param" : "value"
+"VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}}_param" : "value"
 
 // nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
-"param" : "VAR-${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS-${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
+"param" : "VAR_${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
 
 // nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
-"param" : "VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
+"param" : "VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
 
 // nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
-"VAR-${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+"VAR_${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
 
 // nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
-"VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${IAMNOTEXISTING}}}_param" : "value"
+"VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${IAMNOTEXISTING}}}_param" : "value"
 
 // nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
-"param" : "VAR-${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS-${dict_milestones}['${milestone_key_${milestone_number}}'] value"
+"param" : "VAR_${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}'] value"
 
 // nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
-"param" : "VAR-${dict_variants.${variant_key_${variant_number}}}_MS-${dict_milestones.${milestone_key_${IAMNOTEXISTING}}} value"
+"param" : "VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${IAMNOTEXISTING}}} value"
 
 --------------------------------------------------------------------------------------------------------------
 

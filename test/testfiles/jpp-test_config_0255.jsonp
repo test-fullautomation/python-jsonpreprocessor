@@ -16,5 +16,5 @@
    // taking over the already defined basic data types
    "[import]" : "./jpp-test_config_testdata_1.jsonp",
    //
-   "param" : "VAR-${variant_${list_variant_numbers.${list_variant_index}}}_MS-${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
+   "param" : "VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
 }

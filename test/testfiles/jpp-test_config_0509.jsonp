@@ -13,8 +13,11 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   // taking over the already defined basic data types
-   "[import]" : "./jpp-test_config_testdata_1.jsonp",
+   // reference: https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/224
    //
-   "${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
+   "teststring"  : "teststring.value.1",
+   ${teststring} : "teststring.value.2",
+   "teststring"  : "teststring.value.3",
+   ${teststring} : "teststring.value.4",
+   "teststring"  : "teststring.value.5"
 }

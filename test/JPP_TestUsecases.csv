@@ -11,6 +11,7 @@ JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / strin
 JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
 JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation
 JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
+JPP_0205|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
 JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
 JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
 JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
@@ -41,6 +42,9 @@ JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure 
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
 JPP_0505|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
 JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several combinations of curly brackets and special characters before
+JPP_0507|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (1)
+JPP_0508|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (2)
+JPP_0509|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (different syntax)
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
@@ -49,6 +53,7 @@ JPP_0952|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)
 JPP_0953|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file is completely empty
 JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly
+JPP_1001|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly (same key names at all levels)
 JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
 JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
