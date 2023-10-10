@@ -555,13 +555,18 @@ when substituting parameters of composite data types in dictionary key names!"
                     oJson[k] = v
                     globals().update({k:v})
 
-        def __loadNestedValue(sInputStr: str):
+        def __loadNestedValue(initValue: str, sInputStr: str):
             bStringValue = False
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
                 sInputStr = re.sub("str\(\s*(" + pattern + ")\s*\)", "$\\1", sInputStr)
                 bStringValue = True
-            else:
+            elif re.match("^\s*" + pattern + "\s*$", sInputStr):
                 sInputStr = re.sub("\$", "$$", sInputStr)
+            else:
+                while "str(" in initValue:
+                    initValue = re.sub("str\((" + pattern + ")\)", "\\1", initValue, count=1)
+                raise Exception(f"Invalid syntax! An opened or closed curly brackets are missing in value '{initValue}'.\n \
+          Please check value '{initValue}' in config file!!!")
             sInputStr = self.__checkParamName(sInputStr)
             valueAfterProcessed = self.__nestedParamHandler(sInputStr)
             for valueProcessed in valueAfterProcessed:
@@ -595,7 +600,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 keyNested = k
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(k)
+                    k = __loadNestedValue(keyNested, k)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
@@ -616,32 +621,37 @@ when substituting parameters of composite data types in dictionary key names!"
                     for item in v:
                         if isinstance(item, str) and re.search(pattern, item.lower()):
                             bNested = True
+                            initItem = item
                             while isinstance(item, str) and "${" in item:
-                                item = __loadNestedValue(item)
+                                item = __loadNestedValue(initItem, item)
 
                         tmpValue.append(item)
                     v = tmpValue
+                    del tmpValue
                 else:
                     i=1
                     while i<len(v):
                         while re.search(pattern, v[i]):
                             bNested = True
-                            tmpValue = __loadNestedValue(v[i]) 
+                            initItem = v[i]
+                            tmpValue = __loadNestedValue(initItem, v[i]) 
                             v[i] = tmpValue
                         tmpValue = v[i]
                         i+=1
                     v = tmpValue
+                    del tmpValue
 
             elif isinstance(v, str):
                 if re.search(pattern, v.lower()):
                     bNested = True
+                    initValue = v
                     while isinstance(v, str) and "${" in v:
-                        v = __loadNestedValue(v)
+                        v = __loadNestedValue(initValue, v)
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '':
                 self.dUpdatedParams.update({k:v})
-
+        del tmpJson
         return oJson, bNested
 
     def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
