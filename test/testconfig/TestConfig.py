@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 10.10.2023
+# 11.10.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1499,7 +1499,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0356.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "An opened or closed curly brackets are missing in value"
+dictUsecase['EXPECTEDEXCEPTION'] = "One or more than one opened or closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1527,7 +1527,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 6"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0358.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "An opened or closed curly brackets are missing in value" # wording to be improved (issues/109)
+dictUsecase['EXPECTEDEXCEPTION'] = "One or more than one opened or closed curly bracket is missing in expression" # wording to be improved (issues/109)
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
