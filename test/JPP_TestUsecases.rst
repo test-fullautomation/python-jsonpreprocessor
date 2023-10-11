@@ -45,6 +45,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0005**
+
+  [DATA_TYPES / GOODCASE]
+
+   **JSON file with string values containing dollar operators**
+
+   Expected: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
+
+----
+
 * **Test JPP_0100**
 
   [DATA_INTEGRITY / GOODCASE]
@@ -130,6 +140,16 @@ Test Use Cases
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
    **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0207**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation**
 
    Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
@@ -323,6 +343,30 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0355**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 3*
+
+----
+
+* **Test JPP_0356**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 4*
+
+----
+
 * **Test JPP_0357**
 
   [VALUE_DETECTION / BADCASE]
@@ -332,6 +376,18 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Hint: Checklist rule 2 / pattern 5*
+
+----
+
+* **Test JPP_0358**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 6*
 
 ----
 
@@ -629,5 +685,5 @@ Test Use Cases
 
 ----
 
-Generated: 09.10.2023 - 11:13:29
+Generated: 10.10.2023 - 13:31:11
 

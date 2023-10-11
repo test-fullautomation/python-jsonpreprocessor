@@ -27,6 +27,10 @@ Test JPP_0003 / DATA_TYPES / GOODCASE
 Description: JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
 Expectation: All parameters referenced by dollar operator are resolved correctly, with their correct data types
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0005 / DATA_TYPES / GOODCASE
+Description: JSON file with string values containing dollar operators
+Expectation: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0100 / DATA_INTEGRITY / GOODCASE
 Description: JSON file is empty (single pair of brackets only)
 Expectation: JsonPreprocessor returns empty dictionary
@@ -61,6 +65,10 @@ Expectation: JsonPreprocessor creates a new string with all dollar operator expr
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0205 / PARAMETER_SUBSTITUTION / GOODCASE
 Description: JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
+Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0207 / PARAMETER_SUBSTITUTION / GOODCASE
+Description: JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation
 Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0250 / PARAMETER_SUBSTITUTION / BADCASE
@@ -140,10 +148,25 @@ Description: JSON file with expression containing more opening elements '${' tha
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 2
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0355 / VALUE_DETECTION / BADCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2 / pattern 3
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0356 / VALUE_DETECTION / BADCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 4)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2 / pattern 4
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0357 / VALUE_DETECTION / BADCASE
 Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 2 / pattern 5
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0358 / VALUE_DETECTION / BADCASE
+Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: Checklist rule 2 / pattern 6
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0359 / VALUE_DETECTION / BADCASE
 Description: JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
@@ -265,5 +288,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 09.10.2023 - 11:13:29
+Generated: 10.10.2023 - 13:31:11
 

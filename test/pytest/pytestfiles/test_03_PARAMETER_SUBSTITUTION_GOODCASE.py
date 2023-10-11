@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.10.2023 - 11:13:29
+# 10.10.2023 - 13:31:11
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -76,5 +76,13 @@ class Test_PARAMETER_SUBSTITUTION_GOODCASE:
    )
    def test_JPP_0205(self, Description):
       nReturn = CExecute.Execute("JPP_0205")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation",]
+   )
+   def test_JPP_0207(self, Description):
+      nReturn = CExecute.Execute("JPP_0207")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
