@@ -54,10 +54,17 @@ import copy
 import shlex
 
 from PythonExtensionsCollection.String.CString import CString
+from enum import Enum
 
 class CSyntaxType():
     python = "python"
     json = "json"
+
+class CNameMangling(Enum):
+    AVOIDDATATYPE    = "JPavoidDataType_"
+    COLONS           = "__handleColonsInLine__"
+    DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
+    DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -258,15 +265,15 @@ class CJsonPreprocessor():
                         key = k1
                     if k1 == key:
                         if isinstance(out_dict[key], list):
-                            if out_dict[key][0] != "__handleDuplicatedKey__":
-                                tmpValue = ["__handleDuplicatedKey__", out_dict[key], value]
+                            if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
+                                tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
                                 del out_dict[key]
                             else:
                                 tmpValue = out_dict[key]
                                 tmpValue.append(value)
                                 del out_dict[key]
                         else:
-                            tmpValue = ["__handleDuplicatedKey__", out_dict[key], value]
+                            tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
                             del out_dict[key]
                         value = tmpValue
                         out_dict[key] = value
@@ -307,9 +314,7 @@ class CJsonPreprocessor():
 
         pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
         sContentCleaned=re.sub(pattern, replacer, sContent)
-
         return sContentCleaned
-
 
     def __checkParamName(self, sInput: str) -> str:
         """
@@ -330,11 +335,10 @@ class CJsonPreprocessor():
         lParams = re.findall(pattern, sInput)
         for param in lParams:
             if "." not in param and param in self.lDataTypes:
-                sInput = re.sub(param, "JPavoidDataType_" + param, sInput, count=1)
-            if "." in param and "JPavoidDataType_" + param.split('.')[0] in globals():
-                sInput = re.sub(param, "JPavoidDataType_" + param, sInput, count=1)
+                sInput = re.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
+            if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in globals():
+                sInput = re.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
         return sInput
-
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False) -> list:
         '''
@@ -377,7 +381,6 @@ class CJsonPreprocessor():
                         fullVariable = variable[0]
                 referVar = fullVariable
                 return referVar
-
 
         pattern = "\$\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
         referVars = re.findall("(" + pattern + ")", sInputStr)
@@ -528,8 +531,8 @@ class CJsonPreprocessor():
                         errorMsg = f"Could not set variable '{k}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
 
-                    if "JPavoidDataType_" in k:
-                        k = re.sub("JPavoidDataType_", "", k)
+                    if CNameMangling.AVOIDDATATYPE.value in k:
+                        k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
                     if isinstance(v, str):
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
                     else:
@@ -539,8 +542,8 @@ class CJsonPreprocessor():
                     except:
                         pass
                 else:
-                    if "JPavoidDataType_" in k:
-                        k = re.sub("JPavoidDataType_", "", k)
+                    if CNameMangling.AVOIDDATATYPE.value in k:
+                        k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
                     elif re.search("[\[\]\(\)\s{}]", k):
                         errorMsg = f"Setting value '{v}' for parameter '{k}' is not permissible \
 when substituting parameters of composite data types in dictionary key names!"
@@ -550,8 +553,8 @@ when substituting parameters of composite data types in dictionary key names!"
 
             else:
                 if bNested:
-                    if "JPavoidDataType_" in k:
-                        k = re.sub("JPavoidDataType_", "", k) 
+                    if CNameMangling.AVOIDDATATYPE.value in k:
+                        k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k) 
                     oJson[k] = v
                     globals().update({k:v})
 
@@ -564,9 +567,9 @@ when substituting parameters of composite data types in dictionary key names!"
                 sInputStr = re.sub("\$", "$$", sInputStr)
             else:
                 while "str(" in initValue:
-                    initValue = re.sub("str\((" + pattern + ")\)", "\\1", initValue, count=1)
-                raise Exception(f"Invalid syntax! An opened or closed curly brackets are missing in value '{initValue}'.\n \
-          Please check value '{initValue}' in config file!!!")
+                    initValue = re.sub("str\(([\${}0-9A-Za-z\.\-_\[\]]+)\)", "\\1", initValue, count=1)
+                raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
+          Please check the configuration file of the executed test!")
             sInputStr = self.__checkParamName(sInputStr)
             valueAfterProcessed = self.__nestedParamHandler(sInputStr)
             for valueProcessed in valueAfterProcessed:
@@ -589,7 +592,7 @@ when substituting parameters of composite data types in dictionary key names!"
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 if k in self.lDataTypes:
-                    k = "JPavoidDataType_" + k
+                    k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
@@ -616,7 +619,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
 
             elif isinstance(v, list):
-                if v[0] != "__handleDuplicatedKey__":
+                if v[0] != CNameMangling.DUPLICATEDKEY_01.value:
                     tmpValue = []
                     for item in v:
                         if isinstance(item, str) and re.search(pattern, item.lower()):
@@ -678,7 +681,7 @@ when substituting parameters of composite data types in dictionary key names!"
             tmpList = []
             for item in lNestedParam:
                 item = re.sub(r'([$()\[\]])', r'\\\1', item)
-                pattern = "(\${\s*[0-9A-Za-z\-_]*" + item + "[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*)"
+                pattern = "(\${\s*[0-9A-Za-z\.\-_]*" + item + "[0-9A-Za-z\.\-_]*\s*}(\[\s*.+\s*\])*)"
                 if re.search(pattern, sInputStr):
                     sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
                 tmpResults = re.findall("(str\(" + pattern + "\))", sInputStr)
@@ -824,7 +827,7 @@ when substituting parameters of composite data types in dictionary key names!"
         def __handleDuplicatedKey(dInput : dict) -> dict:
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
-                if isinstance(v, list) and v[0]=="__handleDuplicatedKey__":
+                if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
                     tmpPattern = "\${\s*" + k + "\s*}|\${\s*" + k + "\.|\[\s*'"+ k + "'\s*\]|\." + k + "\.*"
                     if not re.search(pattern, str(v[-1])) or not re.search(tmpPattern, str(v[-1])):
                         dInput[k] = v[-1]
@@ -836,22 +839,22 @@ when substituting parameters of composite data types in dictionary key names!"
                             if re.search(pattern, str(v[i])):
                                 if isinstance(v[i], str):
                                     if re.search(tmpPattern, v[i]):
-                                        v[i] = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), v[i])
+                                        v[i] = re.sub(k, k + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), v[i])
                                         bRecursiveKey = True
                                 if isinstance(v[i], list):
                                     newList = []
                                     for item in v[i]:
                                         if re.search(tmpPattern, item):
-                                            item = re.sub(k, k + "__RecursiveInitialValue__" + str(i-1), item)
+                                            item = re.sub(k, k + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), item)
                                             bRecursiveKey = True
                                         newList.append(item)
                                     v[i] = newList
                                     del newList
                                 if bRecursiveKey:
-                                    k1 = k + "__RecursiveInitialValue__" + str(i)
+                                    k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
                                     dInput[k1] = v[i] 
                             else:
-                                k1 = k + "__RecursiveInitialValue__" + str(i)
+                                k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
                                 dInput[k1] = v[i]
                             i+=1
                         dInput[k] = v[1] if len(v)==2 else v
@@ -863,14 +866,13 @@ when substituting parameters of composite data types in dictionary key names!"
         def __removeDuplicatedKey(dInput : dict) -> dict:
             if isinstance(dInput, dict):
                 for k, v in list(dInput.items()):
-                    if "__RecursiveInitialValue__" in k:
+                    if CNameMangling.DUPLICATEDKEY_02.value in k:
                         del dInput[k]
                     else:
                         __removeDuplicatedKey(v)
             elif isinstance(dInput, list):
                 for item in dInput:
                     __removeDuplicatedKey(item)
-
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
         if  not(os.path.isfile(jFile)):
@@ -897,14 +899,14 @@ when substituting parameters of composite data types in dictionary key names!"
 
             if re.search(pattern, line):
                 tmpList = re.findall("(\"[^\"]+\")", line)
-                line = re.sub("(\"[^\"]+\")", "__handleColonsInLine__", line)
+                line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
                 items = re.split("\s*:\s*", line)
                 newLine = ""
                 i=0
                 for item in items:
-                    if "__handleColonsInLine__" in item:
-                        while "__handleColonsInLine__" in item:
-                            item = re.sub("__handleColonsInLine__", tmpList[0], item, count=1)
+                    if CNameMangling.COLONS.value in item:
+                        while CNameMangling.COLONS.value in item:
+                            item = re.sub(CNameMangling.COLONS.value, tmpList[0], item, count=1)
                             tmpList.pop(0)
                     i+=1
                     newSubItem = ""
@@ -971,7 +973,7 @@ when substituting parameters of composite data types in dictionary key names!"
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
                 if k in self.lDataTypes:
-                    k = "JPavoidDataType_" + k
+                    k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             for k, v in self.dUpdatedParams.items():
