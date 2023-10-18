@@ -50,8 +50,9 @@ JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings contain
 JPP_0507|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (1)
 JPP_0508|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (2)
 JPP_0509|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (different syntax)
+JPP_0510|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (extended string concatenation)
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
-JPP_0900|COMMON_SYNTAX_VIOLATIONS|GOODCASE|JSON file with syntax error, that is commented out
+JPP_0600|CODE_COMMENTS|GOODCASE|JSON file with several combinations of code comments
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
 JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
 JPP_0952|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (3)

@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 11.10.2023
+# 18.10.2023
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1970,6 +1970,25 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# can be combined with previous test cases after issue is solved
+dictUsecase['TESTID']            = "JPP_0510"
+dictUsecase['DESCRIPTION']       = "JSON file containing several parameter assignments in separate lines (extended string concatenation)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0510.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (1/1) > {params} [DICT] (1/1) > {global} [DICT] (4/1) > {teststring_1} [STR]  :  'prefix.teststring_1.value.suffix_1.suffix_2.suffix_3'
+[DICT] (1/1) > {params} [DICT] (1/1) > {global} [DICT] (4/2) > {teststring_2} [STR]  :  'teststring_2.value.suffix_1'
+[DICT] (1/1) > {params} [DICT] (1/1) > {global} [DICT] (4/3) > {teststring_3} [STR]  :  'teststring_3.value.5'
+[DICT] (1/1) > {params} [DICT] (1/1) > {global} [DICT] (4/4) > {testdict} [DICT] (1/1) > {key} [DICT] (1/1) > {teststring_4} [STR]  :  'teststring_4.initial_value.suffix_1.suffix_2'"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0550"
@@ -1987,16 +2006,28 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0900"
-dictUsecase['DESCRIPTION']       = "JSON file with syntax error, that is commented out"
+dictUsecase['TESTID']            = "JPP_0600"
+dictUsecase['DESCRIPTION']       = "JSON file with several combinations of code comments"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns remaining content of JSON file (valid parameters)"
-dictUsecase['SECTION']           = "COMMON_SYNTAX_VIOLATIONS"
+dictUsecase['SECTION']           = "CODE_COMMENTS"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0900.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0600.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = "[DICT] (1/1) > {param} [STR]  :  'value'"
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (6/1) > {param1} [STR]  :  'value1'
+[DICT] (6/2) > {param2} [STR]  :  'value2'
+[DICT] (6/3) > {testdict1} [DICT] (3/1) > {A} [INT]  :  1
+[DICT] (6/3) > {testdict1} [DICT] (3/2) > {B} [INT]  :  2
+[DICT] (6/3) > {testdict1} [DICT] (3/3) > {C} [INT]  :  3
+[DICT] (6/4) > {testdict2} [DICT] (2/1) > {A} [INT]  :  1
+[DICT] (6/4) > {testdict2} [DICT] (2/2) > {C} [INT]  :  3
+[DICT] (6/5) > {testdict3} [DICT] (2/1) > {A} [INT]  :  1
+[DICT] (6/5) > {testdict3} [DICT] (2/2) > {D} [INT]  :  4
+[DICT] (6/6) > {testlist} [LIST] (2/1) > [STR]  :  'A1'
+[DICT] (6/6) > {testlist} [LIST] (2/2) > [STR]  :  'D4'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -2182,7 +2213,7 @@ dictUsecase['EXPECTEDRETURN']    = "[DICT] (1/1) > {teststring} [STR]  :  'relat
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-
+# --------------------------------------------------------------------------------------------------------------
 
 
 

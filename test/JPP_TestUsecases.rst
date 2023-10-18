@@ -561,6 +561,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0510**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing several parameter assignments in separate lines (extended string concatenation)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -573,11 +583,11 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0900**
+* **Test JPP_0600**
 
-  [COMMON_SYNTAX_VIOLATIONS / GOODCASE]
+  [CODE_COMMENTS / GOODCASE]
 
-   **JSON file with syntax error, that is commented out**
+   **JSON file with several combinations of code comments**
 
    Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
 
@@ -685,5 +695,5 @@ Test Use Cases
 
 ----
 
-Generated: 10.10.2023 - 13:31:11
+Generated: 18.10.2023 - 17:37:45
 
