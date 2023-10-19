@@ -63,6 +63,7 @@ class CSyntaxType():
 class CNameMangling(Enum):
     AVOIDDATATYPE    = "JPavoidDataType_"
     COLONS           = "__handleColonsInLine__"
+    DUPLICATEDKEY_00 = "__rootDuplicatedKey__"
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
 
@@ -257,9 +258,6 @@ class CJsonPreprocessor():
             else:
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
-                    pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
-                    if re.search(pattern1, k1):
-                        continue
                     pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
                     if re.search(pattern2, key):
                         key = k1
@@ -599,6 +597,10 @@ when substituting parameters of composite data types in dictionary key names!"
         pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
+            if CNameMangling.DUPLICATEDKEY_00.value in k:
+                del oJson[k]
+                k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
+                oJson[k] = v
             if re.search("(str\(" + pattern + "\))", k.lower()):
                 keyNested = k
                 bNested = True
@@ -828,36 +830,52 @@ when substituting parameters of composite data types in dictionary key names!"
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
                 if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
-                    tmpPattern = "\${\s*" + k + "\s*}|\${\s*" + k + "\.|\[\s*'"+ k + "'\s*\]|\." + k + "\.*"
+                    i=1
+                    dupKey = ''
+                    if re.search(pattern, k):
+                        varPattern = "[0-9A-Za-z_]+[0-9A-Za-z\-_]*"
+                        dupKey = re.search("\.(" + varPattern + ")\s*}\s*$|\['(" + varPattern + ")'\]\s*$", k)[1]
+                    if dupKey != '':
+                        tmpKey = dupKey
+                    else:
+                        tmpKey = k
+                    tmpPattern = "\${\s*" + tmpKey + "\s*}|\${\s*" + tmpKey + "\.|\[\s*'"+ tmpKey + "'\s*\]|\." + tmpKey + "\.*"
                     if not re.search(pattern, str(v[-1])) or not re.search(tmpPattern, str(v[-1])):
                         dInput[k] = v[-1]
                         continue
-                    else:
-                        i=1
-                        while i < len(v):
-                            bRecursiveKey = False
-                            if re.search(pattern, str(v[i])):
-                                if isinstance(v[i], str):
-                                    if re.search(tmpPattern, v[i]):
-                                        v[i] = re.sub(k, k + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), v[i])
+                    while i < len(v):
+                        bRecursiveKey = False    
+                        if re.search(pattern, str(v[i])) and i>1:
+                            if isinstance(v[i], str):
+                                if re.search(tmpPattern, v[i]) or tmpKey in v[i]:
+                                    v[i] = re.sub(tmpKey, tmpKey + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), v[i])
+                                    bRecursiveKey = True
+                            if isinstance(v[i], list):
+                                newList = []
+                                for item in v[i]:
+                                    if re.search(tmpPattern, item) or tmpKey in item:
+                                        item = re.sub(tmpKey, tmpKey + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), item)
                                         bRecursiveKey = True
-                                if isinstance(v[i], list):
-                                    newList = []
-                                    for item in v[i]:
-                                        if re.search(tmpPattern, item):
-                                            item = re.sub(k, k + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), item)
-                                            bRecursiveKey = True
-                                        newList.append(item)
-                                    v[i] = newList
-                                    del newList
-                                if bRecursiveKey:
+                                    newList.append(item)
+                                v[i] = newList
+                                del newList
+                            if bRecursiveKey:
+                                if dupKey == '':
                                     k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
-                                    dInput[k1] = v[i] 
-                            else:
+                                else:
+                                    k1 = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_02.value + str(i), k)
+                                dInput[k1] = v[i] 
+                        else:
+                            if dupKey == '':
                                 k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
-                                dInput[k1] = v[i]
-                            i+=1
-                        dInput[k] = v[1] if len(v)==2 else v
+                            else:
+                                k1 = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_02.value + str(i), k)
+                            dInput[k1] = v[i]
+                        i+=1
+                    if dupKey != '' and CNameMangling.DUPLICATEDKEY_02.value in str(v):
+                        del dInput[k]
+                        k = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_00.value, k)
+                    dInput[k] = v[1] if len(v)==2 else v
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
