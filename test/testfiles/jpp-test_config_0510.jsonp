@@ -1,0 +1,42 @@
+//  Copyright 2020-2023 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+   "params" : {
+                 "global" : {
+                               "teststring_1"                : "teststring_1.value",
+                               ${params.global.teststring_1} : "${params.global.teststring_1}.suffix_1",
+                               ${params.global.teststring_1} : "${params.global.teststring_1}.suffix_2",
+                               ${params.global.teststring_1} : "prefix.${params.global.teststring_1}.suffix_3",
+                               //
+                               "teststring_2" : "teststring_2.value",
+                               "teststring_2" : "${params.global.teststring_2}.suffix_1",
+                               //
+                               "teststring_3"                : "teststring_3.value.1",
+                               ${params.global.teststring_3} : "teststring_3.value.2",
+                               "teststring_3"                : "teststring_3.value.3",
+                               ${params.global.teststring_3} : "teststring_3.value.4",
+                               "teststring_3"                : "teststring_3.value.5",
+                               //
+                               "testdict" : {
+                                              "key" : {
+                                                        "teststring_4" : "teststring_4.initial_value"
+                                                      }
+                                            },
+                               ${params.global.testdict.key.teststring_4} : "${params.global.testdict.key.teststring_4}.suffix_1",
+                               ${params.global.testdict.key.teststring_4} : "${params.global.testdict.key.teststring_4}.suffix_2"
+                            }
+              }
+}
+
