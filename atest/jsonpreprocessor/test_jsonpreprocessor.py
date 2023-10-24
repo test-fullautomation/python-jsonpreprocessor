@@ -13,7 +13,7 @@ class TestJsonFormat:
         '''
         Test with json config file has standard format without commnent.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -23,7 +23,7 @@ class TestJsonFormat:
         '''
         Test with the standard json config file has commnents.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -34,7 +34,7 @@ class TestJsonFormat:
         Test with the json config file has commnents.
         The elements and values contain //
         '''
-        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_03.json")
+        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_03.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -46,7 +46,7 @@ class TestJsonFormat:
         The elements and values contain //
         Some unusual new lines in json config file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_04.json")
+        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_04.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -56,7 +56,7 @@ class TestJsonFormat:
         '''
         Test with the json config file has only 1 line with //
         '''
-        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_05.json")
+        sJsonfile = os.path.abspath("../testdata/config/07_json_format/json_format_05.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -65,63 +65,63 @@ class TestJsonFormat:
 class TestLoadJsonFiles:
 
     def test_load_proper_file(self):
-        sJsonfile = os.path.abspath("../testdata/config/01_proper_json/proper_file_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/01_proper_json/proper_file_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == PROPERCONFIGFILE
 
     def test_import_one_file_01(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file01_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file01_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILE01
 
     def test_import_one_file_02(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file02_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file02_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILE02
 
     def test_import_one_file_03(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file03_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file03_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILE03
 
     def test_import_one_file_04(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file04_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_one_file04_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILE04
 
     def test_import_files_05(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files01_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files01_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILES01
 
     def test_import_files_06(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files02_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files02_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILES02
 
     def test_import_files_07(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files03_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files03_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == IMPORTEDFILES03
 
     def test_import_files_08(self):
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files04_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_files04_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -130,63 +130,63 @@ class TestLoadJsonFiles:
 class TestNestedImport:
 
     def test_nested_import_one_file_01(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import01_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import01_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT01
 
     def test_nested_import_one_file_02(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import02_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import02_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT02
 
     def test_nested_import_one_file_03(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import03_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import03_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT03
 
     def test_nested_import_one_file_04(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import04_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import04_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT04
 
     def test_nested_import_one_file_05(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import05_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import05_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT05
 
     def test_nested_import_one_file_06(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import06_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import06_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT06
 
     def test_nested_import_one_file_07(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import07_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import07_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT07
 
     def test_nested_import_one_file_08(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import08_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import08_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
         assert oJsonData == NESTEDIMPORT08
 
     def test_nested_import_one_file_09(self):
-        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import09_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/03_nested_import/nested_import09_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -195,7 +195,7 @@ class TestNestedImport:
 class TestReimport:
 
     def test_re_import_01(self):
-        sJsonfile = os.path.abspath("../testdata/config/04_re_import/re_import_file01_config.json")
+        sJsonfile = os.path.abspath("../testdata/config/04_re_import/re_import_file01_config.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -207,7 +207,7 @@ class TestOverrideParameters:
         '''
         The parameters are overrided in the same configuration file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -219,7 +219,7 @@ class TestOverrideParameters:
         '''
         The parameters in imported json file are overrided.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -231,7 +231,7 @@ class TestOverrideParameters:
         '''
         The parameters in imported json file are overrided in other imported file, overrided json object, added new json object, ...
         '''
-        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_03.json")
+        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_03.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -249,10 +249,10 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter without nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_01.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_01.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -262,10 +262,10 @@ class TestSubDataStructure:
         '''
         Updated more than 1 parameter without nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_02.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_02.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -277,10 +277,10 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in element name.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_03.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_03.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -290,10 +290,10 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in element value.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_04.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_04.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -303,10 +303,10 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in both element name and value.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_05.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_05.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -316,10 +316,10 @@ class TestSubDataStructure:
         '''
         Updated more than 1 parameter with nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_06.json")
+        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_06.jsonp")
         oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
         oJsonData.update(oUpdateJsonData)
 
@@ -332,7 +332,7 @@ class TestSubDataStructure:
         '''
         The value is list contained dictionary element.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
 
@@ -345,7 +345,7 @@ class TestNoneTrueFalseDatatype:
         '''
         Test python data types and syntax to json. ``True``, ``False`` and ``None`` will be a accepted as json syntax elements.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_04.json")
+        sJsonfile = os.path.abspath("../testdata/config/06_override_params/project_config_04.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['string_null'] == 'null'
@@ -366,7 +366,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding
         '''
-        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format.json")
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
@@ -381,7 +381,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding in both key and value in json configuration file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['Tiếng Đức'] == "Dies ist der UTF-8 SälfTest"
@@ -396,7 +396,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding file is imported to other normal json config file
         '''
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
@@ -411,7 +411,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding file is imported to other utf8 json config file
         '''
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
@@ -426,7 +426,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding file is imported and overried by utf8 values to other json config file
         '''
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_03.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_03.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
@@ -441,7 +441,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding - Override utf8 data by normal data
         '''
-        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_04.json")
+        sJsonfile = os.path.abspath("../testdata/config/02_import_json/import_file_utf8_format_04.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "This is German"
@@ -456,7 +456,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding - import normal json configuration file into utf8 file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['German'] == "Dies ist der UTF-8 SälfTest"
@@ -475,7 +475,7 @@ class TestUTF8Encoding:
         '''
         Test utf-8 encoding - Override parameters have utf8 format in keys.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_03.json")
+        sJsonfile = os.path.abspath("../testdata/config/08_utf8_encoding/utf8_format_03.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['utf8']['Tiếng Đức'] == "This is German"
@@ -490,7 +490,7 @@ class TestDotdictFormat:
         '''
         Test nested param with dotdict format in the right site of a colon in a JSON file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_01.json")
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['params']['global']['newParam_01'] == 1
@@ -504,7 +504,7 @@ class TestDotdictFormat:
         Test nested param with dotdict format in the right site of a colon in a JSON file.
         Nested param is a element of a list
         '''
-        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_02.json")
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_02.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['params']['global']['newListParam_01'] == ['one', 2, 1, 'three']
@@ -514,7 +514,7 @@ class TestDotdictFormat:
         '''
         Test nested param with dotdict format in the left site of a colon in a JSON file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_03.json")
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_03.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['params']['global']['gPrepro.Float.Param'] == 9.999
@@ -525,7 +525,7 @@ class TestDotdictFormat:
         '''
         Test nested param with dotdict format in the both sites of a colon in a JSON file.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_04.json")
+        sJsonfile = os.path.abspath("../testdata/config/09_dotdict_format/dotdict_format_config_04.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
         assert oJsonData['params']['global']['gPrepro.Float.Param'] == 1
