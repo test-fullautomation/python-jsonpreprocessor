@@ -835,7 +835,7 @@ when substituting parameters of composite data types in dictionary key names!"
                     if re.search(pattern, k):
                         varPattern = "[0-9A-Za-z_]+[0-9A-Za-z\-_]*"
                         dupKey = re.search("\.(" + varPattern + ")\s*}\s*$|\['(" + varPattern + ")'\]\s*$", k)[1]
-                    if dupKey != '':
+                    if dupKey != '' and dupKey is not None:
                         tmpKey = dupKey
                     else:
                         tmpKey = k
