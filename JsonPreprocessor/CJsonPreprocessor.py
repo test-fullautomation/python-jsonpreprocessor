@@ -557,6 +557,7 @@ when substituting parameters of composite data types in dictionary key names!"
                     globals().update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str):
+            pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
             bStringValue = False
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
                 sInputStr = re.sub("str\(\s*(" + pattern + ")\s*\)", "$\\1", sInputStr)
@@ -578,6 +579,7 @@ when substituting parameters of composite data types in dictionary key names!"
                     ldict = {}
                     exec(sExec, globals(), ldict)
                     if bStringValue:
+                        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[^\$]+'\s*\]+|\[+\s*\d+\s*\]+)*"
                         sInputStr = re.sub("(\$" + pattern + ")", str(ldict['value']), sInputStr, count=1)
                     else:
                         sInputStr = re.sub("\$\$", "$", sInputStr)
@@ -703,6 +705,8 @@ when substituting parameters of composite data types in dictionary key names!"
         if "${" in sInputStr:
             if re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
+                dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
                 lNestedBase = []
                 tmpList = []
@@ -710,9 +714,16 @@ when substituting parameters of composite data types in dictionary key names!"
                     if nestedParam[0].count("${") > 1:
                         tmpNested = nestedParam[0]
                         if "[" in tmpNested:
-                            pattern = "\[\s*(\${\s*" + variablePattern + "\s*})\s*\]"
+                            pattern = "\[\s*'*\s*(\${\s*[0-9A-Za-z\.\-_${}\[\]]*\s*})\s*'*\s*\]"
                             lNestedBase.append(re.findall(pattern, tmpNested)[0])
                             for item in re.findall(pattern, tmpNested):
+                                tmpItem = item
+                                while tmpItem.count("${") > 1:
+                                    newItem = re.sub("(\${\s*" + variablePattern + "\s*})", "str(\\1)", item)
+                                    tmpNested = tmpNested.replace(item, newItem)
+                                    item = newItem
+                                    tmpItem = re.sub("(str\(.+\))", "", item)
+                                sInputStr = sInputStr.replace(nestedParam[0], tmpNested)
                                 patternItem = re.sub(r'([$()\[\]])', r'\\\1', item)
                                 tmpNested = re.sub("(" + patternItem + ")", "str(\\1)", tmpNested)
                                 sInputStr = re.sub("(" + patternItem + ")", "str(\\1)", sInputStr)
@@ -739,6 +750,8 @@ when substituting parameters of composite data types in dictionary key names!"
 
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
             elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+                dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
@@ -827,6 +840,7 @@ when substituting parameters of composite data types in dictionary key names!"
             return newItem
         
         def __handleDuplicatedKey(dInput : dict) -> dict:
+            pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
                 if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
