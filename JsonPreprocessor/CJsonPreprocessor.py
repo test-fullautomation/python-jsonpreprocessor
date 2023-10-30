@@ -542,10 +542,6 @@ class CJsonPreprocessor():
                 else:
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
-                    elif re.search("[\[\]\(\)\s{}]", k):
-                        errorMsg = f"Setting value '{v}' for parameter '{k}' is not permissible \
-when substituting parameters of composite data types in dictionary key names!"
-                        raise Exception(errorMsg)
                     oJson[k] = v
                     globals().update({k:v})
 
@@ -556,7 +552,7 @@ when substituting parameters of composite data types in dictionary key names!"
                     oJson[k] = v
                     globals().update({k:v})
 
-        def __loadNestedValue(initValue: str, sInputStr: str):
+        def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
             bStringValue = False
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
@@ -587,6 +583,13 @@ when substituting parameters of composite data types in dictionary key names!"
                 except:
                     self.__reset()
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
+                if bKey and type(ldict['value']) in [list, dict]:
+                    self.__reset()
+                    while 'str(' in key:
+                        key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
+                    errorMsg = f"Could not substitute parameter '{key}' due to a composite data types \
+in dictionary key names! The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    raise Exception(errorMsg)
             return sInputStr
 
         if bool(self.currentCfg) and not recursive:
@@ -607,7 +610,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 keyNested = k
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(keyNested, k)
+                    k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
