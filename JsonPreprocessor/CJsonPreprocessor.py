@@ -587,8 +587,8 @@ class CJsonPreprocessor():
                     self.__reset()
                     while 'str(' in key:
                         key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
-                    errorMsg = f"Could not substitute parameter '{key}' due to a composite data types \
-in dictionary key names! The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
+The value of parameter '{valueProcessed}' is {ldict['value']}"
                     raise Exception(errorMsg)
             return sInputStr
 
