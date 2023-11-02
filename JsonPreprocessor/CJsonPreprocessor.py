@@ -758,7 +758,8 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
-            elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and (sInputStr.count("${")>1 or sInputStr.count("}")>1):
+            elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and \
+                (sInputStr.count("${")>1 or sInputStr.count("}")>1 or sInputStr.count("{")>1):
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
             elif "," in sInputStr:
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
