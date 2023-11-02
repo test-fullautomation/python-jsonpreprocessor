@@ -1415,7 +1415,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0350.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1429,7 +1429,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0351.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1443,7 +1443,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 1 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0352.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

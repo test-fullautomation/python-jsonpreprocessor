@@ -983,7 +983,12 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    raise Exception(f"Invalid parameter format in line: {line.strip()}")
+                    invalidPattern1 = "\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
+                    if re.search(invalidPattern1, line):
+                        raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
+Indices in square brackets have to be placed outside the curly brackets.")
+                    else:
+                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         CJSONDecoder = None
