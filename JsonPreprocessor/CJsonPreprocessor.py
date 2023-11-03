@@ -1059,3 +1059,35 @@ Indices in square brackets have to be placed outside the curly brackets.")
             self.__reset()
             __removeDuplicatedKey(oJson)
         return oJson
+
+    def jsonDump(self, oJson : dict, outFile : str) -> str:
+        '''
+   This function is the entry point of JsonPreprocessor.
+
+   It loads the json file, preprocesses it and returns the preprocessed result as data structure.
+
+**Args:**
+
+   **oJson** (*dictionary*)
+
+      Json/Dictionary object.
+
+   **outFile** (*string*)
+
+      Relative/absolute path to main json file.
+
+      ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
+
+**Returns:**
+
+   **outFile** (*string*)
+
+      Absolute path to main json file.
+        '''
+
+        outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
+        jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
+        with open(outFile, "w", encoding='utf-8') as f:
+            f.write(jsonObject)
+
+        return outFile
