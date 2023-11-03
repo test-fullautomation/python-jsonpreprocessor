@@ -746,6 +746,8 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     else:
                         tmpList.append("str(" + nestedParam[0] + ")")
                         nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam[0])
+                        nestedBasePattern = nestedBasePattern.replace("{", "\{")
+                        nestedBasePattern = nestedBasePattern.replace("}", "\}")
                         sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
                         lNestedBase.append(nestedParam[0])
                 for nestedBase in lNestedBase:
@@ -934,6 +936,10 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line):
+                lNestedVar = re.findall("\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}", line)
+                for nestedVar in lNestedVar:
+                    if nestedVar[0].isdigit():
+                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall("(\"[^\"]+\")", line)
                 line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
                 items = re.split("\s*:\s*", line)
