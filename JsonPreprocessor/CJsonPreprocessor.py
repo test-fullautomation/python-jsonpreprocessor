@@ -1062,9 +1062,9 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
     def jsonDump(self, oJson : dict, outFile : str) -> str:
         '''
-   This function is the entry point of JsonPreprocessor.
+   This function is used to write a json file from dictionary object.
 
-   It loads the json file, preprocesses it and returns the preprocessed result as data structure.
+   It loads the dict object, write a new json file, and returns the path of new json file.
 
 **Args:**
 
