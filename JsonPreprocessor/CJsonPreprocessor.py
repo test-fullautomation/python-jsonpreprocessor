@@ -582,6 +582,10 @@ class CJsonPreprocessor():
                         sInputStr = ldict['value']
                 except:
                     self.__reset()
+                    if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
+                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
+                    elif CNameMangling.DUPLICATEDKEY_02.value in valueProcessed:
+                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_02.value, '')
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
                 if bKey and type(ldict['value']) in [list, dict]:
                     self.__reset()
