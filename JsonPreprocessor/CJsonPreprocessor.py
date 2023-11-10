@@ -716,12 +716,15 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
                 dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
                 nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
-                lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
+                lNestedParam = []
+                for item in re.findall("(" + nestedPattern + ")", sInputStr):
+                    if item[0] not in lNestedParam:
+                        lNestedParam.append(item[0])
                 lNestedBase = []
                 tmpList = []
                 for nestedParam in lNestedParam:
-                    if nestedParam[0].count("${") > 1:
-                        tmpNested = nestedParam[0]
+                    if nestedParam.count("${") > 1:
+                        tmpNested = nestedParam
                         if "[" in tmpNested:
                             pattern = "\[\s*'*\s*(\${\s*[0-9A-Za-z\.\-_${}\[\]]*\s*})\s*'*\s*\]"
                             lNestedBase.append(re.findall(pattern, tmpNested)[0])
@@ -732,7 +735,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                                     tmpNested = tmpNested.replace(item, newItem)
                                     item = newItem
                                     tmpItem = re.sub("(str\(.+\))", "", item)
-                                sInputStr = sInputStr.replace(nestedParam[0], tmpNested)
+                                sInputStr = sInputStr.replace(nestedParam, tmpNested)
                                 patternItem = re.sub(r'([$()\[\]])', r'\\\1', item)
                                 tmpNested = re.sub("(" + patternItem + ")", "str(\\1)", tmpNested)
                                 sInputStr = re.sub("(" + patternItem + ")", "str(\\1)", sInputStr)
@@ -750,12 +753,12 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                             sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
                             tmpList.append("str(" + tmpNested + ")")
                     else:
-                        tmpList.append("str(" + nestedParam[0] + ")")
-                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam[0])
+                        tmpList.append("str(" + nestedParam + ")")
+                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam)
                         nestedBasePattern = nestedBasePattern.replace("{", "\{")
                         nestedBasePattern = nestedBasePattern.replace("}", "\}")
                         sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
-                        lNestedBase.append(nestedParam[0])
+                        lNestedBase.append(nestedParam)
                 for nestedBase in lNestedBase:
                     self.lNestedParams.append(nestedBase)
 
