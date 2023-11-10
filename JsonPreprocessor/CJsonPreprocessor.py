@@ -706,7 +706,9 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
-            if re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
+            if re.search("\${\s*}", sInputStr):
+                raise Exception(f"Invalid parameter format: {sInputStr}")
+            elif re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
                 dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
                 nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
@@ -790,7 +792,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
             else:
-                raise Exception(f"Invalid nested parameter format: {sInputStr}")
+                raise Exception(f"Invalid parameter format: {sInputStr}")
 
         sOutput = sInputStr
         return sOutput
