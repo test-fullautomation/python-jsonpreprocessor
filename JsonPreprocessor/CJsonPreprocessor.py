@@ -66,6 +66,7 @@ class CNameMangling(Enum):
     DUPLICATEDKEY_00 = "__rootDuplicatedKey__"
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
+    STRINGCONVERT    = "__ConvertParameterToString__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -366,7 +367,7 @@ class CJsonPreprocessor():
                 sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
                 referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
             tmpReferVar = re.sub("\$", "\\$", referVar)
-            pattern = '(' + tmpReferVar + '\s*\[\s*.*?\s*\])'
+            pattern = '(' + tmpReferVar + '\s*\[+\s*.*?\s*\]+)'
             variable = re.findall(pattern, sInputStr)
             if variable == []:
                 return referVar
@@ -553,8 +554,15 @@ class CJsonPreprocessor():
                     globals().update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
-            pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
+            varPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
+            dictPattern = "(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + ".*\]+)*"
+            pattern = varPattern + dictPattern
             bStringValue = False
+            bValueConvertString = False
+            if CNameMangling.STRINGCONVERT.value in sInputStr:
+                bValueConvertString = True
+                sInputStr = sInputStr.replace(CNameMangling.STRINGCONVERT.value, '')
+                initValue = initValue.replace(CNameMangling.STRINGCONVERT.value, '')
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
                 sInputStr = re.sub("str\(\s*(" + pattern + ")\s*\)", "$\\1", sInputStr)
                 bStringValue = True
@@ -579,7 +587,7 @@ class CJsonPreprocessor():
                         sInputStr = re.sub("(\$" + pattern + ")", str(ldict['value']), sInputStr, count=1)
                     else:
                         sInputStr = re.sub("\$\$", "$", sInputStr)
-                        sInputStr = ldict['value']
+                        sInputStr = str(ldict['value']) if bValueConvertString else ldict['value']
                 except:
                     self.__reset()
                     if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
@@ -594,6 +602,8 @@ class CJsonPreprocessor():
                     errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
 The value of parameter '{valueProcessed}' is {ldict['value']}"
                     raise Exception(errorMsg)
+                if "${" not in str(sInputStr):
+                    break
             return sInputStr
 
         if bool(self.currentCfg) and not recursive:
@@ -615,6 +625,14 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 bNested = True
                 while "${" in k:
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
+            elif CNameMangling.STRINGCONVERT.value in k:
+                del oJson[k]
+                k = k.replace(CNameMangling.STRINGCONVERT.value, '')
+                oJson[k] = v
+                keyNested = k
+                bNested = True
+                while "${" in k:
+                    k = __loadNestedValue(keyNested, k)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
@@ -704,7 +722,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
             return sInputStr
 
         variablePattern = "[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*"
-        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
         nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
         valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = "[0-9\.]+"
@@ -712,6 +730,16 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         if "${" in sInputStr:
             if re.search("\${\s*}", sInputStr):
                 raise Exception(f"Invalid parameter format: {sInputStr}")
+            elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+                dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
+                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
+                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
+                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+                self.lNestedParams.append(nestedParam)
+            elif re.match("^\s*\"\s*" + nestedPattern + "\"\s*,*\]*}*\s*$", sInputStr.lower()):
+                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+                self.lNestedParams.append(nestedParam)
+                sInputStr = sInputStr.replace(nestedParam, nestedParam + CNameMangling.STRINGCONVERT.value)
             elif re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
                 dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
@@ -763,12 +791,6 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     self.lNestedParams.append(nestedBase)
 
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
-            elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
-                dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
-                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
-                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
-                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
-                self.lNestedParams.append(nestedParam)
             elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and \
                 (sInputStr.count("${")>1 or sInputStr.count("}")>1 or sInputStr.count("{")>1):
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
