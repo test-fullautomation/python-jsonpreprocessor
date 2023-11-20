@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.10.2023 - 17:37:45
+# 20.11.2023 - 15:42:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,6 +52,14 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0502(self, Description):
       nReturn = CExecute.Execute("JPP_0502")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with composite data structure (some lists)",]
+   )
+   def test_JPP_0503(self, Description):
+      nReturn = CExecute.Execute("JPP_0503")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value

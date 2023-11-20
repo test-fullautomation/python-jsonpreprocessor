@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 10.10.2023 - 13:31:11
+# 20.11.2023 - 15:42:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -112,10 +112,58 @@ class Test_VALUE_DETECTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 9)",]
+   )
+   def test_JPP_0360(self, Description):
+      nReturn = CExecute.Execute("JPP_0360")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)",]
    )
    def test_JPP_0361(self, Description):
       nReturn = CExecute.Execute("JPP_0361")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 2)",]
+   )
+   def test_JPP_0362(self, Description):
+      nReturn = CExecute.Execute("JPP_0362")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 3)",]
+   )
+   def test_JPP_0363(self, Description):
+      nReturn = CExecute.Execute("JPP_0363")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 4)",]
+   )
+   def test_JPP_0364(self, Description):
+      nReturn = CExecute.Execute("JPP_0364")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 5)",]
+   )
+   def test_JPP_0365(self, Description):
+      nReturn = CExecute.Execute("JPP_0365")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 6)",]
+   )
+   def test_JPP_0366(self, Description):
+      nReturn = CExecute.Execute("JPP_0366")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception

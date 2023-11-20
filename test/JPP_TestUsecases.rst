@@ -145,11 +145,41 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0206**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
 * **Test JPP_0207**
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
    **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0208**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation**
+
+   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
+
+----
+
+* **Test JPP_0209**
+
+  [PARAMETER_SUBSTITUTION / GOODCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation**
 
    Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
@@ -215,6 +245,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0256**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0257**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
@@ -225,11 +265,81 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0258**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0259**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
    **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0261**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0263**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0264**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0265**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0266**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0267**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -403,6 +513,18 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0360**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 9)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 2 / pattern 8*
+
+----
+
 * **Test JPP_0361**
 
   [VALUE_DETECTION / BADCASE]
@@ -412,6 +534,66 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Hint: Checklist rule 3 / pattern 1*
+
+----
+
+* **Test JPP_0362**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3 / pattern 2*
+
+----
+
+* **Test JPP_0363**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3 / pattern 3*
+
+----
+
+* **Test JPP_0364**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3 / pattern 4*
+
+----
+
+* **Test JPP_0365**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3 / pattern 5*
+
+----
+
+* **Test JPP_0366**
+
+  [VALUE_DETECTION / BADCASE]
+
+   **JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: Checklist rule 3 / pattern 6*
 
 ----
 
@@ -508,6 +690,16 @@ Test Use Cases
    Expected: JsonPreprocessor returns expected value
 
    *Hint: Standard notation*
+
+----
+
+* **Test JPP_0503**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (some lists)**
+
+   Expected: JsonPreprocessor returns expected value
 
 ----
 
@@ -695,5 +887,5 @@ Test Use Cases
 
 ----
 
-Generated: 18.10.2023 - 17:37:45
+Generated: 20.11.2023 - 15:42:16
 

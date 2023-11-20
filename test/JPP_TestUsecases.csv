@@ -13,15 +13,26 @@ JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index
 JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation
 JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
 JPP_0205|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
+JPP_0206|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation
 JPP_0207|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation
+JPP_0208|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation
+JPP_0209|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation
 JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
 JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
 JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
 JPP_0253|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
 JPP_0254|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
 JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+JPP_0256|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
 JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
+JPP_0258|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
 JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
+JPP_0261|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)
+JPP_0263|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)
+JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)
+JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)
+JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)
+JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
@@ -36,7 +47,13 @@ JPP_0356|VALUE_DETECTION|BADCASE|JSON file with expression containing more openi
 JPP_0357|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 5)
 JPP_0358|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
 JPP_0359|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 6)
+JPP_0360|VALUE_DETECTION|BADCASE|JSON file with expression containing more opening elements '${' than closing elements '}' (invalid syntax 9)
 JPP_0361|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 1)
+JPP_0362|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 2)
+JPP_0363|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 3)
+JPP_0364|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 4)
+JPP_0365|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 5)
+JPP_0366|VALUE_DETECTION|BADCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (invalid syntax 6)
 JPP_0367|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 1)
 JPP_0368|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 2)
 JPP_0369|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 3)
@@ -45,6 +62,7 @@ JPP_0371|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' an
 JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
 JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 2)
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
+JPP_0503|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (some lists)
 JPP_0505|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
 JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several combinations of curly brackets and special characters before
 JPP_0507|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (1)
