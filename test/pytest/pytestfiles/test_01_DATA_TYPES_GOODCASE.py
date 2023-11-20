@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 04.07.2023 - 16:17:36
+# 10.10.2023 - 13:31:11
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,14 +52,6 @@ class Test_DATA_TYPES_GOODCASE:
    )
    def test_JPP_0003(self, Description):
       nReturn = CExecute.Execute("JPP_0003")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
-   @pytest.mark.parametrize(
-      "Description", ["JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict",]
-   )
-   def test_JPP_0004(self, Description):
-      nReturn = CExecute.Execute("JPP_0004")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters

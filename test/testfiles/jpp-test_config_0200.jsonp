@@ -14,12 +14,7 @@
 //**************************************************************************
 {
    // taking over the already defined basic data types
-   "[import]" : "./jpp-test_config_0001.jsonp",
+   "[import]" : "./jpp-test_config_testdata_1.jsonp",
    //
-   "string_01" : "ABC",
-   "string_02" : "DEF",
-   "composite_string_1" : "(1.01)--'${string_01}'--(1.02)--'${string_02}'",
-   "composite_string_2" : "(2.01)--'${param_01}'--(2.02)--'${param_02}'--(2.03)--${param_03}--(2.04)--${param_04}--(2.05)--${param_05}",
-   "composite_string_3" : "(3.06)--'${param_06}'--(3.07)--'${param_07}'--(3.08)--${param_08}--(3.09)--${param_09}--(3.10)--${param_10}",
-   "composite_string_4" : "(4.11)--'${param_11}'--(4.12)--'${param_12}'--(4.13)--${param_13}--(4.14)--${param_14}--(4.15)--${param_15}"
+   "variant_1" : "${V${A${INNERMOST_VARIANT_VALUE}N}T}_${variant_number} (new value)"
 }

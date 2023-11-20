@@ -1,0 +1,517 @@
+**************************************************************************************************************
+
+Checklist for implementation of self test cases for JsonPreprocessor / parsing concepts
+
+XC-CT/ECA3-Queckenstedt
+
+09.10.2023
+
+--------------------------------------------------------------------------------------------------------------
+
+* Dataset used for testing
+
+// variant info
+"variant_1"            : "VARIANT_1",
+"variant_2"            : "VARIANT_2",
+"list_variant_numbers" : [1, 2],
+"list_variant_index"   : 0,
+"variant_number"       : "1",
+"dict_variants"        : {"variant_1" : "VARIANT_1", "variant_2" : "VARIANT_2"},
+"variant_key_1"        : "variant_1",
+//
+"INNERMOST_VARIANT_VALUE" : "RIA",
+"ARIAN"                   : "ARIAN",
+"VARIANT"                 : "VARIANT",
+//
+// milestone info
+"milestone_1"            : "MILESTONE_1",
+"milestone_2"            : "MILESTONE_2",
+"milestone_3"            : "MILESTONE_3",
+"list_milestone_numbers" : [1, 2, 3],
+"list_milestone_index"   : 1,
+"milestone_number"       : "2",
+"dict_milestones"        : {"milestone_1" : "MILESTONE_1", "milestone_2" : "MILESTONE_2", "milestone_3" : "MILESTONE_3"},
+"milestone_key_2"        : "milestone_2",
+//
+"innermost_milestone_name" : "est",
+"ilesto"                   : "ilesto",
+"milestone"                : "milestone"
+
+--------------------------------------------------------------------------------------------------------------
+
+* ========== GOODCASE test cases
+
+// nested parameter / string parameter substitution in parameter value
+"variant_1" : "${V${A${INNERMOST_VARIANT_VALUE}N}T}-${variant_number} (new value)"
+
+// nested parameter / string parameter substitution in parameter name
+"${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
+
+// nested parameter / index parameter substitution in parameter name / standard notation
+"VAR_${variant_${list_variant_numbers}[${list_variant_index}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
+
+// nested parameter / index parameter substitution in parameter name / dotdict notation
+"VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${list_milestone_index}}}_param" : "value"
+
+// nested parameter / index parameter substitution in parameter value / standard notation
+"param" : "VAR_${variant_${list_variant_numbers}[${list_variant_index}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
+
+// nested parameter / index parameter substitution in parameter value / dotdict notation
+"param" : "VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${list_milestone_index}}} value"
+
+// nested parameter / key parameter substitution in parameter name / standard notation
+"VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+
+// nested parameter / key parameter substitution in parameter name / dotdict notation
+"VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${milestone_number}}}_param" : "value"
+
+// nested parameter / key parameter substitution in parameter value / standard notation
+"param" : "VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}'] value"
+
+// nested parameter / key parameter substitution in parameter value / dotdict notation
+"param" : "VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${milestone_number}}} value"
+
+--------------------------------------------------------------------------------------------------------------
+
+* ========== BADCASE test cases (${IAMNOTEXISTING})
+
+// nested parameter / string parameter substitution in parameter value / innermost parameter not existing
+"variant_1" : "${V${A${IAMNOTEXISTING}N}T}-${variant_number} (new value)"
+
+// nested parameter / string parameter substitution in parameter name / in between parameter not existing
+"${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
+
+// nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
+"VAR_${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]}_param" : "value"
+
+// nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
+"VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}}_param" : "value"
+
+// nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
+"param" : "VAR_${variant_${list_variant_numbers}[${IAMNOTEXISTING}]}_MS_${milestone_${list_milestone_numbers}[${list_milestone_index}]} value"
+
+// nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+"param" : "VAR_${variant_${list_variant_numbers.${list_variant_index}}}_MS_${milestone_${list_milestone_numbers.${IAMNOTEXISTING}}} value"
+
+// nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
+"VAR_${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+
+// nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
+"VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${IAMNOTEXISTING}}}_param" : "value"
+
+// nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
+"param" : "VAR_${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}'] value"
+
+// nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
+"param" : "VAR_${dict_variants.${variant_key_${variant_number}}}_MS_${dict_milestones.${milestone_key_${IAMNOTEXISTING}}} value"
+
+--------------------------------------------------------------------------------------------------------------
+
+* nested composite data structure used for testing
+
+"params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+             "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+             //
+             {"dict_2_key_1" : "dict_2_key_1 value",
+              "dict_2_key_2" : {"dict_2_A_key_1" : "dict_2_A_key_1 value",
+                                "dict_2_A_key_2" : ["dict_2_A_key_2 list value 1",
+                                                    "dict_2_A_key_2 list value 2",
+                                                    {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
+                                                     "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}]
+
+// examples
+
+// access to single elements of composite data structure
+
+// a) standard notation
+"dict_1_key_1_value_standard" : ${params}[0]['dict_1_key_1'],
+// b) dotdict notation
+"dict_1_key_1_value_dotdict" : ${params.0.dict_1_key_1},
+
+// c) standard notation
+"dict_2_A_key_2_subkey_2_value_1_standard" : ${params}[1]['dict_2_key_2']['dict_2_A_key_2'][2]['dict_2_A_key_2_subkey_2'][0]
+// d) dotdict notation
+"dict_2_A_key_2_subkey_2_value_1_dotdict" : ${params.1.dict_2_key_2.dict_2_A_key_2.2.dict_2_A_key_2_subkey_2.0}
+
+--------------------------------------------------------------------------------------------------------------
+
+* the same data structure, but with partially dots inside key names
+
+"params" : [{"dict_1_key_1" : "dict_1_key_1 value",
+             "dict_1_key_2" : ["dict_1_key_2 value 1", "dict_1_key_2 value 2"]},
+             //
+             {"dict_2_key_1" : "dict_2_key_1 value",
+              "dict_2_key_2" : {"dict.2.A.key.1" : "dict_2_A_key_1 value",
+                                "dict.2.A.key.2" : ["dict_2_A_key_2 list value 1",
+                                                    "dict_2_A_key_2 list value 2",
+                                                    {"dict_2_A_key_2_subkey_1" : "dict_2_A_key_2_subkey_1 value",
+                                                     "dict_2_A_key_2_subkey_2" : ["value_1", "value_2"]}]}}]
+
+// "dict_2_A_key_1" renamed to "dict.2.A.key.1"
+// "dict_2_A_key_2" renamed to "dict.2.A.key.2"
+
+// a) standard notation
+// key names with dots inside require standard syntax (['dict.2.A.key.2'])
+"value_1_standard" : "${params}[1]['dict_2_key_2']['dict.2.A.key.2'][2]['dict_2_A_key_2_subkey_2'][0]"
+
+// b) dotdict notation (in this case deprecated!)
+// "value_1_dotdict" : "${params.1.dict_2_key_2.dict.2.A.key.2.2.dict_2_A_key_2_subkey_2.0}"
+// it's obvious: this is partially ambiguous and also not human readable any more
+
+// we urgently recommend not to mix up standard notation and dotdict notation within the same line of code
+
+
+**************************************************************************************************************
+                                    CONCEPTS
+**************************************************************************************************************
+
+========================
+Error detection (basics)
+========================
+
+(errors sorted by priority of detection):
+
+Level 1: Basic syntax violations (e.g. quotes mismatch)    > error message: syntax violation ...
+Level 2: JSON delimiters errors                            > error message: JSON delimiter mismatch ...
+Level 3: Missing quotes around dollar operator expressions > error message: missing quote around expression ...
+Level 4: Parameter or imported file not available          > error message: parameter / imported file '...' not available
+
+Basic syntax violations (level 1) should have the highest priority of error handling.
+
+At every level the rules are:
+* The computation aborts with error message
+* All further possible errors at lower levels are not relevant any more
+
+--------------------------------------------------------------------------------------------------------------
+
+==================
+Parsing strategies
+==================
+
+Level 1: Check the quoting in JSON code
+Level 2: Identify delimiters and expressions in JSON code
+Level 3: Analyze identified expressions (value identification)
+Level 4: ${} substitution and file imports
+
+--------------------------------------------------------------
+
+Level 1: Check the quoting in JSON code
+=======================================
+
+At this level an expression can be
+a) the name of a parameter,
+b) the value of a parameter
+
+In JSON format, names and values are separated by delimiters like colon and comma:
+
+{ <expression> : <expression> , <expression> : <expression> }
+
+or in more datail:
+
+{ <name> : <value> , <name> : <value> }
+
+Example
+
+{ "param1" : "value1" , "param2" : "value2" }
+
+Values and names are usually encapsulated in quotes. Because of the usage of dollar operator expressions
+in the extended JSONP format this rule is not valid any more, because it is also possible now
+to insert dollar operator expressions that are not encapsulated in quotes:
+
+{ "param1" : "value1" , "param2" : ${param1} }
+
+But still the rule is: Every (opening) quote requires a matching (closing) quote.
+
+This would be a syntax error (missing closing quote after 'param1'):
+
+{ "param1 : "value1" , "param2" : ${param1} }
+
+Unfortunately the JSON interpreter puts a higher priority on the identification of important delimiters like colon and comma,
+than on the check of matching quotes. The example above cause the following error message: "Expecting ':' delimiter"
+(instead of "missing quote"). This really does not help.
+
+Therefore: In every JSONP file the quotations should be checked at first. If quotes are missing, the computation can be stopped
+already. And it makes no sense any more to continue with the JSON parser. It makes no sense to let him try doing anything in case of
+quotes are missing. This only causes misleading error messages.
+
+Such a pre check can be realized with the help of the Python lexical parser shlex (like described in
+https://github.com/test-fullautomation/python-jsonpreprocessor/issues/106).
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+In case of errors at this level, abort with error message. Otherwise continue with next level.
+
+
+Level 2: Identify delimiters and expressions in JSON code
+=========================================================
+
+If the pre check of level 1 is passed, we need to identify the delimiters and expressions. Accordingly to the JSON syntax rules
+we know that expressions are separated by colon and comma alternately (starting with colon):
+
+{ <expression> : <expression> , <expression> : <expression> }
+
+We also know that delimiters inside strings belong to names and values and have - in this case - no JSON syntactical
+meaning any more.
+
+We have to consider, that every expression can either be a hard coded (quoted) string or a dollar operator expression,
+that is not encapsulated in quotes:
+
+Valid:
+{ ${expression} : "expression" , "expression" : ${expression} }
+{ "expression" : "${expression1} , : ${expression2}" }
+
+In this level two rules are involved:
+1. Alternative occurrence of colon and comma
+2. The dollar operator syntax '${...}' / '${...}[...]'
+
+With the help of these rules it should be possible to check the integrity of the JSON delimiters colon and comma:
+
+Valid (alternative colon and comma):
+{ <expression> : <expression> , <expression> : <expression> }
+
+Invalid:
+{ <expression>  <expression> , <expression> : <expression> }
+{ <expression> : <expression>  <expression> : <expression> }
+{ <expression> : , <expression> : <expression> }
+{ <expression> : <expression> , <expression> , <expression> }
+{ <expression> : <expression> : <expression> : <expression> }
+
+If this check fails, we stop the computation with an error message.
+
+When this check is passed, we know, that the JSON file contains a valid usage of JSON delimiters.
+And from now on we are able to distinguish between names and values:
+
+{ <name> : <value> , <name> : <value> }
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+In case of no errors at this level, we can continue with next level.
+
+
+Level 3: Analyze identified expressions (value identification)
+==============================================================
+
+After the expressions are identified, they need to be analyzed. The main question here is:
+Are quotes required around the identified expression or not (accordingly to the JSONP format syntax rules).
+
+An expression can consist of only one dollar operator expression '${...}', but can also consist of
+several sequencing dollar operator expressions '${...}${...}' (in this special case without blanks inside!).
+In first case the expression can be encapsulated in quotes, but it's not a must. In second case we have
+a composite string that must be encapsulated in quotes.
+
+If required quotes around expressions are missing: Abort with error message. Otherwise continue.
+
+Valid:
+{ "name1" : "value" , "name2" : ${value} }
+{ "name1" : "value" , "name2" : "${value1}${value2.A.B}" }
+
+Invalid:
+{ "name1" : "value" , "name2" : ${value1}${value2.A.B} }
+
+Reason: This '${value1}${value2.A.B}' is an expression:
+* with no blanks inside (therefore identified as one word; the next delimiter is therefore expected at the end of the word
+  at the earliest),
+* that starts and ends with a dollar operator expression, that is interrupted in between
+  (means: two sequencing ${...} are inside (not nested!)).
+Therefore this expression is a composite string and must be encapsulated in quotes.
+
+This is also invalid (additional comma or blank in between dollar operator expressions; means: we have two separate
+(and valid) expressions now):
+{ "name1" : "value" , "name2" : ${value1},${value2.A.B} }
+{ "name1" : "value" , "name2" : ${value1} ${value2.A.B} }
+This is expected to be a level 2 error and must not occur on this level!
+
+
+Value identification: quotes required around a dollar operator expression or not?
+---------------------------------------------------------------------------------
+
+An dollar operator expression can represent:
+
+* a parameter name
+* a list element
+* a name of a dictionary key
+* a value of a parameter
+* a value of a dictionary key
+
+Syntax elements:
+
+* Opening element: '${'
+* Closing element: '}' ('}[]' also!)
+
+Issues related to dollar operator expressions can be identified with the following 6 rules:
+
+* rule 1
+
+   Parameter of type 'list'
+   Valid dollar operator expressions identified, but with index (in square brackets) defined within the curly brackets
+   => syntax error (index expected to be set outside the curly brackets)
+   OK: ${list_param}[0]
+   OK: "${list_param}[0]"
+   OK: "value_${list_param}[0]"
+   ERR: ${list_param[0]}
+   ERR: "${list_param[0]}"
+   ERR: "value_${list_param[0]}"
+
+* rule 2
+
+   Expression contains opening elements '${' (n>0) and no, one or more than one closing element '}' (n>=0)
+   More opening elements are counted than closing elements
+   => Corresponding closing elements are missing
+   => Quotes and missing parameters are irrelevant in this case
+   => Syntax error
+   ERR: ${param
+   ERR: "${param"
+   ERR: ${p${ara}m
+   ERR: "${p${ara}m"
+   ERR: ABC${p${ara}m
+   ERR: "ABC${p${ara}m"
+   ERR: ABC${p${aram}
+   ERR: "ABC${p${aram}"
+
+* rule 3
+
+   Expression contains no, one or more than one opening element '${' (n>=0) and closing elements '}' (n>0)
+   More closing elements are counted than opening elements
+   => With no opening element '${' quotes around expression are required
+   OK: "{par}am}"
+   ERR: {par}am}
+   => With opening element '${' identifies parameter '${par}' (non greedy search for '}')
+   => Detects extra content 'am}' or 'am}[1]' outside any '${}'
+   => Identifies composite string
+   => Quotes required
+   OK: "${par}am}"
+   ERR: ${par}am}
+   OK: "${par}[0]am}"
+   ERR: ${par}[0]am}
+   OK: "${par.0}am}"
+   ERR: ${par.0}am}
+   OK: "${par}[0]am}[1]"
+   ERR: ${par}[0]am}[1]
+   OK: "${par.0}am.1}"
+   ERR: ${par.0}am.1}
+
+* rule 4
+
+   Expression starts with '${' and ends with '}', no further matching '${' and '}' in between
+   => No quotes around expression required, but allowed (string conversion)
+   OK: ${param}
+   OK: "${param}"
+   OK: ${param}[0]
+   OK: "${param}[0]"
+   OK: ${param.0}
+   OK: "${param.0}"
+
+* rule 5
+
+   Expression starts with '${' and ends with '}', further matching '${' and '}' in between (nested)
+   => No quotes around expression required, but allowed (string conversion)
+   OK: ${p${ara}m}
+   OK: "${p${ara}m}"
+   OK: ${p${ara}[0]m}[1]
+   OK: "${p${ara}[0]m}[1]"
+   OK: ${p${ara.0}m.1}
+   OK: "${p${ara.0}m.1}"
+
+* rule 6
+
+   Expression starts with '${' and ends with '}', further matching '${' and '}' in between (not all nested)
+   => Identifies composite string
+   => Quotes around expression required
+   OK: "${param1}${p${ara}m2}"
+   ERR: ${param1}${p${ara}m2}
+   OK: "${param1}[0]${p${ara}[1]m2}[2]"
+   ERR: ${param1}[0]${p${ara}[1]m2}[2]
+   OK: "${param1.0}${p${ara.1}m2.2}"
+   ERR: ${param1.0}${p${ara.1}m2.2}
+   OK:  "ABC, ${param1}, ${param2}, XYZ"
+   ERR: ABC, ${param1}, ${param2}, XYZ
+   OK:  "${param1}, ABC ; XYZ / ${param2}"
+   ERR: ${param1}, ABC ; XYZ / ${param2}
+
+
+Up to now the JSON parser is not involved!
+
+Up to now no parameter substitutions happened!
+
+Up to now no file imports are resolved!
+
+If also this check is passed, we know:
+
+* We have no basic syntax issues related to missing quotes
+* We have no JSON syntax issues related to the positions of delimiters
+* We have no syntax issues related to dollar operator expressions ${}
+
+Only in this case we continue with next level.
+
+
+Level 4: ${} substitution and file imports
+==========================================
+
+In this level we know that we have valid JSON code. But this statement only belongs to the main JSON file, and not
+to JSON files, that shall be imported.
+
+This level is the earliest moment in time, where we are able to resolve file imports and dollar operator expressions
+(because this requires a valid syntax).
+
+For every imported file, the check of all levels 1 - 4 have to be repeated (recursion). Abort computation in case of any error.
+
+Steps:
+
+1. Resolve file imports; check availability of parameters
+2. Resolve all dollar operator expressions ${} recursively; check availability of parameters
+3. Create the final data structure (returned dictionary containing all values)
+
+Possible new errors at this level:
+
+* Referenced parameter not defined
+* Imported file does not exist
+
+(together with errors at earlier levels in imported files)
+
+
+Questions:
+==========
+
+* Can it happen that the substitution of a dollar operator expression causes a new syntax error?
+
+* For exactly what shall we need the JSON parser now? All things are already parsed. I would assume now,
+  that the dictionary to be returned, exists already.
+
+
+Outlook:
+========
+
+In my opinion it would be helpful to have the possibility - maybe with the help of an additional optional
+parameter - to activate further debug output, that is the current content of the internal data structure
+at every level described above. Without this I have no idea how an effective debugging shall be possible.
+
+
+--------------------------------------------------------------------------------------------------------------
+Further test cases (TODO)
+--------------------------------------------------------------------------------------------------------------
+
+NESTED_IMPORTS
+- incl. file not existing
+- incl cyclic import
+--------------------------------------------------------------------------------------------------------------
+
+New feature: IMPLICIT_SUBKEYS
+
+Mixture of explicite and implicite creation
+
+"AA" : {},
+${AA}["BB"] : {},
+${AA.BB.CC.DD} : 25
+
+--------------------------------------------------------------------------------------------------------------
+SPECIAL_CHARACTERS
+--------------------------------------------------------------------------------------------------------------
+

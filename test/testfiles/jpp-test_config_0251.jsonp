@@ -13,7 +13,8 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "string_01" : "ABC",
-   "string_02" : "DEF",
-   ${string_01}_composite_param_name_${string_02} : "(01)--'${string_01}'--(02)--'${string_02}'"
+   // taking over the already defined basic data types
+   "[import]" : "./jpp-test_config_testdata_1.jsonp",
+   //
+   "${m${IAMNOTEXISTING}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
 }

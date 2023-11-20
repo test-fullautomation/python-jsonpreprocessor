@@ -22,7 +22,8 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.06.2023
+VERSION      = "0.18.0"
+VERSION_DATE = "18.10.2023"
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -131,7 +132,10 @@ def AnalyzeReturnedValues(EXPECTEDRETURN=None, dictReturned=None):
 
    if len(listErrors) == 0:
       bSuccess = True
-      sResult  = "JsonPreprocessor returned expected values."
+      if EXPECTEDRETURN is None:
+         sResult  = "No values returned from JsonPreprocessor (like expected)."
+      else:
+         sResult  = "JsonPreprocessor returned expected values."
    else:
       bSuccess = False
       sResult  = "JsonPreprocessor did not return expected values."
@@ -169,7 +173,10 @@ def AnalyzeExceptions(EXPECTEDEXCEPTION=None, sException=None):
 
    if len(listErrors) == 0:
       bSuccess = True
-      sResult  = "JsonPreprocessor threw expected exception."
+      if EXPECTEDEXCEPTION is None:
+         sResult  = "No exception thrown from JsonPreprocessor (like expected)."
+      else:
+         sResult  = "JsonPreprocessor threw expected exception."
    else:
       bSuccess = False
       sResult  = "JsonPreprocessor did not throw expected exception."
@@ -182,7 +189,7 @@ def AnalyzeExceptions(EXPECTEDEXCEPTION=None, sException=None):
 # --------------------------------------------------------------------------------------------------------------
 # [TESTCONFIG]
 
-# -- initialize configuration
+# -- initialize and dump test configuration
 
 oConfig = None
 try:
@@ -193,53 +200,44 @@ except Exception as ex:
    print()
    sys.exit(ERROR)
 
-# --------------------------------------------------------------------------------------------------------------
-# some special functions
-# (with premature end of execution = no test execution)
-# --------------------------------------------------------------------------------------------------------------
+# update version and date of this app
+oConfig.Set("VERSION", VERSION)
+oConfig.Set("VERSION_DATE", VERSION_DATE)
+THISSCRIPTNAME = oConfig.Get('THISSCRIPTNAME')
+THISSCRIPTFULLNAME = f"{THISSCRIPTNAME} v. {VERSION} / {VERSION_DATE}"
+oConfig.Set("THISSCRIPTFULLNAME", THISSCRIPTFULLNAME)
+
+# add information about system under test
+try:
+   # not yet implemented officially
+   oJsonPreprocessor = CJsonPreprocessor()
+   sut_version = oJsonPreprocessor.get_version()
+   sut_version_date = oJsonPreprocessor.get_version_date()
+   del oJsonPreprocessor
+   SUT_FULL_NAME = f"JsonPreprocessor v. {sut_version} / {sut_version_date}"
+   oConfig.Set("SUT_FULL_NAME", SUT_FULL_NAME)
+except:
+   pass
+
+# dump configuration values to screen
+listConfigLines = oConfig.DumpConfig()
 
 CONFIGDUMP = oConfig.Get('CONFIGDUMP')
 if CONFIGDUMP is True:
-   # currently config is already dumped in constructor of CConfig; => nothing more to do here
+   # if that's all, we have nothing more to do
    sys.exit(SUCCESS)
+
 
 # --------------------------------------------------------------------------------------------------------------
-# [CODEDUMP]
-
-CODEDUMP = oConfig.Get('CODEDUMP')
-if CODEDUMP is True:
-   oCodeGenerator = None
-   try:
-      oCodeGenerator = CGenCode(oConfig)
-   except Exception as ex:
-      print()
-      printerror(CString.FormatResult("(main)", None, str(ex)))
-      print()
-      sys.exit(ERROR)
-
-   bSuccess, sResult = oCodeGenerator.GenCode()
-   if bSuccess is not True:
-      print()
-      printerror(CString.FormatResult("(main)", bSuccess, sResult))
-      print()
-      sys.exit(ERROR)
-
-   print(COLBG + f"{sResult}\n")
-
-   # after code dump nothing more to do here
-   sys.exit(SUCCESS)
-
-
-# **************************************************************************************************************
-# [EXECUTION]
-# **************************************************************************************************************
+# [PRELIMINARIES]
+# --------------------------------------------------------------------------------------------------------------
 #TM***
 
-# -- get some configuration values required for execution
+# -- access to configuration
 
 THISSCRIPT         = oConfig.Get('THISSCRIPT')
 THISSCRIPTNAME     = oConfig.Get('THISSCRIPTNAME')
-REFERENCEPATH      = oConfig.Get('REFERENCEPATH')
+TESTCONFIGPATH     = oConfig.Get('TESTCONFIGPATH')
 OSNAME             = oConfig.Get('OSNAME')
 PLATFORMSYSTEM     = oConfig.Get('PLATFORMSYSTEM')
 PYTHON             = oConfig.Get('PYTHON')
@@ -247,25 +245,40 @@ PYTHONVERSION      = oConfig.Get('PYTHONVERSION')
 TESTLOGFILESFOLDER = oConfig.Get('TESTLOGFILESFOLDER')
 SELFTESTLOGFILE    = oConfig.Get('SELFTESTLOGFILE')
 TESTID             = oConfig.Get('TESTID')
+RECREATEINSTANCE   = oConfig.Get('RECREATEINSTANCE')
 
 # -- start logging
 oSelfTestLogFile = CFile(SELFTESTLOGFILE)
+NOW = time.strftime('%d.%m.%Y - %H:%M:%S')
+oSelfTestLogFile.Write(f"{THISSCRIPTNAME} started at: {NOW}\n")
+oSelfTestLogFile.Write(listConfigLines) # from DumpConfig() called above
+oSelfTestLogFile.Write()
 
-print("Executing test cases")
-print()
+# -- prepare TESTIDs
 
-nNrOfUsecases = 0
+# ('listofdictUsecases' is imported directly from test/testconfig/TestConfig.py)
+
+TESTID = oConfig.Get('TESTID')
 
 if TESTID is not None:
+   listTESTIDs = TESTID.split(';')
    listofdictUsecasesSubset = []
-   for dictUsecase in listofdictUsecases:
-      if TESTID == dictUsecase['TESTID']:
-         listofdictUsecasesSubset.append(dictUsecase)
-         break # currently assumed that there is only one TESTID provided (maybe later more than one)
+   for sTESTID in listTESTIDs:
+      sTESTID = sTESTID.strip()
+      for dictUsecase in listofdictUsecases:
+         if sTESTID == dictUsecase['TESTID']:
+            listofdictUsecasesSubset.append(dictUsecase)
+   # eof for sTESTID in listTESTIDs:
    if len(listofdictUsecasesSubset) == 0:
       bSuccess = False
       sResult  = f"Test ID '{TESTID}' not defined"
-      printerror(CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult))
+      sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      printerror(sResult)
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
       sys.exit(ERROR)
    del listofdictUsecases
    listofdictUsecases = listofdictUsecasesSubset
@@ -288,11 +301,61 @@ for dictUsecase in listofdictUsecases:
 if len(listDuplicates) > 0:
    sDuplicates = "[" + ", ".join(listDuplicates) + "]"
    bSuccess = False
-   sResult  = f"Duplicate test IDs found: {sDuplicates}\nTest IDs are used to identify and select test cases. They have to be unique"
-   printerror(CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult))
+   sResult  = f"Duplicate test IDs found in test configuration: {sDuplicates}\nTest IDs are used to identify and select test cases. They have to be unique"
+   sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+   print()
+   printerror(sResult)
+   print()
+   oSelfTestLogFile.Write(sResult, 1)
+   del oSelfTestLogFile
    sys.exit(ERROR)
 
+
 # --------------------------------------------------------------------------------------------------------------
+# [CODEDUMP]
+# special function (with premature end of execution = no test execution)
+# --------------------------------------------------------------------------------------------------------------
+#TM***
+
+CODEDUMP = oConfig.Get('CODEDUMP')
+if CODEDUMP is True:
+   oCodeGenerator = None
+   try:
+      oCodeGenerator = CGenCode(oConfig)
+   except Exception as ex:
+      bSuccess = None
+      sResult  = str(ex)
+      sResult  = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
+      sys.exit(ERROR)
+
+   bSuccess, sResult = oCodeGenerator.GenCode()
+   if bSuccess is not True:
+      sResult = CString.FormatResult(THISSCRIPTNAME, bSuccess, sResult)
+      print()
+      printerror(sResult)
+      print()
+      oSelfTestLogFile.Write(sResult, 1)
+      del oSelfTestLogFile
+      sys.exit(ERROR)
+
+   print(COLBG + f"{sResult}\n")
+
+   # after code dump nothing more to do here
+   sys.exit(SUCCESS)
+
+
+# --------------------------------------------------------------------------------------------------------------
+# [EXECUTION]
+# --------------------------------------------------------------------------------------------------------------
+#TM***
+
+print("Executing test cases")
+print()
 
 nNrOfUsecases = len(listofdictUsecases)
 
@@ -304,16 +367,19 @@ nCntUnknownUsecases = 0
 
 # --------------------------------------------------------------------------------------------------------------
 # !!! the object under test !!!
-oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+oJsonPreprocessor = None
+if RECREATEINSTANCE is not True:
+   oJsonPreprocessor = CJsonPreprocessor()
 #
-# The current philosophy is: The object under test is created only once for all test cases!
+# The default behavior is: The object under test is created only once for all test cases!
 # Every test case uses the same JsonPreprocessor class object. This is also like a stress test,
 # to see how stable the JsonPreprocessor is.
 #
-# An alternative way would be to create a JsonPreprocessor class object for every test case separately
+# An alternative way is to create a JsonPreprocessor class object for every test case separately
 # (= create at the beginning, destroy at the end of a test case).
+# Every test case uses an own JsonPreprocessor class object
 #
-# TODO: A command line switch could be implemented to toggle between both ways.
+# This depends on the switch RECREATEINSTANCE (command line)
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -322,11 +388,12 @@ listTestsNotPassed = []
 for dictUsecase in listofdictUsecases:
 
    # debug
-   # PrettyPrint(dictUsecase)
+   # PrettyPrint(dictUsecase, sPrefix="dictUsecase")
+   # print()
 
    nCntUsecases = nCntUsecases + 1
 
-   # required ones
+   # get required parameters
    TESTID            = dictUsecase['TESTID']
    DESCRIPTION       = dictUsecase['DESCRIPTION']
    EXPECTATION       = dictUsecase['EXPECTATION']
@@ -336,22 +403,29 @@ for dictUsecase in listofdictUsecases:
    EXPECTEDEXCEPTION = dictUsecase['EXPECTEDEXCEPTION']
    EXPECTEDRETURN    = dictUsecase['EXPECTEDRETURN']
 
-   # TODO: make this depend on test case; in some BADCASE test cases this might not be wanted:
-   JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=REFERENCEPATH)
-
-   # optional ones
+   # get optional parameters
    HINT = None
    if "HINT" in dictUsecase:
       HINT = dictUsecase['HINT']
    COMMENT = None
    if "COMMENT" in dictUsecase:
       COMMENT = dictUsecase['COMMENT']
+   USERAWPATH = False
+   if "USERAWPATH" in dictUsecase:
+      USERAWPATH = dictUsecase['USERAWPATH']
 
-   # derived ones
+   if USERAWPATH is not True:
+      # Default is that the path 'JSONFILE' is normalized before the JsonPreprocessor is called.
+      # The reference for relative paths is the position of the file TestConfig.py (TESTCONFIGPATH).
+      # In case of USERAWPATH is True, the path 'JSONFILE' is not normalized.
+      # And the path is relative to the position of the executing script (this script).
+      JSONFILE = CString.NormalizePath(JSONFILE, sReferencePathAbs=TESTCONFIGPATH)
+
+   # get derived parameters
    TESTFULLNAME    = f"{TESTID}-({SECTION})-[{SUBSECTION}]"
    TESTLOGFILE_TXT = f"{TESTLOGFILESFOLDER}/{TESTFULLNAME}.log"
 
-   sOut = f"====== [TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
+   sOut = f"====== [START OF TEST] : '{TESTFULLNAME}' / ({nCntUsecases}/{nNrOfUsecases})"
    print(COLBY + sOut)
    print()
    oSelfTestLogFile.Write(sOut, 1)
@@ -385,6 +459,9 @@ for dictUsecase in listofdictUsecases:
 
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    # -- test case execution
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      oJsonPreprocessor = CJsonPreprocessor()
    dictReturned = None
    sException   = None
    try:
@@ -395,6 +472,9 @@ for dictUsecase in listofdictUsecases:
       oSelfTestLogFile.Write("JsonPreprocessor threw exception:", 1)
       oSelfTestLogFile.Write(sException)
       oSelfTestLogFile.Write()
+   if RECREATEINSTANCE is True:
+      # !!! the object under test !!!
+      del oJsonPreprocessor
    # //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    listReturnedLines = PrettyPrint(dictReturned, bToConsole=False)
@@ -461,12 +541,18 @@ for dictUsecase in listofdictUsecases:
 
 # eof for dictUsecase in listofdictUsecases:
 
+try:
+   # !!! the object under test !!!
+   del oJsonPreprocessor
+except:
+   pass
+
 # --------------------------------------------------------------------------------------------------------------
 
 # paranoia check
 if ( (nCntPassedUsecases + nCntFailedUsecases + nCntUnknownUsecases != nCntUsecases) or (nNrOfUsecases != nCntUsecases) ):
    print()
-   sOut = CString.FormatResult(THISSCRIPTNAME, bSuccess=False, sResult="Internal counter mismatch")
+   sOut = CString.FormatResult(THISSCRIPTNAME, bSuccess=None, sResult="Internal counter mismatch")
    printerror(sOut)
    oSelfTestLogFile.Write(sOut)
    sOut = f"Defined  : {nNrOfUsecases}"

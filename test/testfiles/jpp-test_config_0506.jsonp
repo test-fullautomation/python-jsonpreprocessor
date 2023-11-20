@@ -1,0 +1,31 @@
+//  Copyright 2020-2023 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+   "param1" : {"A" : 1, "B" : 2},
+   "param2" : [1,2,3],
+   "param3" : "value",
+   //
+   "var1"   : "value 1 > ${param1}",
+   "var2"   : "value 2 > ${param2}",
+   "var3"   : "value 3 > ${param3}",
+   //
+   "var4"   : "value 4 > &{param1}",
+   "var5"   : "value 5 > &{param2}",
+   "var6"   : "value 6 > &{param3}",
+   //
+   "var7"   : "value 7 > @{param1}",
+   "var8"   : "value 8 > @{param2}",
+   "var9"   : "value 9 > @{param3}"
+}
