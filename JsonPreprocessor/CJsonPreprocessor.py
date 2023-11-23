@@ -383,6 +383,34 @@ class CJsonPreprocessor():
 
         pattern = "\$\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
         referVars = re.findall("(" + pattern + ")", sInputStr)
+        if sInputStr.count("$$") > len(referVars):
+            for var in referVars:
+                if "." in var:
+                    ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
+                    lddVar = ddVar.split(".")
+                    lElements = self.__handleDotdictFormat(lddVar, [])
+                    sVar = '$${' + lElements[0] + '}'
+                    lElements.pop(0)
+                    for item in lElements:
+                        sVar = sVar + "[" + item + "]" if re.match("^\d+$", item) else sVar + "['" + item + "']"
+                else:
+                    sVar = var
+                rootVar = re.search('^\s*\$\${(\s*.*?)}', sVar).group(1)
+                tmpVar = re.sub("\$", "\\$", sVar)
+                subPattern = tmpVar + "((\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
+                subVar = re.search(subPattern, sInputStr).group(1)
+                sExec = "value = " + rootVar + subVar
+                try:
+                    ldict = {}
+                    exec(sExec, globals(), ldict)
+                    tmpValue = ldict['value']
+                except:
+                    raise Exception(f"The variable '{var}' is not available!")
+                subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
+                var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
+                sInputStr = re.sub(var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
+                            re.sub(var, str(tmpValue), sInputStr)
+        referVars = re.findall("(" + pattern + ")", sInputStr)
         lNestedParam = []
         if len(referVars) > 1:
             if not bKey:
@@ -428,7 +456,7 @@ class CJsonPreprocessor():
                     sInputStr = re.sub(pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
                                 re.sub(pattern, '\'' + str(tmpValue) + '\'', sInputStr)
                 sKeyHandled = sUpdateVar + sInputStr
-                lNestedParam.append(re.sub("\$\$", "$", sKeyHandled))
+                lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(sUpdateVar, sKeyHandled)))
                 return lNestedParam
         else:
             lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVars[0], sInputStr)))
@@ -613,7 +641,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             if CNameMangling.DUPLICATEDKEY_00.value in k:
@@ -728,9 +756,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
-            if re.search("\${\s*}", sInputStr):
-                raise Exception(f"Invalid parameter format: {sInputStr}")
-            elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+            if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
                 nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
@@ -791,10 +817,9 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     self.lNestedParams.append(nestedBase)
 
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
-            elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and \
-                (sInputStr.count("${")>1 or sInputStr.count("}")>1 or sInputStr.count("{")>1):
-                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
             elif "," in sInputStr:
+                if not re.match("^\s*\".+\"\s*$", sInputStr):
+                    raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
@@ -820,8 +845,10 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
-            else:
+            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr):
                 raise Exception(f"Invalid parameter format: {sInputStr}")
+            else:
+                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
         sOutput = sInputStr
         return sOutput
