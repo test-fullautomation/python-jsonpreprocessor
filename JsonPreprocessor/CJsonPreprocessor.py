@@ -1150,8 +1150,6 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
       Path and name of the JSON output file. The path can be absolute or relative and is also allowed to contain environment variables.
 
-      ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
-
 **Returns:**
 
    **outFile** (*string*)
@@ -1161,7 +1159,11 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
         outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
-        with open(outFile, "w", encoding='utf-8') as f:
-            f.write(jsonObject)
+        try:
+            with open(outFile, "w", encoding='utf-8') as f:
+                f.write(jsonObject)
+        except Exception as error:
+            errorMsg = f"Could not write a JSON file '{outFile}'! Reason: {error}"
+            raise Exception(errorMsg)
 
         return outFile
