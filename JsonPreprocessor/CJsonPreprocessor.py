@@ -1138,9 +1138,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
     def jsonDump(self, oJson : dict, outFile : str) -> str:
         '''
-   This function is used to write a json file from dictionary object.
-
-   It loads the dict object, write a new json file, and returns the path of new json file.
+   This function writes the content of a Python dictionary to a file in JSON format and returns a normalized path to this JSON file.
 
 **Args:**
 
@@ -1150,7 +1148,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
    **outFile** (*string*)
 
-      Relative/absolute path to main json file.
+      Path and name of the JSON output file. The path can be absolute or relative and is also allowed to contain environment variables.
 
       ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
 
@@ -1158,10 +1156,10 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
    **outFile** (*string*)
 
-      Absolute path to main json file.
+      Normalized path and name of the JSON output file.
         '''
 
-        outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
+        outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
         with open(outFile, "w", encoding='utf-8') as f:
             f.write(jsonObject)
