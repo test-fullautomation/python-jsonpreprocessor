@@ -383,7 +383,7 @@ class CJsonPreprocessor():
 
         pattern = "\$\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
         referVars = re.findall("(" + pattern + ")", sInputStr)
-        if sInputStr.count("$$") > len(referVars):
+        while sInputStr.count("$$") > len(referVars):
             for var in referVars:
                 if "." in var:
                     ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
@@ -393,10 +393,12 @@ class CJsonPreprocessor():
                     lElements.pop(0)
                     for item in lElements:
                         sVar = sVar + "[" + item + "]" if re.match("^\d+$", item) else sVar + "['" + item + "']"
+                    sInputStr = sInputStr.replace(var, sVar)
                 else:
                     sVar = var
                 rootVar = re.search('^\s*\$\${(\s*.*?)}', sVar).group(1)
                 tmpVar = re.sub("\$", "\\$", sVar)
+                tmpVar = re.sub("((\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)", "", tmpVar)
                 subPattern = tmpVar + "((\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 subVar = re.search(subPattern, sInputStr).group(1)
                 sExec = "value = " + rootVar + subVar
@@ -405,12 +407,15 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                     tmpValue = ldict['value']
                 except:
-                    raise Exception(f"The variable '{var}' is not available!")
+                    raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
+                if re.search("\[.+\]", var):
+                    var = var.replace("[", "\[")
+                    var = var.replace("]", "\]")
                 sInputStr = re.sub(var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
                             re.sub(var, str(tmpValue), sInputStr)
-        referVars = re.findall("(" + pattern + ")", sInputStr)
+            referVars = re.findall("(" + pattern + ")", sInputStr)
         lNestedParam = []
         if len(referVars) > 1:
             if not bKey:
@@ -714,7 +719,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         del tmpJson
         return oJson, bNested
 
-    def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
+    def __checkAndUpdateKeyValue(self, sInputStr: str, nestedKey = False) -> str:
         '''
    This function checks and makes up all nested parameters in json configuration files.
 
@@ -845,8 +850,11 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
-            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr):
+            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
+                or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
                 raise Exception(f"Invalid parameter format: {sInputStr}")
+            elif nestedKey and re.match("^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
+                sInputStr = re.sub("^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
             else:
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
@@ -1004,6 +1012,10 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 newLine = ""
                 i=0
                 for item in items:
+                    nestedKey = False
+                    nestedKeyPattern = "^\s*,\s*\${.+[\]}]\s*$"
+                    if i==0 or re.match(nestedKeyPattern, item):
+                        nestedKey = True
                     if CNameMangling.COLONS.value in item:
                         while CNameMangling.COLONS.value in item:
                             item = re.sub(CNameMangling.COLONS.value, tmpList[0], item, count=1)
@@ -1033,7 +1045,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         newSubItem = __handleListElements(item)
                         newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
                     else:
-                        newSubItem = self.__checkAndUpdateKeyValue(item)
+                        newSubItem = self.__checkAndUpdateKeyValue(item, nestedKey)
                     if i<len(items):
                         newLine = newLine + newSubItem + " : "
                     else:
