@@ -978,7 +978,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 for item in dInput:
                     __removeDuplicatedKey(item)
 
-        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
+        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
