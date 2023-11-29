@@ -66,6 +66,7 @@ class CNameMangling(Enum):
     DUPLICATEDKEY_00 = "__rootDuplicatedKey__"
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
+    STRINGCONVERT    = "__ConvertParameterToString__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -366,7 +367,7 @@ class CJsonPreprocessor():
                 sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
                 referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
             tmpReferVar = re.sub("\$", "\\$", referVar)
-            pattern = '(' + tmpReferVar + '\s*\[\s*.*?\s*\])'
+            pattern = '(' + tmpReferVar + '\s*\[+\s*.*?\s*\]+)'
             variable = re.findall(pattern, sInputStr)
             if variable == []:
                 return referVar
@@ -382,6 +383,39 @@ class CJsonPreprocessor():
 
         pattern = "\$\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
         referVars = re.findall("(" + pattern + ")", sInputStr)
+        while sInputStr.count("$$") > len(referVars):
+            for var in referVars:
+                if "." in var:
+                    ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
+                    lddVar = ddVar.split(".")
+                    lElements = self.__handleDotdictFormat(lddVar, [])
+                    sVar = '$${' + lElements[0] + '}'
+                    lElements.pop(0)
+                    for item in lElements:
+                        sVar = sVar + "[" + item + "]" if re.match("^\d+$", item) else sVar + "['" + item + "']"
+                    sInputStr = sInputStr.replace(var, sVar)
+                else:
+                    sVar = var
+                rootVar = re.search('^\s*\$\${(\s*.*?)}', sVar).group(1)
+                tmpVar = re.sub("\$", "\\$", sVar)
+                tmpVar = re.sub("((\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)", "", tmpVar)
+                subPattern = tmpVar + "((\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
+                subVar = re.search(subPattern, sInputStr).group(1)
+                sExec = "value = " + rootVar + subVar
+                try:
+                    ldict = {}
+                    exec(sExec, globals(), ldict)
+                    tmpValue = ldict['value']
+                except:
+                    raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
+                subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
+                var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
+                if re.search("\[.+\]", var):
+                    var = var.replace("[", "\[")
+                    var = var.replace("]", "\]")
+                sInputStr = re.sub(var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
+                            re.sub(var, str(tmpValue), sInputStr)
+            referVars = re.findall("(" + pattern + ")", sInputStr)
         lNestedParam = []
         if len(referVars) > 1:
             if not bKey:
@@ -427,7 +461,7 @@ class CJsonPreprocessor():
                     sInputStr = re.sub(pattern, '\'' + tmpValue + '\'', sInputStr) if isinstance(tmpValue, str) else \
                                 re.sub(pattern, '\'' + str(tmpValue) + '\'', sInputStr)
                 sKeyHandled = sUpdateVar + sInputStr
-                lNestedParam.append(re.sub("\$\$", "$", sKeyHandled))
+                lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(sUpdateVar, sKeyHandled)))
                 return lNestedParam
         else:
             lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVars[0], sInputStr)))
@@ -542,10 +576,6 @@ class CJsonPreprocessor():
                 else:
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
-                    elif re.search("[\[\]\(\)\s{}]", k):
-                        errorMsg = f"Setting value '{v}' for parameter '{k}' is not permissible \
-when substituting parameters of composite data types in dictionary key names!"
-                        raise Exception(errorMsg)
                     oJson[k] = v
                     globals().update({k:v})
 
@@ -556,8 +586,16 @@ when substituting parameters of composite data types in dictionary key names!"
                     oJson[k] = v
                     globals().update({k:v})
 
-        def __loadNestedValue(initValue: str, sInputStr: str):
+        def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
+            varPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
+            dictPattern = "(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + ".*\]+)*"
+            pattern = varPattern + dictPattern
             bStringValue = False
+            bValueConvertString = False
+            if CNameMangling.STRINGCONVERT.value in sInputStr:
+                bValueConvertString = True
+                sInputStr = sInputStr.replace(CNameMangling.STRINGCONVERT.value, '')
+                initValue = initValue.replace(CNameMangling.STRINGCONVERT.value, '')
             if re.search("(str\(\s*" + pattern + "\))", sInputStr.lower()):
                 sInputStr = re.sub("str\(\s*(" + pattern + ")\s*\)", "$\\1", sInputStr)
                 bStringValue = True
@@ -578,13 +616,27 @@ when substituting parameters of composite data types in dictionary key names!"
                     ldict = {}
                     exec(sExec, globals(), ldict)
                     if bStringValue:
+                        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[^\$]+'\s*\]+|\[+\s*\d+\s*\]+)*"
                         sInputStr = re.sub("(\$" + pattern + ")", str(ldict['value']), sInputStr, count=1)
                     else:
                         sInputStr = re.sub("\$\$", "$", sInputStr)
-                        sInputStr = ldict['value']
+                        sInputStr = str(ldict['value']) if bValueConvertString else ldict['value']
                 except:
                     self.__reset()
+                    if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
+                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
+                    elif CNameMangling.DUPLICATEDKEY_02.value in valueProcessed:
+                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_02.value, '')
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
+                if bKey and type(ldict['value']) in [list, dict]:
+                    self.__reset()
+                    while 'str(' in key:
+                        key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
+                    errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
+The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    raise Exception(errorMsg)
+                if "${" not in str(sInputStr):
+                    break
             return sInputStr
 
         if bool(self.currentCfg) and not recursive:
@@ -594,7 +646,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             if CNameMangling.DUPLICATEDKEY_00.value in k:
@@ -602,6 +654,14 @@ when substituting parameters of composite data types in dictionary key names!"
                 k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
                 oJson[k] = v
             if re.search("(str\(" + pattern + "\))", k.lower()):
+                keyNested = k
+                bNested = True
+                while "${" in k:
+                    k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
+            elif CNameMangling.STRINGCONVERT.value in k:
+                del oJson[k]
+                k = k.replace(CNameMangling.STRINGCONVERT.value, '')
+                oJson[k] = v
                 keyNested = k
                 bNested = True
                 while "${" in k:
@@ -659,7 +719,7 @@ when substituting parameters of composite data types in dictionary key names!"
         del tmpJson
         return oJson, bNested
 
-    def __checkAndUpdateKeyValue(self, sInputStr: str) -> str:
+    def __checkAndUpdateKeyValue(self, sInputStr: str, nestedKey = False) -> str:
         '''
    This function checks and makes up all nested parameters in json configuration files.
 
@@ -695,24 +755,46 @@ when substituting parameters of composite data types in dictionary key names!"
             return sInputStr
 
         variablePattern = "[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*"
-        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
         nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
         valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
-            if re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
+            if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+                dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
+                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
+                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
+                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+                self.lNestedParams.append(nestedParam)
+            elif re.match("^\s*\"\s*" + nestedPattern + "\"\s*,*\]*}*\s*$", sInputStr.lower()):
+                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
+                self.lNestedParams.append(nestedParam)
+                sInputStr = sInputStr.replace(nestedParam, nestedParam + CNameMangling.STRINGCONVERT.value)
+            elif re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
                 and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
-                lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
+                dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
+                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
+                lNestedParam = []
+                for item in re.findall("(" + nestedPattern + ")", sInputStr):
+                    if item[0] not in lNestedParam:
+                        lNestedParam.append(item[0])
                 lNestedBase = []
                 tmpList = []
                 for nestedParam in lNestedParam:
-                    if nestedParam[0].count("${") > 1:
-                        tmpNested = nestedParam[0]
+                    if nestedParam.count("${") > 1:
+                        tmpNested = nestedParam
                         if "[" in tmpNested:
-                            pattern = "\[\s*(\${\s*" + variablePattern + "\s*})\s*\]"
+                            pattern = "\[\s*'*\s*(\${\s*[0-9A-Za-z\.\-_${}\[\]]*\s*})\s*'*\s*\]"
                             lNestedBase.append(re.findall(pattern, tmpNested)[0])
                             for item in re.findall(pattern, tmpNested):
+                                tmpItem = item
+                                while tmpItem.count("${") > 1:
+                                    newItem = re.sub("(\${\s*" + variablePattern + "\s*})", "str(\\1)", item)
+                                    tmpNested = tmpNested.replace(item, newItem)
+                                    item = newItem
+                                    tmpItem = re.sub("(str\(.+\))", "", item)
+                                sInputStr = sInputStr.replace(nestedParam, tmpNested)
                                 patternItem = re.sub(r'([$()\[\]])', r'\\\1', item)
                                 tmpNested = re.sub("(" + patternItem + ")", "str(\\1)", tmpNested)
                                 sInputStr = re.sub("(" + patternItem + ")", "str(\\1)", sInputStr)
@@ -730,21 +812,19 @@ when substituting parameters of composite data types in dictionary key names!"
                             sInputStr = re.sub("(" + pattern + ")", "str(\\1)", sInputStr)
                             tmpList.append("str(" + tmpNested + ")")
                     else:
-                        tmpList.append("str(" + nestedParam[0] + ")")
-                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam[0])
+                        tmpList.append("str(" + nestedParam + ")")
+                        nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam)
+                        nestedBasePattern = nestedBasePattern.replace("{", "\{")
+                        nestedBasePattern = nestedBasePattern.replace("}", "\}")
                         sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
-                        lNestedBase.append(nestedParam[0])
+                        lNestedBase.append(nestedParam)
                 for nestedBase in lNestedBase:
                     self.lNestedParams.append(nestedBase)
 
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
-            elif re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
-                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
-                nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
-                self.lNestedParams.append(nestedParam)
-            elif re.search("(" + nestedPattern + ")*", sInputStr.lower()) and sInputStr.count("${")>1:
-                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
             elif "," in sInputStr:
+                if not re.match("^\s*\".+\"\s*$", sInputStr):
+                    raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
@@ -770,8 +850,13 @@ when substituting parameters of composite data types in dictionary key names!"
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
+            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
+                or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
+                raise Exception(f"Invalid parameter format: {sInputStr}")
+            elif nestedKey and re.match("^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
+                sInputStr = re.sub("^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
             else:
-                raise Exception(f"Invalid nested parameter format: {sInputStr}")
+                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
         sOutput = sInputStr
         return sOutput
@@ -827,6 +912,7 @@ when substituting parameters of composite data types in dictionary key names!"
             return newItem
         
         def __handleDuplicatedKey(dInput : dict) -> dict:
+            pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
                 if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
@@ -892,7 +978,7 @@ when substituting parameters of composite data types in dictionary key names!"
                 for item in dInput:
                     __removeDuplicatedKey(item)
 
-        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(sys.argv[0]))
+        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
             raise Exception(f"File '{jFile}' is not existing!")
 
@@ -916,12 +1002,20 @@ when substituting parameters of composite data types in dictionary key names!"
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line):
+                lNestedVar = re.findall("\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}", line)
+                for nestedVar in lNestedVar:
+                    if nestedVar[0].isdigit():
+                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall("(\"[^\"]+\")", line)
                 line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
                 items = re.split("\s*:\s*", line)
                 newLine = ""
                 i=0
                 for item in items:
+                    nestedKey = False
+                    nestedKeyPattern = "^\s*,\s*\${.+[\]}]\s*$"
+                    if i==0 or re.match(nestedKeyPattern, item):
+                        nestedKey = True
                     if CNameMangling.COLONS.value in item:
                         while CNameMangling.COLONS.value in item:
                             item = re.sub(CNameMangling.COLONS.value, tmpList[0], item, count=1)
@@ -951,7 +1045,7 @@ when substituting parameters of composite data types in dictionary key names!"
                         newSubItem = __handleListElements(item)
                         newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
                     else:
-                        newSubItem = self.__checkAndUpdateKeyValue(item)
+                        newSubItem = self.__checkAndUpdateKeyValue(item, nestedKey)
                     if i<len(items):
                         newLine = newLine + newSubItem + " : "
                     else:
@@ -966,7 +1060,12 @@ when substituting parameters of composite data types in dictionary key names!"
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    raise Exception(f"Invalid parameter format in line: {line.strip()}")
+                    invalidPattern1 = "\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
+                    if re.search(invalidPattern1, line):
+                        raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
+Indices in square brackets have to be placed outside the curly brackets.")
+                    else:
+                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         CJSONDecoder = None
@@ -1036,3 +1135,35 @@ when substituting parameters of composite data types in dictionary key names!"
             self.__reset()
             __removeDuplicatedKey(oJson)
         return oJson
+
+    def jsonDump(self, oJson : dict, outFile : str) -> str:
+        '''
+   This function writes the content of a Python dictionary to a file in JSON format and returns a normalized path to this JSON file.
+
+**Args:**
+
+   **oJson** (*dictionary*)
+
+      Json/Dictionary object.
+
+   **outFile** (*string*)
+
+      Path and name of the JSON output file. The path can be absolute or relative and is also allowed to contain environment variables.
+
+**Returns:**
+
+   **outFile** (*string*)
+
+      Normalized path and name of the JSON output file.
+        '''
+
+        outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
+        try:
+            with open(outFile, "w", encoding='utf-8') as f:
+                f.write(jsonObject)
+        except Exception as error:
+            errorMsg = f"Could not write a JSON file '{outFile}'! Reason: {error}"
+            raise Exception(errorMsg)
+
+        return outFile
