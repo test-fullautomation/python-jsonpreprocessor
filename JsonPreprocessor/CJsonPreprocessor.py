@@ -67,6 +67,7 @@ class CNameMangling(Enum):
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
     STRINGCONVERT    = "__ConvertParameterToString__"
+    LISTINDEX        = "__IndexOfList__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -588,7 +589,8 @@ class CJsonPreprocessor():
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             varPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
-            dictPattern = "(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + ".*\]+)*"
+            indexPattern = "\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+            dictPattern = "(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + ".*\]+)*|" + indexPattern
             pattern = varPattern + dictPattern
             bStringValue = False
             bValueConvertString = False
@@ -755,15 +757,14 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
             return sInputStr
 
         variablePattern = "[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*"
-        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
+        indexPattern = "\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+        dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+|" + indexPattern
         nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
         valueStrPattern = "[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
             if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
-                dictPattern = "\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}.*\]+"
-                nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
@@ -1008,6 +1009,10 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall("(\"[^\"]+\")", line)
                 line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
+                indexPattern = "\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+                if re.search(indexPattern, line):
+                    indexList = re.findall(indexPattern, line)
+                    line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
                 items = re.split("\s*:\s*", line)
                 newLine = ""
                 i=0
@@ -1020,6 +1025,10 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         while CNameMangling.COLONS.value in item:
                             item = re.sub(CNameMangling.COLONS.value, tmpList[0], item, count=1)
                             tmpList.pop(0)
+                    elif CNameMangling.LISTINDEX.value in item:
+                        while CNameMangling.LISTINDEX.value in item:
+                            item  = re.sub(CNameMangling.LISTINDEX.value, indexList[0], item, count=1)
+                            indexList.pop(0)
                     i+=1
                     newSubItem = ""
                     if re.search("^\s*\[.+\]\s*,*\s*$", item) and item.count('[')==item.count(']'):
