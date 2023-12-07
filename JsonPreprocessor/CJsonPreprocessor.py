@@ -651,6 +651,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
+            bStrConvert = False
             if CNameMangling.DUPLICATEDKEY_00.value in k:
                 del oJson[k]
                 k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
@@ -661,6 +662,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 while "${" in k:
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
             elif CNameMangling.STRINGCONVERT.value in k:
+                bStrConvert = True
                 del oJson[k]
                 k = k.replace(CNameMangling.STRINGCONVERT.value, '')
                 oJson[k] = v
@@ -716,7 +718,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         v = __loadNestedValue(initValue, v)
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
-            if keyNested != '':
+            if keyNested != '' and not bStrConvert:
                 self.dUpdatedParams.update({k:v})
         del tmpJson
         return oJson, bNested
