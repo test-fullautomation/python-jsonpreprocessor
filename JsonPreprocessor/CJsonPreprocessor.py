@@ -368,19 +368,9 @@ class CJsonPreprocessor():
                 sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
                 referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
             tmpReferVar = re.sub("\$", "\\$", referVar)
-            pattern = '(' + tmpReferVar + '\s*\[+\s*.*?\s*\]+)'
-            variable = re.findall(pattern, sInputStr)
-            if variable == []:
-                return referVar
-            else:
-                fullVariable = variable[0]
-                while variable != []:
-                    pattern = pattern[:-1] + '\[\s*.*?\s*\])'
-                    variable = re.findall(pattern, sInputStr)
-                    if variable != []:
-                        fullVariable = variable[0]
-                referVar = fullVariable
-                return referVar
+            pattern = '(' + tmpReferVar + '\s*(\[+\s*.*?\s*\]+)*)'
+            variable = re.search(pattern, sInputStr)
+            return variable[0]
 
         pattern = "\$\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
         referVars = re.findall("(" + pattern + ")", sInputStr)
@@ -657,6 +647,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
                 oJson[k] = v
             if re.search("(str\(" + pattern + "\))", k.lower()):
+                bStrConvert = True
                 keyNested = k
                 bNested = True
                 while "${" in k:
