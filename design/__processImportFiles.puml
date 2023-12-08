@@ -1,0 +1,36 @@
+@startuml
+
+participant CJsonPreprocessor
+participant CString
+participant re
+
+CJsonPreprocessor -> CJsonPreprocessor: __processImportFiles(input_data: dict) -> dict
+activate CJsonPreprocessor
+
+CJsonPreprocessor -> re: re.match()
+activate re
+re --> CJsonPreprocessor: Match result
+
+alt "[import]" found
+    CJsonPreprocessor -> CString: CString.NormalizePath(value, sReferencePathAbs)
+    activate CString
+    CString --> CJsonPreprocessor: Abs path result
+
+    alt Check for cyclic import
+        CJsonPreprocessor -> CJsonPreprocessor: Check cyclic import
+    end
+
+    CJsonPreprocessor -> CJsonPreprocessor: jsonLoad(abs_path_file)
+    CJsonPreprocessor -> CJsonPreprocessor: Process imported file
+
+else "[import]" not found
+    CJsonPreprocessor -> CJsonPreprocessor: Process other keys
+end
+
+CJsonPreprocessor --> CJsonPreprocessor: Return out_dict
+
+deactivate re
+deactivate CString
+deactivate CJsonPreprocessor
+
+@enduml

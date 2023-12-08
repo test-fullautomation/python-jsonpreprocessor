@@ -1,0 +1,62 @@
+@startuml
+
+skinparam class {
+    BackgroundColor PaleGreen
+    BorderColor DarkSlateGray
+}
+
+package PythonExtensionsCollection {
+    package String {
+        class CString
+    }
+}
+
+enum CSyntaxType {
+    python
+    json
+}
+
+enum CNameMangling {
+    AVOIDDATATYPE
+    COLONS
+    DUPLICATEDKEY_00
+    DUPLICATEDKEY_01
+    DUPLICATEDKEY_02
+    STRINGCONVERT
+    LISTINDEX
+}
+
+class CPythonJSONDecoder {
+    - NUMBER_RE: re
+    + __init__(*args, **kwargs)
+    - _custom_scan_once(string: str, idx: int): any
+    + custom_scan_once(string: str, idx: int): any
+}
+
+class CJsonPreprocessor {
+    - lDataTypes: list
+    - jsonPath: str
+    - lImportedFiles: list
+    - recursive_level: int
+    - syntax: CSyntaxType
+    - currentCfg: dict
+    - dUpdatedParams: dict
+    - lNestedParams: list
+    - lDotInParamName: list
+    + __init__(syntax: CSyntaxType = CSyntaxType.python, currentCfg: dict = {}) : None
+    - __reset() : None
+    - __processImportFiles(input_data: dict) : dict
+    - __load_and_removeComments(jsonFile: str) : str
+    - __checkParamName(self, sInput: str) -> str
+    - __nestedParamHandler(self, sInputStr : str, bKey = False) -> list
+    - __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list
+    
+
+}
+
+CString --> CJsonPreprocessor
+CSyntaxType --> CJsonPreprocessor
+CNameMangling --> CJsonPreprocessor
+CPythonJSONDecoder --> CJsonPreprocessor
+
+@enduml
