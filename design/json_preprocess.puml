@@ -50,7 +50,12 @@ class CJsonPreprocessor {
     - __checkParamName(self, sInput: str) -> str
     - __nestedParamHandler(self, sInputStr : str, bKey = False) -> list
     - __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list
-    
+    - __checkAndCreateNewElement(self, sKey: str, value)
+    - __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False)
+    - __checkAndUpdateKeyValue(self, sInputStr: str, nestedKey = False) -> str
+    - __checkDotInParamName(self, oJson : dict)
+    + jsonLoad(self, jFile : str, masterFile : bool = True)
+    + jsonDump(self, oJson : dict, outFile : str) -> str
 
 }
 

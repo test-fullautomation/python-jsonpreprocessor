@@ -1,0 +1,30 @@
+@startuml
+
+skinparam class {
+    BackgroundColor PaleGreen
+    BorderColor DarkSlateGray
+}
+
+class CJsonPreprocessor {
+    - jsonPath: str
+    - lImportedFiles: list
+    - recursive_level: int
+    - dUpdatedParams: dict
+    - lNestedParams: list
+    - lDotInParamName: list
+    
+    + __reset() : None
+}
+
+CJsonPreprocessor --> CJsonPreprocessor: __reset()
+note right of CJsonPreprocessor::__reset
+Reset initial variables:
+- jsonPath: str
+- lImportedFiles: list
+- recursive_level: int
+- dUpdatedParams: dict
+- lNestedParams: list
+- lDotInParamName: list
+end note
+
+@enduml

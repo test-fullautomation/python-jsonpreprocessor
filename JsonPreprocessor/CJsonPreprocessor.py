@@ -266,6 +266,8 @@ class CJsonPreprocessor():
                     if k1 == key:
                         if isinstance(out_dict[key], list):
                             if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
+                                # tmpValue is a list which contents the values of the duplicated key in order.
+                                # This list has the special element (CNameMangling.DUPLICATEDKEY_01.value) at index 0.
                                 tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
                                 del out_dict[key]
                             else:
