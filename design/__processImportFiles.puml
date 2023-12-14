@@ -1,9 +1,10 @@
 @startuml
 
+participant Json
 participant CJsonPreprocessor
 participant CString
 
-CJsonPreprocessor -> CJsonPreprocessor: __processImportFiles(input_data: dict) -> dict
+Json -> CJsonPreprocessor: json.loads(sJsonDataUpdated,\n cls=CJSONDecoder, \n object_pairs_hook=self.__processImportFiles)
 activate CJsonPreprocessor
 
 loop key, value in input_data
@@ -25,6 +26,8 @@ else "[import]" not found, check duplicated key
         alt Key already exist
             CJsonPreprocessor -> CJsonPreprocessor: Created or append a list with special element \
             (CNameMangling.DUPLICATEDKEY_01.value) at index 0.
+            note right CJsonPreprocessor: The list contents the values of the duplicated key in order.\n\
+This list has the special element (CNameMangling.DUPLICATEDKEY_01.value) at index 0.
             CJsonPreprocessor -> CJsonPreprocessor: Replace the value of duplicated key by the list of values.
         end
     CJsonPreprocessor -> CJsonPreprocessor: Process key value
