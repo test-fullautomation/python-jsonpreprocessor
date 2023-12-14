@@ -46,14 +46,19 @@
 
    "RELEASES"  : {
                    "0.9." : [
-                              "JsonPreprocessor change 0.9 A",
-                              "JsonPreprocessor change 0.9 B",
-                              "JsonPreprocessor change 0.9 X"
+                              "JsonPreprocessor change 0.9 Implicit creation of data structures",
+                              "JsonPreprocessor change 0.9 Dotdict feature bug fixing",
+                              "JsonPreprocessor change 0.9 Update nested parameters handling in key name and value",
+                              "JsonPreprocessor change 0.9 Nested parameter feature bug fixing",
+                              "JsonPreprocessor change 0.9 Nested parameters substitution and overwriting improvement",
+                              "JsonPreprocessor change 0.9 Jsonp file path computation improvement"
                             ],
                    "0.10." : [
-                               "JsonPreprocessor change 0.10 A",
-                               "JsonPreprocessor change 0.10 B",
-                               "JsonPreprocessor change 0.10 X"
+                               "JsonPreprocessor change 0.10 Add jsonDump method to write a file in JSON format",
+                               "JsonPreprocessor change 0.10 Improve nested parameter format",
+                               "JsonPreprocessor change 0.10 Improve error message log",
+                               "JsonPreprocessor change 0.10 Fix bugs of data structures implicitly",
+                               "JsonPreprocessor change 0.10 Improve index handling together with nested parameters"
                              ]
                  }
 }
