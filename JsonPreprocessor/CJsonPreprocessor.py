@@ -594,6 +594,7 @@ class CJsonPreprocessor():
             elif re.match("^\s*" + pattern + "\s*$", sInputStr):
                 sInputStr = re.sub("\$", "$$", sInputStr)
             else:
+                self.__reset()
                 while "str(" in initValue:
                     initValue = re.sub("str\(([\${}0-9A-Za-z\.\-_\[\]]+)\)", "\\1", initValue, count=1)
                 raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
@@ -669,6 +670,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 k = re.sub("\$\$", "$", k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
             elif k.count('{') != k.count('}'):
+                self.__reset()
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
         Please check key '{k}' in config file!!!")
 
@@ -757,6 +759,8 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
+            if re.search("\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr):
+                raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
             if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
