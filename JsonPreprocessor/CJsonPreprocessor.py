@@ -497,31 +497,35 @@ class CJsonPreprocessor():
         else:
             return self.__handleDotdictFormat(lInputListParams, lParams)
 
-    def __checkAndCreateNewElement(self, sKey: str, value):
+    def __checkAndCreateNewElement(self, sKey: str, value, bCheck=False):
         '''
     This method check and create new elements if they are not exist.
         '''
         rootKey = re.sub("\[.*\]", "", sKey)
         subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
-        if len(subElements) <= 1:
-            return
+        if len(subElements) < 1:
+            return True
         else:
             for index, element in enumerate(subElements):
-                if index < len(subElements) - 1:
+                if index < len(subElements):
                     rootKey = rootKey + "['" + element + "']"
                     sExec = "dumpData = " + rootKey
                     try:
                         exec(sExec)
                     except:
-                        sExec = rootKey + " = {}"
-                        try:
-                            exec(sExec, globals())
-                        except Exception as error:
-                            self.__reset()
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
-                            raise Exception(errorMsg)
+                        if bCheck==True:
+                            return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
+                        else:
+                            sExec = rootKey + " = {}"
+                            try:
+                                exec(sExec, globals())
+                            except Exception as error:
+                                self.__reset()
+                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                                raise Exception(errorMsg)
                 else:
                     continue
+            return True
 
     def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
         '''
@@ -669,6 +673,11 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
                 k = re.sub("\$\$", "$", k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
+                if re.search("\[\s*'" + pattern + "'\s*\]", keyNested):          # Temporary disable implicit creation of data structures based on nested parameters.
+                    if not self.__checkAndCreateNewElement(k, v, bCheck=True):   # In case check sub-element returns False -> reset() and raise an exception.
+                        self.__reset()
+                        raise Exception(f"\nThe implicit creation of data structures based on nested parameter does not enable yet.\n\
+New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
                 self.__reset()
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
