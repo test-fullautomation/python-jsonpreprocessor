@@ -45,20 +45,22 @@
 # ------------------------------------------
 
    "RELEASES"  : {
-                   "0.9." : [
-                              "JsonPreprocessor change 0.9 Implicit creation of data structures",
-                              "JsonPreprocessor change 0.9 Dotdict feature bug fixing",
-                              "JsonPreprocessor change 0.9 Update nested parameters handling in key name and value",
-                              "JsonPreprocessor change 0.9 Nested parameter feature bug fixing",
-                              "JsonPreprocessor change 0.9 Nested parameters substitution and overwriting improvement",
-                              "JsonPreprocessor change 0.9 Jsonp file path computation improvement"
-                            ],
                    "0.10." : [
-                               "JsonPreprocessor change 0.10 Add jsonDump method to write a file in JSON format",
-                               "JsonPreprocessor change 0.10 Improve nested parameter format",
-                               "JsonPreprocessor change 0.10 Improve error message log",
-                               "JsonPreprocessor change 0.10 Fix bugs of data structures implicitly",
-                               "JsonPreprocessor change 0.10 Improve index handling together with nested parameters"
+"
+* Added a ``jsonDump`` method to write the content of a Python dictionary to a file in JSON format
+
+  **Example:**
+
+  .. code::
+
+      dictTest = {\"A\"  1, \"B\"  2}
+      json_preprocessor = CJsonPreprocessor()
+      json_preprocessor.jsonDump(dictTest, \"./OutputFile.json\")
+
+* Improved format of nested parameters; improved error messages
+* Some bugs fixed in implicitly created data structures
+* Improved index handling together with nested parameters
+"
                              ]
                  }
 }
