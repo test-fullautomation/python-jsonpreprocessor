@@ -604,7 +604,8 @@ class CJsonPreprocessor():
                 raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
           Please check the configuration file of the executed test!")
             sInputStr = self.__checkParamName(sInputStr)
-            valueAfterProcessed = self.__nestedParamHandler(sInputStr)
+            valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
+                                    self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
                 tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
@@ -660,12 +661,11 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
             elif CNameMangling.STRINGCONVERT.value in k:
                 bStrConvert = True
                 del oJson[k]
-                k = k.replace(CNameMangling.STRINGCONVERT.value, '')
-                oJson[k] = v
-                keyNested = k
+                keyNested = k.replace(CNameMangling.STRINGCONVERT.value, '')
+                oJson[keyNested] = v
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(keyNested, k)
+                    k = __loadNestedValue(keyNested, k, bKey=True)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
@@ -673,10 +673,13 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
                 k = re.sub("\$\$", "$", k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
-                if re.search("\[\s*'" + pattern + "'\s*\]", keyNested):          # Temporary disable implicit creation of data structures based on nested parameters.
-                    if not self.__checkAndCreateNewElement(k, v, bCheck=True):   # In case check sub-element returns False -> reset() and raise an exception.
-                        self.__reset()
-                        raise Exception(f"\nThe implicit creation of data structures based on nested parameter does not enable yet.\n\
+                # Temporary disable implicit creation of data structures based on nested parameters.
+                # In case check sub-element returns False -> reset() and raise an exception.
+                if (re.search("\[\s*'" + pattern + "'\s*\]", keyNested) or \
+                    re.search("\." + pattern + "[\.}]+", keyNested)) and \
+                    not self.__checkAndCreateNewElement(k, v, bCheck=True):
+                    self.__reset()
+                    raise Exception(f"\nThe implicit creation of data structures based on nested parameter does not enable yet.\n\
 New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
                 self.__reset()
@@ -1069,8 +1072,8 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     tmpNestedParam = nestedParam.replace("$", "\$")
                     tmpNestedParam = tmpNestedParam.replace("[", "\[")
                     tmpNestedParam = tmpNestedParam.replace("]", "\]")
-                    if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine) \
-                        or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine):
+                    if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
+                        or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
                         self.lNestedParams.remove(nestedParam)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
