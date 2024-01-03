@@ -2130,26 +2130,27 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1000.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (4/1) > {dTestDict} [DICT] (6/1) > {kVal_1} [STR]  :  'Val_1'
-[DICT] (4/1) > {dTestDict} [DICT] (6/2) > {kVal_2} [DICT] (1/1) > {I_am_not_existing_1} [DICT] (1/1) > {I_am_not_existing_2} [STR]  :  'Val_1'
-[DICT] (4/1) > {dTestDict} [DICT] (6/3) > {kVal_3} [DICT] (1/1) > {I_am_not_existing_3} [DICT] (1/1) > {I_am_not_existing_4} [STR]  :  'Val_1_extended'
-[DICT] (4/1) > {dTestDict} [DICT] (6/4) > {kVal_3b} [DICT] (1/1) > {I_am_not_existing_3b} [DICT] (1/1) > {I_am_not_existing_4b} [STR]  :  'Val_1'
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/1) > {A} [INT]  :  1
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/1) > [INT]  :  1
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/2) > [INT]  :  2
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/1) > {C} [INT]  :  2
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/1) > [INT]  :  3
-[DICT] (4/1) > {dTestDict} [DICT] (6/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/2) > [INT]  :  4
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/1) > {E} [INT]  :  3
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/1) > [INT]  :  5
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/2) > [INT]  :  6
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/1) > {G} [INT]  :  4
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/1) > [INT]  :  7
-[DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/2) > [INT]  :  8
-[DICT] (4/2) > {kVal_5B_name} [STR]  :  'kVal_5B'
-[DICT] (4/3) > {kVal_5C_name} [STR]  :  'kVal_5C'
-[DICT] (4/4) > {Val_1_extended} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (5/1) > {kVal_1} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (5/2) > {kVal_2} [DICT] (1/1) > {I_am_not_existing_1} [DICT] (1/1) > {I_am_not_existing_2} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (5/3) > {kVal_3} [DICT] (1/1) > {I_am_not_existing_3} [DICT] (1/1) > {I_am_not_existing_4} [STR]  :  'Val_1_extended'
+[DICT] (2/1) > {dTestDict} [DICT] (5/4) > {kVal_3b} [DICT] (1/1) > {I_am_not_existing_3b} [DICT] (1/1) > {I_am_not_existing_4b} [STR]  :  'Val_1'
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/1) > {A} [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/1) > [INT]  :  1
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/2) > {B} [LIST] (2/2) > [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/1) > {C} [INT]  :  2
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/1) > [INT]  :  3
+[DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/2) > [INT]  :  4
+[DICT] (2/2) > {Val_1_extended} [STR]  :  'Val_1'
 """
+# Comment out these test result due to the implicit creation of data structures based on nested parameters is temporary disabled.
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/1) > {E} [INT]  :  3
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/1) > [INT]  :  5
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/2) > [INT]  :  6
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/1) > {G} [INT]  :  4
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/1) > [INT]  :  7
+# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/2) > [INT]  :  8
+# [DICT] (4/2) > {kVal_5B_name} [STR]  :  'kVal_5B'
+# [DICT] (4/3) > {kVal_5C_name} [STR]  :  'kVal_5C'
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------

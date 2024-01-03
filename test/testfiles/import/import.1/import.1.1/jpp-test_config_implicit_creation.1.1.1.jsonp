@@ -18,12 +18,12 @@
    "${dTestDict.kVal_3.I_am_not_existing_3.I_am_not_existing_4}" : "${dTestDict}['kVal_2']['I_am_not_existing_1']['I_am_not_existing_2']",
    // mixture of dotdict and standard notation:
    ${dTestDict.kVal_4}['kVal_4B']['kVal_4C'] : {"A" : 1, "B" : [1,2]},
-   ${dTestDict.kVal_4.kVal_4B.kVal_4C.kVal_4D.kVal_4E}['kVal_4F']['kVal_4G'] : {"C" : 2, "D" : [3,4]},
-   // sub key defined by parameter:
-   "kVal_5B_name" : "kVal_5B",
-   "kVal_5C_name" : "kVal_5C",
-   ${dTestDict.kVal_5.${kVal_5B_name}} : {"E" : 3, "F" : [5,6]},
-   ${dTestDict.kVal_5}['${kVal_5B_name}']['${kVal_5C_name}'] : {"G" : 4, "H" : [7,8]}
+   ${dTestDict.kVal_4.kVal_4B.kVal_4C.kVal_4D.kVal_4E}['kVal_4F']['kVal_4G'] : {"C" : 2, "D" : [3,4]}
+   // sub key defined by parameter: (Temporary disable implicit creation of data structures based on nested parameters)
+   // "kVal_5B_name" : "kVal_5B",
+   // "kVal_5C_name" : "kVal_5C",
+   // ${dTestDict.kVal_5.${kVal_5B_name}} : {"E" : 3, "F" : [5,6]},
+   // ${dTestDict.kVal_5}['${kVal_5B_name}']['${kVal_5C_name}'] : {"G" : 4, "H" : [7,8]}
    //
    // invalid parameter format (reference: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/153)
    // ${dTestDict.${kVal_5B_name}.${kVal_5C_name}.kVal_5D} : {"M" : 5, "N" : [0,9]}
