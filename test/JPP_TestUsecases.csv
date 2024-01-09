@@ -78,6 +78,14 @@ JPP_0953|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file 
 JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly
 JPP_1001|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly (same key names at all levels)
+JPP_1050|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (1)
+JPP_1051|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (2)
+JPP_1052|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (3)
+JPP_1053|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (4)
+JPP_1054|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (5)
+JPP_1055|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (5)
+JPP_1056|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (6)
+JPP_1057|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (7)
 JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
 JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file

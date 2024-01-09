@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 14.12.2023
+# 09.01.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2142,15 +2142,6 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (2/1) > {dTestDict} [DICT] (5/5) > {kVal_4} [DICT] (1/1) > {kVal_4B} [DICT] (1/1) > {kVal_4C} [DICT] (3/3) > {kVal_4D} [DICT] (1/1) > {kVal_4E} [DICT] (1/1) > {kVal_4F} [DICT] (1/1) > {kVal_4G} [DICT] (2/2) > {D} [LIST] (2/2) > [INT]  :  4
 [DICT] (2/2) > {Val_1_extended} [STR]  :  'Val_1'
 """
-# Comment out these test result due to the implicit creation of data structures based on nested parameters is temporary disabled.
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/1) > {E} [INT]  :  3
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/1) > [INT]  :  5
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/2) > {F} [LIST] (2/2) > [INT]  :  6
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/1) > {G} [INT]  :  4
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/1) > [INT]  :  7
-# [DICT] (4/1) > {dTestDict} [DICT] (6/6) > {kVal_5} [DICT] (1/1) > {kVal_5B} [DICT] (3/3) > {kVal_5C} [DICT] (2/2) > {H} [LIST] (2/2) > [INT]  :  8
-# [DICT] (4/2) > {kVal_5B_name} [STR]  :  'kVal_5B'
-# [DICT] (4/3) > {kVal_5C_name} [STR]  :  'kVal_5C'
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -2170,6 +2161,119 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (3/3) > {param3} [DICT] (1/1) > {subkey} [DICT] (1/1) > {subkey} [DICT] (2/1) > {paramA} [STR]  :  'subkey value extended'
 [DICT] (3/3) > {param3} [DICT] (1/1) > {subkey} [DICT] (1/1) > {subkey} [DICT] (2/2) > {paramB} [STR]  :  'subkey value extended'
 """
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1050"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (1)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1050.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1051"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (2)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1051.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1052"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (3)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1052.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1053"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (4)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1053.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1054"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (5)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1054.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1055"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (5)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1055.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1056"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (6)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1056.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported" # currently causes : ''NoneType' object has no attribute 'group''!
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1057"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (7)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported" # currently values are returned with unresolved dollar operator expressions
+dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
