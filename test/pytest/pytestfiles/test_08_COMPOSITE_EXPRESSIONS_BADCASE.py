@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 10.10.2023 - 13:31:11
+# 09.01.2024 - 17:01:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -36,5 +36,29 @@ class Test_COMPOSITE_EXPRESSIONS_BADCASE:
    )
    def test_JPP_0550(self, Description):
       nReturn = CExecute.Execute("JPP_0550")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a list; list index is defined by a parameter and wrapped in single quotes",]
+   )
+   def test_JPP_0551(self, Description):
+      nReturn = CExecute.Execute("JPP_0551")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)",]
+   )
+   def test_JPP_0552(self, Description):
+      nReturn = CExecute.Execute("JPP_0552")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)",]
+   )
+   def test_JPP_0553(self, Description):
+      nReturn = CExecute.Execute("JPP_0553")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

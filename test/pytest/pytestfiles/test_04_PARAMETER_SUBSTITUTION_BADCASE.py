@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 20.11.2023 - 15:42:16
+# 09.01.2024 - 17:01:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -156,5 +156,13 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
    )
    def test_JPP_0267(self, Description):
       nReturn = CExecute.Execute("JPP_0267")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a list; list index is defined by a parameter and wrapped in single quotes",]
+   )
+   def test_JPP_0268(self, Description):
+      nReturn = CExecute.Execute("JPP_0268")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.01.2024 - 11:50:58
+# 09.01.2024 - 17:01:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -92,5 +92,13 @@ class Test_IMPLICIT_CREATION_BADCASE:
    )
    def test_JPP_1057(self, Description):
       nReturn = CExecute.Execute("JPP_1057")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing .... (invalid syntax)",]
+   )
+   def test_JPP_1058(self, Description):
+      nReturn = CExecute.Execute("JPP_1058")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

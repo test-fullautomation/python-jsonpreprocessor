@@ -345,6 +345,18 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0268**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: List indices must be of type 'int'*
+
+----
+
 * **Test JPP_0300**
 
   [VALUE_DETECTION / GOODCASE]
@@ -763,6 +775,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0511**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing a list; list index is defined by a parameter**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -772,6 +794,38 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Hint: Dotdict notation (ambiguous in this case)*
+
+----
+
+* **Test JPP_0551**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: List indices must be of type 'int'*
+
+----
+
+* **Test JPP_0552**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0553**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -935,6 +989,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1058**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file containing .... (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_1150**
 
   [CYCLIC_IMPORTS / BADCASE]
@@ -967,5 +1031,5 @@ Test Use Cases
 
 ----
 
-Generated: 09.01.2024 - 11:50:58
+Generated: 09.01.2024 - 17:01:37
 
