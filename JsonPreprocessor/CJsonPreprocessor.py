@@ -406,8 +406,8 @@ class CJsonPreprocessor():
                     raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
                 if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                     self.__reset()
-                    raise Exception(f"Substitute the element '{sInputStr.replace('$$', '$')}' failed! \
-Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'.")
+                    raise Exception(f"Overwrite the element '{sInputStr.replace('$$', '$')}' failed! \
+Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only simple data types are allowed to be substituted inside.")
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
                 if re.search("\[.+\]", var):
@@ -641,8 +641,9 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'.")
                     self.__reset()
                     while 'str(' in key:
                         key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
-                    errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
-The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    errorMsg = f"Found expression '{key}' with at least one parameter of composite data type \
+('{valueProcessed}' is of type {type(ldict['value'])}). Because of this expression is the name of a parameter, \
+only simple data types are allowed to be substituted inside."
                     raise Exception(errorMsg)
                 if "${" not in str(sInputStr):
                     break
