@@ -377,6 +377,8 @@ class CJsonPreprocessor():
         referVars = re.findall("(" + pattern + ")", sInputStr)
         while sInputStr.count("$$") > len(referVars):
             for var in referVars:
+                if var not in sInputStr:
+                    continue
                 if "." in var:
                     ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
                     lddVar = ddVar.split(".")
@@ -400,6 +402,9 @@ class CJsonPreprocessor():
                     tmpValue = ldict['value']
                 except:
                     raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
+                if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                    raise Exception(f"Substitute the element '{sInputStr.replace('$$', '$')}' failed! \
+Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'.")
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
                 if re.search("\[.+\]", var):
@@ -645,7 +650,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${.+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             bStrConvert = False
@@ -680,7 +685,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     re.search("\." + pattern + "[\.}]+", keyNested)) and \
                     not self.__checkAndCreateNewElement(k, v, bCheck=True):
                     self.__reset()
-                    raise Exception(f"\nThe implicit creation of data structures based on nested parameter does not enable yet.\n\
+                    raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
                 self.__reset()
