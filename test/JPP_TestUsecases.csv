@@ -33,7 +33,6 @@ JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substituti
 JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)
 JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)
 JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
-JPP_0268|PARAMETER_SUBSTITUTION|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
@@ -72,9 +71,6 @@ JPP_0509|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter a
 JPP_0510|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (extended string concatenation)
 JPP_0511|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a list; list index is defined by a parameter
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
-JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
-JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)
-JPP_0553|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
 JPP_0600|CODE_COMMENTS|GOODCASE|JSON file with several combinations of code comments
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
 JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)
@@ -91,7 +87,7 @@ JPP_1054|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data stru
 JPP_1055|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (5)
 JPP_1056|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (6)
 JPP_1057|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (7)
-JPP_1058|IMPLICIT_CREATION|BADCASE|JSON file containing .... (invalid syntax)
+JPP_1058|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (8)
 JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
 JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file

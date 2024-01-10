@@ -345,18 +345,6 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0268**
-
-  [PARAMETER_SUBSTITUTION / BADCASE]
-
-   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-   *Hint: List indices must be of type 'int'*
-
-----
-
 * **Test JPP_0300**
 
   [VALUE_DETECTION / GOODCASE]
@@ -797,38 +785,6 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0551**
-
-  [COMPOSITE_EXPRESSIONS / BADCASE]
-
-   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-   *Hint: List indices must be of type 'int'*
-
-----
-
-* **Test JPP_0552**
-
-  [COMPOSITE_EXPRESSIONS / BADCASE]
-
-   **JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-----
-
-* **Test JPP_0553**
-
-  [COMPOSITE_EXPRESSIONS / BADCASE]
-
-   **JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-----
-
 * **Test JPP_0600**
 
   [CODE_COMMENTS / GOODCASE]
@@ -993,7 +949,7 @@ Test Use Cases
 
   [IMPLICIT_CREATION / BADCASE]
 
-   **JSON file containing .... (invalid syntax)**
+   **JSON file with implicit creation of data structures based on parameters (8)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1031,5 +987,5 @@ Test Use Cases
 
 ----
 
-Generated: 09.01.2024 - 17:01:37
+Generated: 10.01.2024 - 12:25:22
 

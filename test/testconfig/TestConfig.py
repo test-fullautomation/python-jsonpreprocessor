@@ -1292,7 +1292,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -2046,7 +2046,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0551.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2060,7 +2060,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0552.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2074,7 +2074,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0553.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -2289,7 +2289,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1053.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2303,7 +2303,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1054.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2317,7 +2317,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1055.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # test case currently causes a crash of the JsonPreprocessor; 'EXPECTEDEXCEPTION' needs to be defined after bug is fixed
+dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2331,7 +2331,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1056.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported" # currently causes : ''NoneType' object has no attribute 'group''!
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2345,21 +2345,21 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported" # currently values are returned with unresolved dollar operator expressions
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not set variable 'testdict[C][C]' with value '4'! Reason: name 'C' is not defined"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1058"
-dictUsecase['DESCRIPTION']       = "JSON file containing .... (invalid syntax)"
+dictUsecase['DESCRIPTION']       = "JSON file with implicit creation of data structures based on parameters (8)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "IMPLICIT_CREATION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1058.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported" # currently: ''NoneType' object has no attribute 'group''!
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

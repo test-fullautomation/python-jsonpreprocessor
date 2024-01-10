@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.01.2024 - 17:01:37
+# 10.01.2024 - 12:25:22
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ class Test_IMPLICIT_CREATION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing .... (invalid syntax)",]
+      "Description", ["JSON file with implicit creation of data structures based on parameters (8)",]
    )
    def test_JPP_1058(self, Description):
       nReturn = CExecute.Execute("JPP_1058")
