@@ -1192,7 +1192,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0261.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1220,7 +1220,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0263.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1234,7 +1234,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0264.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1248,7 +1248,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0265.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1262,7 +1262,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0266.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1276,7 +1276,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0267.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Composite data types are not allowed"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

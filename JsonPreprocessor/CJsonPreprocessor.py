@@ -244,6 +244,7 @@ class CJsonPreprocessor():
                 # length of lImportedFiles should equal to recursive_level
                 self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
                 if abs_path_file in self.lImportedFiles:
+                    self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
@@ -377,6 +378,8 @@ class CJsonPreprocessor():
         referVars = re.findall("(" + pattern + ")", sInputStr)
         while sInputStr.count("$$") > len(referVars):
             for var in referVars:
+                if var not in sInputStr:
+                    continue
                 if "." in var:
                     ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
                     lddVar = ddVar.split(".")
@@ -399,7 +402,12 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                     tmpValue = ldict['value']
                 except:
+                    self.__reset()
                     raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
+                if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                    self.__reset()
+                    raise Exception(f"Overwrite the element '{sInputStr.replace('$$', '$')}' failed! \
+Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only simple data types are allowed to be substituted inside.")
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
                 if re.search("\[.+\]", var):
@@ -430,6 +438,7 @@ class CJsonPreprocessor():
                             exec(sExec, globals(), ldict)
                             tmpValue = ldict['value']
                         except:
+                            self.__reset()
                             raise Exception(f"The variable '{var}' is not available!")
                         sInputStr = re.sub(tmpVar, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
                                     re.sub(tmpVar, str(tmpValue), sInputStr)
@@ -446,6 +455,7 @@ class CJsonPreprocessor():
                         exec(sExec, globals(), ldict)
                         tmpValue = ldict['value']
                     except:
+                        self.__reset()
                         raise Exception(f"The variable '{fullVariable}' is not available!")
                     pattern = re.sub('\[', '\\[', fullVariable)
                     pattern = re.sub('\]', '\\]', pattern)
@@ -631,8 +641,9 @@ class CJsonPreprocessor():
                     self.__reset()
                     while 'str(' in key:
                         key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
-                    errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
-The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    errorMsg = f"Found expression '{key}' with at least one parameter of composite data type \
+('{valueProcessed}' is of type {type(ldict['value'])}). Because of this expression is the name of a parameter, \
+only simple data types are allowed to be substituted inside."
                     raise Exception(errorMsg)
                 if "${" not in str(sInputStr):
                     break
@@ -645,7 +656,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${.+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             bStrConvert = False
@@ -680,7 +691,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     re.search("\." + pattern + "[\.}]+", keyNested)) and \
                     not self.__checkAndCreateNewElement(k, v, bCheck=True):
                     self.__reset()
-                    raise Exception(f"\nThe implicit creation of data structures based on nested parameter does not enable yet.\n\
+                    raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
                 self.__reset()
@@ -773,6 +784,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
 
         if "${" in sInputStr:
             if re.search("\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr):
+                self.__reset()
                 raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
             if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
@@ -835,6 +847,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
             elif "," in sInputStr:
                 if not re.match("^\s*\".+\"\s*$", sInputStr):
+                    self.__reset()
                     raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
@@ -848,6 +861,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         tmpItem = item
                         if "${" in item:
                             if not re.match("^\s*\"*" + nestedPattern + "\"*\]*}*\s*$", item):
+                                self.__reset()
                                 raise Exception(f"Invalid nested parameter format: {item}")
                             elif re.match("^\s*\".*" + nestedPattern + ".*\"\s*$", item):
                                 item = re.sub("(" + nestedPattern + ")", "str(\\1)", item)
@@ -863,10 +877,12 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     sInputStr = newInputStr
             elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
                 or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
+                self.__reset()
                 raise Exception(f"Invalid parameter format: {sInputStr}")
             elif nestedKey and re.match("^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
                 sInputStr = re.sub("^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
             else:
+                self.__reset()
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
         sOutput = sInputStr
@@ -991,6 +1007,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
+            self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
 
         self.lImportedFiles.append(jFile)
@@ -1010,12 +1027,14 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             try:
                 listDummy = shlex.split(line)
             except Exception as error:
+                self.__reset()
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line):
                 lNestedVar = re.findall("\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}", line)
                 for nestedVar in lNestedVar:
                     if nestedVar[0].isdigit():
+                        self.__reset()
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall("(\"[^\"]+\")", line)
                 line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
@@ -1079,6 +1098,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
+                    self.__reset()
                     invalidPattern1 = "\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
                     if re.search(invalidPattern1, line):
                         raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
@@ -1092,6 +1112,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
             if self.syntax == CSyntaxType.python:
                 CJSONDecoder = CPythonJSONDecoder
             else:
+                self.__reset()
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
 
         try:
@@ -1099,8 +1120,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            if masterFile:
-                self.__reset()
+            self.__reset()
             raise Exception(f"JSON file: {jFile}\n{error}")
 
         self.__checkDotInParamName(oJson)
