@@ -763,6 +763,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0511**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing a list; list index is defined by a parameter**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -855,6 +865,96 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1050**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1051**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1052**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1053**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1054**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1055**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1056**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1057**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (7)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1058**
+
+  [IMPLICIT_CREATION / BADCASE]
+
+   **JSON file with implicit creation of data structures based on parameters (8)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_1150**
 
   [CYCLIC_IMPORTS / BADCASE]
@@ -887,5 +987,5 @@ Test Use Cases
 
 ----
 
-Generated: 20.11.2023 - 15:42:16
+Generated: 10.01.2024 - 12:25:22
 

@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 20.11.2023 - 15:42:16
+# 09.01.2024 - 17:01:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -108,5 +108,13 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0510(self, Description):
       nReturn = CExecute.Execute("JPP_0510")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a list; list index is defined by a parameter",]
+   )
+   def test_JPP_0511(self, Description):
+      nReturn = CExecute.Execute("JPP_0511")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

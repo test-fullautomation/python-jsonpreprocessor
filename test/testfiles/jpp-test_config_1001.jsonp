@@ -23,7 +23,6 @@
                              "subkey" : {
                                           "paramA" : "ABC",
                                           ${param3.subkey.subkey.paramA} : "DEF",
-                                          // https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/224
                                           "paramA" : ${param2.subkey.subkey.subkey},
                                           "paramB" : "XYZ",
                                           ${param3.subkey.subkey.paramB} : ${param2.subkey.subkey.subkey}
@@ -31,3 +30,15 @@
                            }
               }
 }
+
+// Caution:
+// The implicit creation of data structures is only possible with hard coded key names. Parameters are not resolved.
+// See:
+//    "paramA" : "ABC",
+//    ${param3.subkey.subkey.paramA} : "DEF",
+// The name of the last implicitely created key within the expression ${param3.subkey.subkey.paramA}
+// is "paramA", and not the value "ABC" of the parameter with the same name ("paramA").
+
+
+
+
