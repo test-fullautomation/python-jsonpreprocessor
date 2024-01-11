@@ -32,16 +32,13 @@ except Exception as reason:
    print(f"'{reason}'")
 \end{pythoncode}
 
-\textbf{!!! Caution:} relative path bug:
-\href{https://github.com/test-fullautomation/python-jsonpreprocessor/issues/83}{issues/83} \textbf{!!!}
-
 The main method of the \pkg\ is: \pcode{jsonLoad}. Input is the path and the name of a JSON file.
 Output is a dictionary containing all values parsed from this JSON file.
 
 In case of any errors while computing the JSON file, the \pkg\ throws an exception. Therefore it is required
 to call the method \pcode{jsonLoad} inside a \pcode{try/except} block.
 
-\pcode{pprint} is used in this example to give the output a better readibility in console.
+\pcode{pprint} is used in this example to give the output a better readability in console.
 
 \vspace{2ex}
 
