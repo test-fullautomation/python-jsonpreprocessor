@@ -692,7 +692,7 @@ only simple data types are allowed to be substituted inside."
                 oJson[keyNested] = v
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(keyNested, k, bKey=True)
+                    k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
                 k = re.sub("\$", "$$", k)
