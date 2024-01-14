@@ -443,8 +443,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                 tmpPattern = re.sub("\$", "\\$", sUpdateVar)
                 sInputStr = re.sub(tmpPattern, '', sInputStr, count=1)
                 for var in referVars[::-1]:
-                    tmpVar = re.sub("\$", "\\$", var)
-                    pattern = '(' + tmpVar + '\s*\[\s*.*?\s*\])'
+                    pattern = '(' + var.replace('$', '\$') + '\s*\[\s*.*?\s*\])'
                     variable = re.findall(pattern, sInputStr)
                     if variable == []:
                         sExec = "value = " + re.search('^\s*\$\${(\s*.*?)}', var).group(1)
@@ -455,8 +454,10 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                         except:
                             self.__reset(bCleanGlobalVars=True)
                             raise Exception(f"The variable '{var}' is not available!")
-                        sInputStr = re.sub(tmpVar, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
-                                    re.sub(tmpVar, str(tmpValue), sInputStr)
+                        if re.search("\[\s*"+ var.replace('$', '\$') +"\s*\]", sInputStr) and isinstance(tmpValue, str):
+                            sInputStr = sInputStr.replace(var, "'" + var + "'")
+                        sInputStr = re.sub(var.replace('$', '\$'), tmpValue, sInputStr) if isinstance(tmpValue, str) else \
+                                    re.sub(var.replace('$', '\$'), str(tmpValue), sInputStr)
                         continue
                     while variable != []:
                         fullVariable = variable[0]
@@ -633,7 +634,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
-                tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueProcessed)
+                tmpValueAfterProcessed = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
                 try:
@@ -675,6 +676,7 @@ only simple data types are allowed to be substituted inside."
         for k, v in tmpJson.items():
             keyNested = ''
             bStrConvert = False
+            bImplicitCreation = False
             if CNameMangling.DUPLICATEDKEY_00.value in k:
                 del oJson[k]
                 k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
@@ -695,6 +697,9 @@ only simple data types are allowed to be substituted inside."
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
+                if re.search("\[\s*'*" + pattern + "'*\s*\]", keyNested) or \
+                    re.search("\." + pattern + "[\.}]+", keyNested):
+                    bImplicitCreation = True
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
@@ -702,9 +707,7 @@ only simple data types are allowed to be substituted inside."
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
                 # Temporary disable implicit creation of data structures based on nested parameters.
                 # In case check sub-element returns False -> reset() and raise an exception.
-                if (re.search("\[\s*'" + pattern + "'\s*\]", keyNested) or \
-                    re.search("\." + pattern + "[\.}]+", keyNested)) and \
-                    not self.__checkAndCreateNewElement(k, v, bCheck=True):
+                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True):
                     self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
@@ -1175,7 +1178,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                 param = self.__checkParamName(param)
                 param = re.sub("\${", "$${", param)
                 parseNestedParam = self.__nestedParamHandler(param)
-                tmpParseNestedParam = re.sub('\${\s*(.*?)\s*}', '\\1', parseNestedParam[0])
+                tmpParseNestedParam = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', parseNestedParam[0])
                 sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
                         "value = " + str(tmpParseNestedParam)
                 try:

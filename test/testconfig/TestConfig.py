@@ -2345,7 +2345,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set variable 'testdict[C][C]' with value '4'! Reason: name 'C' is not defined"
+dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on nested parameter is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
