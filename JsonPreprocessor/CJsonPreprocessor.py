@@ -202,7 +202,7 @@ class CJsonPreprocessor():
         self.lNestedParams = []
         self.lDotInParamName = []
 
-    def __reset(self) -> None:
+    def __reset(self, bCleanGlobalVars : bool = False) -> None:
         '''
    Reset initial variables which are set in constructor method after master Json file is loaded.
         '''
@@ -212,6 +212,21 @@ class CJsonPreprocessor():
         self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
+        if bCleanGlobalVars:
+            lGlobalVars = []
+            for name, value in globals().items():
+                if re.match("^__.+$", name):
+                    continue
+                else:
+                    if isinstance(value, str) or isinstance(value, int) or \
+                        isinstance(value, float) or isinstance(value, dict) or \
+                        isinstance(value, list) or isinstance(value, type(None)):
+                        lGlobalVars.append(name)
+            for var in lGlobalVars:
+                try:
+                    del globals()[var]
+                except:
+                    pass
 
     def __processImportFiles(self, input_data : dict) -> dict:
         '''
@@ -244,6 +259,7 @@ class CJsonPreprocessor():
                 # length of lImportedFiles should equal to recursive_level
                 self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
                 if abs_path_file in self.lImportedFiles:
+                    self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
@@ -361,12 +377,13 @@ class CJsonPreprocessor():
                 dotdictVariable = re.sub('\$\${\s*(.*?)\s*}', '\\1', referVar)
                 lDotdictVariable = dotdictVariable.split(".")
                 lParams = self.__handleDotdictFormat(lDotdictVariable, [])
-                sParam = '$${' + lParams[0] + '}'
+                rootElement = lParams[0]
+                sParam = '$${' + rootElement + '}'
                 lParams.pop(0)
                 for item in lParams:
                     sParam = sParam + "[" + item + "]" if re.match("^\d+$", item) else sParam + "['" + item + "']"
-                sInputStr = re.sub('\$\${\s*([^\}]*)\s*}', sParam, sInputStr)
-                referVar = re.findall('(\$\${\s*.*?\s*})', sInputStr)[0]
+                sInputStr = re.sub(referVar.replace("$", "\$"), sParam, sInputStr)
+                referVar = '$${' + rootElement + '}'
             tmpReferVar = re.sub("\$", "\\$", referVar)
             pattern = '(' + tmpReferVar + '\s*(\[+\s*.*?\s*\]+)*)'
             variable = re.search(pattern, sInputStr)
@@ -376,6 +393,8 @@ class CJsonPreprocessor():
         referVars = re.findall("(" + pattern + ")", sInputStr)
         while sInputStr.count("$$") > len(referVars):
             for var in referVars:
+                if var not in sInputStr:
+                    continue
                 if "." in var:
                     ddVar = re.sub('\$\${\s*(.*?)\s*}', '\\1', var)
                     lddVar = ddVar.split(".")
@@ -398,7 +417,12 @@ class CJsonPreprocessor():
                     exec(sExec, globals(), ldict)
                     tmpValue = ldict['value']
                 except:
+                    self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"The variable '{var.replace('$$', '$')}' is not available!")
+                if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                    self.__reset(bCleanGlobalVars=True)
+                    raise Exception(f"Overwrite the element '{sInputStr.replace('$$', '$')}' failed! \
+Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only simple data types are allowed to be substituted inside.")
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
                 if re.search("\[.+\]", var):
@@ -419,8 +443,7 @@ class CJsonPreprocessor():
                 tmpPattern = re.sub("\$", "\\$", sUpdateVar)
                 sInputStr = re.sub(tmpPattern, '', sInputStr, count=1)
                 for var in referVars[::-1]:
-                    tmpVar = re.sub("\$", "\\$", var)
-                    pattern = '(' + tmpVar + '\s*\[\s*.*?\s*\])'
+                    pattern = '(' + var.replace('$', '\$') + '\s*\[\s*.*?\s*\])'
                     variable = re.findall(pattern, sInputStr)
                     if variable == []:
                         sExec = "value = " + re.search('^\s*\$\${(\s*.*?)}', var).group(1)
@@ -429,9 +452,12 @@ class CJsonPreprocessor():
                             exec(sExec, globals(), ldict)
                             tmpValue = ldict['value']
                         except:
+                            self.__reset(bCleanGlobalVars=True)
                             raise Exception(f"The variable '{var}' is not available!")
-                        sInputStr = re.sub(tmpVar, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
-                                    re.sub(tmpVar, str(tmpValue), sInputStr)
+                        if re.search("\[\s*"+ var.replace('$', '\$') +"\s*\]", sInputStr) and isinstance(tmpValue, str):
+                            sInputStr = sInputStr.replace(var, "'" + var + "'")
+                        sInputStr = re.sub(var.replace('$', '\$'), tmpValue, sInputStr) if isinstance(tmpValue, str) else \
+                                    re.sub(var.replace('$', '\$'), str(tmpValue), sInputStr)
                         continue
                     while variable != []:
                         fullVariable = variable[0]
@@ -445,6 +471,7 @@ class CJsonPreprocessor():
                         exec(sExec, globals(), ldict)
                         tmpValue = ldict['value']
                     except:
+                        self.__reset(bCleanGlobalVars=True)
                         raise Exception(f"The variable '{fullVariable}' is not available!")
                     pattern = re.sub('\[', '\\[', fullVariable)
                     pattern = re.sub('\]', '\\]', pattern)
@@ -497,31 +524,35 @@ class CJsonPreprocessor():
         else:
             return self.__handleDotdictFormat(lInputListParams, lParams)
 
-    def __checkAndCreateNewElement(self, sKey: str, value):
+    def __checkAndCreateNewElement(self, sKey: str, value, bCheck=False):
         '''
     This method check and create new elements if they are not exist.
         '''
         rootKey = re.sub("\[.*\]", "", sKey)
         subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
-        if len(subElements) <= 1:
-            return
+        if len(subElements) < 1:
+            return True
         else:
             for index, element in enumerate(subElements):
-                if index < len(subElements) - 1:
+                if index < len(subElements):
                     rootKey = rootKey + "['" + element + "']"
                     sExec = "dumpData = " + rootKey
                     try:
                         exec(sExec)
                     except:
-                        sExec = rootKey + " = {}"
-                        try:
-                            exec(sExec, globals())
-                        except Exception as error:
-                            self.__reset()
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
-                            raise Exception(errorMsg)
+                        if bCheck==True:
+                            return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
+                        else:
+                            sExec = rootKey + " = {}"
+                            try:
+                                exec(sExec, globals())
+                            except Exception as error:
+                                self.__reset(bCleanGlobalVars=True)
+                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                                raise Exception(errorMsg)
                 else:
                     continue
+            return True
 
     def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
         '''
@@ -550,7 +581,7 @@ class CJsonPreprocessor():
                     try:
                         exec(sExec, globals())
                     except Exception as error:
-                        self.__reset()
+                        self.__reset(bCleanGlobalVars=True)
                         errorMsg = f"Could not set variable '{k}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
 
@@ -594,14 +625,16 @@ class CJsonPreprocessor():
             elif re.match("^\s*" + pattern + "\s*$", sInputStr):
                 sInputStr = re.sub("\$", "$$", sInputStr)
             else:
+                self.__reset(bCleanGlobalVars=True)
                 while "str(" in initValue:
                     initValue = re.sub("str\(([\${}0-9A-Za-z\.\-_\[\]]+)\)", "\\1", initValue, count=1)
                 raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
           Please check the configuration file of the executed test!")
             sInputStr = self.__checkParamName(sInputStr)
-            valueAfterProcessed = self.__nestedParamHandler(sInputStr)
+            valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
+                                    self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
-                tmpValueAfterProcessed = re.sub('\\${\s*(.*?)\s*}', '\\1', valueProcessed)
+                tmpValueAfterProcessed = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
                 try:
@@ -614,18 +647,19 @@ class CJsonPreprocessor():
                         sInputStr = re.sub("\$\$", "$", sInputStr)
                         sInputStr = str(ldict['value']) if bValueConvertString else ldict['value']
                 except:
-                    self.__reset()
+                    self.__reset(bCleanGlobalVars=True)
                     if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
                         valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
                     elif CNameMangling.DUPLICATEDKEY_02.value in valueProcessed:
                         valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_02.value, '')
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
                 if bKey and type(ldict['value']) in [list, dict]:
-                    self.__reset()
+                    self.__reset(bCleanGlobalVars=True)
                     while 'str(' in key:
                         key = re.sub("str\(([0-9A-Za-z\._\${}'\[\]]+)\)", "\\1", key)
-                    errorMsg = f"Could not substitute parameter '{key}'! Composite data types are not allowed. \
-The value of parameter '{valueProcessed}' is {ldict['value']}"
+                    errorMsg = f"Found expression '{key}' with at least one parameter of composite data type \
+('{valueProcessed}' is of type {type(ldict['value'])}). Because of this expression is the name of a parameter, \
+only simple data types are allowed to be substituted inside."
                     raise Exception(errorMsg)
                 if "${" not in str(sInputStr):
                     break
@@ -638,10 +672,11 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 globals().update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
+        pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${.+\s*\]+)*"
         for k, v in tmpJson.items():
             keyNested = ''
             bStrConvert = False
+            bImplicitCreation = False
             if CNameMangling.DUPLICATEDKEY_00.value in k:
                 del oJson[k]
                 k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
@@ -655,20 +690,29 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
             elif CNameMangling.STRINGCONVERT.value in k:
                 bStrConvert = True
                 del oJson[k]
-                k = k.replace(CNameMangling.STRINGCONVERT.value, '')
-                oJson[k] = v
-                keyNested = k
+                keyNested = k.replace(CNameMangling.STRINGCONVERT.value, '')
+                oJson[keyNested] = v
                 bNested = True
                 while "${" in k:
-                    k = __loadNestedValue(keyNested, k)
+                    k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
             elif re.match("^\s*" + pattern + "\s*$", k.lower()):
                 keyNested = k
+                if re.search("\[\s*'*" + pattern + "'*\s*\]", keyNested) or \
+                    re.search("\." + pattern + "[\.}]+", keyNested):
+                    bImplicitCreation = True
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 keyAfterProcessed = self.__nestedParamHandler(k, bKey=True)
                 k = re.sub("\$\$", "$", k)
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
+                # Temporary disable implicit creation of data structures based on nested parameters.
+                # In case check sub-element returns False -> reset() and raise an exception.
+                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True):
+                    self.__reset(bCleanGlobalVars=True)
+                    raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
+New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
+                self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
         Please check key '{k}' in config file!!!")
 
@@ -757,6 +801,9 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         valueNumberPattern = "[0-9\.]+"
 
         if "${" in sInputStr:
+            if re.search("\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr):
+                self.__reset(bCleanGlobalVars=True)
+                raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
             if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
@@ -818,6 +865,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
             elif "," in sInputStr:
                 if not re.match("^\s*\".+\"\s*$", sInputStr):
+                    self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = "^\s*(\"*" + nestedPattern + "\"*\s*,+\s*|" + valueStrPattern + "\s*,+\s*|" + valueNumberPattern + "\s*,+\s*)+" + \
                             "(\"*" + nestedPattern + "\"*\s*,*\s*|" + valueStrPattern + "\s*,*\s*|" + valueNumberPattern + "\s*,*\s*)*\]*}*\s*$"
@@ -831,6 +879,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                         tmpItem = item
                         if "${" in item:
                             if not re.match("^\s*\"*" + nestedPattern + "\"*\]*}*\s*$", item):
+                                self.__reset(bCleanGlobalVars=True)
                                 raise Exception(f"Invalid nested parameter format: {item}")
                             elif re.match("^\s*\".*" + nestedPattern + ".*\"\s*$", item):
                                 item = re.sub("(" + nestedPattern + ")", "str(\\1)", item)
@@ -846,10 +895,12 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     sInputStr = newInputStr
             elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
                 or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
+                self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Invalid parameter format: {sInputStr}")
             elif nestedKey and re.match("^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
                 sInputStr = re.sub("^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
             else:
+                self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
         sOutput = sInputStr
@@ -974,6 +1025,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
+            self.__reset(bCleanGlobalVars=True)
             raise Exception(f"File '{jFile}' is not existing!")
 
         self.lImportedFiles.append(jFile)
@@ -981,8 +1033,7 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
         try:
             sJsonData= self.__load_and_removeComments(jFile)
         except Exception as reason:
-            if masterFile:
-                self.__reset()
+            self.__reset(bCleanGlobalVars=True)
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
         pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
@@ -993,12 +1044,14 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
             try:
                 listDummy = shlex.split(line)
             except Exception as error:
+                self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line):
                 lNestedVar = re.findall("\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}", line)
                 for nestedVar in lNestedVar:
                     if nestedVar[0].isdigit():
+                        self.__reset(bCleanGlobalVars=True)
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall("(\"[^\"]+\")", line)
                 line = re.sub("(\"[^\"]+\")", CNameMangling.COLONS.value, line)
@@ -1056,12 +1109,13 @@ The value of parameter '{valueProcessed}' is {ldict['value']}"
                     tmpNestedParam = nestedParam.replace("$", "\$")
                     tmpNestedParam = tmpNestedParam.replace("[", "\[")
                     tmpNestedParam = tmpNestedParam.replace("]", "\]")
-                    if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine) \
-                        or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine):
+                    if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
+                        or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
                         self.lNestedParams.remove(nestedParam)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
+                    self.__reset(bCleanGlobalVars=True)
                     invalidPattern1 = "\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
                     if re.search(invalidPattern1, line):
                         raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
@@ -1075,6 +1129,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
             if self.syntax == CSyntaxType.python:
                 CJSONDecoder = CPythonJSONDecoder
             else:
+                self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
 
         try:
@@ -1082,8 +1137,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            if masterFile:
-                self.__reset()
+            self.__reset(bCleanGlobalVars=True)
             raise Exception(f"JSON file: {jFile}\n{error}")
 
         self.__checkDotInParamName(oJson)
@@ -1124,14 +1178,14 @@ Indices in square brackets have to be placed outside the curly brackets.")
                 param = self.__checkParamName(param)
                 param = re.sub("\${", "$${", param)
                 parseNestedParam = self.__nestedParamHandler(param)
-                tmpParseNestedParam = re.sub('\${\s*(.*?)\s*}', '\\1', parseNestedParam[0])
+                tmpParseNestedParam = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', parseNestedParam[0])
                 sExec = "value = " + tmpParseNestedParam if isinstance(tmpParseNestedParam, str) else \
                         "value = " + str(tmpParseNestedParam)
                 try:
                     ldict = {}
                     exec(sExec, globals(), ldict)
                 except:
-                    self.__reset()
+                    self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"The variable '{parseNestedParam[0]}' is not available!")
                 
             self.__reset()
