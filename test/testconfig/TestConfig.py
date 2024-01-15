@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 09.01.2024
+# 15.01.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1292,7 +1292,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -2020,6 +2020,64 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0512"
+dictUsecase['DESCRIPTION']       = "JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0512.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (4/1) > {dict_param} [DICT] (2/1) > {A} [INT]  :  0
+[DICT] (4/1) > {dict_param} [DICT] (2/2) > {B} [INT]  :  1
+[DICT] (4/2) > {list_param} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (4/2) > {list_param} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (4/3) > {param1} [STR]  :  'A'
+[DICT] (4/4) > {param2} [STR]  :  '0'"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0513"
+dictUsecase['DESCRIPTION']       = "JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0513.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (21/1) > {intparam} [INT]  :  0
+[DICT] (21/2) > {stringparam} [STR]  :  'A'
+[DICT] (21/3) > {listparam} [LIST] (2/1) > [STR]  :  'C'
+[DICT] (21/3) > {listparam} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (21/4) > {dictparam} [DICT] (3/1) > {0} [INT]  :  3
+[DICT] (21/4) > {dictparam} [DICT] (3/2) > {A} [INT]  :  5
+[DICT] (21/4) > {dictparam} [DICT] (3/3) > {B} [INT]  :  6
+[DICT] (21/5) > {val01} [STR]  :  'A'
+[DICT] (21/6) > {val02} [STR]  :  'B'
+[DICT] (21/7) > {val03} [INT]  :  0
+[DICT] (21/8) > {val04} [INT]  :  1
+[DICT] (21/9) > {val05} [INT]  :  1
+[DICT] (21/10) > {val06} [INT]  :  1
+[DICT] (21/11) > {val07} [STR]  :  'A'
+[DICT] (21/12) > {val08} [STR]  :  'B'
+[DICT] (21/13) > {val09} [STR]  :  '0'
+[DICT] (21/14) > {val10} [STR]  :  '1'
+[DICT] (21/15) > {val11} [STR]  :  '1'
+[DICT] (21/16) > {val12} [STR]  :  '1'
+[DICT] (21/17) > {C} [STR]  :  'E'
+[DICT] (21/18) > {D} [STR]  :  'F'
+[DICT] (21/19) > {3} [INT]  :  3
+[DICT] (21/20) > {5} [INT]  :  5
+[DICT] (21/21) > {6} [INT]  :  6"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0550"
@@ -2046,7 +2104,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0551.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2060,7 +2118,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0552.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
-# # listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2074,7 +2132,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0553.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
 dictUsecase['EXPECTEDRETURN']    = None
-# # listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

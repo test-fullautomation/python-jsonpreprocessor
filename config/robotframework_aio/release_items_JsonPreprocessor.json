@@ -60,6 +60,7 @@
 * Improved format of nested parameters; improved error messages
 * Some bugs fixed in implicitly created data structures
 * Improved index handling together with nested parameters
+* Self test extended by further test cases
 "
                              ]
                  }

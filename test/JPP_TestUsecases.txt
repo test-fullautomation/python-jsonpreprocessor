@@ -324,6 +324,14 @@ Test JPP_0511 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file containing a list; list index is defined by a parameter
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0512 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0513 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
 Description: JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -410,5 +418,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 10.01.2024 - 12:25:22
+Generated: 15.01.2024 - 16:29:04
 

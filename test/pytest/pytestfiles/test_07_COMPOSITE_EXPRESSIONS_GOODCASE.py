@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 09.01.2024 - 17:01:37
+# 15.01.2024 - 16:29:04
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -116,5 +116,21 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0511(self, Description):
       nReturn = CExecute.Execute("JPP_0511")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression",]
+   )
+   def test_JPP_0512(self, Description):
+      nReturn = CExecute.Execute("JPP_0512")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes",]
+   )
+   def test_JPP_0513(self, Description):
+      nReturn = CExecute.Execute("JPP_0513")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
