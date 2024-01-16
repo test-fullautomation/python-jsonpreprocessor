@@ -885,6 +885,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1002**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with combinations of implicit and explicit creation / with and without initialization**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1050**
 
   [IMPLICIT_CREATION / BADCASE]
@@ -1007,5 +1017,5 @@ Test Use Cases
 
 ----
 
-Generated: 15.01.2024 - 16:29:04
+Generated: 16.01.2024 - 13:22:08
 

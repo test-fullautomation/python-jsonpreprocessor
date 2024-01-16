@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 15.01.2024
+# 16.01.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2292,6 +2292,27 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (3/3) > {param3} [DICT] (1/1) > {subkey} [DICT] (1/1) > {subkey} [DICT] (2/1) > {paramA} [STR]  :  'subkey value extended'
 [DICT] (3/3) > {param3} [DICT] (1/1) > {subkey} [DICT] (1/1) > {subkey} [DICT] (2/2) > {paramB} [STR]  :  'subkey value extended'
 """
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1002"
+dictUsecase['DESCRIPTION']       = "JSON file with combinations of implicit and explicit creation / with and without initialization"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1002.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (5/1) > {testdict_1} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (1/1) > {A} [INT]  :  1
+[DICT] (5/2) > {paramD} [STR]  :  'D'
+[DICT] (5/3) > {paramE} [STR]  :  'E'
+[DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/1) > {B} [INT]  :  2
+[DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/2) > {paramB} [DICT] (1/1) > {C} [INT]  :  3
+[DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/3) > {paramC} [DICT] (1/1) > {D} [INT]  :  4
+[DICT] (5/5) > {testdict_3} [DICT] (1/1) > {paramD} [DICT] (1/1) > {paramE} [DICT] (1/1) > {paramD} [DICT] (1/1) > {E} [DICT] (1/1) > {F} [INT]  :  6"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
