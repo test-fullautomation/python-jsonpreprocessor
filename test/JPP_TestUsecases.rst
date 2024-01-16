@@ -773,6 +773,26 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0512**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0513**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -860,6 +880,16 @@ Test Use Cases
   [IMPLICIT_CREATION / GOODCASE]
 
    **JSON file with dictionary keys to be created implicitly (same key names at all levels)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1002**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with combinations of implicit and explicit creation / with and without initialization**
 
    Expected: JsonPreprocessor returns values
 
@@ -987,5 +1017,5 @@ Test Use Cases
 
 ----
 
-Generated: 10.01.2024 - 12:25:22
+Generated: 16.01.2024 - 13:22:08
 
