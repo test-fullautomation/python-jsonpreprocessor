@@ -612,7 +612,9 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             if keyNested != '':
                 del oJson[keyNested]
                 rootKey = re.sub("\[.*\]", "", k)
-                if rootKey not in globals():
+                if re.search("^[0-9]+.*$", rootKey):
+                    oJson[f"{rootKey}"] = {}
+                elif rootKey not in globals():
                     oJson[rootKey] = {}
                     sExec = rootKey + " = {}"
                     try:
@@ -1235,6 +1237,8 @@ Indices in square brackets have to be placed outside the curly brackets.")
         if masterFile:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
+                if re.match("^[0-9]+.*$", k):
+                    continue
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})
