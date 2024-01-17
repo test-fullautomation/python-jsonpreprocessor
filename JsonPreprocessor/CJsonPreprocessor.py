@@ -201,6 +201,8 @@ class CJsonPreprocessor():
         self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
+        self.bDuplicatedKeys = True
+        self.jsonCheck = {}
 
     def __reset(self, bCleanGlobalVars : bool = False) -> None:
         '''
@@ -212,6 +214,8 @@ class CJsonPreprocessor():
         self.dUpdatedParams = {}
         self.lNestedParams = []
         self.lDotInParamName = []
+        self.bDuplicatedKeys = True
+        self.jsonCheck = {}
         if bCleanGlobalVars:
             lGlobalVars = []
             for name, value in globals().items():
@@ -274,26 +278,49 @@ class CJsonPreprocessor():
 
                 self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
-                tmpOutdict = copy.deepcopy(out_dict)
-                for k1, v1 in tmpOutdict.items():
-                    pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
-                    if re.search(pattern2, key):
-                        key = k1
-                    if k1 == key:
-                        if isinstance(out_dict[key], list):
-                            if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
+                if self.bDuplicatedKeys:
+                    tmpOutdict = copy.deepcopy(out_dict)
+                    for k1, v1 in tmpOutdict.items():
+                        pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
+                        if re.search(pattern2, key):
+                            bCheck = True
+                            tmpKey = key.replace("${", "")
+                            tmpKey = tmpKey.replace("}", "")
+                            items = []
+                            if "." in tmpKey:
+                                items = tmpKey.split(".")
+                            elif re.search("\['[0-9A-Za-z\.\-_]+'\]", tmpKey):
+                                try:
+                                    rootKey = re.search("^\s*([0-9A-Za-z\.\-_]+)\['.+", tmpKey)[1]
+                                    items = re.findall("\['([0-9A-Za-z\.\-_]+)'\]", tmpKey)
+                                    items.insert(0, rootKey)
+                                except:
+                                    pass
+                            sExec = "self.jsonCheck"
+                            for item in items:
+                                sExec = sExec + f"['{item}']"
+                            try:
+                                exec(f"dumpData = {sExec}")
+                            except:
+                                bCheck = False
+                                pass
+                            if bCheck:
+                                key = k1
+                        if k1 == key:
+                            if isinstance(out_dict[key], list):
+                                if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
+                                    tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
+                                    del out_dict[key]
+                                else:
+                                    tmpValue = out_dict[key]
+                                    tmpValue.append(value)
+                                    del out_dict[key]
+                            else:
                                 tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
                                 del out_dict[key]
-                            else:
-                                tmpValue = out_dict[key]
-                                tmpValue.append(value)
-                                del out_dict[key]
-                        else:
-                            tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
-                            del out_dict[key]
-                        value = tmpValue
-                        out_dict[key] = value
-                del tmpOutdict
+                            value = tmpValue
+                            out_dict[key] = value
+                    del tmpOutdict
                 out_dict[key] = value
         return out_dict
 
@@ -435,7 +462,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
         if len(referVars) > 1:
             if not bKey:
                 for referVar in referVars:
-                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr))) 
+                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr)))
                 return lNestedParam
             else:
                 sUpdateVar =  referVars[0]
@@ -524,7 +551,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
         else:
             return self.__handleDotdictFormat(lInputListParams, lParams)
 
-    def __checkAndCreateNewElement(self, sKey: str, value, bCheck=False):
+    def __checkAndCreateNewElement(self, sKey: str, value, bCheck=False, keyNested=''):
         '''
     This method check and create new elements if they are not exist.
         '''
@@ -539,7 +566,14 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                     sExec = "dumpData = " + rootKey
                     try:
                         exec(sExec)
-                    except:
+                    except Exception as error:
+                        if "list indices must be integers" in str(error):
+                            if keyNested != '':
+                                errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
+                            else:
+                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            self.__reset(bCleanGlobalVars=True)
+                            raise Exception(errorMsg)
                         if bCheck==True:
                             return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
                         else:
@@ -548,6 +582,8 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                                 exec(sExec, globals())
                             except Exception as error:
                                 self.__reset(bCleanGlobalVars=True)
+                                if keyNested != '':
+                                    sKey = keyNested
                                 errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
                                 raise Exception(errorMsg)
                 else:
@@ -575,14 +611,24 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
                 del oJson[keyNested]
+                rootKey = re.sub("\[.*\]", "", k)
+                if re.search("^[0-9]+.*$", rootKey):
+                    oJson[f"{rootKey}"] = {}
+                elif rootKey not in globals():
+                    oJson[rootKey] = {}
+                    sExec = rootKey + " = {}"
+                    try:
+                        exec(sExec, globals())
+                    except Exception as error:
+                        raise Exception(f"Could not set root key element '{rootKey}'! Reason: {error}")
                 if re.match("^[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\[.+\]+$", k):
-                    self.__checkAndCreateNewElement(k, v)
+                    self.__checkAndCreateNewElement(k, v, keyNested=keyNested)
                     sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
                     try:
                         exec(sExec, globals())
                     except Exception as error:
                         self.__reset(bCleanGlobalVars=True)
-                        errorMsg = f"Could not set variable '{k}' with value '{v}'! Reason: {error}"
+                        errorMsg = f"Could not set variable '{keyNested}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
 
                     if CNameMangling.AVOIDDATATYPE.value in k:
@@ -634,6 +680,25 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
+                if re.search("'\${\s*(.*?)\s*}'", valueProcessed):
+                    tmpNestedList = re.findall("'(\${\s*.*?\s*})'", valueProcessed)
+                    for elem in tmpNestedList:
+                        tmpVar = elem.replace('${', '')
+                        tmpVar = tmpVar.replace('}', '')
+                        tmpValue = None
+                        try:
+                            ldict = {}
+                            exec(f"value = {tmpVar}", globals(), ldict)
+                            tmpValue = ldict['value']
+                            del ldict
+                        except:
+                            pass
+                        if tmpValue is not None:
+                            tmpNestedParam = valueProcessed
+                            valueProcessed = valueProcessed.replace(elem, str(tmpValue))
+                            if tmpNestedParam in self.lNestedParams:
+                                self.lNestedParams.remove(tmpNestedParam)
+                                self.lNestedParams.append(valueProcessed)
                 tmpValueAfterProcessed = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
@@ -707,7 +772,7 @@ only simple data types are allowed to be substituted inside."
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
                 # Temporary disable implicit creation of data structures based on nested parameters.
                 # In case check sub-element returns False -> reset() and raise an exception.
-                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True):
+                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
@@ -1023,6 +1088,19 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 for item in dInput:
                     __removeDuplicatedKey(item)
 
+        def __checkKeynameFormat(oJson : dict):
+            '''
+            This function checks a validation of key name in Json configuration file.
+            '''
+            pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\['*.+'*\]\s*}"
+            for k, v in oJson.items():
+                if re.search(pattern1, k):
+                    errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{k}'"
+                    self.__reset(bCleanGlobalVars=True)
+                    raise Exception(errorMsg)
+                if isinstance(v, dict):
+                    __checkKeynameFormat(v)
+
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
             self.__reset(bCleanGlobalVars=True)
@@ -1131,7 +1209,20 @@ Indices in square brackets have to be placed outside the curly brackets.")
             else:
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
+        # Load the temporary Json object without checking duplicated keys for 
+        # verifying duplicated keys later.
+        self.bDuplicatedKeys = False
+        try:
+            self.jsonCheck = json.loads(sJsonDataUpdated,
+                               cls=CJSONDecoder,
+                               object_pairs_hook=self.__processImportFiles)
+        except Exception as error:
+            self.__reset(bCleanGlobalVars=True)
+            raise Exception(f"JSON file: {jFile}\n{error}")
+        self.bDuplicatedKeys = True
 
+        # Load Json object with checking duplicated keys feature is enabled.
+        # The duplicated keys feature uses the self.jsonCheck object to check duplicated keys. 
         try:
             oJson = json.loads(sJsonDataUpdated,
                                cls=CJSONDecoder,
@@ -1139,12 +1230,15 @@ Indices in square brackets have to be placed outside the curly brackets.")
         except Exception as error:
             self.__reset(bCleanGlobalVars=True)
             raise Exception(f"JSON file: {jFile}\n{error}")
-
+        self.jsonCheck = {}
         self.__checkDotInParamName(oJson)
+        __checkKeynameFormat(oJson)
 
         if masterFile:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
+                if re.match("^[0-9]+.*$", k):
+                    continue
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})

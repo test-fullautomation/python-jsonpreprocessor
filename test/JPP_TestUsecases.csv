@@ -70,6 +70,8 @@ JPP_0508|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string conc
 JPP_0509|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (different syntax)
 JPP_0510|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter assignments in separate lines (extended string concatenation)
 JPP_0511|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a list; list index is defined by a parameter
+JPP_0512|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression
+JPP_0513|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0600|CODE_COMMENTS|GOODCASE|JSON file with several combinations of code comments
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
@@ -79,6 +81,7 @@ JPP_0953|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (4): file 
 JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file is empty (multiple pairs of brackets only)
 JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly
 JPP_1001|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly (same key names at all levels)
+JPP_1002|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of implicit and explicit creation / with and without initialization
 JPP_1050|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (1)
 JPP_1051|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (2)
 JPP_1052|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (3)
