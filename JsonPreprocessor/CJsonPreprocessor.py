@@ -462,7 +462,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
         if len(referVars) > 1:
             if not bKey:
                 for referVar in referVars:
-                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr))) 
+                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr)))
                 return lNestedParam
             else:
                 sUpdateVar =  referVars[0]
@@ -678,6 +678,25 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
+                if re.search("'\${\s*(.*?)\s*}'", valueProcessed):
+                    tmpNestedList = re.findall("'(\${\s*.*?\s*})'", valueProcessed)
+                    for elem in tmpNestedList:
+                        tmpVar = elem.replace('${', '')
+                        tmpVar = tmpVar.replace('}', '')
+                        tmpValue = None
+                        try:
+                            ldict = {}
+                            exec(f"value = {tmpVar}", globals(), ldict)
+                            tmpValue = ldict['value']
+                            del ldict
+                        except:
+                            pass
+                        if tmpValue is not None:
+                            tmpNestedParam = valueProcessed
+                            valueProcessed = valueProcessed.replace(elem, str(tmpValue))
+                            if tmpNestedParam in self.lNestedParams:
+                                self.lNestedParams.remove(tmpNestedParam)
+                                self.lNestedParams.append(valueProcessed)
                 tmpValueAfterProcessed = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
