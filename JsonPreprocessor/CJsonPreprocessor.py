@@ -1211,15 +1211,16 @@ Indices in square brackets have to be placed outside the curly brackets.")
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
         # Load the temporary Json object without checking duplicated keys for 
         # verifying duplicated keys later.
-        self.bDuplicatedKeys = False
-        try:
-            self.jsonCheck = json.loads(sJsonDataUpdated,
-                               cls=CJSONDecoder,
-                               object_pairs_hook=self.__processImportFiles)
-        except Exception as error:
-            self.__reset(bCleanGlobalVars=True)
-            raise Exception(f"JSON file: {jFile}\n{error}")
-        self.bDuplicatedKeys = True
+        if masterFile:
+            self.bDuplicatedKeys = False
+            try:
+                self.jsonCheck = json.loads(sJsonDataUpdated,
+                                cls=CJSONDecoder,
+                                object_pairs_hook=self.__processImportFiles)
+            except Exception as error:
+                self.__reset(bCleanGlobalVars=True)
+                raise Exception(f"JSON file: {jFile}\n{error}")
+            self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
         # The duplicated keys feature uses the self.jsonCheck object to check duplicated keys. 
@@ -1230,7 +1231,6 @@ Indices in square brackets have to be placed outside the curly brackets.")
         except Exception as error:
             self.__reset(bCleanGlobalVars=True)
             raise Exception(f"JSON file: {jFile}\n{error}")
-        self.jsonCheck = {}
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
@@ -1243,6 +1243,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                     k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
+            self.jsonCheck = {}
             for k, v in self.dUpdatedParams.items():
                 if '[' in k:
                     rootElement = k.split('[', 1)[0]
