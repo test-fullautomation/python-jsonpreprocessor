@@ -462,7 +462,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
         if len(referVars) > 1:
             if not bKey:
                 for referVar in referVars:
-                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr))) 
+                    lNestedParam.append(re.sub("\$\$", "$", __referVarHandle(referVar, sInputStr)))
                 return lNestedParam
             else:
                 sUpdateVar =  referVars[0]
@@ -566,7 +566,14 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                     sExec = "dumpData = " + rootKey
                     try:
                         exec(sExec)
-                    except:
+                    except Exception as error:
+                        if "list indices must be integers" in str(error):
+                            if keyNested != '':
+                                errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
+                            else:
+                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            self.__reset(bCleanGlobalVars=True)
+                            raise Exception(errorMsg)
                         if bCheck==True:
                             return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
                         else:
@@ -605,7 +612,9 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             if keyNested != '':
                 del oJson[keyNested]
                 rootKey = re.sub("\[.*\]", "", k)
-                if rootKey not in globals():
+                if re.search("^[0-9]+.*$", rootKey):
+                    oJson[f"{rootKey}"] = {}
+                elif rootKey not in globals():
                     oJson[rootKey] = {}
                     sExec = rootKey + " = {}"
                     try:
@@ -671,6 +680,25 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             valueAfterProcessed = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey)
             for valueProcessed in valueAfterProcessed:
+                if re.search("'\${\s*(.*?)\s*}'", valueProcessed):
+                    tmpNestedList = re.findall("'(\${\s*.*?\s*})'", valueProcessed)
+                    for elem in tmpNestedList:
+                        tmpVar = elem.replace('${', '')
+                        tmpVar = tmpVar.replace('}', '')
+                        tmpValue = None
+                        try:
+                            ldict = {}
+                            exec(f"value = {tmpVar}", globals(), ldict)
+                            tmpValue = ldict['value']
+                            del ldict
+                        except:
+                            pass
+                        if tmpValue is not None:
+                            tmpNestedParam = valueProcessed
+                            valueProcessed = valueProcessed.replace(elem, str(tmpValue))
+                            if tmpNestedParam in self.lNestedParams:
+                                self.lNestedParams.remove(tmpNestedParam)
+                                self.lNestedParams.append(valueProcessed)
                 tmpValueAfterProcessed = re.sub("'*\${\s*(.*?)\s*}'*", '\\1', valueProcessed)
                 sExec = "value = " + tmpValueAfterProcessed if isinstance(tmpValueAfterProcessed, str) else \
                         "value = " + str(tmpValueAfterProcessed)
@@ -744,7 +772,7 @@ only simple data types are allowed to be substituted inside."
                 k = re.sub('^\s*\${\s*(.*?)\s*}', '\\1', keyAfterProcessed[0])
                 # Temporary disable implicit creation of data structures based on nested parameters.
                 # In case check sub-element returns False -> reset() and raise an exception.
-                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True):
+                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset(bCleanGlobalVars=True)
                     raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
@@ -1060,6 +1088,19 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 for item in dInput:
                     __removeDuplicatedKey(item)
 
+        def __checkKeynameFormat(oJson : dict):
+            '''
+            This function checks a validation of key name in Json configuration file.
+            '''
+            pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\['*.+'*\]\s*}"
+            for k, v in oJson.items():
+                if re.search(pattern1, k):
+                    errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{k}'"
+                    self.__reset(bCleanGlobalVars=True)
+                    raise Exception(errorMsg)
+                if isinstance(v, dict):
+                    __checkKeynameFormat(v)
+
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
             self.__reset(bCleanGlobalVars=True)
@@ -1191,10 +1232,13 @@ Indices in square brackets have to be placed outside the curly brackets.")
             raise Exception(f"JSON file: {jFile}\n{error}")
         self.jsonCheck = {}
         self.__checkDotInParamName(oJson)
+        __checkKeynameFormat(oJson)
 
         if masterFile:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
+                if re.match("^[0-9]+.*$", k):
+                    continue
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
                 globals().update({k:v})
