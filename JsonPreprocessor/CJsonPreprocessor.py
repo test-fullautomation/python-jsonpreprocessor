@@ -55,6 +55,7 @@ import shlex
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
+from JsonPreprocessor.version import VERSION, VERSION_DATE
 
 class CSyntaxType():
     python = "python"
@@ -172,6 +173,12 @@ class CJsonPreprocessor():
 
    - Allow Python data types ``True``, ``False`` and ``None``
     """
+
+    def getVersion(self):
+        return VERSION
+    
+    def getVersionDate(self):
+        return VERSION_DATE
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
         """
@@ -958,7 +965,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
-            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
+            elif re.search("\${\s*}", sInputStr) \
                 or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Invalid parameter format: {sInputStr}")
