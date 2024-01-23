@@ -55,6 +55,7 @@ import shlex
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
+from JsonPreprocessor.version import VERSION, VERSION_DATE
 
 class CSyntaxType():
     python = "python"
@@ -172,6 +173,12 @@ class CJsonPreprocessor():
 
    - Allow Python data types ``True``, ``False`` and ``None``
     """
+
+    def getVersion(self):
+        return VERSION
+    
+    def getVersionDate(self):
+        return VERSION_DATE
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
         """
