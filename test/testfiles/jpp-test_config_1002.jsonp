@@ -31,10 +31,11 @@
    "paramD" : "D",
    "paramE" : "E",
    ${testdict_3.paramD.paramE.paramD} : {"E" : 5},
-   ${testdict_3.paramD.paramE.paramD}[${paramE}] : {"F" : 6} // if not implicit, usage of parameters for key names is allowed
    //
-   // needs to be clarified (currently throws an implicit creation error)
-   // ${testdict_4} : {},
-   // ${testdict_4}[${paramD}] : {"G" : 7}
+   // usage of parameters allowed only in case of a key with this name already exists
+
+
+
+   ${testdict_3.paramD.paramE.paramD}[${paramE}] : {"F" : 6} // ${paramE} is accepted because the value is "E" and a key with this name already exists
 }
 
