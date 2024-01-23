@@ -57,6 +57,7 @@
       json_preprocessor = CJsonPreprocessor()
       json_preprocessor.jsonDump(dictTest, \"./OutputFile.json\")
 
+* Added ``getVersion`` and ``getVersionDate`` methods to get current version and the date of the version.
 * Improved format of nested parameters; improved error messages
 * Some bugs fixed in implicitly created data structures
 * Improved index handling together with nested parameters
