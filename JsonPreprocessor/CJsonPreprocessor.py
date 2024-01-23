@@ -958,7 +958,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
-            elif re.search("\${\s*}", sInputStr) or re.search("\${.+}\.", sInputStr) \
+            elif re.search("\${\s*}", sInputStr) \
                 or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Invalid parameter format: {sInputStr}")
