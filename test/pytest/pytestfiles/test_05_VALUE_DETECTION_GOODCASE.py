@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 10.10.2023 - 13:31:11
+# 24.01.2024 - 13:56:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,6 +52,14 @@ class Test_VALUE_DETECTION_GOODCASE:
    )
    def test_JPP_0302(self, Description):
       nReturn = CExecute.Execute("JPP_0302")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)",]
+   )
+   def test_JPP_0303(self, Description):
+      nReturn = CExecute.Execute("JPP_0303")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns values

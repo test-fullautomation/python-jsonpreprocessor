@@ -285,11 +285,31 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0260**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0261**
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
    **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0262**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -378,6 +398,18 @@ Test Use Cases
    Expected: JsonPreprocessor returns values
 
    *Hint: Checklist rule 4*
+
+----
+
+* **Test JPP_0303**
+
+  [VALUE_DETECTION / GOODCASE]
+
+   **JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (nested) (valid syntax)**
+
+   Expected: JsonPreprocessor returns values
+
+   *Hint: Checklist rule 5*
 
 ----
 
@@ -805,6 +837,38 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0551**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: List indices must be of type 'int'*
+
+----
+
+* **Test JPP_0552**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0553**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0600**
 
   [CODE_COMMENTS / GOODCASE]
@@ -1017,5 +1081,5 @@ Test Use Cases
 
 ----
 
-Generated: 16.01.2024 - 13:22:08
+Generated: 24.01.2024 - 13:56:16
 
