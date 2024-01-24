@@ -723,7 +723,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                     if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
                         valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
                     elif CNameMangling.DUPLICATEDKEY_02.value in valueProcessed:
-                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_02.value, '')
+                        valueProcessed = re.sub("(" + CNameMangling.DUPLICATEDKEY_02.value + "[0-9]*)", "", valueProcessed)
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
                 if bKey and type(ldict['value']) in [list, dict]:
                     if CNameMangling.AVOIDDATATYPE.value in valueProcessed:
