@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 16.01.2024
+# 24.01.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1178,9 +1178,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0260.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "composite data types not allowed in names (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Found expression '${param}' with at least one parameter of composite data type ('${param}' is of type <class 'list'>). Because of this expression is the name of a parameter, only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1206,9 +1206,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0262.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "composite data types not allowed in names (placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Found expression '${param}' with at least one parameter of composite data type ('${param}' is of type <class 'dict'>). Because of this expression is the name of a parameter, only simple data types are allowed to be substituted inside."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1379,18 +1379,15 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0303.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (10/1) > {ara} [STR]  :  'ara'
-[DICT] (10/2) > {lara} [LIST] (1/1) > [STR]  :  'ara'
-[DICT] (10/3) > {param} [INT]  :  123
-[DICT] (10/4) > {param} [LIST] (1/1) > [FLOAT]  :  4.56
-[DICT] (10/5) > {val1} [INT]  :  123
-[DICT] (10/6) > {val2} [STR]  :  '123'
-[DICT] (10/7) > {val3} [STR]  :  [FLOAT]  :  4.56
-[DICT] (10/8) > {val4} [STR]  :  [STR]  :  '4.56'
-[DICT] (10/9) > {val5} [STR]  :  [FLOAT]  :  4.56
-[DICT] (10/10) > {val6} [STR]  :  [STR]  :  '4.56'
+[DICT] (7/1) > {ara} [STR]  :  'ara'
+[DICT] (7/2) > {lara} [LIST] (1/1) > [STR]  :  'ara'
+[DICT] (7/3) > {param} [INT]  :  123
+[DICT] (7/4) > {param1} [LIST] (1/1) > [FLOAT]  :  4.56
+[DICT] (7/5) > {val1} [STR]  :  '123'
+[DICT] (7/6) > {val2} [STR]  :  '4.56'
+[DICT] (7/7) > {val3} [STR]  :  '4.56'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2102,9 +2099,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0551.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not set variable '${listval}['${intval}']' with value '4'! Reason: list indices must be integers"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2116,9 +2113,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0552.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index or sub-element inside curly brackets in the parameter '${listval[${intval}]}'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2130,9 +2127,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0553.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index or sub-element inside curly brackets in the parameter '${listval['${intval}']}'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

@@ -22,8 +22,8 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-VERSION      = "0.24.0"
-VERSION_DATE = "16.01.2024"
+VERSION      = "0.25.0"
+VERSION_DATE = "24.01.2024"
 #
 # --------------------------------------------------------------------------------------------------------------
 #TM***
@@ -211,8 +211,8 @@ oConfig.Set("THISSCRIPTFULLNAME", THISSCRIPTFULLNAME)
 try:
    # not yet implemented officially
    oJsonPreprocessor = CJsonPreprocessor()
-   sut_version = oJsonPreprocessor.get_version()
-   sut_version_date = oJsonPreprocessor.get_version_date()
+   sut_version = oJsonPreprocessor.getVersion()
+   sut_version_date = oJsonPreprocessor.getVersionDate()
    del oJsonPreprocessor
    SUT_FULL_NAME = f"JsonPreprocessor v. {sut_version} / {sut_version_date}"
    oConfig.Set("SUT_FULL_NAME", SUT_FULL_NAME)

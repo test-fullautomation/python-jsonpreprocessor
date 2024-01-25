@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 10.01.2024 - 12:25:22
+# 24.01.2024 - 13:56:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -112,10 +112,26 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)",]
+   )
+   def test_JPP_0260(self, Description):
+      nReturn = CExecute.Execute("JPP_0260")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)",]
    )
    def test_JPP_0261(self, Description):
       nReturn = CExecute.Execute("JPP_0261")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)",]
+   )
+   def test_JPP_0262(self, Description):
+      nReturn = CExecute.Execute("JPP_0262")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
