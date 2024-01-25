@@ -51,11 +51,9 @@
 
   **Example:**
 
-  .. code::
-
-      dictTest = {\"A\"  1, \"B\"  2}
-      json_preprocessor = CJsonPreprocessor()
-      json_preprocessor.jsonDump(dictTest, \"./OutputFile.json\")
+  | ``dictTest = {\"A\"  1, \"B\"  2}``
+  | ``json_preprocessor = CJsonPreprocessor()``
+  | ``json_preprocessor.jsonDump(dictTest, \"./OutputFile.json\")``
 
 * Added ``getVersion`` and ``getVersionDate`` methods to get current version and the date of the version.
 * Improved format of nested parameters; improved error messages
