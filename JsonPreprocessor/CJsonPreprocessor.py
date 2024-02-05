@@ -72,13 +72,15 @@ class CNameMangling(Enum):
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
-   Add python data types and syntax to json. ``True``, ``False`` and ``None`` will be a accepted as json syntax elements.
+Extends the JSON syntax by the Python keywords ``True``, ``False`` and ``None``.
 
-**Args:**
+**Arguments:**
 
-   **json.JSONDecoder** (*object*)
+* ``json.JSONDecoder``
 
-      Decoder object provided by ``json.loads``
+  / *Type*: object /
+
+  Decoder object provided by ``json.loads``
     """
 
     NUMBER_RE = re.compile(
@@ -140,61 +142,43 @@ class CPythonJSONDecoder(json.JSONDecoder):
 
 class CJsonPreprocessor():
     """
-   CJsonPreprocessor extends the syntax of json.
+CJsonPreprocessor extends the JSON syntax by the following features:
 
-   Features are
-
-   -  Allow c/c++-style comments within json files.
-
-      // single line or part of single line and /\* \*/ multline comments are possible
-
-   -  Allow to import json files into json files
-
-      ``"[import]" : "relative/absolute path"``, imports another json file to exactly this location.
-
-   -  Allow use of the defined paramaters within json files
-
-      In any place the syntax ``${basenode.subnode. ... nodename}`` allows to reference an already existing parameter.
-
-      * Example:
-
-   .. code::
-
-      {
-          "basenode" : {
-                           subnode : {
-                                          "myparam" : 5
-                                     },
-
-                       },
-
-          "myVar" : ${basenode.subnode.myparam}
-      }
-
-   - Allow Python data types ``True``, ``False`` and ``None``
+* Allow c/c++-style comments within JSON files
+* Allow to import JSON files into JSON files
+* Allow to define and use parameters within JSON files
+* Allow Python keywords ``True``, ``False`` and ``None``
     """
 
     def getVersion(self):
+        """
+Returns the version of JsonPreprocessor as string.
+        """
         return VERSION
     
     def getVersionDate(self):
+        """
+Returns the version date of JsonPreprocessor as string.
+        """
         return VERSION_DATE
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
         """
-   Constructor
+Constructor
 
-**Args:**
+**Arguments:**
 
-   **syntax** (*CSyntaxType*) optional
+* ``syntax`` (*CSyntaxType*) optional
 
-      default: `json` , `python`
+  / *Condition*: optional / *Type*: CSyntaxType / *Default*: python /
 
-      If set to `python`, then python data types are allowed as part of json file.
+  If set to ``python``, then Python data types are allowed as part of JSON file.
 
-   **currentCfg** (*dict*) optional
+* ``currentCfg`` (*dict*) optional
 
-      Internally used to aggregate imported json files.
+  / *Condition*: optional / *Type*: dict / *Default*: {} /
+
+  Internally used to aggregate imported json files.
         """
         import builtins
         import keyword
@@ -212,9 +196,9 @@ class CJsonPreprocessor():
         self.jsonCheck = {}
 
     def __reset(self, bCleanGlobalVars : bool = False) -> None:
-        '''
-   Reset initial variables which are set in constructor method after master Json file is loaded.
-        '''
+        """
+Reset initial variables which are set in constructor method after master JSON file is loaded.
+        """
         self.jsonPath = ''
         self.lImportedFiles = []
         self.recursive_level = 0
@@ -240,23 +224,27 @@ class CJsonPreprocessor():
                     pass
 
     def __processImportFiles(self, input_data : dict) -> dict:
-        '''
-   This is a custom decorder of ``json.loads object_pairs_hook`` function.
+        """
+This is a custom decoder of ``json.loads object_pairs_hook`` function.
 
-   This method helps to import json files which are provided in ``"[import]"`` keyword into the current json file.
+This method helps to import JSON files which are provided in ``"[import]"`` keyword into the current json file.
 
-**Args:**
+**Arguments:**
 
-   **input_data** (*dict*)
+* ``input_data``
 
-      Dictionary from json file as input
+  / *Condition*: required / *Type*: (* /
+
+  Dictionary from JSON file as input
 
 **Returns:**
 
-   **out_dict** (*dict*)
+* ``out_dict``
 
-      Dictionary as output, dictionary is extended if ``"[import]"`` found and properly imported.
-        '''
+  / *Type*: dict /
+
+  Dictionary with resolved content from imported JSON file
+        """
         out_dict = {}
 
         for key, value in input_data:
@@ -333,22 +321,23 @@ class CJsonPreprocessor():
 
     def __load_and_removeComments(self, jsonFile : str) -> str:
         """
-      Loads a given json file and filters all C/C++ style comments.
+Loads a given json file and filters all C/C++ style comments.
 
-**Args:**
+**Arguments:**
 
-   **jsonFile** (*string*)
+* ``jsonFile``
 
-      Path (absolute/relative/) file to be processed.
-      The path can contain windows/linux style environment variables.
+  / *Condition*: required / *Type*: str /
 
-         !ATTENTION! This is dangerous
+  Path of file to be processed.
 
 **Returns:**
 
-   **sContentCleaned** (*string*)
+* ``sContentCleaned``
 
-      String version of json file after removing all comments.
+  / *Type*: str /
+
+  String version of JSON file after removing all comments.
         """
 
         def replacer(match):
@@ -368,17 +357,21 @@ class CJsonPreprocessor():
 
     def __checkParamName(self, sInput: str) -> str:
         """
-      Checks a parameter name, in case the name is conflict with Python keywords, the temporary prefix 
-      will be added to avoid any potential issues. This temporary prefix is removed when updating returned 
-      Json object.
+Checks a parameter name, in case the name is conflict with Python keywords, the temporary prefix
+will be added to avoid any potential issues. This temporary prefix is removed when updating returned
+Json object.
 
-**Args:**
+**Arguments:**
 
-   **sInput** (*string*)
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
 
 **Returns:**
 
-   **sInput** (*string*)
+* ``sInput``
+
+  / *Type*: str /
         """
 
         pattern = "\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}"
@@ -391,21 +384,25 @@ class CJsonPreprocessor():
         return sInput
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False) -> list:
-        '''
-   This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
+        """
+This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
 
-**Args:**
+**Arguments:**
 
-   **sInputStr** (*string*)
+* ``sInputStr``
 
-      Parameter name or value which contains a nested variable.
+  / *Condition*: required / *Type*: str /
+
+  Parameter name or value which contains a nested variable.
 
 **Returns:**
 
-   **lNestedParam** (*list*)
+* ``lNestedParam``
 
-      List of resolved variables which contains in the sInputStr.
-        '''
+  / *Type*: list /
+
+  List of resolved variables which contains in the ``sInputStr``.
+        """
         def __referVarHandle(referVar : str, sInputStr : str) -> str:
             if "." in referVar:
                 dotdictVariable = re.sub('\$\${\s*(.*?)\s*}', '\\1', referVar)
@@ -520,24 +517,29 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             return lNestedParam
 
     def __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list:
-        '''
-   This method checks the availability of param names contained "." in dotdict format element in JSON config file.
+        """
+This method checks the availability of param names contained "." in dotdict format element in JSON config file.
 
-**Args:**
+**Arguments:**
 
-   **lInputListParams** (*list*)
+* ``lInputListParams``
 
-      List of items which separated by "." of dotdict format element.
+  / *Condition*: required / *Type*: list /
 
-   **lParams** (*list*)
+  List of items separated by "." of dotdict format.
 
-      List of param names in dotdict format element.
+* ``lParams``
+
+  / *Type*: list /
+
+  List of parameter names in dotdict format.
 
 **Returns:**
 
-   **lParams** (*list*)
+* ``lParams``
 
-        '''
+  / *Type*: list /
+        """
         checkParam = lInputListParams[0]
         i = 0
         bDotdictParam = False
@@ -559,9 +561,9 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             return self.__handleDotdictFormat(lInputListParams, lParams)
 
     def __checkAndCreateNewElement(self, sKey: str, value, bCheck=False, keyNested=''):
-        '''
-    This method check and create new elements if they are not exist.
-        '''
+        """
+This method check and create new elements if they are not exist.
+        """
         rootKey = re.sub("\[.*\]", "", sKey)
         subElements = re.findall("\[\s*'([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)'\s*\]", sKey)
         if len(subElements) < 1:
@@ -598,22 +600,26 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
             return True
 
     def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
-        '''
-   This method replaces all nested parameters in key and value of a json object .
+        """
+This method replaces all nested parameters in key and value of a JSON object .
 
-**Args:**
+**Arguments:**
 
-   **oJson** (*dict*)
+* ``oJson``
 
-      Input Json object as dictionary. This dictionary will be searched for all ``${variable}`` occurences.
-      If found it will be replaced with it's current value.
+  / *Condition*: required / *Type*: dict /
+
+  Input JSON object as dictionary. This dictionary will be searched for all ``${variable}`` occurences.
+  If found it will be replaced with it's current value.
 
 **Returns:**
 
-   **oJsonOut** (*dict*)
+* ``oJsonOut``
 
-      Output Json object as dictionary with all variables resolved.
-        '''
+  / *Type*: dict /
+
+  Output JSON object as dictionary with all variables resolved.
+        """
 
         def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
             if keyNested != '':
@@ -833,14 +839,19 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
         return oJson, bNested
 
     def __checkAndUpdateKeyValue(self, sInputStr: str, nestedKey = False) -> str:
-        '''
-   This function checks and makes up all nested parameters in json configuration files.
+        """
+This function checks and makes up all nested parameters in JSON configuration files.
 
-**Args:**
-   **sInputStr** (*string*)
-   Key or value which is parsed from json configuration file.
+**Arguments:**
+
+* ``sInputStr*``
+
+  / *Condition*: required / *Type*: str /
+
+  Key or value which is parsed from JSON configuration file.
 
 **Returns:**
+
    The string after nested parameters are made up.
 
    Ex:
@@ -848,11 +859,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
       Nested param ${abc}['xyz'] -> "${abc}['xyz']"
 
       Nested param "${abc}['xyz']" -> "str(${abc}['xyz'])"
-        '''
+        """
         def __recursiveNestedHandling(sInputStr: str, lNestedParam: list) -> str:
-            '''
-        This method handles nested parameters are called recursively in a string value.
-            '''
+            """
+This method handles nested parameters are called recursively in a string value.
+            """
             tmpList = []
             for item in lNestedParam:
                 item = re.sub(r'([$()\[\]])', r'\\\1', item)
@@ -981,16 +992,21 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
         return sOutput
 
     def __checkDotInParamName(self, oJson : dict):
-        '''
-   This is recrusive funtion collects all parameters which contain "." in the name.
+        """
+This is recrusive funtion collects all parameters which contain "." in the name.
 
-**Args:**
-   **oJson** (*dict*)
-   Json object which want to collect all parameter's name contained "."
+**Arguments:**
+
+* ``oJson``
+
+  / *Condition*: required / *Type*: dict /
+
+  Json object which want to collect all parameter's name contained "."
 
 **Returns:**
-   **None**
-        '''
+
+  *no return values*
+        """
         for k, v in oJson.items():
             if "." in k and k not in self.lDotInParamName:
                 self.lDotInParamName.append(k)
@@ -998,25 +1014,27 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 self.__checkDotInParamName(v)
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
-        '''
-   This function is the entry point of JsonPreprocessor.
+        """
+This method is the entry point of JsonPreprocessor.
 
-   It loads the json file, preprocesses it and returns the preprocessed result as data structure.
+``jsonLoad`` loads the JSON file, preprocesses it and returns the preprocessed result as Python dictionary.
 
-**Args:**
+**Arguments:**
 
-   **jFile** (*string*)
+* ``jFile``
 
-      Relative/absolute path to main json file.
+  / *Condition*: required / *Type*: str /
 
-      ``%envvariable%`` and ``${envvariable}`` can be used, too in order to access environment variables.
+  Path and name of main JSON file. The path can be absolute or relative and is also allowed to contain environment variables.
 
 **Returns:**
 
-   **oJson** (*dict*)
+* ``oJson``
 
-      Preprocessed json file(s) as dictionary data structure
-        '''
+  / *Type*: dict /
+
+  Preprocessed JSON file(s) as Python dictionary
+        """
         
         def __handleListElements(sInput : str) -> str:
             items = re.split("\s*,\s*", sInput)
@@ -1098,9 +1116,9 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     __removeDuplicatedKey(item)
 
         def __checkKeynameFormat(oJson : dict):
-            '''
-            This function checks a validation of key name in Json configuration file.
-            '''
+            """
+This function checks a validation of key name in Json configuration file.
+            """
             pattern1 = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\['*.+'*\]\s*}"
             for k, v in oJson.items():
                 if re.search(pattern1, k):
@@ -1297,25 +1315,29 @@ Indices in square brackets have to be placed outside the curly brackets.")
         return oJson
 
     def jsonDump(self, oJson : dict, outFile : str) -> str:
-        '''
-   This function writes the content of a Python dictionary to a file in JSON format and returns a normalized path to this JSON file.
+        """
+This method writes the content of a Python dictionary to a file in JSON format and returns a normalized path to this JSON file.
 
-**Args:**
+**Arguments:**
 
-   **oJson** (*dictionary*)
+* ``oJson``
 
-      Json/Dictionary object.
+  / *Condition*: required / *Type*: dict /
 
-   **outFile** (*string*)
+* ``outFile`` (*string*)
 
-      Path and name of the JSON output file. The path can be absolute or relative and is also allowed to contain environment variables.
+  / *Condition*: required / *Type*: str /
+
+  Path and name of the JSON output file. The path can be absolute or relative and is also allowed to contain environment variables.
 
 **Returns:**
 
-   **outFile** (*string*)
+* ``outFile`` (*string*)
 
-      Normalized path and name of the JSON output file.
-        '''
+  / *Type*: str /
+
+  Normalized path and name of the JSON output file.
+        """
 
         outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
