@@ -1,0 +1,35 @@
+//  Copyright 2020-2023 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+
+{
+   // implicitly created data structure
+   ${testdict1.subKey1.subKey2.subKey3} : {"subKey4" : 1},
+   "testdict2" : ${testdict1}, // by value
+   //
+   // parameters containing names of existing keys
+   "param1" : "subKey1",
+   "param2" : "subKey2",
+   "param3" : "subKey3",
+   "param4" : "subKey4",
+   //
+   // access to implicitly created keys by parameters (standard notation); all are strings, therefore single quotes do not matter
+   ${testdict1}[${param1}]['${param2}']['subKey3'][${param4}] : 2,
+   // access to implicitly created keys by parameters (dotdict notation)
+   ${testdict2.${param1}.subKey2.${param3}.subKey4} : 3,
+   // assign modified values to new parameters
+   "param5" : ${testdict1}[${param1}]['${param2}']['subKey3'][${param4}]
+   // "param6" : ${testdict2.${param1}.subKey2.${param3}.subKey4} // 'Invalid nested parameter format: ${testdict2.${param1}.subKey2.${param3}.subKey4} - The double quotes are missing!!!'!
+}
+
