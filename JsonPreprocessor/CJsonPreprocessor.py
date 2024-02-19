@@ -878,7 +878,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             if re.search("\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr):
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
-            if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr.lower()):
+            if re.match("^\s*" + nestedPattern + "\s*,*\]*}*\s*$", sInputStr):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr)
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
@@ -886,8 +886,10 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 nestedParam = re.sub("^\s*\"(.+)\"\s*.*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
                 sInputStr = sInputStr.replace(nestedParam, nestedParam + CNameMangling.STRINGCONVERT.value)
-            elif re.match("\s*{*\[*\".+\"\s*", sInputStr.lower()) and sInputStr.count("\"")==2 \
-                and re.search("(" + nestedPattern + ")*", sInputStr.lower()):
+            elif ((re.match("\s*{*\[*\".+\"\s*", sInputStr) and sInputStr.count("\"")==2) \
+                or (re.match("^\s*\${.+}[,\s]*$", sInputStr) and sInputStr.count("{")==sInputStr.count("}") \
+                    and not re.search("(?<!^)(?<!\.)[^\.]\${", sInputStr.strip()) and not nestedKey)) \
+                and re.search("(" + nestedPattern + ")*", sInputStr):
                 dictPattern = "\[+\s*'[0-9A-Za-z\.\-_${}\[\]]*'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + "\s*}\s*\]+"
                 nestedPattern = "\${\s*" + variablePattern + "(\${\s*" + variablePattern + "\s*})*" + "\s*}(" + dictPattern +")*"
                 lNestedParam = []
@@ -937,6 +939,10 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     self.lNestedParams.append(nestedBase)
 
                 sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
+                if re.match("^\s*\${.+}[,\s]*$", sInputStr):
+                    sInputStr = "\"" + sInputStr + "\""
+                else:
+                    re.sub("\"(\${.+})\"", "\"str(\\1)\"", sInputStr)
             elif "," in sInputStr:
                 if not re.match("^\s*\".+\"\s*$", sInputStr):
                     self.__reset(bCleanGlobalVars=True)
@@ -946,7 +952,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr)
                 for nestedParam in lNestedParam:
                     self.lNestedParams.append(nestedParam[0])
-                if re.match(listPattern, sInputStr.lower()):
+                if re.match(listPattern, sInputStr):
                     items = sInputStr.split(",")
                     newInputStr = ''
                     for item in items:
