@@ -828,6 +828,13 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
 
             __jsonUpdated(k, v, oJson, bNested, keyNested)
             if keyNested != '' and not bStrConvert:
+                transTable = str.maketrans({"[":"\[", "]":"\]"})
+                tmpList = []
+                for key in self.dUpdatedParams:
+                    if re.match("^" + k.translate(transTable) + "\['.+$", key):
+                        tmpList.append(key)
+                for item in tmpList:
+                    self.dUpdatedParams.pop(item)
                 self.dUpdatedParams.update({k:v})
         del tmpJson
         return oJson, bNested
