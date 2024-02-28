@@ -49,7 +49,6 @@ import os
 import json
 import re
 import sys
-import platform
 import copy
 import shlex
 
@@ -64,9 +63,7 @@ class CSyntaxType():
 class CNameMangling(Enum):
     AVOIDDATATYPE    = "JPavoidDataType_"
     COLONS           = "__handleColonsInLine__"
-    DUPLICATEDKEY_00 = "__rootDuplicatedKey__"
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
-    DUPLICATEDKEY_02 = "__RecursiveInitialValue__"
     STRINGCONVERT    = "__ConvertParameterToString__"
     LISTINDEX        = "__IndexOfList__"
 
@@ -258,7 +255,7 @@ class CJsonPreprocessor():
       Dictionary as output, dictionary is extended if ``"[import]"`` found and properly imported.
         '''
         out_dict = {}
-
+        i=1
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 currJsonPath = self.jsonPath
@@ -314,6 +311,14 @@ class CJsonPreprocessor():
                             if bCheck:
                                 key = k1
                         if k1 == key:
+                            listKeys = list(out_dict.keys())
+                            index = listKeys.index(key)
+                            newKey = key + CNameMangling.DUPLICATEDKEY_01.value + str(i)
+                            listKeys.insert(index, newKey)
+                            tmpDict = {}
+                            for k in listKeys:
+                                tmpDict[k] = index if k==newKey else out_dict[k]
+                            out_dict = tmpDict
                             if isinstance(out_dict[key], list):
                                 if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
                                     tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
@@ -329,6 +334,7 @@ class CJsonPreprocessor():
                             out_dict[key] = value
                     del tmpOutdict
                 out_dict[key] = value
+            i+=1
         return out_dict
 
     def __load_and_removeComments(self, jsonFile : str) -> str:
@@ -350,7 +356,6 @@ class CJsonPreprocessor():
 
       String version of json file after removing all comments.
         """
-
         def replacer(match):
             s = match.group(0)
             if s.startswith('/'):
@@ -380,7 +385,6 @@ class CJsonPreprocessor():
 
    **sInput** (*string*)
         """
-
         pattern = "\${\s*([0-9A-Za-z_]+[0-9A-Za-z\.\-_]*)\s*}"
         lParams = re.findall(pattern, sInput)
         for param in lParams:
@@ -597,7 +601,7 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                     continue
             return True
 
-    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False):
+    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, parentParams : str = ''):
         '''
    This method replaces all nested parameters in key and value of a json object .
 
@@ -614,10 +618,10 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
 
       Output Json object as dictionary with all variables resolved.
         '''
-
-        def __jsonUpdated(k, v, oJson, bNested, keyNested = ''):
+        def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False):
             if keyNested != '':
-                del oJson[keyNested]
+                if not bDuplicatedHandle:
+                    del oJson[keyNested]
                 rootKey = re.sub("\[.*\]", "", k)
                 if re.search("^[0-9]+.*$", rootKey):
                     oJson[f"{rootKey}"] = {}
@@ -658,8 +662,8 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                 if bNested:
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k) 
-                    oJson[k] = v
-                    globals().update({k:v})
+                oJson[k] = v
+                globals().update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             varPattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}"
@@ -720,10 +724,6 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                         sInputStr = str(ldict['value']) if bValueConvertString else ldict['value']
                 except:
                     self.__reset(bCleanGlobalVars=True)
-                    if CNameMangling.DUPLICATEDKEY_00.value in valueProcessed:
-                        valueProcessed = valueProcessed.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
-                    elif CNameMangling.DUPLICATEDKEY_02.value in valueProcessed:
-                        valueProcessed = re.sub("(" + CNameMangling.DUPLICATEDKEY_02.value + "[0-9]*)", "", valueProcessed)
                     raise Exception(f"The variable '{valueProcessed}' is not available!")
                 if bKey and type(ldict['value']) in [list, dict]:
                     if CNameMangling.AVOIDDATATYPE.value in valueProcessed:
@@ -748,13 +748,29 @@ only simple data types are allowed to be substituted inside."
         tmpJson = copy.deepcopy(oJson)
         pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\$\{\}\-_]*\s*}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${.+\s*\]+)*"
         for k, v in tmpJson.items():
+            if "${" not in k and CNameMangling.DUPLICATEDKEY_01.value not in k:
+                parentParams = k if parentParams=='' else parentParams + "['" + k + "']"
             keyNested = ''
             bStrConvert = False
             bImplicitCreation = False
-            if CNameMangling.DUPLICATEDKEY_00.value in k:
+            bDuplicatedHandle = False
+            if re.match("^.+" + CNameMangling.DUPLICATEDKEY_01.value + "\d+$", k):
                 del oJson[k]
-                k = k.replace(CNameMangling.DUPLICATEDKEY_00.value, '')
-                oJson[k] = v
+                dupKey = k
+                k = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+$", "", k)
+                value = tmpJson[k].pop(1)
+                if "${" not in dupKey and "${" not in str(value):
+                    if parentParams != "":
+                        sExec = parentParams + "['" + k + "'] = \"" + value + "\"" if isinstance(value, str) else \
+                                parentParams + "['" + k + "'] = " + str(value)
+                    else:
+                        sExec = k + " = \"" + value + "\"" if isinstance(value, str) else \
+                                k + " = " + str(value)
+                    try:
+                        exec(sExec, globals())
+                    except:
+                        pass
+                bDuplicatedHandle = True
             if re.search("(str\(" + pattern + "\))", k.lower()):
                 bStrConvert = True
                 keyNested = k
@@ -789,10 +805,9 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
         Please check key '{k}' in config file!!!")
-
+            
             if isinstance(v, dict):
-                v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True)
-
+                v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
                 if v[0] != CNameMangling.DUPLICATEDKEY_01.value:
                     tmpValue = []
@@ -807,17 +822,24 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     v = tmpValue
                     del tmpValue
                 else:
-                    i=1
-                    while i<len(v):
-                        while re.search(pattern, v[i]):
+                    if len(v)==2:
+                        v = v[1]
+                        if "${" in str(v):
                             bNested = True
-                            initItem = v[i]
-                            tmpValue = __loadNestedValue(initItem, v[i]) 
-                            v[i] = tmpValue
-                        tmpValue = v[i]
-                        i+=1
-                    v = tmpValue
-                    del tmpValue
+                        while isinstance(v, str) and "${" in v:
+                            v = __loadNestedValue(initValue=v, sInputStr=v)
+                    else:
+                        i=1
+                        while i<len(v):
+                            while re.search(pattern, v[i]):
+                                bNested = True
+                                initItem = v[i]
+                                tmpValue = __loadNestedValue(initItem, v[i]) 
+                                v[i] = tmpValue
+                            tmpValue = v[i]
+                            i+=1
+                        v = tmpValue
+                        del tmpValue
 
             elif isinstance(v, str):
                 if re.search(pattern, v.lower()):
@@ -825,8 +847,19 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     initValue = v
                     while isinstance(v, str) and "${" in v:
                         v = __loadNestedValue(initValue, v)
-
-            __jsonUpdated(k, v, oJson, bNested, keyNested)
+                    if bDuplicatedHandle:
+                        if "${" not in dupKey and parentParams != "":
+                            sExec = parentParams + "['" + k + "'] = \"" + v + "\"" if isinstance(v, str) else \
+                                    parentParams + "['" + k + "'] = " + str(v)
+                        else:
+                            sExec = k + " = \"" + v + "\"" if isinstance(v, str) else \
+                                    k + " = " + str(v)
+                        try:
+                            exec(sExec, globals())
+                        except:
+                            pass
+                        continue
+            __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle)
             if keyNested != '' and not bStrConvert:
                 transTable = str.maketrans({"[":"\[", "]":"\]"})
                 tmpList = []
@@ -835,7 +868,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         tmpList.append(key)
                 for item in tmpList:
                     self.dUpdatedParams.pop(item)
-                self.dUpdatedParams.update({k:v})
+                if not bDuplicatedHandle and CNameMangling.DUPLICATEDKEY_01.value not in k:
+                    self.dUpdatedParams.update({k:v})
+
+            if re.match("^.+\['" + k + "'\]$", parentParams):
+                parentParams = re.sub("\['" + k + "'\]", "", parentParams)
         del tmpJson
         return oJson, bNested
 
@@ -1030,7 +1067,6 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
 
       Preprocessed json file(s) as dictionary data structure
         '''
-        
         def __handleListElements(sInput : str) -> str:
             items = re.split("\s*,\s*", sInput)
             j=0
@@ -1044,68 +1080,27 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             return newItem
         
         def __handleDuplicatedKey(dInput : dict) -> dict:
-            pattern = "\${\s*[0-9A-Za-z_]+[0-9A-Za-z\.\-_]*\s*}(\[+\s*'[0-9A-Za-z\._]+'\s*\]+|\[+\s*\d+\s*\]+)*"
             tmpDict = copy.deepcopy(dInput)
+            listKeys = list(tmpDict.keys())
+            dictValues = {}
+            for key in listKeys:
+                if CNameMangling.DUPLICATEDKEY_01.value in key:
+                    origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", key)
+                    dictValues[origKey] = copy.deepcopy(tmpDict[origKey])
             for k, v in tmpDict.items():
-                if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
-                    i=1
-                    dupKey = ''
-                    if re.search(pattern, k):
-                        varPattern = "[0-9A-Za-z_]+[0-9A-Za-z\-_]*"
-                        dupKey = re.search("\.(" + varPattern + ")\s*}\s*$|\['(" + varPattern + ")'\]\s*$", k)[1]
-                    if dupKey != '' and dupKey is not None:
-                        tmpKey = dupKey
-                    else:
-                        tmpKey = k
-                    tmpPattern = "\${\s*" + tmpKey + "\s*}|\${\s*" + tmpKey + "\.|\[\s*'"+ tmpKey + "'\s*\]|\." + tmpKey + "\.*"
-                    if not re.search(pattern, str(v[-1])) or not re.search(tmpPattern, str(v[-1])):
-                        dInput[k] = v[-1]
-                        continue
-                    while i < len(v):
-                        bRecursiveKey = False    
-                        if re.search(pattern, str(v[i])) and i>1:
-                            if isinstance(v[i], str):
-                                if re.search(tmpPattern, v[i]) or tmpKey in v[i]:
-                                    v[i] = re.sub(tmpKey, tmpKey + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), v[i])
-                                    bRecursiveKey = True
-                            if isinstance(v[i], list):
-                                newList = []
-                                for item in v[i]:
-                                    if re.search(tmpPattern, item) or tmpKey in item:
-                                        item = re.sub(tmpKey, tmpKey + CNameMangling.DUPLICATEDKEY_02.value + str(i-1), item)
-                                        bRecursiveKey = True
-                                    newList.append(item)
-                                v[i] = newList
-                                del newList
-                            if bRecursiveKey:
-                                if dupKey == '':
-                                    k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
-                                else:
-                                    k1 = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_02.value + str(i), k)
-                                dInput[k1] = v[i] 
-                        else:
-                            if dupKey == '':
-                                k1 = k + CNameMangling.DUPLICATEDKEY_02.value + str(i)
-                            else:
-                                k1 = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_02.value + str(i), k)
-                            dInput[k1] = v[i]
-                        i+=1
-                    if dupKey != '' and CNameMangling.DUPLICATEDKEY_02.value in str(v):
-                        del dInput[k]
-                        k = re.sub(dupKey, dupKey + CNameMangling.DUPLICATEDKEY_00.value, k)
-                    dInput[k] = v[1] if len(v)==2 else v
+                if CNameMangling.DUPLICATEDKEY_01.value in k:
+                    origK = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", k)
+                    dInput[k] = dictValues[origK].pop(1)
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
+            del dictValues
             return dInput
         
         def __removeDuplicatedKey(dInput : dict) -> dict:
             if isinstance(dInput, dict):
                 for k, v in list(dInput.items()):
-                    if CNameMangling.DUPLICATEDKEY_02.value in k:
-                        del dInput[k]
-                    else:
-                        __removeDuplicatedKey(v)
+                    __removeDuplicatedKey(v)
             elif isinstance(dInput, list):
                 for item in dInput:
                     __removeDuplicatedKey(item)
@@ -1199,6 +1194,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         item = re.sub("\s*\][\s,]*$", "", item)
                         newSubItem = __handleListElements(item)
                         newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
+                    elif re.match("^[\s\"]*\${.+[}\]]+[\"\s]*,[\s\"]*\${.+[}\]]+[\"\s]*$", item):
+                        subItems = re.split("\s*,\s*", item)
+                        subItem1 = self.__checkAndUpdateKeyValue(subItems[0], nestedKey)
+                        subItem2 = self.__checkAndUpdateKeyValue(subItems[1], nestedKey=True)
+                        newSubItem = subItem1 + ", " + subItem2
                     else:
                         newSubItem = self.__checkAndUpdateKeyValue(item, nestedKey)
                     if i<len(items):
@@ -1259,7 +1259,8 @@ Indices in square brackets have to be placed outside the curly brackets.")
         if masterFile:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
-                if re.match("^[0-9]+.*$", k):
+                if re.match("^[0-9]+.*$", k) or re.match("^[\s\"]*\${.+}[\s\"]*$", k) \
+                    or CNameMangling.DUPLICATEDKEY_01.value in k:
                     continue
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
@@ -1329,7 +1330,6 @@ Indices in square brackets have to be placed outside the curly brackets.")
 
       Normalized path and name of the JSON output file.
         '''
-
         outFile = CString.NormalizePath(outFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         jsonObject = json.dumps(oJson, ensure_ascii=False, indent=4)
         try:
