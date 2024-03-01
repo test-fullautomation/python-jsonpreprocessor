@@ -986,7 +986,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 if re.match("^\s*\${.+}[,\s]*$", sInputStr):
                     sInputStr = "\"" + sInputStr + "\""
                 else:
-                    re.sub("\"(\${.+})\"", "\"str(\\1)\"", sInputStr)
+                    sInputStr = re.sub("\"(\${.+})\"", "\"str(\\1)\"", sInputStr)
             elif "," in sInputStr:
                 if not re.match("^\s*\".+\"\s*$", sInputStr):
                     self.__reset(bCleanGlobalVars=True)
