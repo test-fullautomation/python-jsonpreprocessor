@@ -288,8 +288,8 @@ class CJsonPreprocessor():
                         pattern2 = "\${\s*[0-9A-Za-z\.\-_]*\.*" + k1 + "\s*}$|\[\s*'" + k1 + "'\s*\]$"
                         if re.search(pattern2, key):
                             bCheck = True
-                            tmpKey = key.replace("${", "")
-                            tmpKey = tmpKey.replace("}", "")
+                            dReplacements = {"${" : "", "}" : ""}
+                            tmpKey = self.__multipleReplace(key, dReplacements)
                             items = []
                             if "." in tmpKey:
                                 items = tmpKey.split(".")
@@ -393,6 +393,22 @@ class CJsonPreprocessor():
             if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in globals():
                 sInput = re.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
         return sInput
+    
+    def __multipleReplace(self, sInput : str, dReplacements : str) -> str:
+        '''
+    Replaces multiple parts in a string.
+
+**Args:**
+
+   **sInput** (*string*)
+
+**Returns:**
+
+   **sOutput** (*string*)
+        '''
+        pattern = re.compile('|'.join(re.escape(key) for key in dReplacements.keys()))
+        sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
+        return sOutput
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False) -> list:
         '''
@@ -464,8 +480,8 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                 subPattern = "(" + tmpVar + "(\[\s*'[^\$\[\]\(\)]+'\s*\]|\[\s*\d+\s*\])*)"
                 var = re.sub("\$", "\\$", re.search(subPattern, sInputStr).group(1))
                 if re.search("\[.+\]", var):
-                    var = var.replace("[", "\[")
-                    var = var.replace("]", "\]")
+                    dReplacements = {"[" : "\[", "]" : "\]"}
+                    var = self.__multipleReplace(var, dReplacements)
                 sInputStr = re.sub(var, tmpValue, sInputStr) if isinstance(tmpValue, str) else \
                             re.sub(var, str(tmpValue), sInputStr)
             referVars = re.findall("(" + pattern + ")", sInputStr)
@@ -694,8 +710,8 @@ Due to the datatype of '{sVar.replace('$$', '$')}' is '{type(tmpValue)}'. Only s
                 if re.search("'\${\s*(.*?)\s*}'", valueProcessed):
                     tmpNestedList = re.findall("'(\${\s*.*?\s*})'", valueProcessed)
                     for elem in tmpNestedList:
-                        tmpVar = elem.replace('${', '')
-                        tmpVar = tmpVar.replace('}', '')
+                        dReplacements = {"${" : "", "}" : ""}
+                        tmpVar = self.__multipleReplace(elem, dReplacements)
                         tmpValue = None
                         try:
                             ldict = {}
@@ -975,8 +991,8 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     else:
                         tmpList.append("str(" + nestedParam + ")")
                         nestedBasePattern = re.sub(r'([$()\[\]])', r'\\\1', nestedParam)
-                        nestedBasePattern = nestedBasePattern.replace("{", "\{")
-                        nestedBasePattern = nestedBasePattern.replace("}", "\}")
+                        dReplacements = {"{" : "\{", "}" : "\}"}
+                        nestedBasePattern = self.__multipleReplace(nestedBasePattern, dReplacements)
                         sInputStr = re.sub("(" + nestedBasePattern + ")", "str(\\1)", sInputStr)
                         lNestedBase.append(nestedParam)
                 for nestedBase in lNestedBase:
@@ -1206,9 +1222,8 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     else:
                         newLine = newLine + newSubItem
                 for nestedParam in self.lNestedParams:
-                    tmpNestedParam = nestedParam.replace("$", "\$")
-                    tmpNestedParam = tmpNestedParam.replace("[", "\[")
-                    tmpNestedParam = tmpNestedParam.replace("]", "\]")
+                    dReplacements = {"$" : "\$", "[" : "\[", "]" : "\]"}
+                    tmpNestedParam = self.__multipleReplace(nestedParam, dReplacements)
                     if re.search("(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
                         or re.search("(\s*\"" + tmpNestedParam + "\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
                         self.lNestedParams.remove(nestedParam)
