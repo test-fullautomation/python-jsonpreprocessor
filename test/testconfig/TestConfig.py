@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 04.03.2024
+# 06.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2099,8 +2099,20 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0515.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # freeze
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (12/1) > {keyP} [STR]  :  'A'
+[DICT] (12/2) > {B} [STR]  :  'keyP'
+[DICT] (12/3) > {dictP} [DICT] (1/1) > {A} [STR]  :  'B'
+[DICT] (12/4) > {newparam_1} [STR]  :  'B'
+[DICT] (12/5) > {newparam_2} [STR]  :  'keyP'
+[DICT] (12/6) > {newparam_3} [STR]  :  'A'
+[DICT] (12/7) > {newparam_4} [STR]  :  'B'
+[DICT] (12/8) > {newparam_5} [STR]  :  'keyP'
+[DICT] (12/9) > {newparam_6} [STR]  :  'A'
+[DICT] (12/10) > {newparam_7} [STR]  :  'B'
+[DICT] (12/11) > {newparam_8} [STR]  :  'keyP'
+[DICT] (12/12) > {newparam_9} [STR]  :  'A'"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

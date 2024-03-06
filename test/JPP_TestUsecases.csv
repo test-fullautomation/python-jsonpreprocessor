@@ -75,6 +75,7 @@ JPP_0510|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter a
 JPP_0511|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a list; list index is defined by a parameter
 JPP_0512|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression
 JPP_0513|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
+JPP_0515|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)

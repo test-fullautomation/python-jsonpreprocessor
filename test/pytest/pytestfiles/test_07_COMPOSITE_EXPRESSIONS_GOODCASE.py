@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 15.01.2024 - 16:29:04
+# 06.03.2024 - 15:28:57
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -132,5 +132,13 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    )
    def test_JPP_0513(self, Description):
       nReturn = CExecute.Execute("JPP_0513")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing nested dollar operator expressions",]
+   )
+   def test_JPP_0515(self, Description):
+      nReturn = CExecute.Execute("JPP_0515")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

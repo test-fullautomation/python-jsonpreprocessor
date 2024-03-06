@@ -17,9 +17,14 @@
    "B"          : "keyP",
    "dictP"      : {"A" : "B"},
    //
-   "newparam_1" : "${dictP}['${keyP}']",                  // => "${dictP}['A']" -> 'B'
-   "newparam_2" : "${${dictP}['${keyP}']}",               // => "${B}"          -> 'keyP'
-   "newparam_3" : "${${${dictP}['${keyP}']}}",            // => "${keyP}"       -> 'A'
-   "newparam_4" : "${dictP}['${${${dictP}['${keyP}']}}']" // => "${dictP}['A']" -> !!! freeze !!!
+   "newparam_1" : "${dictP}['${keyP}']",                                          // => "${dictP}['A']" -> 'B'
+   "newparam_2" : "${${dictP}['${keyP}']}",                                       // => "${B}"          -> 'keyP'
+   "newparam_3" : "${${${dictP}['${keyP}']}}",                                    // => "${keyP}"       -> 'A'
+   "newparam_4" : "${dictP}['${${${dictP}['${keyP}']}}']",                        // => "${dictP}['A']" -> 'B'
+   "newparam_5" : "${${dictP}['${${${dictP}['${keyP}']}}']}",                     // => "${B}"          -> 'keyP'
+   "newparam_6" : "${${${dictP}['${${${dictP}['${keyP}']}}']}}",                  // => "${keyP}"       -> 'A'
+   "newparam_7" : "${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']",      // => "${dictP}['A']" -> 'B'
+   "newparam_8" : "${${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']}",   // => "${B}"          -> 'keyP'
+   "newparam_9" : "${${${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']}}" // => "${keyP}"       -> 'A'
 }
 

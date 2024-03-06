@@ -825,6 +825,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0515**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing nested dollar operator expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -1081,5 +1091,5 @@ Test Use Cases
 
 ----
 
-Generated: 24.01.2024 - 13:56:16
+Generated: 06.03.2024 - 15:28:57
 
