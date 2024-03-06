@@ -411,15 +411,25 @@ Json object.
         return sOutput
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False, bConvertToStr = False):
-        '''
-   This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
+        """
+This method handles nested variables in parameter names or values. Variable syntax is ${Variable_Name}.
 
 **Arguments:**
 
 * ``sInputStr``
 
-      Parameter name or value which contains a nested variable.
-        '''
+  / *Condition*: required / *Type*: str /
+
+  Parameter name or value which contains a nested variable.
+
+**Returns:**
+
+* ``lNestedParam``
+
+  / *Type*: list /
+
+  List of resolved variables which contains in the ``sInputStr``.
+        """
         def __getNestedValue(sNestedParam : str):
             dReplacements = {"$${" : "", "}" : ""}
             sParameter = self.__multipleReplace(sNestedParam, dReplacements)
@@ -939,13 +949,19 @@ This is recrusive funtion collects all parameters which contain "." in the name.
                 self.__checkDotInParamName(v)
 
     def __checkNestedParam(self, sInput : str) -> bool:
-        '''
-    Checks nested parameter format.
+        """
+Checks nested parameter format.
 
-**Args:**
+**Arguments:**
 
-   **sInput** (*string*)
-        '''
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+**Returns:**
+
+  *raise exception if nested parameter format invalid*
+        """
         pattern1 = rf"\${{[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}"
         if re.search(pattern1, sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
