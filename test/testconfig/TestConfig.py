@@ -2181,9 +2181,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0554.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2195,9 +2195,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0555.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # !!! currently freeze pf JPP !!! https://github.com/test-fullautomation/python-jsonpreprocessor/issues/226
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

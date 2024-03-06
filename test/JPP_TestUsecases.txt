@@ -367,6 +367,14 @@ Test JPP_0553 / COMPOSITE_EXPRESSIONS / BADCASE
 Description: JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0554 / COMPOSITE_EXPRESSIONS / BADCASE
+Description: JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0555 / COMPOSITE_EXPRESSIONS / BADCASE
+Description: JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0600 / CODE_COMMENTS / GOODCASE
 Description: JSON file with several combinations of code comments
 Expectation: JsonPreprocessor returns remaining content of JSON file (valid parameters)
@@ -452,5 +460,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 06.03.2024 - 15:28:57
+Generated: 06.03.2024 - 15:51:02
 

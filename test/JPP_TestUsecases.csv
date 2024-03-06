@@ -80,6 +80,8 @@ JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (
 JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)
 JPP_0553|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
+JPP_0554|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)
+JPP_0555|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
 JPP_0600|CODE_COMMENTS|GOODCASE|JSON file with several combinations of code comments
 JPP_0950|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (1)
 JPP_0951|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (2)

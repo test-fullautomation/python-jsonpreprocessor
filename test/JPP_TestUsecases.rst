@@ -879,6 +879,26 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0554**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0555**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_0600**
 
   [CODE_COMMENTS / GOODCASE]
@@ -1091,5 +1111,5 @@ Test Use Cases
 
 ----
 
-Generated: 06.03.2024 - 15:28:57
+Generated: 06.03.2024 - 15:51:02
 
