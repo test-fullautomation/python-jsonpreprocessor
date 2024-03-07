@@ -469,12 +469,15 @@ only simple data types are allowed to be substituted inside."
                 sVar = __handleDotInNestedParam(var)
                 sInputStr = sInputStr.replace(var, sVar)
         tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+        sNestedParam = sInputStr.replace("$$", "$")
         while re.search(tmpPattern, sInputStr, re.UNICODE) and sInputStr.count("$$")>1:
+            sLoopCheck = sInputStr
             referVars = re.findall(r'(' + tmpPattern + r')[^\[]', sInputStr, re.UNICODE)
             for var in referVars:
                 sVar = __handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
                 tmpValue = __getNestedValue(sVar)
                 while var[0] in sInputStr:
+                    sLoopCheck1 = sInputStr
                     dReplacements = {"$" : "\$", "[" : "\[", "]" : "\]"}
                     varPattern = self.__multipleReplace(var[0], dReplacements)
                     if re.search(r"\[['\s]*" + varPattern + r"['\s]*\]", sInputStr):
@@ -492,6 +495,12 @@ only simple data types are allowed to be substituted inside."
                             raise Exception(errorMsg)
                     else:
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
+                    if sInputStr==sLoopCheck1:
+                        self.__reset(bCleanGlobalVars=True)
+                        raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
+            if sInputStr==sLoopCheck:
+                self.__reset(bCleanGlobalVars=True)
+                raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
         if sInputStr.count("$$")==1:
              tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
              if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
@@ -728,7 +737,11 @@ This method replaces all nested parameters in key and value of a JSON object .
                 oJson[keyNested] = v
                 bNested = True
                 while "${" in k:
+                    sLoopCheck = k
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
+                    if k == sLoopCheck:
+                        self.__reset(bCleanGlobalVars=True)
+                        raise Exception(f"Infinity loop detection while handling the parameter '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 keyNested = k
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
@@ -756,8 +769,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                             bNested = True
                             initItem = item
                             while isinstance(item, str) and "${" in item:
+                                sLoopCheck = item
                                 item = __loadNestedValue(initItem, item)
-
+                                if item==sLoopCheck:
+                                    self.__reset(bCleanGlobalVars=True)
+                                    raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
                         tmpValue.append(item)
                     v = tmpValue
                     del tmpValue
@@ -766,16 +782,25 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         v = v[1]
                         if "${" in str(v):
                             bNested = True
-                        while isinstance(v, str) and "${" in v:
-                            v = __loadNestedValue(initValue=v, sInputStr=v)
+                            initValue = v
+                            while isinstance(v, str) and "${" in v:
+                                sLoopCheck = v
+                                v = __loadNestedValue(initValue=v, sInputStr=v)
+                                if v == sLoopCheck:
+                                    self.__reset(bCleanGlobalVars=True)
+                                    raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
                     else:
                         i=1
                         while i<len(v):
-                            while re.search(pattern, v[i], re.UNICODE):
-                                bNested = True
-                                initItem = v[i]
-                                tmpValue = __loadNestedValue(initItem, v[i]) 
-                                v[i] = tmpValue
+                            if isinstance(v[i], str) and "${" in v[i]:
+                                while re.search(pattern, v[i], re.UNICODE):
+                                    bNested = True
+                                    initItem = v[i]
+                                    tmpValue = __loadNestedValue(initItem, v[i]) 
+                                    v[i] = tmpValue
+                                    if v[i]==initItem:
+                                        self.__reset(bCleanGlobalVars=True)
+                                        raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
                             tmpValue = v[i]
                             i+=1
                         v = tmpValue
@@ -786,7 +811,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     bNested = True
                     initValue = v
                     while isinstance(v, str) and "${" in v:
+                        sLoopCheck = v
                         v = __loadNestedValue(initValue, v)
+                        if v == sLoopCheck:
+                            self.__reset(bCleanGlobalVars=True)
+                            raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
                     if bDuplicatedHandle:
                         if "${" not in dupKey and parentParams != "":
                             sExec = parentParams + "['" + k + "'] = \"" + v + "\"" if isinstance(v, str) else \
