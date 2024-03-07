@@ -75,7 +75,9 @@ JPP_0510|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several parameter a
 JPP_0511|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a list; list index is defined by a parameter
 JPP_0512|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a nested use of lists and dictionaries, with the same parameter used several times within the same expression
 JPP_0513|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
+JPP_0514|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
 JPP_0515|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
+JPP_0516|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)
@@ -91,6 +93,7 @@ JPP_0954|COMMON_SYNTAX_VIOLATIONS|BADCASE|JSON file with syntax error (5): file 
 JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly
 JPP_1001|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly (same key names at all levels)
 JPP_1002|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of implicit and explicit creation / with and without initialization
+JPP_1003|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference
 JPP_1050|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (1)
 JPP_1051|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (2)
 JPP_1052|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (3)

@@ -345,8 +345,16 @@ Test JPP_0513 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0514 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing nested dollar operator expressions
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0515 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file containing nested dollar operator expressions
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0516 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
@@ -411,6 +419,10 @@ Test JPP_1002 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with combinations of implicit and explicit creation / with and without initialization
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1003 / IMPLICIT_CREATION / GOODCASE
+Description: JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1050 / IMPLICIT_CREATION / BADCASE
 Description: JSON file with implicit creation of data structures based on parameters (1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -460,5 +472,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 06.03.2024 - 15:51:02
+Generated: 07.03.2024 - 14:58:30
 

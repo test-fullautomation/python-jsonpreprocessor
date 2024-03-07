@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 06.03.2024 - 15:28:57
+# 07.03.2024 - 14:58:30
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -138,7 +138,23 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
    @pytest.mark.parametrize(
       "Description", ["JSON file containing nested dollar operator expressions",]
    )
+   def test_JPP_0514(self, Description):
+      nReturn = CExecute.Execute("JPP_0514")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing nested dollar operator expressions",]
+   )
    def test_JPP_0515(self, Description):
       nReturn = CExecute.Execute("JPP_0515")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)",]
+   )
+   def test_JPP_0516(self, Description):
+      nReturn = CExecute.Execute("JPP_0516")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

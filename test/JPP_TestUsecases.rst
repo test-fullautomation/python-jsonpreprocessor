@@ -825,11 +825,31 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0514**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing nested dollar operator expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0515**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
 
    **JSON file containing nested dollar operator expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0516**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)**
 
    Expected: JsonPreprocessor returns expected value
 
@@ -989,6 +1009,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1003**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1050**
 
   [IMPLICIT_CREATION / BADCASE]
@@ -1111,5 +1141,5 @@ Test Use Cases
 
 ----
 
-Generated: 06.03.2024 - 15:51:02
+Generated: 07.03.2024 - 14:58:30
 
