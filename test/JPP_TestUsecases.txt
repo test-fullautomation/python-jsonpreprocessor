@@ -345,6 +345,18 @@ Test JPP_0513 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0514 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing nested dollar operator expressions
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0515 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing nested dollar operator expressions
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0516 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
 Description: JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -361,6 +373,14 @@ Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0553 / COMPOSITE_EXPRESSIONS / BADCASE
 Description: JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0554 / COMPOSITE_EXPRESSIONS / BADCASE
+Description: JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0555 / COMPOSITE_EXPRESSIONS / BADCASE
+Description: JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0600 / CODE_COMMENTS / GOODCASE
@@ -397,6 +417,10 @@ Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1002 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with combinations of implicit and explicit creation / with and without initialization
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1003 / IMPLICIT_CREATION / GOODCASE
+Description: JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1050 / IMPLICIT_CREATION / BADCASE
@@ -448,5 +472,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 24.01.2024 - 13:56:16
+Generated: 07.03.2024 - 14:58:30
 

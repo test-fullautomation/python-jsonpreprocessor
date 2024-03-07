@@ -16,7 +16,7 @@
 {
    // implicitly created data structure
    ${testdict1.subKey1.subKey2.subKey3} : {"subKey4" : 1},
-   "testdict2" : ${testdict1}, // by value
+   "testdict2" : ${testdict1}, // by reference
    //
    // parameters containing names of existing keys
    "param1" : "subKey1",
@@ -30,6 +30,8 @@
    ${testdict2.${param1}.subKey2.${param3}.subKey4} : 3,
    // assign modified values to new parameters
    "param5" : ${testdict1}[${param1}]['${param2}']['subKey3'][${param4}]
-   // "param6" : ${testdict2.${param1}.subKey2.${param3}.subKey4} // 'Invalid nested parameter format: ${testdict2.${param1}.subKey2.${param3}.subKey4} - The double quotes are missing!!!'!
+
+   // still issue:
+   // "param6" : ${testdict2.${param1}.subKey2.${param3}.subKey4} // Expecting value: line 11 column 15 (char 412)'!
 }
 
