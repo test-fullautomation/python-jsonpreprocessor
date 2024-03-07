@@ -473,6 +473,8 @@ only simple data types are allowed to be substituted inside."
         while re.search(tmpPattern, sInputStr, re.UNICODE) and sInputStr.count("$$")>1:
             sLoopCheck = sInputStr
             referVars = re.findall(r'(' + tmpPattern + r')[^\[]', sInputStr, re.UNICODE)
+            if len(referVars)==0:
+                referVars = re.findall(r'(' + tmpPattern + r')$', sInputStr, re.UNICODE)
             for var in referVars:
                 sVar = __handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
                 tmpValue = __getNestedValue(sVar)
@@ -501,7 +503,7 @@ only simple data types are allowed to be substituted inside."
             if sInputStr==sLoopCheck:
                 self.__reset(bCleanGlobalVars=True)
                 raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
-        if sInputStr.count("$$")==1:
+        if sInputStr.count("$${")==1:
              tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
              if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
@@ -518,7 +520,7 @@ only simple data types are allowed to be substituted inside."
                 return tmpValue
              else:
                 sInputStr = sInputStr.replace(var[0], str(tmpValue))
-        return sInputStr
+        return sInputStr.replace("$$", "$") if "$$" in sInputStr else sInputStr
 
     def __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list:
         """
