@@ -14,6 +14,7 @@
 //**************************************************************************
 
 {
+  "[import]" : "./sub_data_structure_01.jsonp",
   ${preprocessor}['definitions']['preproStructure'][${params}['glo']['globalStructure']['general']]:
   0.92
 }

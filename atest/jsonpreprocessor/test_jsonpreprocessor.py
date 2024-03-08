@@ -249,12 +249,9 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter without nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_01.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_01.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['preprocessor']['definitions']['preproFloatParam'] == SUBDATASTRUCTURE['testcase_01']
 
@@ -262,12 +259,9 @@ class TestSubDataStructure:
         '''
         Updated more than 1 parameter without nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_02.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_02.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['params']['glo']['globalString'] == SUBDATASTRUCTURE['testcase_02a']
         assert oJsonData['preprocessor']['definitions']['preproStructure']['variable_01'] == SUBDATASTRUCTURE['testcase_02b']
@@ -277,12 +271,9 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in element name.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_03.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_03.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['preprocessor']['definitions']['preproStructure']['general'] == SUBDATASTRUCTURE['testcase_03']
 
@@ -290,12 +281,9 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in element value.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_04.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_04.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['params']['glo']['globalString'] == SUBDATASTRUCTURE['testcase_04']
 
@@ -303,12 +291,9 @@ class TestSubDataStructure:
         '''
         Updated 1 parameter with nested variable in both element name and value.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_05.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_05.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['preprocessor']['definitions']['preproTest']['checkParam'] == SUBDATASTRUCTURE['testcase_05']
 
@@ -316,12 +301,9 @@ class TestSubDataStructure:
         '''
         Updated more than 1 parameter with nested variable.
         '''
-        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/sub_data_structure_01.jsonp")
         oJsonPreprocessor = CJsonPreprocessor(syntax="python")
+        sJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_06.jsonp")
         oJsonData = oJsonPreprocessor.jsonLoad(sJsonfile)
-        sUpdateJsonfile = os.path.abspath("../testdata/config/05_sub_datastructure/json_update_06.jsonp")
-        oUpdateJsonData = oJsonPreprocessor.jsonLoad(sUpdateJsonfile)
-        oJsonData.update(oUpdateJsonData)
 
         assert oJsonData['sWelcome'] == SUBDATASTRUCTURE['testcase_06a']
         assert oJsonData['params']['glo'] == SUBDATASTRUCTURE['testcase_06b']

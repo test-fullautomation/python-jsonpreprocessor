@@ -628,7 +628,7 @@ This method replaces all nested parameters in key and value of a JSON object .
   Output JSON object as dictionary with all variables resolved.
         """
 
-        def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False):
+        def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False, recursive = False):
             if keyNested != '':
                 if not bDuplicatedHandle and keyNested in oJson.keys():
                     del oJson[keyNested]
@@ -654,8 +654,23 @@ This method replaces all nested parameters in key and value of a JSON object .
 
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
+                    if not recursive:
+                        checkVar = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1]
+                        subElements = re.findall(rf"\[\s*'([^{re.escape(self.specialCharacters)}]*)'\s*\]", checkVar, re.UNICODE)
+                        checkVar = "oJson"
+                        for element in subElements:
+                            checkVar = checkVar + "['" + element + "']"
+                            sExec = "dummyData = " + checkVar 
+                            try:
+                                exec(sExec)
+                            except:
+                                sExec = checkVar + " = {}"
+                                try:
+                                    exec(sExec)
+                                except:
+                                    pass
                     if isinstance(v, str):
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
+                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = '" + v + "'"
                     else:
                         sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
                     try:
@@ -794,7 +809,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     except:
                         pass
                     continue
-            __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle)
+            __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle, recursive)
             if keyNested != '' and not bStrConvert:
                 transTable = str.maketrans({"[":"\[", "]":"\]"})
                 tmpList = []
