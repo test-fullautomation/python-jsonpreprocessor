@@ -63,6 +63,7 @@ class CSyntaxType():
 class CNameMangling(Enum):
     AVOIDDATATYPE    = "JPavoidDataType_"
     COLONS           = "__handleColonsInLine__"
+    DUPLICATEDKEY_00 = "__handleDuplicatedKey__00"
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     STRINGCONVERT    = "__ConvertParameterToString__"
     LISTINDEX        = "__IndexOfList__"
@@ -629,7 +630,7 @@ This method replaces all nested parameters in key and value of a JSON object .
 
         def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False):
             if keyNested != '':
-                if not bDuplicatedHandle:
+                if not bDuplicatedHandle and keyNested in oJson.keys():
                     del oJson[keyNested]
                 rootKey = re.sub(r'\[.*\]', "", k, re.UNICODE)
                 if re.search(r'^[0-9]+.*$', rootKey, re.UNICODE):
@@ -716,22 +717,15 @@ This method replaces all nested parameters in key and value of a JSON object .
             bImplicitCreation = False
             bDuplicatedHandle = False
             if re.match(r"^.+" + CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", k, re.UNICODE):
-                del oJson[k]
+                bDuplicatedHandle = True if CNameMangling.DUPLICATEDKEY_00.value not in k else False
                 dupKey = k
-                k = re.sub(CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", "", k)
-                value = tmpJson[k].pop(1)
-                if "${" not in dupKey and "${" not in str(value):
-                    if parentParams != "":
-                        sExec = parentParams + "['" + k + "'] = \"" + value + "\"" if isinstance(value, str) else \
-                                parentParams + "['" + k + "'] = " + str(value)
-                    else:
-                        sExec = k + " = \"" + value + "\"" if isinstance(value, str) else \
-                                k + " = " + str(value)
-                    try:
-                        exec(sExec, globals())
-                    except:
-                        pass
-                bDuplicatedHandle = True
+                if CNameMangling.DUPLICATEDKEY_00.value in k:
+                    origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", "", k)
+                    oJson = self.__changeDictKey(oJson, k, origKey)
+                    k = origKey
+                else:
+                    del oJson[k]
+                    k = re.sub(CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", "", k)
             if CNameMangling.STRINGCONVERT.value in k:
                 bStrConvert = True
                 del oJson[k]
@@ -764,50 +758,20 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
-                if v[0] != CNameMangling.DUPLICATEDKEY_01.value:
-                    tmpValue = []
-                    for item in v:
-                        if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
-                            bNested = True
-                            initItem = item
-                            while isinstance(item, str) and "${" in item:
-                                sLoopCheck = item
-                                item = __loadNestedValue(initItem, item)
-                                if item==sLoopCheck:
-                                    self.__reset(bCleanGlobalVars=True)
-                                    raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
-                        tmpValue.append(item)
-                    v = tmpValue
-                    del tmpValue
-                else:
-                    if len(v)==2:
-                        v = v[1]
-                        if "${" in str(v):
-                            bNested = True
-                            initValue = v
-                            while isinstance(v, str) and "${" in v:
-                                sLoopCheck = v
-                                v = __loadNestedValue(initValue=v, sInputStr=v)
-                                if v == sLoopCheck:
-                                    self.__reset(bCleanGlobalVars=True)
-                                    raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
-                    else:
-                        i=1
-                        while i<len(v):
-                            if isinstance(v[i], str) and "${" in v[i]:
-                                while re.search(pattern, v[i], re.UNICODE):
-                                    bNested = True
-                                    initItem = v[i]
-                                    tmpValue = __loadNestedValue(initItem, v[i]) 
-                                    v[i] = tmpValue
-                                    if v[i]==initItem:
-                                        self.__reset(bCleanGlobalVars=True)
-                                        raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
-                            tmpValue = v[i]
-                            i+=1
-                        v = tmpValue
-                        del tmpValue
-
+                tmpValue = []
+                for item in v:
+                    if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
+                        bNested = True
+                        initItem = item
+                        while isinstance(item, str) and "${" in item:
+                            sLoopCheck = item
+                            item = __loadNestedValue(initItem, item)
+                            if item==sLoopCheck:
+                                self.__reset(bCleanGlobalVars=True)
+                                raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
+                    tmpValue.append(item)
+                v = tmpValue
+                del tmpValue
             elif isinstance(v, str) and self.__checkNestedParam(v):
                 if re.search(pattern, v, re.UNICODE):
                     bNested = True
@@ -818,18 +782,18 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         if v == sLoopCheck:
                             self.__reset(bCleanGlobalVars=True)
                             raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
-                    if bDuplicatedHandle:
-                        if "${" not in dupKey and parentParams != "":
-                            sExec = parentParams + "['" + k + "'] = \"" + v + "\"" if isinstance(v, str) else \
-                                    parentParams + "['" + k + "'] = " + str(v)
-                        else:
-                            sExec = k + " = \"" + v + "\"" if isinstance(v, str) else \
-                                    k + " = " + str(v)
-                        try:
-                            exec(sExec, globals())
-                        except:
-                            pass
-                        continue
+                if bDuplicatedHandle:
+                    if "${" not in dupKey and parentParams != "":
+                        sExec = parentParams + "['" + k + "'] = \"" + v + "\"" if isinstance(v, str) else \
+                                parentParams + "['" + k + "'] = " + str(v)
+                    else:
+                        sExec = k + " = \"" + v + "\"" if isinstance(v, str) else \
+                                k + " = " + str(v)
+                    try:
+                        exec(sExec, globals())
+                    except:
+                        pass
+                    continue
             __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle)
             if keyNested != '' and not bStrConvert:
                 transTable = str.maketrans({"[":"\[", "]":"\]"})
@@ -839,11 +803,13 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         tmpList.append(key)
                 for item in tmpList:
                     self.dUpdatedParams.pop(item)
-                if not bDuplicatedHandle and CNameMangling.DUPLICATEDKEY_01.value not in k:
+                if CNameMangling.DUPLICATEDKEY_01.value not in k: #  not bDuplicatedHandle and 
                     self.dUpdatedParams.update({k:v})
 
             if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
                 parentParams = re.sub("\['" + k + "'\]", "", parentParams)
+            if not recursive:
+                parentParams = ''
         del tmpJson
         return oJson, bNested
 
@@ -1001,6 +967,39 @@ Checks nested parameter format.
 be outside of '${<variable name>}'.")
         else:
             return True
+        
+    def __changeDictKey(self, dInput : dict, sOldKey : str, sNewKey : str) -> dict:
+        """
+Replace an existing key in a dictionary with a new key name. The replacement is done by preserving the original order of the keys.
+
+**Arguments:**
+
+* ``dInput``
+
+  / *Condition*: required / *Type*: dict /
+
+* ``sOldKey``
+
+  / *Condition*: required / *Type*: str /
+
+* ``sNewKey``
+
+  / *Condition*: required / *Type*: str /
+
+**Returns:**
+
+* ``dOutput``
+
+  / *Type*: dict /
+        """
+        listKeys = list(dInput.keys())
+        index = listKeys.index(sOldKey)
+        listKeys.insert(index, sNewKey)
+        listKeys.pop(index + 1)
+        dOutput = {}
+        for key in listKeys:
+            dOutput[key] = dInput[sOldKey] if key==sNewKey else dInput[key]
+        return dOutput
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         """
@@ -1024,7 +1023,6 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
-        
         def __handleListElements(sInput : str) -> str:
             items = re.split("\s*,\s*", sInput)
             j=0
@@ -1038,17 +1036,22 @@ This method is the entry point of JsonPreprocessor.
             return newItem
         
         def __handleDuplicatedKey(dInput : dict) -> dict:
-            tmpDict = copy.deepcopy(dInput)
-            listKeys = list(tmpDict.keys())
+            listKeys = list(dInput.keys())
             dictValues = {}
             for key in listKeys:
                 if CNameMangling.DUPLICATEDKEY_01.value in key:
                     origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", key)
-                    dictValues[origKey] = copy.deepcopy(tmpDict[origKey])
+                    dictValues[origKey] = copy.deepcopy(dInput[origKey])
+            for key in dictValues.keys():
+                dInput = self.__changeDictKey(dInput, key, key + CNameMangling.DUPLICATEDKEY_01.value + "00")
+            tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
                 if CNameMangling.DUPLICATEDKEY_01.value in k:
                     origK = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", k)
                     dInput[k] = dictValues[origK].pop(1)
+                if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                    v = v[-1]
+                    dInput[k] = v
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
