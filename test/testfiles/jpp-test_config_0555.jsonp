@@ -12,10 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //**************************************************************************
-
 {
-  "[import]" : "./sub_data_structure_01.jsonp",
-  ${params}['glo']['globalString']: "Welcome to Jsonpreprocessor Acceptance Test",
-  ${preprocessor}['definitions']['preproStructure']['variable_01']: 0.192,
-  ${Project}: "Acceptance Testing"
+   "keyP"     : "A",
+   "dictP"    : {"A" : "B", "C" : 2},
+   "newparam" : "${dictP['${keyP}']}"
 }

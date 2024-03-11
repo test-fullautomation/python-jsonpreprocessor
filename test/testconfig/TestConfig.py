@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 24.01.2024
+# 07.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1855,7 +1855,7 @@ dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0504.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0504.jsonp"       # current issue: Expecting value: line 20 column 14 (char 1088)'!
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (20/1) > {param1} [DICT] (1/1) > {A} [DICT] (1/1) > {B} [DICT] (1/1) > {C} [DICT] (1/1) > {D} [FLOAT]  :  1.23
@@ -2075,6 +2075,78 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0514"
+dictUsecase['DESCRIPTION']       = "JSON file containing nested dollar operator expressions"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0514.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (5/1) > {keyP} [STR]  :  'A'
+[DICT] (5/2) > {B} [INT]  :  1
+[DICT] (5/3) > {dictP} [DICT] (2/1) > {A} [STR]  :  'B'
+[DICT] (5/3) > {dictP} [DICT] (2/2) > {C} [INT]  :  2
+[DICT] (5/4) > {newparam_1} [STR]  :  '1'
+[DICT] (5/5) > {newparam_2} [STR]  :  '1'"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0515"
+dictUsecase['DESCRIPTION']       = "JSON file containing nested dollar operator expressions"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0515.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (12/1) > {keyP} [STR]  :  'A'
+[DICT] (12/2) > {B} [STR]  :  'keyP'
+[DICT] (12/3) > {dictP} [DICT] (1/1) > {A} [STR]  :  'B'
+[DICT] (12/4) > {newparam_1} [STR]  :  'B'
+[DICT] (12/5) > {newparam_2} [STR]  :  'keyP'
+[DICT] (12/6) > {newparam_3} [STR]  :  'A'
+[DICT] (12/7) > {newparam_4} [STR]  :  'B'
+[DICT] (12/8) > {newparam_5} [STR]  :  'keyP'
+[DICT] (12/9) > {newparam_6} [STR]  :  'A'
+[DICT] (12/10) > {newparam_7} [STR]  :  'B'
+[DICT] (12/11) > {newparam_8} [STR]  :  'keyP'
+[DICT] (12/12) > {newparam_9} [STR]  :  'A'"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0516"
+dictUsecase['DESCRIPTION']       = "JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0516.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (9/1) > {listparam} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (9/1) > {listparam} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (9/1) > {listparam} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (9/2) > {param_1} [STR]  :  '}A{'
+[DICT] (9/3) > {param_2} [STR]  :  '{A}'
+[DICT] (9/4) > {param_3} [STR]  :  '$}A$}'
+[DICT] (9/5) > {param_4} [STR]  :  '{$}A{$}'
+[DICT] (9/6) > {param_5} [STR]  :  '}{$}A{$}{'
+[DICT] (9/7) > {param_6} [STR]  :  '{}{$}A{$}{}'
+[DICT] (9/8) > {param_7} [STR]  :  '{}A{$}B{$}C{}'
+[DICT] (9/9) > {param_8} [STR]  :  '{}$A{$$}$B{$$}$C{}'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0550"
@@ -2128,6 +2200,34 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0553.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Found index or sub-element inside curly brackets in the parameter '${listval['${intval}']}'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0554"
+dictUsecase['DESCRIPTION']       = "JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0554.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0555"
+dictUsecase['DESCRIPTION']       = "JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0555.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid nested parameter format"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2309,7 +2409,31 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/1) > {B} [INT]  :  2
 [DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/2) > {paramB} [DICT] (1/1) > {C} [INT]  :  3
 [DICT] (5/4) > {testdict_2} [DICT] (1/1) > {subKey} [DICT] (1/1) > {subKey} [DICT] (1/1) > {paramA} [DICT] (3/3) > {paramC} [DICT] (1/1) > {D} [INT]  :  4
-[DICT] (5/5) > {testdict_3} [DICT] (1/1) > {paramD} [DICT] (1/1) > {paramE} [DICT] (1/1) > {paramD} [DICT] (1/1) > {E} [DICT] (1/1) > {F} [INT]  :  6"""
+[DICT] (5/5) > {testdict_3} [DICT] (1/1) > {paramD} [DICT] (1/1) > {paramE} [DICT] (1/1) > {paramD} [DICT] (1/1) > {E} [DICT] (1/1) > {F} [INT]  :  6
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# ====== still one line in jpp-test_config_1003.jsonp commented out; remaining code run properly
+dictUsecase['TESTID']            = "JPP_1003"
+dictUsecase['DESCRIPTION']       = "JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "IMPLICIT_CREATION"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1003.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (7/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (7/2) > {param1} [STR]  :  'subKey1'
+[DICT] (7/3) > {param2} [STR]  :  'subKey2'
+[DICT] (7/4) > {param3} [STR]  :  'subKey3'
+[DICT] (7/5) > {param4} [STR]  :  'subKey4'
+[DICT] (7/6) > {param5} [INT]  :  3
+[DICT] (7/7) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -2365,7 +2489,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1053.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2379,7 +2503,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1054.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2393,7 +2517,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1055.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

@@ -14,5 +14,6 @@
 //**************************************************************************
 
 {
+  "[import]" : "./sub_data_structure_01.jsonp",
   ${params}['glo']['globalString']: ${preprocessor}['definitions']['preproTest']['checkParam']
 }

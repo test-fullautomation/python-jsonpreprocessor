@@ -825,6 +825,36 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0514**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing nested dollar operator expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0515**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing nested dollar operator expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_0516**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0550**
 
   [COMPOSITE_EXPRESSIONS / BADCASE]
@@ -864,6 +894,26 @@ Test Use Cases
   [COMPOSITE_EXPRESSIONS / BADCASE]
 
    **JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0554**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0555**
+
+  [COMPOSITE_EXPRESSIONS / BADCASE]
+
+   **JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -954,6 +1004,16 @@ Test Use Cases
   [IMPLICIT_CREATION / GOODCASE]
 
    **JSON file with combinations of implicit and explicit creation / with and without initialization**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1003**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference**
 
    Expected: JsonPreprocessor returns values
 
@@ -1081,5 +1141,5 @@ Test Use Cases
 
 ----
 
-Generated: 24.01.2024 - 13:56:16
+Generated: 07.03.2024 - 14:58:30
 
