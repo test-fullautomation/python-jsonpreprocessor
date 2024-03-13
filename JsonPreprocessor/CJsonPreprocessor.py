@@ -193,8 +193,9 @@ Constructor
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
+        self.JPGlobals = {}
 
-    def __reset(self, bCleanGlobalVars : bool = False) -> None:
+    def __reset(self) -> None:
         """
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
@@ -206,21 +207,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
-        if bCleanGlobalVars:
-            lGlobalVars = []
-            for name, value in globals().items():
-                if re.match("^__.+$", name):
-                    continue
-                else:
-                    if isinstance(value, str) or isinstance(value, int) or \
-                        isinstance(value, float) or isinstance(value, dict) or \
-                        isinstance(value, list) or isinstance(value, type(None)):
-                        lGlobalVars.append(name)
-            for var in lGlobalVars:
-                try:
-                    del globals()[var]
-                except:
-                    pass
+        self.JPGlobals = {}
 
     def __processImportFiles(self, input_data : dict) -> dict:
         """
@@ -257,7 +244,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 # length of lImportedFiles should equal to recursive_level
                 self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
                 if abs_path_file in self.lImportedFiles:
-                    self.__reset(bCleanGlobalVars=True)
+                    self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
@@ -386,7 +373,7 @@ Json object.
         for param in lParams:
             if "." not in param and param in self.lDataTypes:
                 sInput = re.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
-            if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in globals():
+            if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in self.JPGlobals.keys():
                 sInput = re.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
         return sInput
     
@@ -410,6 +397,37 @@ Json object.
         pattern = re.compile('|'.join(re.escape(key) for key in dReplacements.keys()))
         sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
         return sOutput
+    
+    def __parseDictPath(self, sInput : str) -> list:
+        """
+Parse a dictionary path string into a list of its components.
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+  The dictionary path string in the format "dictobj['element1']['element2']['element3']".
+
+**Returns:**
+
+* ``lOutput``
+
+  / *Type*: list /
+
+  A list containing the dictionary object and its successive elements.
+        """
+        lOutput = []
+        if not re.search(r"\[.+\]", sInput):
+            lOutput.append(sInput)
+        else:
+            index = sInput.index("[")
+            lOutput.append(sInput[:index])
+            elements = re.findall(rf"\[\s*('*[^{re.escape(self.specialCharacters)}]+'*)\s*\]", sInput)
+            for element in elements:
+                lOutput.append(element)
+        return lOutput
 
     def __nestedParamHandler(self, sInputStr : str, bKey = False, bConvertToStr = False):
         """
@@ -434,16 +452,23 @@ This method handles nested variables in parameter names or values. Variable synt
         def __getNestedValue(sNestedParam : str):
             dReplacements = {"$${" : "", "}" : ""}
             sParameter = self.__multipleReplace(sNestedParam, dReplacements)
-            sExec = "value = " + sParameter
+            lElements = self.__parseDictPath(sParameter)
+            sExec = "value = self.JPGlobals"
+            for element in lElements:
+                if re.match(r"^[\s\-]*\d+$", element) or \
+                    re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    sExec = sExec + f"[{element}]"
+                else:
+                    sExec = sExec + f"['{element}']"
             try:
                 ldict = {}
-                exec(sExec, globals(), ldict)
+                exec(sExec, locals(), ldict)
                 tmpValue = ldict['value']
             except:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"The variable '{sNestedParam.replace('$$', '$')}' is not available!")
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 errorMsg = f"Found expression '{sNestedParam.replace('$$', '$')}' with at least one parameter of composite data type \
 ('{sNestedParam.replace('$$', '$')}' is of type {type(tmpValue)}). Because of this expression is the name of a parameter, \
 only simple data types are allowed to be substituted inside."
@@ -499,13 +524,13 @@ only simple data types are allowed to be substituted inside."
                     else:
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
                     if sInputStr==sLoopCheck1:
-                        self.__reset(bCleanGlobalVars=True)
+                        self.__reset()
                         raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
             if sInputStr==sLoopCheck:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-             tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+             tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
              if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
@@ -571,39 +596,40 @@ This method checks the availability of param names contained "." in dotdict form
         """
 This method checks and creates new elements if they are not already existing.
         """
-        rootKey = re.sub(r'\[.*\]', "", sKey, re.UNICODE)
-        subElements = re.findall(rf"\[\s*'([^{re.escape(self.specialCharacters)}]*)'\s*\]", sKey, re.UNICODE)
-        if len(subElements) < 1:
+        lElements = self.__parseDictPath(sKey)
+        if len(lElements) == 1:
             return True
         else:
-            for index, element in enumerate(subElements):
-                if index < len(subElements):
-                    rootKey = rootKey + "['" + element + "']"
-                    sExec = "dumpData = " + rootKey
-                    try:
-                        exec(sExec)
-                    except Exception as error:
-                        if "list indices must be integers" in str(error):
-                            if keyNested != '':
-                                errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
-                            else:
-                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
-                            self.__reset(bCleanGlobalVars=True)
-                            raise Exception(errorMsg)
-                        if bCheck==True:
-                            return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
-                        else:
-                            sExec = rootKey + " = {}"
-                            try:
-                                exec(sExec, globals())
-                            except Exception as error:
-                                self.__reset(bCleanGlobalVars=True)
-                                if keyNested != '':
-                                    sKey = keyNested
-                                errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
-                                raise Exception(errorMsg)
+            sExec = "dummyData = self.JPGlobals"
+            for element in lElements:
+                if re.match(r"^[\s\-]*\d+$", element) or \
+                    re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    sExec = sExec + f"[{element}]"
                 else:
-                    continue
+                    sExec = sExec + f"['{element}']"
+                try:
+                    exec(sExec)
+                except Exception as error:
+                    if "list indices must be integers" in str(error):
+                        if keyNested != '':
+                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
+                        else:
+                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                        self.__reset()
+                        raise Exception(errorMsg)
+                    if bCheck==True:
+                        return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
+                    else:
+                        index = sExec.index("=")
+                        sExec1 = sExec[index+1:].strip() + " = {}"
+                        try:
+                            exec(sExec1)
+                        except Exception as error:
+                            self.__reset()
+                            if keyNested != '':
+                                sKey = keyNested
+                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            raise Exception(errorMsg)
             return True
 
     def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, parentParams : str = ''):
@@ -635,64 +661,52 @@ This method replaces all nested parameters in key and value of a JSON object .
                 rootKey = re.sub(r'\[.*\]', "", k, re.UNICODE)
                 if re.search(r'^[0-9]+.*$', rootKey, re.UNICODE):
                     oJson[f"{rootKey}"] = {}
-                elif rootKey not in globals():
+                elif rootKey not in self.JPGlobals.keys():
                     oJson[rootKey] = {}
-                    sExec = rootKey + " = {}"
+                    sExec = f"self.JPGlobals['{rootKey}'] = {{}}"
                     try:
-                        exec(sExec, globals())
+                        exec(sExec)
                     except Exception as error:
                         raise Exception(f"Could not set root key element '{rootKey}'! Reason: {error}")
                 if re.match(rf"^[^{re.escape(self.specialCharacters)}]+\[.+\]+$", k, re.UNICODE):
                     self.__checkAndCreateNewElement(k, v, keyNested=keyNested)
-                    sExec = k + " = \"" + v + "\"" if isinstance(v, str) else k + " = " + str(v)
-                    try:
-                        exec(sExec, globals())
-                    except Exception as error:
-                        self.__reset(bCleanGlobalVars=True)
-                        errorMsg = f"Could not set variable '{keyNested}' with value '{v}'! Reason: {error}"
-                        raise Exception(errorMsg)
-
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
-                    if not recursive:
-                        checkVar = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1]
-                        subElements = re.findall(rf"\[\s*'([^{re.escape(self.specialCharacters)}]*)'\s*\]", checkVar, re.UNICODE)
-                        checkVar = "oJson"
-                        for element in subElements:
-                            checkVar = checkVar + "['" + element + "']"
-                            sExec = "dummyData = " + checkVar 
-                            try:
-                                exec(sExec)
-                            except:
-                                sExec = checkVar + " = {}"
-                                try:
-                                    exec(sExec)
-                                except:
-                                    pass
-                    if isinstance(v, str):
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = '" + v + "'"
-                    else:
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
+                    lElements = self.__parseDictPath(k)
+                    sExec = "self.JPGlobals"
+                    for element in lElements:
+                        if re.match(r"^[\s\-]*\d+$", element) or \
+                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                            sExec = sExec + f"[{element}]"
+                        else:
+                            sExec = sExec + f"['{element}']"
+                    sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
                     try:
-                        exec(sExec, globals())
-                    except:
-                        pass
+                        exec(sExec)
+                    except Exception as error:
+                        self.__reset()
+                        errorMsg = f"Could not set variable '{keyNested}' with value '{v}'! Reason: {error}"
+                        raise Exception(errorMsg)
+                    if not recursive:
+                        oJson[rootKey] = self.JPGlobals[rootKey]
                 else:
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
                     oJson[k] = v
-                    globals().update({k:v})
+                    if not recursive:
+                        self.JPGlobals.update({k:v})
 
             else:
                 if bNested:
                     if CNameMangling.AVOIDDATATYPE.value in k:
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k) 
                 oJson[k] = v
-                globals().update({k:v})
+                if not recursive:
+                    self.JPGlobals.update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             varPattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}"
-            indexPattern = r"\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+            indexPattern = r"\[\s*-*\d*\s*]"
             dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + r".*\]+)*|" + indexPattern
             pattern = varPattern + dictPattern
             bValueConvertString = False
@@ -704,7 +718,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             elif re.match(r"^\s*" + pattern + r"\s*$", sInputStr, re.UNICODE):
                 sInputStr = re.sub("\$", "$$", sInputStr)
             if sInputStr.count("${") > sInputStr.count("}"):
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
           Please check the configuration file of the executed test!")
             sInputStr = self.__checkParamName(sInputStr)
@@ -718,7 +732,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             for k, v in self.currentCfg.items():
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
-                globals().update({k:v})
+                self.JPGlobals.update({k:v})
 
         tmpJson = copy.deepcopy(oJson)
         sepecialCharacters = r'!@#%^&*()+=[\]|;:\'",<>?/`~'
@@ -751,7 +765,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     sLoopCheck = k
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
                     if k == sLoopCheck:
-                        self.__reset(bCleanGlobalVars=True)
+                        self.__reset()
                         raise Exception(f"Infinity loop detection while handling the parameter '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 keyNested = k
@@ -762,11 +776,11 @@ This method replaces all nested parameters in key and value of a JSON object .
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
-                    self.__reset(bCleanGlobalVars=True)
+                    self.__reset()
                     raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
             elif k.count('{') != k.count('}'):
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
         Please check key '{k}' in config file!!!")
             
@@ -782,7 +796,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                             sLoopCheck = item
                             item = __loadNestedValue(initItem, item)
                             if item==sLoopCheck:
-                                self.__reset(bCleanGlobalVars=True)
+                                self.__reset()
                                 raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
                     tmpValue.append(item)
                 v = tmpValue
@@ -795,17 +809,32 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         sLoopCheck = v
                         v = __loadNestedValue(initValue, v)
                         if v == sLoopCheck:
-                            self.__reset(bCleanGlobalVars=True)
+                            self.__reset()
                             raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
                 if bDuplicatedHandle:
                     if "${" not in dupKey and parentParams != "":
-                        sExec = parentParams + "['" + k + "'] = \"" + v + "\"" if isinstance(v, str) else \
-                                parentParams + "['" + k + "'] = " + str(v)
+                        sParams = parentParams + "['" + k + "']"
+                        lElements = self.__parseDictPath(sParams)
+                        sExec = "self.JPGlobals"
+                        for element in lElements:
+                            if re.match(r"^[\s\-]*\d+$", element) or \
+                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                                sExec = sExec + f"[{element}]"
+                            else:
+                                sExec = sExec + f"['{element}']"
+                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
                     else:
-                        sExec = k + " = \"" + v + "\"" if isinstance(v, str) else \
-                                k + " = " + str(v)
+                        lElements = self.__parseDictPath(k)
+                        sExec = "self.JPGlobals"
+                        for element in lElements:
+                            if re.match(r"^[\s\-]*\d+$", element) or \
+                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                                sExec = sExec + f"[{element}]"
+                            else:
+                                sExec = sExec + f"['{element}']"
+                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
                     try:
-                        exec(sExec, globals())
+                        exec(sExec)
                     except:
                         pass
                     continue
@@ -818,7 +847,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         tmpList.append(key)
                 for item in tmpList:
                     self.dUpdatedParams.pop(item)
-                if CNameMangling.DUPLICATEDKEY_01.value not in k: #  not bDuplicatedHandle and 
+                if CNameMangling.DUPLICATEDKEY_01.value not in k:
                     self.dUpdatedParams.update({k:v})
 
             if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
@@ -869,7 +898,7 @@ This method handles nested parameters are called recursively in a string value.
             return sInputStr
 
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
-        indexPattern = r"\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+        indexPattern = r"\[\s*-*\d*\s*]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
         nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
@@ -877,7 +906,7 @@ This method handles nested parameters are called recursively in a string value.
 
         if "${" in sInputStr:
             if re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr, re.UNICODE):
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
             if re.match(r"^\s*" + nestedPattern + r"[\s,\]}]*$", sInputStr, re.UNICODE):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
@@ -897,7 +926,7 @@ This method handles nested parameters are called recursively in a string value.
                     sInputStr = sInputStr.strip()[:-1] + CNameMangling.STRINGCONVERT.value + "\""
             elif "," in sInputStr:
                 if not re.match(r"^\s*\".+\"\s*$", sInputStr):
-                    self.__reset(bCleanGlobalVars=True)
+                    self.__reset()
                     raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = r"^\s*(\"*" + nestedPattern + r"\"*\s*,+\s*|" + valueStrPattern + r"\s*,+\s*|" + valueNumberPattern + r"\s*,+\s*)+" + \
                             r"(\"*" + nestedPattern + r"\"*\s*,*\s*|" + valueStrPattern + r"\s*,*\s*|" + valueNumberPattern + r"[\s,]*)*[\]}\s]*$"
@@ -911,7 +940,7 @@ This method handles nested parameters are called recursively in a string value.
                         tmpItem = item
                         if "${" in item:
                             if not re.match(r"^[\s\"]*" + nestedPattern + r"[\"\]}\s]*$", item, re.UNICODE):
-                                self.__reset(bCleanGlobalVars=True)
+                                self.__reset()
                                 raise Exception(f"Invalid nested parameter format: {item}")
                             elif re.match(r"^\s*\".*" + nestedPattern + r".*\"\s*$", item, re.UNICODE):
                                 item = re.sub("(" + nestedPattern + ")", "\\1" + CNameMangling.STRINGCONVERT.value, item)
@@ -927,12 +956,12 @@ This method handles nested parameters are called recursively in a string value.
                     sInputStr = newInputStr
             elif re.search(r"\${\s*}", sInputStr) \
                 or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Invalid parameter format: {sInputStr}")
             elif nestedKey and re.match(r"^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
                 sInputStr = re.sub(r"^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
             else:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
 
         sOutput = sInputStr
@@ -1089,14 +1118,14 @@ This function checks key names in JSON configuration files.
             for k, v in oJson.items():
                 if re.search(pattern1, k, re.UNICODE):
                     errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{k}'"
-                    self.__reset(bCleanGlobalVars=True)
+                    self.__reset()
                     raise Exception(errorMsg)
                 if isinstance(v, dict):
                     __checkKeynameFormat(v)
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
-            self.__reset(bCleanGlobalVars=True)
+            self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
 
         self.lImportedFiles.append(jFile)
@@ -1104,7 +1133,7 @@ This function checks key names in JSON configuration files.
         try:
             sJsonData= self.__load_and_removeComments(jFile)
         except Exception as reason:
-            self.__reset(bCleanGlobalVars=True)
+            self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
         pattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
@@ -1115,18 +1144,18 @@ This function checks key names in JSON configuration files.
             try:
                 listDummy = shlex.split(line)
             except Exception as error:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if re.search(pattern, line, re.UNICODE):
                 lNestedVar = re.findall(rf"\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}", line, re.UNICODE)
                 for nestedVar in lNestedVar:
                     if nestedVar[0].isdigit():
-                        self.__reset(bCleanGlobalVars=True)
+                        self.__reset()
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall(r"(\"[^\"]+\")", line)
                 line = re.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
-                indexPattern = r"\[\s*-*\d*\s*:\s*-*\d*\s*\]"
+                indexPattern = r"\[\s*-*\d*\s*]"
                 if re.search(indexPattern, line):
                     indexList = re.findall(indexPattern, line)
                     line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
@@ -1190,7 +1219,7 @@ This function checks key names in JSON configuration files.
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 if "${" in line:
-                    self.__reset(bCleanGlobalVars=True)
+                    self.__reset()
                     invalidPattern1 = r"\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
                     if re.search(invalidPattern1, line):
                         raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
@@ -1204,7 +1233,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
             if self.syntax == CSyntaxType.python:
                 CJSONDecoder = CPythonJSONDecoder
             else:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
         # Load the temporary Json object without checking duplicated keys for 
         # verifying duplicated keys later.
@@ -1215,7 +1244,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                                 cls=CJSONDecoder,
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
-                self.__reset(bCleanGlobalVars=True)
+                self.__reset()
                 raise Exception(f"JSON file: {jFile}\n{error}")
             self.bDuplicatedKeys = True
 
@@ -1226,7 +1255,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            self.__reset(bCleanGlobalVars=True)
+            self.__reset()
             raise Exception(f"JSON file: {jFile}\n{error}")
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
@@ -1239,7 +1268,7 @@ Indices in square brackets have to be placed outside the curly brackets.")
                     continue
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
-                globals().update({k:v})
+                self.JPGlobals.update({k:v})
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
             for k, v in self.dUpdatedParams.items():
