@@ -31,7 +31,7 @@
    // assign modified values to new parameters
    "param5" : ${testdict1}[${param1}]['${param2}']['subKey3'][${param4}]
 
-   // still issue:
+   // still issue: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/232
    // "param6" : ${testdict2.${param1}.subKey2.${param3}.subKey4} // Expecting value: line 11 column 15 (char 412)'!
 }
 
