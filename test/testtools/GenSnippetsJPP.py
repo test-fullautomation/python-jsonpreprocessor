@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.10.0"
-VERSION_DATE = "13.03.2024"
+VERSION      = "0.11.0"
+VERSION_DATE = "14.03.2024"
 #
 # **************************************************************************************************************
 
@@ -1159,7 +1159,40 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    "param_5"   : "}{$}${listparam}[0]{$}{",
    "param_6"   : "{}{$}${listparam}[0]{$}{}",
    "param_7"   : "{}${listparam}[0]{$}${listparam}[1]{$}${listparam}[2]{}",
-   "param_8"   : "{}$${listparam}[0]{$$}$${listparam}[1]{$$}$${listparam}[2]{}"
+   "param_8"   : "{}$${listparam}[0]{$$}$${listparam}[1]{$$}$${listparam}[2]{}",
+   "param_9"   : "{[}$${listparam}[0]]{$[$}$${listparam}[1]}{$$}$${listparam}[2]{}()"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param" : "Hello empty bracket []"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param" : "Hello spaced bracket [    ]"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param" : "Hello filled bracket [selftest]"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param" : "Hello filled bracket with spaces [self  test]"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param1" : "value",
+"param"  : "Hello bracket [${param1}]"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param1" : "value",
+"param"  : "Hello bracket {}[${param1}]"
 }
 """)
 
@@ -1194,6 +1227,14 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    ${testlist3}[1] : 8
 }
 """)
+
+      # listCodeSnippets.append("""{
+# }
+# """)
+
+      # listCodeSnippets.append("""{
+# }
+# """)
 
 
       # --------------------------------------------------------------------------------------------------------------
