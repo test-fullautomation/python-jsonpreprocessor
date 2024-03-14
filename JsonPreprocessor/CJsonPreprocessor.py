@@ -779,10 +779,6 @@ This method replaces all nested parameters in key and value of a JSON object .
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
-            elif k.count('{') != k.count('}'):
-                self.__reset()
-                raise Exception(f"Could not overwrite parameter {k} due to wrong format.\n \
-        Please check key '{k}' in config file!!!")
             
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
@@ -905,9 +901,6 @@ This method handles nested parameters are called recursively in a string value.
         valueNumberPattern = r"[0-9\.]+"
 
         if "${" in sInputStr:
-            if re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInputStr, re.UNICODE):
-                self.__reset()
-                raise Exception(f"Invalid syntax! A sub-element in {sInputStr.strip()} has to enclosed in quotes.")
             if re.match(r"^\s*" + nestedPattern + r"[\s,\]}]*$", sInputStr, re.UNICODE):
                 sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
                 nestedParam = re.sub(r"^\s*\"(.+)\".*$", "\\1", sInputStr)
@@ -989,7 +982,7 @@ This is recrusive funtion collects all parameters which contain "." in the name.
             if isinstance(v, dict):
                 self.__checkDotInParamName(v)
 
-    def __checkNestedParam(self, sInput : str) -> bool:
+    def __checkNestedParam(self, sInput : str, bKey=False) -> bool:
         """
 Checks nested parameter format.
 
@@ -1003,12 +996,25 @@ Checks nested parameter format.
 
   *raise exception if nested parameter format invalid*
         """
-        pattern1 = rf"\${{[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}"
-        if re.search(pattern1, sInput, re.UNICODE):
+        pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+}}(\[.*\])+$"
+        if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
-            raise Exception(f"Invalid nested parameter format: '{sInput}'." + "The '[<index>]' or '[<key>]' have to \
-be outside of '${<variable name>}'.")
+            errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
+            raise Exception(errorMsg)
+        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
+            errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
+            self.__reset()
+            raise Exception(errorMsg)
+        elif re.search(r'\[\s*\]', sInput):
+            if CNameMangling.STRINGCONVERT.value not in sInput or \
+                re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
+                errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
+Reason: Empty pair of square brackets detected."
+                self.__reset()
+                raise Exception(errorMsg)
+            else:
+                return True
         else:
             return True
         
@@ -1114,12 +1120,9 @@ This method is the entry point of JsonPreprocessor.
             """
 This function checks key names in JSON configuration files.
             """
-            pattern1 = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\['*.+'*\]\s*}}"
             for k, v in oJson.items():
-                if re.search(pattern1, k, re.UNICODE):
-                    errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{k}'"
-                    self.__reset()
-                    raise Exception(errorMsg)
+                if "${" in k:
+                    self.__checkNestedParam(k, bKey=True)
                 if isinstance(v, dict):
                     __checkKeynameFormat(v)
 
