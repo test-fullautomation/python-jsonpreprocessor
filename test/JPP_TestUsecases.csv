@@ -3,6 +3,7 @@ TESTID|SECTION|SUBSECTION|DESCRIPTION
 JPP_0001|DATA_TYPES|GOODCASE|JSON file with parameters of different data types (basic and composite)
 JPP_0002|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types
 JPP_0003|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
+JPP_0004|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict
 JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar operators
 JPP_0100|DATA_INTEGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
 JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
@@ -35,6 +36,7 @@ JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substituti
 JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)
 JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)
 JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
+JPP_0268|PARAMETER_SUBSTITUTION|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)

@@ -27,6 +27,10 @@ Test JPP_0003 / DATA_TYPES / GOODCASE
 Description: JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
 Expectation: All parameters referenced by dollar operator are resolved correctly, with their correct data types
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0004 / DATA_TYPES / GOODCASE
+Description: JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict
+Expectation: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0005 / DATA_TYPES / GOODCASE
 Description: JSON file with string values containing dollar operators
 Expectation: All parameters referenced by dollar operator are resolved correctly, outcome is a string containing the values of all referenced parameters
@@ -154,6 +158,11 @@ Expectation: No values are returned, and JsonPreprocessor throws an exception
 Test JPP_0267 / PARAMETER_SUBSTITUTION / BADCASE
 Description: JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0268 / PARAMETER_SUBSTITUTION / BADCASE
+Description: JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: List indices must be of type 'int'
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0300 / VALUE_DETECTION / GOODCASE
 Description: JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
@@ -472,5 +481,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 07.03.2024 - 14:58:30
+Generated: 14.03.2024 - 15:46:24
 

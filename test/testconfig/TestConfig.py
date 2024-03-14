@@ -1,6 +1,6 @@
 ﻿# **************************************************************************************************************
 #
-#  Copyright 2020-2023 Robert Bosch GmbH
+#  Copyright 2020-2024 Robert Bosch GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 #
 # TestConfig.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 07.03.2024
+# 14.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2426,13 +2426,14 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (7/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
-[DICT] (7/2) > {param1} [STR]  :  'subKey1'
-[DICT] (7/3) > {param2} [STR]  :  'subKey2'
-[DICT] (7/4) > {param3} [STR]  :  'subKey3'
-[DICT] (7/5) > {param4} [STR]  :  'subKey4'
-[DICT] (7/6) > {param5} [INT]  :  3
-[DICT] (7/7) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (8/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (8/2) > {param1} [STR]  :  'subKey1'
+[DICT] (8/3) > {param2} [STR]  :  'subKey2'
+[DICT] (8/4) > {param3} [STR]  :  'subKey3'
+[DICT] (8/5) > {param4} [STR]  :  'subKey4'
+[DICT] (8/6) > {param5} [INT]  :  3
+[DICT] (8/7) > {param7} [STR]  :  '3'
+[DICT] (8/8) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
