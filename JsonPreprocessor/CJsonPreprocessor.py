@@ -717,10 +717,6 @@ This method replaces all nested parameters in key and value of a JSON object .
                 initValue = initValue.replace(CNameMangling.STRINGCONVERT.value, '')
             elif re.match(r"^\s*" + pattern + r"\s*$", sInputStr, re.UNICODE):
                 sInputStr = re.sub("\$", "$$", sInputStr)
-            if sInputStr.count("${") > sInputStr.count("}"):
-                self.__reset()
-                raise Exception(f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{initValue}'.\n \
-          Please check the configuration file of the executed test!")
             sInputStr = self.__checkParamName(sInputStr)
             handledValue = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey, bConvertToStr=bValueConvertString)
@@ -912,12 +908,12 @@ This method handles nested parameters are called recursively in a string value.
             elif ((re.match(r"[\s{\[]*\".+\"\s*", sInputStr) and sInputStr.count("\"")==2) \
                 or (re.match(r"^\s*\${.+}[,\s]*$", sInputStr) and sInputStr.count("{")==sInputStr.count("}") \
                     and not re.search(r"(?<!^)(?<!\.)[^\.]\${", sInputStr.strip()) and not nestedKey)) \
-                and re.search("(" + nestedPattern + ")*", sInputStr, re.UNICODE):
+                and re.search("(" + nestedPattern + ")", sInputStr, re.UNICODE):
                 if sInputStr.strip()[-1] == ",":
                     sInputStr = sInputStr.strip()[:-2] + CNameMangling.STRINGCONVERT.value + "\","
                 else:
                     sInputStr = sInputStr.strip()[:-1] + CNameMangling.STRINGCONVERT.value + "\""
-            elif "," in sInputStr:
+            elif "," in sInputStr.strip()[:-1]:
                 if not re.match(r"^\s*\".+\"\s*$", sInputStr):
                     self.__reset()
                     raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
@@ -947,16 +943,13 @@ This method handles nested parameters are called recursively in a string value.
                                 self.lNestedParams.append(nestedParam)
                         newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
                     sInputStr = newInputStr
-            elif re.search(r"\${\s*}", sInputStr) \
-                or (nestedKey and (sInputStr.count("{") != sInputStr.count("}") or sInputStr.count("[") != sInputStr.count("]"))):
-                self.__reset()
-                raise Exception(f"Invalid parameter format: {sInputStr}")
             elif nestedKey and re.match(r"^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
                 sInputStr = re.sub(r"^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
-            else:
-                self.__reset()
-                raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
-
+            elif not re.match(r"^\s*\".+\"[,\s]*$", sInputStr):
+                if not re.match(r"^.+,\s*$", sInputStr):
+                    sInputStr = re.sub(r"^\s*(.+)\s*$", "\"\\1\"", sInputStr)
+                else:
+                    sInputStr = re.sub(r"^\s*(.+)\s*,\s*$", "\"\\1\",", sInputStr)
         sOutput = sInputStr
         return sOutput
 
@@ -996,17 +989,22 @@ Checks nested parameter format.
 
   *raise exception if nested parameter format invalid*
         """
-        pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+}}(\[.*\])+$"
+        pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
+        pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
+        pattern2 = r"\${.*\${.*}"
+        if "${" not in sInput:
+            return True
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
             raise Exception(errorMsg)
-        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
+        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE) and \
+            CNameMangling.STRINGCONVERT.value in sInput:
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[\s*\]', sInput):
+        elif re.search(r'\[\s*\]', sInput) and CNameMangling.STRINGCONVERT.value in sInput:
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
@@ -1015,6 +1013,25 @@ Reason: Empty pair of square brackets detected."
                 raise Exception(errorMsg)
             else:
                 return True
+        elif CNameMangling.STRINGCONVERT.value in sInput:
+            if sInput.count("${") > sInput.count("}"):
+                sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
+                errorMsg = f"Invalid nested parameter format: {sInput.strip()}"
+                self.__reset()
+                raise Exception(errorMsg)
+            else:
+                return True
+        elif CNameMangling.STRINGCONVERT.value not in sInput and \
+            CNameMangling.DUPLICATEDKEY_01.value not in sInput:
+            if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
+                errorMsg = f"Invalid nested parameter format: {sInput} - The double quotes are missing!!!"
+            else:
+                if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+                    errorMsg = f"Invalid nested parameter format: {sInput.strip()}"
+                else:
+                    return True
+            self.__reset()
+            raise Exception(errorMsg)
         else:
             return True
         
@@ -1150,7 +1167,7 @@ This function checks key names in JSON configuration files.
                 self.__reset()
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
-            if re.search(pattern, line, re.UNICODE):
+            if "${" in line:
                 lNestedVar = re.findall(rf"\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}", line, re.UNICODE)
                 for nestedVar in lNestedVar:
                     if nestedVar[0].isdigit():
@@ -1221,14 +1238,6 @@ This function checks key names in JSON configuration files.
                         self.lNestedParams.remove(nestedParam)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
-                if "${" in line:
-                    self.__reset()
-                    invalidPattern1 = r"\${\s*[0-9A-Za-z\._]*\[.+\][0-9A-Za-z\._]*\s*}"
-                    if re.search(invalidPattern1, line):
-                        raise Exception(f"Invalid syntax: Found index inside curly brackets in line '{line.strip()}'. \
-Indices in square brackets have to be placed outside the curly brackets.")
-                    else:
-                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
 
         CJSONDecoder = None
