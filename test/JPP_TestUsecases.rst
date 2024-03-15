@@ -45,6 +45,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0004**
+
+  [DATA_TYPES / GOODCASE]
+
+   **JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict**
+
+   Expected: All parameters referenced by dollar operator are resolved correctly, with their correct data types
+
+----
+
 * **Test JPP_0005**
 
   [DATA_TYPES / GOODCASE]
@@ -362,6 +372,18 @@ Test Use Cases
    **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0268**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: List indices must be of type 'int'*
 
 ----
 
@@ -1141,5 +1163,5 @@ Test Use Cases
 
 ----
 
-Generated: 07.03.2024 - 14:58:30
+Generated: 14.03.2024 - 15:46:24
 

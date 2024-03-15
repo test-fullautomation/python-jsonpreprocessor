@@ -1,6 +1,6 @@
 ﻿# **************************************************************************************************************
 #
-#  Copyright 2020-2023 Robert Bosch GmbH
+#  Copyright 2020-2024 Robert Bosch GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 #
 # TestConfig.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 07.03.2024
+# 14.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -446,40 +446,40 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (53/53) > {param_103} [DICT] (51/17) > {key_17} [STR]  :  'None'
 [DICT] (53/53) > {param_103} [DICT] (51/18) > {key_18} [STR]  :  'string'
 [DICT] (53/53) > {param_103} [DICT] (51/19) > {key_19} [STR]  :  'string'
-[DICT] (53/53) > {param_103} [DICT] (51/20) > {key_20} [INT]  :  123
+[DICT] (53/53) > {param_103} [DICT] (51/20) > {key_20} [STR]  :  '123'
 [DICT] (53/53) > {param_103} [DICT] (51/21) > {key_21} [STR]  :  '123'
 [DICT] (53/53) > {param_103} [DICT] (51/22) > {key_22} [STR]  :  '123'
 [DICT] (53/53) > {param_103} [DICT] (51/23) > {key_23} [STR]  :  '123'
-[DICT] (53/53) > {param_103} [DICT] (51/24) > {key_24} [FLOAT]  :  4.56
+[DICT] (53/53) > {param_103} [DICT] (51/24) > {key_24} [STR]  :  '4.56'
 [DICT] (53/53) > {param_103} [DICT] (51/25) > {key_25} [STR]  :  '4.56'
 [DICT] (53/53) > {param_103} [DICT] (51/26) > {key_26} [STR]  :  '4.56'
 [DICT] (53/53) > {param_103} [DICT] (51/27) > {key_27} [STR]  :  '4.56'
-[DICT] (53/53) > {param_103} [DICT] (51/28) > {key_28} [BOOL]  :  True
-[DICT] (53/53) > {param_103} [DICT] (51/29) > {key_29} [STR]  :  'true'
+[DICT] (53/53) > {param_103} [DICT] (51/28) > {key_28} [STR]  :  'True'
+[DICT] (53/53) > {param_103} [DICT] (51/29) > {key_29} [STR]  :  'True'
 [DICT] (53/53) > {param_103} [DICT] (51/30) > {key_30} [STR]  :  'true'
 [DICT] (53/53) > {param_103} [DICT] (51/31) > {key_31} [STR]  :  'true'
-[DICT] (53/53) > {param_103} [DICT] (51/32) > {key_32} [BOOL]  :  False
-[DICT] (53/53) > {param_103} [DICT] (51/33) > {key_33} [STR]  :  'false'
+[DICT] (53/53) > {param_103} [DICT] (51/32) > {key_32} [STR]  :  'False'
+[DICT] (53/53) > {param_103} [DICT] (51/33) > {key_33} [STR]  :  'False'
 [DICT] (53/53) > {param_103} [DICT] (51/34) > {key_34} [STR]  :  'false'
 [DICT] (53/53) > {param_103} [DICT] (51/35) > {key_35} [STR]  :  'false'
-[DICT] (53/53) > {param_103} [DICT] (51/36) > {key_36} [BOOL]  :  None
-[DICT] (53/53) > {param_103} [DICT] (51/37) > {key_37} [STR]  :  'null'
+[DICT] (53/53) > {param_103} [DICT] (51/36) > {key_36} [STR]  :  'None'
+[DICT] (53/53) > {param_103} [DICT] (51/37) > {key_37} [STR]  :  'None'
 [DICT] (53/53) > {param_103} [DICT] (51/38) > {key_38} [STR]  :  'null'
 [DICT] (53/53) > {param_103} [DICT] (51/39) > {key_39} [STR]  :  'null'
-[DICT] (53/53) > {param_103} [DICT] (51/40) > {key_40} [BOOL]  :  True
+[DICT] (53/53) > {param_103} [DICT] (51/40) > {key_40} [STR]  :  'True'
 [DICT] (53/53) > {param_103} [DICT] (51/41) > {key_41} [STR]  :  'True'
 [DICT] (53/53) > {param_103} [DICT] (51/42) > {key_42} [STR]  :  'True'
 [DICT] (53/53) > {param_103} [DICT] (51/43) > {key_43} [STR]  :  'True'
-[DICT] (53/53) > {param_103} [DICT] (51/44) > {key_44} [BOOL]  :  False
+[DICT] (53/53) > {param_103} [DICT] (51/44) > {key_44} [STR]  :  'False'
 [DICT] (53/53) > {param_103} [DICT] (51/45) > {key_45} [STR]  :  'False'
 [DICT] (53/53) > {param_103} [DICT] (51/46) > {key_46} [STR]  :  'False'
 [DICT] (53/53) > {param_103} [DICT] (51/47) > {key_47} [STR]  :  'False'
-[DICT] (53/53) > {param_103} [DICT] (51/48) > {key_48} [BOOL]  :  None
+[DICT] (53/53) > {param_103} [DICT] (51/48) > {key_48} [STR]  :  'None'
 [DICT] (53/53) > {param_103} [DICT] (51/49) > {key_49} [STR]  :  'None'
 [DICT] (53/53) > {param_103} [DICT] (51/50) > {key_50} [STR]  :  'None'
 [DICT] (53/53) > {param_103} [DICT] (51/51) > {key_51} [STR]  :  'None'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1290,9 +1290,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "List indices must be of type 'int' (error message placeholder)"
+dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${listval}['1']' is not available!" # but not the desired one; better: list incices must be of type int
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -1737,7 +1737,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "detected unexpected characters in parameter name (placeholder)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase) # still naming convention issue
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -2426,13 +2426,14 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (7/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
-[DICT] (7/2) > {param1} [STR]  :  'subKey1'
-[DICT] (7/3) > {param2} [STR]  :  'subKey2'
-[DICT] (7/4) > {param3} [STR]  :  'subKey3'
-[DICT] (7/5) > {param4} [STR]  :  'subKey4'
-[DICT] (7/6) > {param5} [INT]  :  3
-[DICT] (7/7) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (8/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (8/2) > {param1} [STR]  :  'subKey1'
+[DICT] (8/3) > {param2} [STR]  :  'subKey2'
+[DICT] (8/4) > {param3} [STR]  :  'subKey3'
+[DICT] (8/5) > {param4} [STR]  :  'subKey4'
+[DICT] (8/6) > {param5} [INT]  :  3
+[DICT] (8/7) > {param7} [STR]  :  '3'
+[DICT] (8/8) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
