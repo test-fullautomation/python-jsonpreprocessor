@@ -8,6 +8,7 @@ JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar oper
 JPP_0100|DATA_INTEGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
 JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
 JPP_0102|DATA_INTEGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
+JPP_0103|DATA_INTEGRITY|GOODCASE|JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)
 JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
 JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
 JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
@@ -79,7 +80,7 @@ JPP_0512|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a nested use of lis
 JPP_0513|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
 JPP_0514|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
 JPP_0515|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
-JPP_0516|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
+JPP_0516|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)

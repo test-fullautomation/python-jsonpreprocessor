@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 14.03.2024
+# 15.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -596,6 +596,28 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0102.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = r"[DICT] (1/1) > {teststring_data_integrity} [STR]  :  'Ä.1/B.2\C.3$D.4&E.5?F.6=G.7#H.8~I.9§J.10,{K.11};L.12@M.12" + "\"N.13/Ö.14%1P.15;(Q.16),[R.17]'"
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0103"
+dictUsecase['DESCRIPTION']       = "JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)"
+dictUsecase['EXPECTATION']       = "Strings are returned unchanged"
+dictUsecase['SECTION']           = "DATA_INTEGRITY"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0103.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (7/1) > {param} [STR]  :  'value'
+[DICT] (7/2) > {param1} [STR]  :  'Empty bracket []'
+[DICT] (7/3) > {param2} [STR]  :  'Spaced bracket [    ]'
+[DICT] (7/4) > {param3} [STR]  :  'Filled bracket [selftest]'
+[DICT] (7/5) > {param4} [STR]  :  '{Filled bracket after string}[selftest]'
+[DICT] (7/6) > {param5} [STR]  :  'Filled bracket with spaces [self  test]'
+[DICT] (7/7) > {param6} [STR]  :  'Bracket with parameter [value]'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -2123,7 +2145,7 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0516"
-dictUsecase['DESCRIPTION']       = "JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)"
+dictUsecase['DESCRIPTION']       = "JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
 dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
 dictUsecase['SUBSECTION']        = "GOODCASE"
@@ -2132,17 +2154,18 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0516.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (9/1) > {listparam} [LIST] (3/1) > [STR]  :  'A'
-[DICT] (9/1) > {listparam} [LIST] (3/2) > [STR]  :  'B'
-[DICT] (9/1) > {listparam} [LIST] (3/3) > [STR]  :  'C'
-[DICT] (9/2) > {param_1} [STR]  :  '}A{'
-[DICT] (9/3) > {param_2} [STR]  :  '{A}'
-[DICT] (9/4) > {param_3} [STR]  :  '$}A$}'
-[DICT] (9/5) > {param_4} [STR]  :  '{$}A{$}'
-[DICT] (9/6) > {param_5} [STR]  :  '}{$}A{$}{'
-[DICT] (9/7) > {param_6} [STR]  :  '{}{$}A{$}{}'
-[DICT] (9/8) > {param_7} [STR]  :  '{}A{$}B{$}C{}'
-[DICT] (9/9) > {param_8} [STR]  :  '{}$A{$$}$B{$$}$C{}'
+[DICT] (10/1) > {listparam} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (10/1) > {listparam} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (10/1) > {listparam} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (10/2) > {param_01} [STR]  :  '}A{'
+[DICT] (10/3) > {param_02} [STR]  :  '{A}'
+[DICT] (10/4) > {param_03} [STR]  :  '$}A$}'
+[DICT] (10/5) > {param_04} [STR]  :  '{$}A{$}'
+[DICT] (10/6) > {param_05} [STR]  :  '}{$}A{$}{'
+[DICT] (10/7) > {param_06} [STR]  :  '{}{$}A{$}{}'
+[DICT] (10/8) > {param_07} [STR]  :  '{}A{$}B{$}C{}'
+[DICT] (10/9) > {param_08} [STR]  :  '{}$A{$$}$B{$$}$C{}'
+[DICT] (10/10) > {param_09} [STR]  :  '{[}$A]{$[$}$B}{$$}$C{}()'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

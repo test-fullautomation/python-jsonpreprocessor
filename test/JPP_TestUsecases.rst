@@ -95,6 +95,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0103**
+
+  [DATA_INTEGRITY / GOODCASE]
+
+   **JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)**
+
+   Expected: Strings are returned unchanged
+
+----
+
 * **Test JPP_0200**
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
@@ -871,7 +881,7 @@ Test Use Cases
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
 
-   **JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)**
+   **JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)**
 
    Expected: JsonPreprocessor returns expected value
 
@@ -1163,5 +1173,5 @@ Test Use Cases
 
 ----
 
-Generated: 14.03.2024 - 15:46:24
+Generated: 15.03.2024 - 18:49:00
 
