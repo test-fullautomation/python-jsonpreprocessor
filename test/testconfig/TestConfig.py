@@ -2812,7 +2812,7 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1362"
-dictUsecase['DESCRIPTION']       = "JSON file with blocked slicing notation (0:${index}, 'index' negative)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked slicing notation (0:${negindex})"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "BLOCKED_SLICING"
 dictUsecase['SUBSECTION']        = "BADCASE"
@@ -2847,6 +2847,20 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1364.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1365"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked slicing notation (combinations with negative integer parameter)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "BLOCKED_SLICING"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1365.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO / something like: "slicing not supported"!!!
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)

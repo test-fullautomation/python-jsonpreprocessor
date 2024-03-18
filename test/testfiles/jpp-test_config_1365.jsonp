@@ -16,5 +16,5 @@
 {
    "negindex"  : -1,
    "listParam" : [1,2,3],
-   "testParam" : {"key" : [1, ${listParam}[0:${negindex}]}
+   "testParam" : [${listParam}[${negindex}], {"key" : ${listParam}[${negindex}]}]
 }
