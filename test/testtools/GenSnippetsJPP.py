@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.11.0"
-VERSION_DATE = "14.03.2024"
+VERSION      = "0.12.0"
+VERSION_DATE = "15.03.2024"
 #
 # **************************************************************************************************************
 
@@ -1176,6 +1176,11 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
       listCodeSnippets.append("""{
 "param" : "Hello filled bracket [selftest]"
+}
+""")
+
+      listCodeSnippets.append("""{
+"param" : "{Hello filled bracket after string}[selftest]"
 }
 """)
 

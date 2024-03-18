@@ -13,15 +13,12 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "listparam" : ["A","B","C"],
-   "param_01"   : "}${listparam}[0]{",
-   "param_02"   : "{${listparam}[0]}",
-   "param_03"   : "$}${listparam}[0]$}",
-   "param_04"   : "{$}${listparam}[0]{$}",
-   "param_05"   : "}{$}${listparam}[0]{$}{",
-   "param_06"   : "{}{$}${listparam}[0]{$}{}",
-   "param_07"   : "{}${listparam}[0]{$}${listparam}[1]{$}${listparam}[2]{}",
-   "param_08"   : "{}$${listparam}[0]{$$}$${listparam}[1]{$$}$${listparam}[2]{}",
-   "param_09"   : "{[}$${listparam}[0]]{$[$}$${listparam}[1]}{$$}$${listparam}[2]{}()"
+   "param" : "value",
+   //
+   "param1" : "Empty bracket []",
+   "param2" : "Spaced bracket [    ]",
+   "param3" : "Filled bracket [selftest]",
+   "param4" : "{Filled bracket after string}[selftest]",
+   "param5" : "Filled bracket with spaces [self  test]",
+   "param6" : "Bracket with parameter [${param}]"
 }
-

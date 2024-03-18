@@ -47,6 +47,10 @@ Test JPP_0102 / DATA_INTEGRITY / GOODCASE
 Description: JSON file with string containing more special characters, masked special characters and escape sequences
 Expectation: String is returned unchanged (but with masked special characters and escape sequences resolved)
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0103 / DATA_INTEGRITY / GOODCASE
+Description: JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)
+Expectation: Strings are returned unchanged
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0200 / PARAMETER_SUBSTITUTION / GOODCASE
 Description: JSON file with nested parameter / string parameter substitution in parameter value
 Expectation: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
@@ -363,7 +367,7 @@ Description: JSON file containing nested dollar operator expressions
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0516 / COMPOSITE_EXPRESSIONS / GOODCASE
-Description: JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
+Description: JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0550 / COMPOSITE_EXPRESSIONS / BADCASE
@@ -481,5 +485,5 @@ Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
 Hint.......: Works with raw path to JSON file (path not normalized internally)
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 14.03.2024 - 15:46:24
+Generated: 15.03.2024 - 18:49:00
 
