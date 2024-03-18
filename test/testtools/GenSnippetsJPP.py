@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.12.0"
-VERSION_DATE = "15.03.2024"
+VERSION      = "0.13.0"
+VERSION_DATE = "18.03.2024"
 #
 # **************************************************************************************************************
 
@@ -1414,22 +1414,22 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 """
 
       listofDataTypeTuples = []
-      # listofDataTypeTuples.append(("indexP", "indexP"))
-      # listofDataTypeTuples.append(("indexP", "keyP"))
-      # listofDataTypeTuples.append(("indexP", "dictP"))
-      # listofDataTypeTuples.append(("indexP", "listP"))
-      # listofDataTypeTuples.append(("keyP", "indexP"))
-      # listofDataTypeTuples.append(("keyP", "keyP"))
-      # listofDataTypeTuples.append(("keyP", "dictP"))
-      # listofDataTypeTuples.append(("keyP", "listP"))
-      # listofDataTypeTuples.append(("dictP", "indexP"))
+      listofDataTypeTuples.append(("indexP", "indexP"))
+      listofDataTypeTuples.append(("indexP", "keyP"))
+      listofDataTypeTuples.append(("indexP", "dictP"))
+      listofDataTypeTuples.append(("indexP", "listP"))
+      listofDataTypeTuples.append(("keyP", "indexP"))
+      listofDataTypeTuples.append(("keyP", "keyP"))
+      listofDataTypeTuples.append(("keyP", "dictP"))
+      listofDataTypeTuples.append(("keyP", "listP"))
+      listofDataTypeTuples.append(("dictP", "indexP"))
       listofDataTypeTuples.append(("dictP", "keyP"))
-      # listofDataTypeTuples.append(("dictP", "dictP"))
-      # listofDataTypeTuples.append(("dictP", "listP"))
-      # listofDataTypeTuples.append(("listP", "indexP"))
-      # listofDataTypeTuples.append(("listP", "keyP"))
-      # listofDataTypeTuples.append(("listP", "dictP"))
-      # listofDataTypeTuples.append(("listP", "listP"))
+      listofDataTypeTuples.append(("dictP", "dictP"))
+      listofDataTypeTuples.append(("dictP", "listP"))
+      listofDataTypeTuples.append(("listP", "indexP"))
+      listofDataTypeTuples.append(("listP", "keyP"))
+      listofDataTypeTuples.append(("listP", "dictP"))
+      listofDataTypeTuples.append(("listP", "listP"))
 
       listAssignments = []
 
@@ -1825,8 +1825,81 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
    # eof def GetMissingBrackets(self):
 
-# eof class CSnippets():
+   # --------------------------------------------------------------------------------------------------------------
 
+   def GetSpecialCharacters(self):
+      """Special characters at several positions within a complex data structure
+      """
+
+      sHeadline = "Special characters at several positions within a complex data structure"
+
+      # data structure 1
+      sDataStructure1 = """   "params" : {*01* : *02*,
+               *03* : [*04*, {*05* : *06*,
+                              *07* : [*08*, [*09*, *10*]],
+                              *11* : [*12*, {*13* : *14*}],
+                              *15* : {*16* : [*17*, *18*]},
+                              *19* : {*20* : {*21* : *22*}}
+                             }
+                       ]
+              }"""
+
+      sDefinitions = """   "indexP" : 0,
+   "keyP"   : "A",
+   "dictP"  : {"A" : 0, "B" : 1},
+   "listP"  : ["A", "B"],
+"""
+
+      sCodeSnippetPattern = """{
+####DEFINITIONS####
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = [".", "..", "[]", "[..]", "[.  .]", "{}", "{..}", "{.  .}", "/", "\\", "|", "*", "+", "-", "$", "\"", "'", "#", "\"#\"", ":"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*", "*11*",
+                          "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*", "*21*", "*22*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["001","002","003","004","005","006","007","008","009","010",
+                    "011","012","013","014","015","016","017","018","019","020","021","022"] # as much elements as in listPlaceholders
+
+      # put all things together
+
+      listCodeSnippets = []
+
+      # sDataStructure1
+
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"\"{sFiller}\"")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetSpecialCharacters(self):
+
+# eof class CSnippets():
 
 # --------------------------------------------------------------------------------------------------------------
 # eof class definitions
@@ -1952,6 +2025,9 @@ sHeadline, listCodeSnippets = oSnippets.GetKeywords()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetSpecialCharacters()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 print()
