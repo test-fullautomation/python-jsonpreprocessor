@@ -22,7 +22,7 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.14.0"
+VERSION      = "0.15.0"
 VERSION_DATE = "18.03.2024"
 #
 # **************************************************************************************************************
@@ -1895,10 +1895,12 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
       sDataStructure1 = """   "param1" : ${stringParam}[*01*],
    "param2" : ${listParam}[*02*],
-   "param3" : {"key" : ${listParam}[*03*]},
-   "param4" : {"key" : [1, ${listParam}[*04*]]}"""
+   "param3" : {"key1" : ${listParam}[*03*]},
+   "param4" : {"key2" : [${listParam}[*04*], {"key3" : ${listParam}[*05*]}]},
+   "${listParam}[*06*]" : 4"""
 
-      sDefinitions = """   "index" : 1,
+      sDefinitions = """   "index"       : 1,
+   "negindex"    : -1,
    "stringParam" : "ABC",
    "listParam"   : [1,2,3],
 """
@@ -1914,13 +1916,13 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
-      listExpressions = ["+1", "-1", "+20", "-20", ":", "1:", ":-1", "${index}:", "${index}-1:${index}+1"]
+      listExpressions = ["+1", "-1", "+20", "-20", ":", "1:", ":-1", "+${index}", "-${index}", "${index}:", "${index}-1:${index}+1", "${negindex}"]
 
-      listPlaceholders = ["*01*", "*02*", "*03*", "*04*"]
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*"]
 
       listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
 
-      listFiller = ["0","1","2","0"] # as much elements as in listPlaceholders
+      listFiller = ["0","1","2","0","1","2"] # as much elements as in listPlaceholders
 
       # put all things together
 
