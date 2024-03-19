@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.15.0"
-VERSION_DATE = "18.03.2024"
+VERSION      = "0.16.0"
+VERSION_DATE = "19.03.2024"
 #
 # **************************************************************************************************************
 
@@ -1888,10 +1888,10 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    # --------------------------------------------------------------------------------------------------------------
 
    def GetSlicing(self):
-      """Several particular snippets containing slicing syntax
+      """Several snippets containing slicing syntax
       """
 
-      sHeadline = "Several particular snippets containing slicing syntax"
+      sHeadline = "Several snippets containing slicing syntax"
 
       sDataStructure1 = """   "param1" : ${stringParam}[*01*],
    "param2" : ${listParam}[*02*],
@@ -1951,6 +1951,65 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
       return sHeadline, listCodeSnippets
 
    # eof def GetSlicing(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetNamingConventions(self):
+      """Several snippets containing naming convention issues
+      """
+
+      sHeadline = "Several snippets containing naming convention issues"
+
+      sDataStructure1 = """   "param*01*1"   : "value",
+   "param2"    : "val*02*ue",
+   "${param2}" : 1,
+   "dictParam" : {"key*03*A" : 2, "keyB" : {"key*04*C" : 3}}"""
+
+      sCodeSnippetPattern = """{
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["-", "+", "*", "|", "/", "$", "%", "#", "\\", "\\\\"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["","","",""] # as much elements as in listPlaceholders
+
+      # put all things together
+
+      listCodeSnippets = []
+
+      # sDataStructure1
+
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetNamingConventions(self):
+
 
 # eof class CSnippets():
 
@@ -2084,6 +2143,9 @@ sHeadline, listCodeSnippets = oSnippets.GetSpecialCharacters()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetSlicing()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetNamingConventions()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 print()
