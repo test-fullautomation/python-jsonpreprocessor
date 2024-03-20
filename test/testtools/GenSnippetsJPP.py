@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.16.0"
-VERSION_DATE = "19.03.2024"
+VERSION      = "0.17.0"
+VERSION_DATE = "20.03.2024"
 #
 # **************************************************************************************************************
 
@@ -2010,6 +2010,70 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
    # eof def GetNamingConventions(self):
 
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetBlockedSubstitutions(self):
+      """Several snippets containing blocked dollar operator substitutions
+      """
+
+      sHeadline = "Several snippets containing blocked dollar operator substitutions"
+
+      listCodeSnippets = []
+
+      listCodeSnippets.append("""{
+   "dictParam"  : {"A" : 0, "B" : 1},
+   "param"      : "${dictParam}"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listParam"  : ["A", "B"],
+   "param"      : "${listParam}"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "floatParam" : 1.2,
+   "param"      : "${floatParam}"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "dictParam"    : {"A" : 0, "B" : 1},
+   "${dictParam}" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listParam"    : ["A", "B"],
+   "${listParam}" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "floatParam"    : 1.2,
+   "${floatParam}" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "keyA"      : "keyA",
+   "dictParam" : {"${keyA}" : 1}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "keyA"      : "keyA",
+   "keyB"      : "keyB",
+   "dictParam" : {"keyA" : {}},
+   ${dictParam.keyA}['${keyB}_2'] : 2
+}
+""")
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetBlockedSubstitutions(self):
+
 
 # eof class CSnippets():
 
@@ -2146,6 +2210,9 @@ sHeadline, listCodeSnippets = oSnippets.GetSlicing()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetNamingConventions()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetBlockedSubstitutions()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 print()
