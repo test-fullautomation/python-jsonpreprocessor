@@ -13,6 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "dictParam" : {"A" : 0, "B" : 1},
-   "param"     : "${dictParam}"
+   "listParam" : ["A", "B"],
+   "param"     : "${listParam}"
 }

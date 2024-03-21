@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 14.03.2024 - 15:46:24
+# 20.03.2024 - 17:07:31
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -178,7 +178,7 @@ class Test_PARAMETER_SUBSTITUTION_BADCASE:
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a list; list index is defined by a parameter and wrapped in single quotes",]
    )
-   def test_JPP_0268(self, Description):
-      nReturn = CExecute.Execute("JPP_0268")
+   def test_JPP_0270(self, Description):
+      nReturn = CExecute.Execute("JPP_0270")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

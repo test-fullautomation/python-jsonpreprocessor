@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 19.03.2024
+# 20.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1305,13 +1305,42 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0268"
+dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in parameter value (composite data types not allowed in values)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO !!!
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0269"
+dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in parameter value (composite data types not allowed in names)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0269.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO !!!
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# JPP_0270 does not really belong to PARAMETER_SUBSTITUTION, maybe move to another section
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0270"
 dictUsecase['DESCRIPTION']       = "JSON file containing a list; list index is defined by a parameter and wrapped in single quotes"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0270.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${listval}['1']' is not available!" # but not the desired one; better: list incices must be of type int
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)

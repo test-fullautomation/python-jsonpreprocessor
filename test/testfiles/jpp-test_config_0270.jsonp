@@ -13,6 +13,7 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "dictParam" : {"A" : 0, "B" : 1},
-   "param"     : "${dictParam}"
+   "intval"  : 1,
+   "listval" : ["B", 2],
+   "param_${listval}['${intval}']}" : 3
 }
