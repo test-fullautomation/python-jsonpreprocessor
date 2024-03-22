@@ -778,7 +778,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 k = self.__nestedParamHandler(k, bKey=True)
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
-                    raise Exception(f"The implicit creation of data structures based on nested parameter is not supported. \
+                    raise Exception(f"The implicit creation of data structures based on parameter is not supported. \
 New parameter '{k}' could not be created by the expression '{keyNested}'")
             
             if isinstance(v, dict):
@@ -921,7 +921,7 @@ This method handles nested parameters are called recursively in a string value.
             elif "," in sInputStr.strip()[:-1]:
                 if not re.match(r"^\s*\".+\"\s*$", sInputStr):
                     self.__reset()
-                    raise Exception(f"Invalid nested parameter format: {sInputStr} - The double quotes are missing!!!")
+                    raise Exception(f"Invalid parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = r"^\s*(\"*" + nestedPattern + r"\"*\s*,+\s*|" + valueStrPattern + r"\s*,+\s*|" + valueNumberPattern + r"\s*,+\s*)+" + \
                             r"(\"*" + nestedPattern + r"\"*\s*,*\s*|" + valueStrPattern + r"\s*,*\s*|" + valueNumberPattern + r"[\s,]*)*[\]}\s]*$"
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr, re.UNICODE)
@@ -935,7 +935,7 @@ This method handles nested parameters are called recursively in a string value.
                         if "${" in item:
                             if not re.match(r"^[\s\"]*" + nestedPattern + r"[\"\]}\s]*$", item, re.UNICODE):
                                 self.__reset()
-                                raise Exception(f"Invalid nested parameter format: {item}")
+                                raise Exception(f"Invalid parameter format: {item}")
                             elif re.match(r"^\s*\".*" + nestedPattern + r".*\"\s*$", item, re.UNICODE):
                                 item = re.sub("(" + nestedPattern + ")", "\\1" + CNameMangling.STRINGCONVERT.value, item)
                                 tmpList = []
@@ -1026,14 +1026,14 @@ Reason: Empty or special character is detected pair of curly brackets."
                 raise Exception(errorMsg)
             else:
                 return True
-        elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\]", sInput):
+        elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
             errorMsg = f"Slicing is currently not supported! Please update the expression '{sInput}'."
             self.__reset()
             raise Exception(errorMsg)
         elif CNameMangling.STRINGCONVERT.value in sInput:
             if sInput.count("${") > sInput.count("}"):
                 sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
-                errorMsg = f"Invalid nested parameter format: {sInput.strip()}"
+                errorMsg = f"Invalid parameter format: {sInput.strip()}"
                 self.__reset()
                 raise Exception(errorMsg)
             else:
@@ -1041,10 +1041,10 @@ Reason: Empty or special character is detected pair of curly brackets."
         elif CNameMangling.STRINGCONVERT.value not in sInput and \
             CNameMangling.DUPLICATEDKEY_01.value not in sInput:
             if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
-                errorMsg = f"Invalid nested parameter format: {sInput} - The double quotes are missing!!!"
+                errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
             else:
                 if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
-                    errorMsg = f"Invalid nested parameter format: {sInput.strip()}"
+                    errorMsg = f"Invalid parameter format: {sInput.strip()}"
                 else:
                     return True
             self.__reset()
@@ -1257,6 +1257,8 @@ This function checks key names in JSON configuration files.
                     if re.search(r"(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
                         or re.search(r"(\s*\"" + tmpNestedParam + r"\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
                         self.lNestedParams.remove(nestedParam)
+                if re.search(r"\[\s*\+\s*\d+\s*\]", newLine):
+                    newLine = re.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", newLine)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
