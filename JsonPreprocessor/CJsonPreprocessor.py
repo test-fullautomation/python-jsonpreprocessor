@@ -526,14 +526,14 @@ only simple data types are allowed to be substituted inside."
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
                     if sInputStr==sLoopCheck1:
                         self.__reset()
-                        raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
+                        raise Exception(f"Invalid expression found: '{sNestedParam}'.")
                     elif re.search(r"\[\s*\-\d+\s*\]", sInputStr):
-                        errorMsg = f"Slicing is currently not supported! Please update the expression '{sNestedParam}'."
+                        errorMsg = f"Slicing is not supported! Please update the expression '{sNestedParam}'."
                         self.__reset()
                         raise Exception(errorMsg)
             if sInputStr==sLoopCheck:
                 self.__reset()
-                raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
+                raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
              tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
              if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
@@ -767,7 +767,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
                     if k == sLoopCheck:
                         self.__reset()
-                        raise Exception(f"Invalid expression while handling the parameter '{keyNested}'.")
+                        raise Exception(f"Invalid expression found: '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 keyNested = k
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
@@ -794,7 +794,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                             item = __loadNestedValue(initItem, item)
                             if item==sLoopCheck:
                                 self.__reset()
-                                raise Exception(f"Invalid expression while handling the parameter '{initItem}'.")
+                                raise Exception(f"Invalid expression found: '{initItem}'.")
                     tmpValue.append(item)
                 v = tmpValue
                 del tmpValue
@@ -807,7 +807,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         v = __loadNestedValue(initValue, v)
                         if v == sLoopCheck:
                             self.__reset()
-                            raise Exception(f"Invalid expression while handling the parameter '{initValue}'.")
+                            raise Exception(f"Invalid expression found: '{initValue}'.")
                 if bDuplicatedHandle:
                     if "${" not in dupKey and parentParams != "":
                         sParams = parentParams + "['" + k + "']"
@@ -1013,7 +1013,7 @@ Checks nested parameter format.
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
-Reason: Empty or special character is detected in pair of square brackets."
+Reason: A pair of square brackets is empty or contains not allowed characters."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
@@ -1021,13 +1021,13 @@ Reason: Empty or special character is detected in pair of square brackets."
         elif re.search(r'\${[!@#$%^&*()+=[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
-Reason: Empty or special character is detected pair of curly brackets."
+Reason: A pair of curly brackets is empty or contains not allowed characters."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
                 return True
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
-            errorMsg = f"Slicing is currently not supported! Please update the expression '{sInput}'."
+            errorMsg = f"Slicing is not supported! Please update the expression '{sInput}'."
             self.__reset()
             raise Exception(errorMsg)
         elif CNameMangling.STRINGCONVERT.value in sInput:
