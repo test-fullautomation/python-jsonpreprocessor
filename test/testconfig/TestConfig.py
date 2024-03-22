@@ -2792,9 +2792,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1350.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is currently not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -2988,9 +2988,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1364.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is currently not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

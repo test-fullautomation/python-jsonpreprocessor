@@ -67,6 +67,7 @@ class CNameMangling(Enum):
     DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
     STRINGCONVERT    = "__ConvertParameterToString__"
     LISTINDEX        = "__IndexOfList__"
+    SLICEINDEX       = "__SlicingIndex__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -526,6 +527,10 @@ only simple data types are allowed to be substituted inside."
                     if sInputStr==sLoopCheck1:
                         self.__reset()
                         raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
+                    elif re.search(r"\[\s*\-\d+\s*\]", sInputStr):
+                        errorMsg = f"Slicing is currently not supported! Please update the expression '{sNestedParam}'."
+                        self.__reset()
+                        raise Exception(errorMsg)
             if sInputStr==sLoopCheck:
                 self.__reset()
                 raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
@@ -706,7 +711,7 @@ This method replaces all nested parameters in key and value of a JSON object .
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             varPattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}"
-            indexPattern = r"\[[\s-]*\d*\s*\]"
+            indexPattern = r"\[[\s\-\+\d]*\]"
             dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + r".*\]+)*|" + indexPattern
             pattern = varPattern + dictPattern
             bValueConvertString = False
@@ -890,7 +895,7 @@ This method handles nested parameters are called recursively in a string value.
             return sInputStr
 
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
-        indexPattern = r"\[[\s-]*\d*\s*\]"
+        indexPattern = r"\[[\s\-\+\d]*\]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
         nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
@@ -991,7 +996,7 @@ Checks nested parameter format.
         """
         pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
-        pattern2 = r"\${.*\${.*}"
+        pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
         if "${" not in sInput:
             return True
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
@@ -1004,23 +1009,27 @@ Checks nested parameter format.
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[\s*\]', sInput):
+        elif re.search(r'\[[!@#$%^&*()+=[\]{}|;:\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
-Reason: Empty pair of square brackets detected."
+Reason: Empty or special character is detected in pair of square brackets."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
                 return True
-        elif re.search(r"\${\s*}", sInput):
+        elif re.search(r'\${[!@#$%^&*()+=[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
-Reason: Empty pair of curly brackets detected."
+Reason: Empty or special character is detected pair of curly brackets."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
                 return True
+        elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\]", sInput):
+            errorMsg = f"Slicing is currently not supported! Please update the expression '{sInput}'."
+            self.__reset()
+            raise Exception(errorMsg)
         elif CNameMangling.STRINGCONVERT.value in sInput:
             if sInput.count("${") > sInput.count("}"):
                 sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
@@ -1181,9 +1190,12 @@ This function checks key names in JSON configuration files.
                     if nestedVar[0].isdigit():
                         self.__reset()
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
-                tmpList = re.findall(r"(\"[^\"]+\")", line)
+                tmpList01 = re.findall(r"(\"[^\"]+\")", line)
                 line = re.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
-                indexPattern = r"\[[\s-]*\d*\s*\]"
+                slicingPattern = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]"
+                tmpList02 = re.findall(slicingPattern, line)
+                line = re.sub(slicingPattern, CNameMangling.SLICEINDEX.value, line)
+                indexPattern = r"\[[\s\-\+\d]*\]"
                 if re.search(indexPattern, line):
                     indexList = re.findall(indexPattern, line)
                     line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
@@ -1197,12 +1209,13 @@ This function checks key names in JSON configuration files.
                         nestedKey = True
                     if CNameMangling.COLONS.value in item:
                         while CNameMangling.COLONS.value in item:
-                            item = re.sub(CNameMangling.COLONS.value, tmpList[0], item, count=1)
-                            tmpList.pop(0)
+                            item = re.sub(CNameMangling.COLONS.value, tmpList01.pop(0), item, count=1)
                     elif CNameMangling.LISTINDEX.value in item:
                         while CNameMangling.LISTINDEX.value in item:
-                            item  = re.sub(CNameMangling.LISTINDEX.value, indexList[0], item, count=1)
-                            indexList.pop(0)
+                            item  = re.sub(CNameMangling.LISTINDEX.value, indexList.pop(0), item, count=1)
+                    elif CNameMangling.SLICEINDEX.value in item:
+                        while CNameMangling.SLICEINDEX.value in item:
+                            item = re.sub(CNameMangling.SLICEINDEX.value, tmpList02.pop(0), item, count=1)
                     i+=1
                     newSubItem = ""
                     if re.search(r"^\s*\[.+\][\s,]*$", item) and item.count('[')==item.count(']'):
