@@ -525,10 +525,10 @@ only simple data types are allowed to be substituted inside."
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
                     if sInputStr==sLoopCheck1:
                         self.__reset()
-                        raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
+                        raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
             if sInputStr==sLoopCheck:
                 self.__reset()
-                raise Exception(f"Infinity loop detection while handling the parameter '{sNestedParam}'.")
+                raise Exception(f"Invalid expression while handling the parameter '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
              tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
              if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
@@ -706,7 +706,7 @@ This method replaces all nested parameters in key and value of a JSON object .
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             varPattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}"
-            indexPattern = r"\[\s*-*\d*\s*]"
+            indexPattern = r"\[[\s-]*\d*\s*\]"
             dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + r".*\]+)*|" + indexPattern
             pattern = varPattern + dictPattern
             bValueConvertString = False
@@ -762,7 +762,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     k = __loadNestedValue(keyNested, k, bKey=True, key=keyNested)
                     if k == sLoopCheck:
                         self.__reset()
-                        raise Exception(f"Infinity loop detection while handling the parameter '{keyNested}'.")
+                        raise Exception(f"Invalid expression while handling the parameter '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 keyNested = k
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
@@ -789,7 +789,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                             item = __loadNestedValue(initItem, item)
                             if item==sLoopCheck:
                                 self.__reset()
-                                raise Exception(f"Infinity loop detection while handling the parameter '{initItem}'.")
+                                raise Exception(f"Invalid expression while handling the parameter '{initItem}'.")
                     tmpValue.append(item)
                 v = tmpValue
                 del tmpValue
@@ -802,7 +802,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         v = __loadNestedValue(initValue, v)
                         if v == sLoopCheck:
                             self.__reset()
-                            raise Exception(f"Infinity loop detection while handling the parameter '{initValue}'.")
+                            raise Exception(f"Invalid expression while handling the parameter '{initValue}'.")
                 if bDuplicatedHandle:
                     if "${" not in dupKey and parentParams != "":
                         sParams = parentParams + "['" + k + "']"
@@ -890,7 +890,7 @@ This method handles nested parameters are called recursively in a string value.
             return sInputStr
 
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
-        indexPattern = r"\[\s*-*\d*\s*]"
+        indexPattern = r"\[[\s-]*\d*\s*\]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
         nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
@@ -1004,11 +1004,19 @@ Checks nested parameter format.
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[\s*\]', sInput) and CNameMangling.STRINGCONVERT.value in sInput:
+        elif re.search(r'\[\s*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: Empty pair of square brackets detected."
+                self.__reset()
+                raise Exception(errorMsg)
+            else:
+                return True
+        elif re.search(r"\${\s*}", sInput):
+            if CNameMangling.STRINGCONVERT.value not in sInput:
+                errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
+Reason: Empty pair of curly brackets detected."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
@@ -1175,7 +1183,7 @@ This function checks key names in JSON configuration files.
                         raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList = re.findall(r"(\"[^\"]+\")", line)
                 line = re.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
-                indexPattern = r"\[\s*-*\d*\s*]"
+                indexPattern = r"\[[\s-]*\d*\s*\]"
                 if re.search(indexPattern, line):
                     indexList = re.findall(indexPattern, line)
                     line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
