@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.17.0"
-VERSION_DATE = "20.03.2024"
+VERSION      = "0.18.0"
+VERSION_DATE = "25.03.2024"
 #
 # **************************************************************************************************************
 
@@ -1233,9 +1233,26 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 }
 """)
 
-      # listCodeSnippets.append("""{
-# }
-# """)
+      listCodeSnippets.append("""{
+   "listParam" : [0,1,2],
+   "index"     : 1,
+   "param1"    : [${index}, "A"],
+   "param2"    : [${listParam}[${index}], "A"],
+   //
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+   //
+   "param3"    : [[${listParam}[${index}], "A"], "B"],      // Expecting ':' delimiter: line ...
+   "param4"    : [["A", ${listParam}[${index}]], "B"],      // Expecting ',' delimiter: line ...
+   //
+   "param5"    : ["B", [${listParam}[${index}], "A"]],      // Expecting ',' delimiter: line ...
+   "param6"    : ["B", ["A", ${listParam}[${index}]]],      // Expecting ',' delimiter: line ...
+   "param7"    : ["B", [${listParam}[${index}], "A"], "C"], // Expecting ':' delimiter: line ...
+   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"], // Expecting ',' delimiter: line ...
+   //
+   // Error: 'Invalid expression while handling the parameter '[${listParam}[${index}]'.'!
+   "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]
+}
+""")
 
       # listCodeSnippets.append("""{
 # }
