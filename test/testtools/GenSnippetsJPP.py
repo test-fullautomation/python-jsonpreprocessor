@@ -22,7 +22,7 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.18.0"
+VERSION      = "0.19.0"
 VERSION_DATE = "25.03.2024"
 #
 # **************************************************************************************************************
@@ -1253,6 +1253,32 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]
 }
 """)
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param01"      : ${stringParam}[${index}],
+   "param02"      : ${stringParam}[${indexList}[${index}]],
+   "param03"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
+   "param04"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   //
+   "param05"      : [${stringParam}[${index}], "D"],
+   "param06"      : [${stringParam}[${indexList}[${index}]], "D"],
+   "param07"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"],
+   "param08"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "D"],
+   //
+   "param09"      : {"kA" : ${stringParam}[${index}]},
+   "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
+   "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
+   "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
+}
+""")
+
 
       # listCodeSnippets.append("""{
 # }
