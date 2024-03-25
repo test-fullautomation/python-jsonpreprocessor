@@ -895,7 +895,7 @@ This method handles nested parameters are called recursively in a string value.
             return sInputStr
 
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
-        indexPattern = r"\[[\s\-\+\d]*\]"
+        indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
         nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
@@ -903,7 +903,16 @@ This method handles nested parameters are called recursively in a string value.
 
         if "${" in sInputStr:
             if re.match(r"^\s*" + nestedPattern + r"[\s,\]}]*$", sInputStr, re.UNICODE):
-                sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
+                iCheck = sInputStr.count("]") - sInputStr.count("[")
+                if iCheck > 0:
+                    tmpItems = sInputStr.split("]")
+                    index = len(tmpItems) - iCheck
+                    sParam = "]".join(tmpItems[:index])
+                    dReplacements = {"$":"\$", "[":"\[", "]":"\]", "-":"\-", "+":"\+"}
+                    paramPattern = self.__multipleReplace(sParam, dReplacements)
+                    sInputStr = re.sub("(" + paramPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
+                else:
+                    sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
                 nestedParam = re.sub(r"^\s*\"(.+)\".*$", "\\1", sInputStr)
                 self.lNestedParams.append(nestedParam)
             elif re.match(r"^\s*\"\s*" + nestedPattern + r"\"[\s,\]}]*$", sInputStr, re.UNICODE):
@@ -1009,7 +1018,7 @@ Checks nested parameter format.
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[[!@#$%^&*()+=[\]{}|;:\s\-\+\'",<>?/`~]*\]', sInput):
+        elif re.search(r'\[[!@#$%^&*()+=[\]{}|;\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
@@ -1157,7 +1166,11 @@ This function checks key names in JSON configuration files.
             for k, v in oJson.items():
                 if "${" in k:
                     self.__checkNestedParam(k, bKey=True)
-                if isinstance(v, dict):
+                if isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, str) and "${" in item:
+                            self.__checkNestedParam(item)
+                elif isinstance(v, dict):
                     __checkKeynameFormat(v)
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
