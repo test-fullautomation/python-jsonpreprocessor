@@ -553,5 +553,45 @@ Test JPP_1500 / STRING_INDICES / GOODCASE
 Description: JSON file with indices applied to a string (inside lists and inside dictionaries)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 25.03.2024 - 13:09:36
+Test JPP_1650 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1651 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1652 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1653 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (4)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1655 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (6)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1657 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (8)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1658 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (9)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1659 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (10)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1660 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (11)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1661 / NOT_EXISTING_PARAMETERS / BADCASE
+Description: JSON file with not existing parameters at several positions (12)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Generated: 26.03.2024 - 14:29:20
 

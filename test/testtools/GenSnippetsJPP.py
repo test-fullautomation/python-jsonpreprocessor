@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.19.0"
-VERSION_DATE = "25.03.2024"
+VERSION      = "0.20.0"
+VERSION_DATE = "26.03.2024"
 #
 # **************************************************************************************************************
 
@@ -996,13 +996,6 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-   "intval"   : 1,
-   "testlist" : ["B", 2],
-   ${testlist}['${intval}'] : 4
-}
-""")
-
-      listCodeSnippets.append("""{
    "intparam"    : 0,
    "stringparam" : "A",
    "listparam"   : ["A", "B"],
@@ -1031,6 +1024,46 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
+   ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}] : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]" : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+   ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}'] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+   "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']" : 4
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']"
+}
+""")
+
+      listCodeSnippets.append("""{
    "dictparam" : {"A" : 1},
    "listparam" : ["A", "B"],
    ${IAMNOTEXISTING.${dictparam}}['${listparam}'] : 2
@@ -1055,6 +1088,51 @@ class CSnippets():
    "stringparam" : "string",
    "intparam"    : 0,
    ${IAMNOTEXISTING.${stringparam}}[${intparam}] : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : ${listP}[${IAMNOTEXISTING}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : [${listP}[${IAMNOTEXISTING}], "ABC"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : {"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : {"ABC" : [${listP}[${IAMNOTEXISTING}], ${listP}[${IAMNOTEXISTING}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [{"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}, "GHI"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [{"ABC" : ["DEF", ${listP}[${IAMNOTEXISTING}]]}, "GHI"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [[[${listP}[${IAMNOTEXISTING}], 123], ${listP}[${IAMNOTEXISTING}]], ${listP}[${IAMNOTEXISTING}]]
 }
 """)
 

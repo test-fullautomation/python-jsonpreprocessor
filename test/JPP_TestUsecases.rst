@@ -1343,5 +1343,105 @@ Test Use Cases
 
 ----
 
-Generated: 25.03.2024 - 13:09:36
+* **Test JPP_1650**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1651**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1652**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1653**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1655**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1657**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (8)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1658**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (9)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1659**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (10)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1660**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (11)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1661**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (12)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 26.03.2024 - 14:29:20
 
