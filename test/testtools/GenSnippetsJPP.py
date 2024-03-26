@@ -22,7 +22,7 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.20.0"
+VERSION      = "0.21.0"
 VERSION_DATE = "26.03.2024"
 #
 # **************************************************************************************************************
@@ -1354,6 +1354,41 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
    "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
    "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
+   "dictParam1" : {"kA" : "A", "kB" : "B"},
+   "dictParam2" : {"kA" : "A",
+                   "kB" : "B"},
+   "A" : 1,
+   "dictParam3" : {"kA" : "${A}", "kB" : "B"},
+   "dictParam4" : {"kA" : "${A}",
+                   "kB" : "B"},
+
+   "dictParam5" : {"kA" : ${A}, "kB" : "B"},
+   "dictParam6" : {"kA" : ${A},
+                   "kB" : "B"},
+
+   "dictParam7" : {"kA" : "A", "kB" : ${A}},
+   "dictParam8" : {"kA" : "A",
+                   "kB" : ${A}, "kC" : "C"},
+
+   "dictParam9" : {"kA" : "A",
+                   "kB" : ${A},
+                   "kC" : "C"},
+
+   "dictParam10" : {"kA" : "A",
+                    "kB" : ${A}, "${A}" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "dictParam" : {"AB.CD" : 1,
+                  "B" : 2},
+   "param1" : ${dictParam}['AB.CD'],
+   "param2" : ${dictParam.AB.CD}
 }
 """)
 

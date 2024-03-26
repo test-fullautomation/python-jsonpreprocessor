@@ -3281,5 +3281,21 @@ dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1700"
+dictUsecase['DESCRIPTION']       = "JSON file with and without line breaks inside expressions"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "LINE_BREAKS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1700.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # 'Invalid parameter format: ${A}, "kB" - The double quotes are missing!!!'!
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 
 
