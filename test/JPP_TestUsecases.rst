@@ -1443,5 +1443,15 @@ Test Use Cases
 
 ----
 
-Generated: 26.03.2024 - 14:29:20
+* **Test JPP_1901**
+
+  [ASSIGNMENTS_BY_REFERENCE / GOODCASE]
+
+   **JSON file with list assignments (by reference)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+Generated: 27.03.2024 - 11:21:23
 

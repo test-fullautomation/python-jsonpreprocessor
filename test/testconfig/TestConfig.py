@@ -3314,5 +3314,49 @@ dictUsecase['EXPECTEDRETURN']    = None # Error: 'The variable '${params}['globa
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/214
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1900"
+dictUsecase['DESCRIPTION']       = "JSON file with dictionary assignments (by reference)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "ASSIGNMENTS_BY_REFERENCE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1900.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (4/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
+[DICT] (4/2) > {testdict4} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
+[DICT] (4/3) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
+[DICT] (4/4) > {testdict3} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
+"""
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1901"
+dictUsecase['DESCRIPTION']       = "JSON file with list assignments (by reference)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "ASSIGNMENTS_BY_REFERENCE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1901.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (4/1) > {testlist1} [LIST] (2/1) > [INT]  :  3
+[DICT] (4/1) > {testlist1} [LIST] (2/2) > [INT]  :  4
+[DICT] (4/2) > {testlist2} [LIST] (2/1) > [INT]  :  3
+[DICT] (4/2) > {testlist2} [LIST] (2/2) > [INT]  :  4
+[DICT] (4/3) > {testlist3} [LIST] (2/1) > [INT]  :  7
+[DICT] (4/3) > {testlist3} [LIST] (2/2) > [INT]  :  8
+[DICT] (4/4) > {testlist4} [LIST] (2/1) > [INT]  :  7
+[DICT] (4/4) > {testlist4} [LIST] (2/2) > [INT]  :  8
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 
 
