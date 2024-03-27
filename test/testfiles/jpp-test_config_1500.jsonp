@@ -1,0 +1,38 @@
+//  Copyright 2020-2024 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+
+{
+   "stringParam" : "ABCDE",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param01"      : ${stringParam}[${index}],
+   "param02"      : ${stringParam}[${indexList}[${index}]],
+   "param03"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
+   "param04"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   //
+   "param05"      : [${stringParam}[${index}], "D"],
+   "param06"      : [${stringParam}[${indexList}[${index}]], "D"],
+   "param07"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"],
+   "param08"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "D"],
+   //
+   "param09"      : {"kA" : ${stringParam}[${index}]},
+   "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
+   "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
+   "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
+}
