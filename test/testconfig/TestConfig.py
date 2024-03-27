@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 26.03.2024
+# 27.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3294,6 +3294,23 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1700.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = None # 'Invalid parameter format: ${A}, "kB" - The double quotes are missing!!!'!
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/253
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/213
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1800"
+dictUsecase['DESCRIPTION']       = "JSON file with self assignments of strings, lists and dictionaries"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "SELF_ASSIGNMENTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1800.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # Error: 'The variable '${params}['global']['param']' is not available!'!
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
