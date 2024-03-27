@@ -1018,7 +1018,7 @@ Checks nested parameter format.
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[[!@#$%^&*()+=[\]{}|;\s\-\+\'",<>?/`~]*\]', sInput):
+        elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]{}|;\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
@@ -1027,7 +1027,7 @@ Reason: A pair of square brackets is empty or contains not allowed characters."
                 raise Exception(errorMsg)
             else:
                 return True
-        elif re.search(r'\${[!@#$%^&*()+=[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
+        elif re.search(r'\${[!@#\$%\^&\*\(\)=\[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of curly brackets is empty or contains not allowed characters."
@@ -1042,11 +1042,16 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
         elif CNameMangling.STRINGCONVERT.value in sInput:
             if sInput.count("${") > sInput.count("}"):
                 sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
-                errorMsg = f"Invalid parameter format: {sInput.strip()}"
+                errorMsg = f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{sInput.strip()}'."
                 self.__reset()
                 raise Exception(errorMsg)
             else:
                 return True
+        elif re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput) and \
+            sInput.count("${") > sInput.count("}"):
+            errorMsg = f"Invalid parameter format: {sInput.strip()} - Closed curly bracket is missing."
+            self.__reset()
+            raise Exception(errorMsg)
         elif CNameMangling.STRINGCONVERT.value not in sInput and \
             CNameMangling.DUPLICATEDKEY_01.value not in sInput:
             if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
@@ -1245,7 +1250,8 @@ This function checks key names in JSON configuration files.
                         item = re.sub(r"^\[", "", item)
                         newSubItem = __handleListElements(item)
                         newSubItem = "[" + newSubItem
-                    elif re.search(r"]\s*,*\s*", item) and item.count('[') < item.count(']'):
+                    elif re.search(r"]\s*,*\s*", item) and item.count('[') < item.count(']') and \
+                        re.match(r"^.+[\]}\"]+\s*\],*\s*$", item):
                         item = item.rstrip()
                         bLastElement = True
                         if item.endswith(","):
