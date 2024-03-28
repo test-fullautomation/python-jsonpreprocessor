@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 10.10.2023 - 13:31:11
+# 15.03.2024 - 18:49:01
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -52,5 +52,13 @@ class Test_DATA_INTEGRITY_GOODCASE:
    )
    def test_JPP_0102(self, Description):
       nReturn = CExecute.Execute("JPP_0102")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Strings are returned unchanged
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)",]
+   )
+   def test_JPP_0103(self, Description):
+      nReturn = CExecute.Execute("JPP_0103")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 07.03.2024 - 14:58:30
+# 15.03.2024 - 18:49:01
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -152,7 +152,7 @@ class Test_COMPOSITE_EXPRESSIONS_GOODCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)",]
+      "Description", ["JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)",]
    )
    def test_JPP_0516(self, Description):
       nReturn = CExecute.Execute("JPP_0516")
