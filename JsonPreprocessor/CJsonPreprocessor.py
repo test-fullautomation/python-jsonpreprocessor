@@ -1018,7 +1018,7 @@ Checks nested parameter format.
             errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]{}|;\s\-\+\'",<>?/`~]*\]', sInput):
+        elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
