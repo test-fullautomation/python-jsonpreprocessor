@@ -928,9 +928,6 @@ This method handles nested parameters are called recursively in a string value.
                 else:
                     sInputStr = sInputStr.strip()[:-1] + CNameMangling.STRINGCONVERT.value + "\""
             elif "," in sInputStr.strip()[:-1]:
-                if not re.match(r"^\s*\".+\"\s*$", sInputStr):
-                    self.__reset()
-                    raise Exception(f"Invalid parameter format: {sInputStr} - The double quotes are missing!!!")
                 listPattern = r"^\s*(\"*" + nestedPattern + r"\"*\s*,+\s*|" + valueStrPattern + r"\s*,+\s*|" + valueNumberPattern + r"\s*,+\s*)+" + \
                             r"(\"*" + nestedPattern + r"\"*\s*,*\s*|" + valueStrPattern + r"\s*,*\s*|" + valueNumberPattern + r"[\s,]*)*[\]}\s]*$"
                 lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr, re.UNICODE)
@@ -1278,6 +1275,16 @@ This function checks key names in JSON configuration files.
                         self.lNestedParams.remove(nestedParam)
                 if re.search(r"\[\s*\+\s*\d+\s*\]", newLine):
                     newLine = re.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", newLine)
+                if ":" in newLine:
+                    tmpValue = re.search(r"^.+:\s*([0-9a-zA-Z\${},\[\]\.\_\-\+;/\s]*),*\s*$", newLine) 
+                    if tmpValue is not None:
+                        tmpStr = tmpValue.group(1)
+                        if re.match(r"^[^\[{]+", tmpStr):
+                            tmpStr = tmpStr.strip()[:-1] if tmpStr.strip()[-1] == "," else tmpStr.strip()
+                            if "${" in tmpStr:
+                                dReplacements = {"$":"\$", "[":"\[", "]":"\]", ".":"\.", "-":"\-", "+":"\+"}
+                                tmpPattern = self.__multipleReplace(tmpStr, dReplacements)
+                                newLine = re.sub("(" + tmpPattern + ")", '"\\1"', newLine)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
