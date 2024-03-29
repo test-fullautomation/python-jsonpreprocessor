@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 20.03.2024
+# 27.03.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2806,7 +2806,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1351.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2820,7 +2820,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1352.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2834,7 +2834,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1353.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2848,7 +2848,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1354.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2862,7 +2862,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1355.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2876,7 +2876,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1356.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2890,7 +2890,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1357.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2904,7 +2904,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1358.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2918,7 +2918,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1359.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2932,7 +2932,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1360.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2946,7 +2946,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1361.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2960,7 +2960,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1362.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2974,7 +2974,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1363.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3002,16 +3002,361 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1365.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!" # # !!! expectation TODO / something like: "slicing not supported"!!!
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1400"
+dictUsecase['DESCRIPTION']       = "JSON file with several nested lists"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "NESTED_LISTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1400.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1500"
+dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "STRING_INDICES"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1500.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (17/1) > {stringParam} [STR]  :  'ABCDE'
+[DICT] (17/2) > {index} [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/1) > [INT]  :  0
+[DICT] (17/3) > {indexList} [LIST] (3/2) > [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/3) > [INT]  :  2
+[DICT] (17/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
+[DICT] (17/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
+[DICT] (17/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
+[DICT] (17/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (17/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (17/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (17/6) > {param01} [STR]  :  'B'
+[DICT] (17/7) > {param02} [STR]  :  'B'
+[DICT] (17/8) > {param03} [STR]  :  'B'
+[DICT] (17/9) > {param04} [STR]  :  'B'
+[DICT] (17/10) > {param05} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/10) > {param05} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/11) > {param06} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/11) > {param06} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/12) > {param07} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/12) > {param07} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/13) > {param08} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/13) > {param08} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/14) > {param09} [DICT] (1/1) > {kA} [STR]  :  'B'
+[DICT] (17/15) > {param10} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/15) > {param10} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/16) > {param11} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/16) > {param11} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (17/17) > {param12} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param12} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+#
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1650"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (1)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1650.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1651"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (2)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1651.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1652"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (3)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1652.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1653"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (4)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1653.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1654"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (5)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1654.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # 'Invalid expression found
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1655"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (6)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1655.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1656"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (7)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1656.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # Invalid expression found
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1657"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (8)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1657.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1658"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (9)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1658.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1659"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (10)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1659.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1660"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (11)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1660.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1661"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (12)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1661.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1662"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (13)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1662.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # [STR]  :  '${listP}[${IAMNOTEXISTING}]'
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1663"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (14)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1663.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # '${listP}[${IAMNOTEXISTING}]'
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1664"
+dictUsecase['DESCRIPTION']       = "JSON file with not existing parameters at several positions (15)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NOT_EXISTING_PARAMETERS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1664.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # Expecting ':' delimiter: line
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1700"
+dictUsecase['DESCRIPTION']       = "JSON file with and without line breaks inside expressions"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "LINE_BREAKS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1700.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # 'Invalid parameter format: ${A}, "kB" - The double quotes are missing!!!'!
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/253
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/213
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1800"
+dictUsecase['DESCRIPTION']       = "JSON file with self assignments of strings, lists and dictionaries"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "SELF_ASSIGNMENTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1800.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # Error: 'The variable '${params}['global']['param']' is not available!'!
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/214
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1900"
+dictUsecase['DESCRIPTION']       = "JSON file with dictionary assignments (by reference)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "ASSIGNMENTS_BY_REFERENCE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1900.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (4/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
+[DICT] (4/2) > {testdict4} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
+[DICT] (4/3) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
+[DICT] (4/4) > {testdict3} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
+"""
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1901"
+dictUsecase['DESCRIPTION']       = "JSON file with list assignments (by reference)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "ASSIGNMENTS_BY_REFERENCE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1901.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (4/1) > {testlist1} [LIST] (2/1) > [INT]  :  3
+[DICT] (4/1) > {testlist1} [LIST] (2/2) > [INT]  :  4
+[DICT] (4/2) > {testlist2} [LIST] (2/1) > [INT]  :  3
+[DICT] (4/2) > {testlist2} [LIST] (2/2) > [INT]  :  4
+[DICT] (4/3) > {testlist3} [LIST] (2/1) > [INT]  :  7
+[DICT] (4/3) > {testlist3} [LIST] (2/2) > [INT]  :  8
+[DICT] (4/4) > {testlist4} [LIST] (2/1) > [INT]  :  7
+[DICT] (4/4) > {testlist4} [LIST] (2/2) > [INT]  :  8
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 
 

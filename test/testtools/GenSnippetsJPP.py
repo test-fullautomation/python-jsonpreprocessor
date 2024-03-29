@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.17.0"
-VERSION_DATE = "20.03.2024"
+VERSION      = "0.22.0"
+VERSION_DATE = "27.03.2024"
 #
 # **************************************************************************************************************
 
@@ -300,6 +300,8 @@ class CExecutor():
       self.__oSnippets         = None
       self.__oHTMLPattern      = None
 
+      self.__dictLinks = {}
+
       if oConfig is None:
          raise Exception(CString.FormatResult(sMethod, None, "oConfig is None"))
       self.__oConfig = oConfig
@@ -338,6 +340,11 @@ class CExecutor():
       del self.__oJsonPreprocessor
       del self.__oSnippets
       del self.__oHTMLPattern
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetLinks(self):
+      return self.__dictLinks
 
    # --------------------------------------------------------------------------------------------------------------
 
@@ -401,7 +408,10 @@ class CExecutor():
       print(COLBY + f"{nSectionNumber}. {sHeadline}\n")
       self.__oLogger.WriteLog(120*"-")
       self.__oLogger.WriteLog(f"{nSectionNumber}. {sHeadline}")
+      self.__dictLinks[f"{nSectionNumber}"] = sHeadline
+      self.__oLogger.WriteReport(self.__oHTMLPattern.GetHTMLAnchor(f"{nSectionNumber}"))
       self.__oLogger.WriteReport(self.__oHTMLPattern.GetHTMLHeadline1(f"{nSectionNumber}. {sHeadline}"))
+      self.__oLogger.WriteReport(self.__oHTMLPattern.GetHTMLLink(sLink="TOC", sText="TOC"))
       self.__oLogger.WriteLog(120*"-" + "\n")
       self.__oLogger.WriteReport(self.__oHTMLPattern.GetHTMLHLine())
 
@@ -541,7 +551,7 @@ class CHTMLPattern():
 """
 
    sHTMLText = """
-<p><font face="Arial" color="black" size="-1">###HTMLTEXT###</font></p>
+<p><font face="Arial" color="black" size="+1">###HTMLTEXT###</font></p>
 """
 
    sHTMLCounter = """
@@ -558,6 +568,18 @@ class CHTMLPattern():
 
    sHTMLException = """
 <p><font face="Arial" color="red" size="-1">###HTMLEXCEPTION###</font></p>
+"""
+
+   sHTMLAnchor = """
+<a name="###HTMLANCHOR###"></a>
+"""
+
+   sHTMLLink = """
+<p align="center">
+<a href="####LINK###">
+<font face="Arial" color="blue">
+###TEXT###
+</font></a></p>
 """
 
 
@@ -612,6 +634,15 @@ class CHTMLPattern():
    def GetHTMLException(self, sHTML=None):
       sHTML = CHTMLPattern.sHTMLException.replace("###HTMLEXCEPTION###", f"{sHTML}")
       return sHTML
+
+   def GetHTMLAnchor(self, sAnchor=None):
+      sAnchor = CHTMLPattern.sHTMLAnchor.replace("###HTMLANCHOR###", f"{sAnchor}")
+      return sAnchor
+
+   def GetHTMLLink(self, sLink=None, sText=None):
+      sLink = CHTMLPattern.sHTMLLink.replace("###LINK###", f"{sLink}")
+      sLink = sLink.replace("###TEXT###", f"{sText}")
+      return sLink
 
 # eof class CHTMLPattern():
 
@@ -996,13 +1027,6 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-   "intval"   : 1,
-   "testlist" : ["B", 2],
-   ${testlist}['${intval}'] : 4
-}
-""")
-
-      listCodeSnippets.append("""{
    "intparam"    : 0,
    "stringparam" : "A",
    "listparam"   : ["A", "B"],
@@ -1031,6 +1055,46 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
+   ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}] : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]" : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+   ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}'] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+   "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']" : 4
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}[${IAMNOTEXISTING3}]"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']"
+}
+""")
+
+      listCodeSnippets.append("""{
    "dictparam" : {"A" : 1},
    "listparam" : ["A", "B"],
    ${IAMNOTEXISTING.${dictparam}}['${listparam}'] : 2
@@ -1055,6 +1119,51 @@ class CSnippets():
    "stringparam" : "string",
    "intparam"    : 0,
    ${IAMNOTEXISTING.${stringparam}}[${intparam}] : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : ${listP}[${IAMNOTEXISTING}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : [${listP}[${IAMNOTEXISTING}], "ABC"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : {"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listP"  : ["A", "B"],
+   "params" : {"ABC" : [${listP}[${IAMNOTEXISTING}], ${listP}[${IAMNOTEXISTING}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [{"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}, "GHI"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [{"ABC" : ["DEF", ${listP}[${IAMNOTEXISTING}]]}, "GHI"]
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
+   "listP"  : ["A", "B"],
+   "params" : [[[${listP}[${IAMNOTEXISTING}], 123], ${listP}[${IAMNOTEXISTING}]], ${listP}[${IAMNOTEXISTING}]]
 }
 """)
 
@@ -1233,9 +1342,87 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 }
 """)
 
-      # listCodeSnippets.append("""{
-# }
-# """)
+      listCodeSnippets.append("""{
+   "listParam" : [0,1,2],
+   "index"     : 1,
+   "param1"    : [${index}, "A"],
+   "param2"    : [${listParam}[${index}], "A"],
+   //
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+   //
+   "param3"    : [[${listParam}[${index}], "A"], "B"],      // Expecting ':' delimiter: line ...
+   "param4"    : [["A", ${listParam}[${index}]], "B"],      // Expecting ',' delimiter: line ...
+   //
+   "param5"    : ["B", [${listParam}[${index}], "A"]],      // Expecting ',' delimiter: line ...
+   "param6"    : ["B", ["A", ${listParam}[${index}]]],      // Expecting ',' delimiter: line ...
+   "param7"    : ["B", [${listParam}[${index}], "A"], "C"], // Expecting ':' delimiter: line ...
+   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"], // Expecting ',' delimiter: line ...
+   //
+   // Error: 'Invalid expression while handling the parameter '[${listParam}[${index}]'.'!
+   "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param01"      : ${stringParam}[${index}],
+   "param02"      : ${stringParam}[${indexList}[${index}]],
+   "param03"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
+   "param04"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   //
+   "param05"      : [${stringParam}[${index}], "D"],
+   "param06"      : [${stringParam}[${indexList}[${index}]], "D"],
+   "param07"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"],
+   "param08"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "D"],
+   //
+   "param09"      : {"kA" : ${stringParam}[${index}]},
+   "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
+   "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
+   "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
+   "dictParam1" : {"kA" : "A", "kB" : "B"},
+   "dictParam2" : {"kA" : "A",
+                   "kB" : "B"},
+   "A" : 1,
+   "dictParam3" : {"kA" : "${A}", "kB" : "B"},
+   "dictParam4" : {"kA" : "${A}",
+                   "kB" : "B"},
+
+   "dictParam5" : {"kA" : ${A}, "kB" : "B"},
+   "dictParam6" : {"kA" : ${A},
+                   "kB" : "B"},
+
+   "dictParam7" : {"kA" : "A", "kB" : ${A}},
+   "dictParam8" : {"kA" : "A",
+                   "kB" : ${A}, "kC" : "C"},
+
+   "dictParam9" : {"kA" : "A",
+                   "kB" : ${A},
+                   "kC" : "C"},
+
+   "dictParam10" : {"kA" : "A",
+                    "kB" : ${A}, "${A}" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "dictParam" : {"AB.CD" : 1,
+                  "B" : 2},
+   "param1" : ${dictParam}['AB.CD'],
+   "param2" : ${dictParam.AB.CD}
+}
+""")
+
 
       # listCodeSnippets.append("""{
 # }
@@ -2074,6 +2261,73 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
    # eof def GetBlockedSubstitutions(self):
 
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetSpacesAndLineBreaks(self):
+      """Spaces and line breaks at several positions within a complex data structure
+      """
+
+      sHeadline = "Spaces and line breaks at several positions within a complex data structure"
+
+      # data structure
+      sDataStructure1 = """   "param1" : [*01*{"kA" : ${listParam}[${index}]*02*,*03*"kB" : "${dictParam}[${value}]-X"},*04*${value},*05*[${value},*06*"${value}-X",*07*${listParam}[${index}*08*]*09*]*10*],
+   "param2" : [*11*[${listParam}[${index}],*12*${value},*13*"B",*14*"${value}-X"],*15*"${value}-X",*16*{"kA" : ${listParam}[${index}],*17*"kB" : "${dictParam}[${value}]-X", "kC" : {"kD" : ${listParam}[${index}*18*]*19*}*20*}*21*]"""
+
+      sDefinitions = """   "index"     : 0,
+   "listParam" : [0,1,2],
+   "value"     : "A",
+   "dictParam" : {"A" : 1, "B" : 2}
+"""
+
+      sCodeSnippetPattern = """{
+####DEFINITIONS####
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["   ", "\n", "\t"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*", "*11*",
+                          "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*", "*21*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["","","","","","","","","","","","","","","","","","","","",""] # as much elements as in listPlaceholders
+
+      # put all things together
+
+      listCodeSnippets = []
+
+      # sDataStructure1
+
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetSpacesAndLineBreaks(self):
+
+   # --------------------------------------------------------------------------------------------------------------
 
 # eof class CSnippets():
 
@@ -2135,6 +2389,7 @@ oLogger.WriteLog(120*"*" + "\n")
 # write HTML header to report file
 oHTMLPattern = CHTMLPattern()
 oLogger.WriteReport(oHTMLPattern.GetHTMLHeader())
+
 del oHTMLPattern
 
 # --------------------------------------------------------------------------------------------------------------
@@ -2215,6 +2470,9 @@ bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 sHeadline, listCodeSnippets = oSnippets.GetBlockedSubstitutions()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
+sHeadline, listCodeSnippets = oSnippets.GetSpacesAndLineBreaks()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
 print()
 print(COLBG + "done")
 print()
@@ -2233,6 +2491,18 @@ print()
 
 # write HTML footer to report file
 oHTMLPattern = CHTMLPattern()
+
+# table of content with section links in HTML report file
+oLogger.WriteReport(oHTMLPattern.GetHTMLAnchor("TOC"))
+
+dictLinks = oExecutor.GetLinks()
+listSectionNumbers = list(dictLinks.keys())
+for sSectionNumber in listSectionNumbers:
+   sHeadline = f"{sSectionNumber}. {dictLinks[sSectionNumber]}"
+   oLogger.WriteReport(oHTMLPattern.GetHTMLLink(sLink=sSectionNumber, sText=sHeadline))
+
+oLogger.WriteReport(oHTMLPattern.GetHTMLHLine())
+
 oLogger.WriteReport(oHTMLPattern.GetHTMLFooter(oConfig.Get('NOW')))
 del oHTMLPattern
 

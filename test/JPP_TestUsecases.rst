@@ -1173,5 +1173,285 @@ Test Use Cases
 
 ----
 
-Generated: 20.03.2024 - 17:07:31
+* **Test JPP_1350**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1351**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1352**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1353**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (:)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1354**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (:)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1355**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (:)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1356**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (1:-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1357**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (1:-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1358**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (1:-1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1359**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (${index}-1:${index}+1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1360**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (${index}-1:${index}+1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1361**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (${index}-1:${index}+1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1362**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (0:${negindex})**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1363**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (left hand side of colon)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1364**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (left hand side of colon)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1365**
+
+  [BLOCKED_SLICING / BADCASE]
+
+   **JSON file with blocked slicing notation (combinations with negative integer parameter)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1500**
+
+  [STRING_INDICES / GOODCASE]
+
+   **JSON file with indices applied to a string (inside lists and inside dictionaries)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_1650**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1651**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1652**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1653**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1655**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1657**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (8)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1658**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (9)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1659**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (10)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1660**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (11)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1661**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (12)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1901**
+
+  [ASSIGNMENTS_BY_REFERENCE / GOODCASE]
+
+   **JSON file with list assignments (by reference)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+Generated: 27.03.2024 - 11:21:23
 
