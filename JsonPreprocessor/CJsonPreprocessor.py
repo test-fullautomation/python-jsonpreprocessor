@@ -1095,6 +1095,29 @@ Replace an existing key in a dictionary with a new key name. The replacement is 
         for key in listKeys:
             dOutput[key] = dInput[sOldKey] if key==sNewKey else dInput[key]
         return dOutput
+    
+    def __keyNameValidation(self, sInput):
+        """
+Validates the key names of a JSON object to ensure they adhere to certain rules and conventions.
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+**Returns:**
+
+  *No return value*
+        """
+        pattern = r'[\x00-\x1F\x7F]' # This pattern uses to detect double quotes and control characters.
+        if re.search(pattern, sInput) or "\\" in sInput:
+            if CNameMangling.STRINGCONVERT.value in sInput:
+                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+            errorMsg = f"Invalid key name detected: {repr(sInput)}. Key names in JSON objects must adhere to \
+the following rules: they must be strings enclosed in double quotes, must not contain control characters."
+            self.__reset()
+            raise Exception(errorMsg)
 
     def jsonLoad(self, jFile : str, masterFile : bool = True):
         """
@@ -1188,7 +1211,6 @@ This function checks key names in JSON configuration files.
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
 
-        pattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+)*"
         sJsonDataUpdated = ""
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
@@ -1224,13 +1246,13 @@ This function checks key names in JSON configuration files.
                         nestedKey = True
                     if CNameMangling.COLONS.value in item:
                         while CNameMangling.COLONS.value in item:
-                            item = re.sub(CNameMangling.COLONS.value, tmpList01.pop(0), item, count=1)
+                            item = item.replace(CNameMangling.COLONS.value, tmpList01.pop(0), 1)
                     elif CNameMangling.LISTINDEX.value in item:
                         while CNameMangling.LISTINDEX.value in item:
-                            item  = re.sub(CNameMangling.LISTINDEX.value, indexList.pop(0), item, count=1)
+                            item = item.replace(CNameMangling.LISTINDEX.value, indexList.pop(0), 1)
                     elif CNameMangling.SLICEINDEX.value in item:
                         while CNameMangling.SLICEINDEX.value in item:
-                            item = re.sub(CNameMangling.SLICEINDEX.value, tmpList02.pop(0), item, count=1)
+                            item = item.replace(CNameMangling.SLICEINDEX.value, tmpList02.pop(0), 1)
                     i+=1
                     newSubItem = ""
                     if re.search(r"^\s*\[.+\][\s,]*$", item) and item.count('[')==item.count(']'):
@@ -1288,7 +1310,10 @@ This function checks key names in JSON configuration files.
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
-
+        lKeyName = re.findall(r'("[^:"]+")\s*:\s*', sJsonDataUpdated)
+        for key in lKeyName:
+            keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
+            self.__keyNameValidation(keyDecode)
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
             if self.syntax == CSyntaxType.python:
