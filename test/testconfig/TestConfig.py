@@ -3293,8 +3293,33 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1700.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # 'Invalid parameter format: ${A}, "kB" - The double quotes are missing!!!'!
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (11/1) > {dictParam1} [DICT] (2/1) > {kA} [STR]  :  'A'
+[DICT] (11/1) > {dictParam1} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/2) > {dictParam2} [DICT] (2/1) > {kA} [STR]  :  'A'
+[DICT] (11/2) > {dictParam2} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/3) > {A} [INT]  :  1
+[DICT] (11/4) > {dictParam3} [DICT] (2/1) > {kA} [STR]  :  '1'
+[DICT] (11/4) > {dictParam3} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/5) > {dictParam4} [DICT] (2/1) > {kA} [STR]  :  '1'
+[DICT] (11/5) > {dictParam4} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/6) > {dictParam5} [DICT] (2/1) > {kA} [INT]  :  1
+[DICT] (11/6) > {dictParam5} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/7) > {dictParam6} [DICT] (2/1) > {kA} [INT]  :  1
+[DICT] (11/7) > {dictParam6} [DICT] (2/2) > {kB} [STR]  :  'B'
+[DICT] (11/8) > {dictParam7} [DICT] (2/1) > {kA} [STR]  :  'A'
+[DICT] (11/8) > {dictParam7} [DICT] (2/2) > {kB} [INT]  :  1
+[DICT] (11/9) > {dictParam8} [DICT] (3/1) > {kA} [STR]  :  'A'
+[DICT] (11/9) > {dictParam8} [DICT] (3/2) > {kB} [INT]  :  1
+[DICT] (11/9) > {dictParam8} [DICT] (3/3) > {kC} [STR]  :  'C'
+[DICT] (11/10) > {dictParam9} [DICT] (3/1) > {kA} [STR]  :  'A'
+[DICT] (11/10) > {dictParam9} [DICT] (3/2) > {kB} [INT]  :  1
+[DICT] (11/10) > {dictParam9} [DICT] (3/3) > {kC} [STR]  :  'C'
+[DICT] (11/11) > {dictParam10} [DICT] (3/1) > {kA} [STR]  :  'A'
+[DICT] (11/11) > {dictParam10} [DICT] (3/2) > {kB} [INT]  :  1
+[DICT] (11/11) > {dictParam10} [DICT] (3/3) > {1} [STR]  :  'C'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
