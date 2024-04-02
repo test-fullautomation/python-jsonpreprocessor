@@ -3,10 +3,12 @@ TESTID|SECTION|SUBSECTION|DESCRIPTION
 JPP_0001|DATA_TYPES|GOODCASE|JSON file with parameters of different data types (basic and composite)
 JPP_0002|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, basic data types
 JPP_0003|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: list
+JPP_0004|DATA_TYPES|GOODCASE|JSON file containing parameters with dollar operator syntax at right hand side of colon, composite data type: dict
 JPP_0005|DATA_TYPES|GOODCASE|JSON file with string values containing dollar operators
 JPP_0100|DATA_INTEGRITY|GOODCASE|JSON file is empty (single pair of brackets only)
 JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separator characters and blanks; no parameters
 JPP_0102|DATA_INTEGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
+JPP_0103|DATA_INTEGRITY|GOODCASE|JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)
 JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
 JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
 JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
@@ -35,6 +37,7 @@ JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substituti
 JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)
 JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)
 JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
+JPP_0270|PARAMETER_SUBSTITUTION|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
@@ -77,7 +80,7 @@ JPP_0512|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing a nested use of lis
 JPP_0513|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several square bracket expressions (as list index and dictionary key) with and without single quotes
 JPP_0514|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
 JPP_0515|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing nested dollar operator expressions
-JPP_0516|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing string expressions with additional curly brackets and dollar characters (that must not cause syntax issues!)
+JPP_0516|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing string expressions with additional brackets and dollar characters (that must not cause syntax issues!)
 JPP_0550|COMPOSITE_EXPRESSIONS|BADCASE|JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)
 JPP_0551|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
 JPP_0552|COMPOSITE_EXPRESSIONS|BADCASE|JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)
@@ -106,3 +109,31 @@ JPP_1058|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data stru
 JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
 JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
+JPP_1350|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
+JPP_1351|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
+JPP_1352|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
+JPP_1353|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (:)
+JPP_1354|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (:)
+JPP_1355|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (:)
+JPP_1356|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (1:-1)
+JPP_1357|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (1:-1)
+JPP_1358|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (1:-1)
+JPP_1359|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (${index}-1:${index}+1)
+JPP_1360|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (${index}-1:${index}+1)
+JPP_1361|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (${index}-1:${index}+1)
+JPP_1362|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (0:${negindex})
+JPP_1363|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (left hand side of colon)
+JPP_1364|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (left hand side of colon)
+JPP_1365|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (combinations with negative integer parameter)
+JPP_1500|STRING_INDICES|GOODCASE|JSON file with indices applied to a string (inside lists and inside dictionaries)
+JPP_1650|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (1)
+JPP_1651|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (2)
+JPP_1652|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (3)
+JPP_1653|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (4)
+JPP_1655|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (6)
+JPP_1657|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (8)
+JPP_1658|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (9)
+JPP_1659|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (10)
+JPP_1660|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (11)
+JPP_1661|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (12)
+JPP_1901|ASSIGNMENTS_BY_REFERENCE|GOODCASE|JSON file with list assignments (by reference)

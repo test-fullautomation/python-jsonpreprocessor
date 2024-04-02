@@ -1,4 +1,4 @@
-//  Copyright 2020-2023 Robert Bosch GmbH
+//  Copyright 2020-2024 Robert Bosch GmbH
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
 //**************************************************************************
 {
    "listparam" : ["A","B","C"],
-   "param_1"   : "}${listparam}[0]{",
-   "param_2"   : "{${listparam}[0]}",
-   "param_3"   : "$}${listparam}[0]$}",
-   "param_4"   : "{$}${listparam}[0]{$}",
-   "param_5"   : "}{$}${listparam}[0]{$}{",
-   "param_6"   : "{}{$}${listparam}[0]{$}{}",
-   "param_7"   : "{}${listparam}[0]{$}${listparam}[1]{$}${listparam}[2]{}",
-   "param_8"   : "{}$${listparam}[0]{$$}$${listparam}[1]{$$}$${listparam}[2]{}"
+   "param_01"   : "}${listparam}[0]{",
+   "param_02"   : "{${listparam}[0]}",
+   "param_03"   : "$}${listparam}[0]$}",
+   "param_04"   : "{$}${listparam}[0]{$}",
+   "param_05"   : "}{$}${listparam}[0]{$}{",
+   "param_06"   : "{}{$}${listparam}[0]{$}{}",
+   "param_07"   : "{}${listparam}[0]{$}${listparam}[1]{$}${listparam}[2]{}",
+   "param_08"   : "{}$${listparam}[0]{$$}$${listparam}[1]{$$}$${listparam}[2]{}",
+   "param_09"   : "{[}$${listparam}[0]]{$[$}$${listparam}[1]}{$$}$${listparam}[2]{}()"
 }
 

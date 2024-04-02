@@ -1,4 +1,4 @@
-//  Copyright 2020-2023 Robert Bosch GmbH
+//  Copyright 2020-2024 Robert Bosch GmbH
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "intval"  : 1,
-   "listval" : ["B", 2],
-   "param_${listval}['${intval}']}" : 3
+   "dictParam" : {"A" : 0, "B" : 1},
+   "param"     : "${dictParam}"
 }
