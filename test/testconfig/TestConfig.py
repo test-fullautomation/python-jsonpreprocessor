@@ -3335,8 +3335,17 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1800.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # Error: 'The variable '${params}['global']['param']' is not available!'!
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (6/1) > {param1} [STR]  :  'value'
+[DICT] (6/2) > {params2} [DICT] (1/1) > {global} [DICT] (1/1) > {param2} [STR]  :  'value'
+[DICT] (6/3) > {param3} [DICT] (1/1) > {A} [INT]  :  1
+[DICT] (6/4) > {params3} [DICT] (1/1) > {global} [DICT] (1/1) > {param3} [DICT] (1/1) > {A} [INT]  :  1
+[DICT] (6/5) > {param4} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (6/5) > {param4} [LIST] (2/2) > [INT]  :  1
+[DICT] (6/6) > {params5} [DICT] (1/1) > {global} [DICT] (1/1) > {param5} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (6/6) > {params5} [DICT] (1/1) > {global} [DICT] (1/1) > {param5} [LIST] (2/2) > [INT]  :  1
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

@@ -455,12 +455,29 @@ This method handles nested variables in parameter names or values. Variable synt
             sParameter = self.__multipleReplace(sNestedParam, dReplacements)
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
+            oTmpObj = self.JPGlobals
             for element in lElements:
-                if re.match(r"^[\s\-]*\d+$", element) or \
-                    re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                bList = False
+                if re.match(r"^[\s\-]*\d+$", element):
+                    bList = True
                     sExec = sExec + f"[{element}]"
-                else:
+                elif re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    element = element.strip("'")
+                if not bList:
+                    if isinstance(oTmpObj, dict) and element not in oTmpObj.keys():
+                        sDuplicatedCheck = element + CNameMangling.DUPLICATEDKEY_01.value
+                        for key in oTmpObj.keys():
+                            if sDuplicatedCheck in key and CNameMangling.DUPLICATEDKEY_00.value not in key:
+                                element = key                            
                     sExec = sExec + f"['{element}']"
+                if not bList and isinstance(oTmpObj, dict):
+                    if element in oTmpObj and (isinstance(oTmpObj[element], dict) or \
+                                               isinstance(oTmpObj[element], list)):
+                        oTmpObj = oTmpObj[element]
+                elif bList and isinstance(oTmpObj, list):
+                    if int(element)<len(oTmpObj) and (isinstance(oTmpObj[int(element)], dict) or \
+                                                      isinstance(oTmpObj[int(element)], list)):
+                        oTmpObj = oTmpObj[int(element)]
             try:
                 ldict = {}
                 exec(sExec, locals(), ldict)
