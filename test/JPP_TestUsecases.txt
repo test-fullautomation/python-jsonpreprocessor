@@ -593,9 +593,17 @@ Test JPP_1661 / NOT_EXISTING_PARAMETERS / BADCASE
 Description: JSON file with not existing parameters at several positions (12)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1700 / LINE_BREAKS / GOODCASE
+Description: JSON file with and without line breaks inside expressions
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1800 / SELF_ASSIGNMENTS / GOODCASE
+Description: JSON file with self assignments of strings, lists and dictionaries
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1901 / ASSIGNMENTS_BY_REFERENCE / GOODCASE
 Description: JSON file with list assignments (by reference)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 27.03.2024 - 11:21:23
+Generated: 03.04.2024 - 09:23:46
 
