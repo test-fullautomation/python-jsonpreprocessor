@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 27.03.2024
+# 03.04.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3282,7 +3282,6 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1700"
 dictUsecase['DESCRIPTION']       = "JSON file with and without line breaks inside expressions"
@@ -3323,8 +3322,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-# https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/253
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/213
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1800"
 dictUsecase['DESCRIPTION']       = "JSON file with self assignments of strings, lists and dictionaries"

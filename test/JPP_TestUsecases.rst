@@ -1443,6 +1443,26 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1700**
+
+  [LINE_BREAKS / GOODCASE]
+
+   **JSON file with and without line breaks inside expressions**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_1800**
+
+  [SELF_ASSIGNMENTS / GOODCASE]
+
+   **JSON file with self assignments of strings, lists and dictionaries**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_1901**
 
   [ASSIGNMENTS_BY_REFERENCE / GOODCASE]
@@ -1453,5 +1473,5 @@ Test Use Cases
 
 ----
 
-Generated: 27.03.2024 - 11:21:23
+Generated: 03.04.2024 - 09:23:46
 
