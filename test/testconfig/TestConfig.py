@@ -1341,7 +1341,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0270.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${listval}['1']' is not available!" # but not the desired one; better: list incices must be of type int
+dictUsecase['EXPECTEDEXCEPTION'] = "expects integer as index. Got string instead in the"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

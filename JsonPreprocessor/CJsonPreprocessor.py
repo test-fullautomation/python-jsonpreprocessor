@@ -552,21 +552,29 @@ only simple data types are allowed to be substituted inside."
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-             tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
-             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
+            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+            if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
                 sInputStr = sInputStr.replace(rootVar, sRootVar)
                 dReplacements = {"$${" : "", "}" : ""}
                 return self.__multipleReplace(sInputStr, dReplacements)
-             var = re.search(tmpPattern, sInputStr, re.UNICODE)
-             rootVar = re.search(pattern, var[0], re.UNICODE)[0]
-             sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
-             sVar = var[0].replace(rootVar, sRootVar)
-             tmpValue = __getNestedValue(sVar)
-             if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
+            var = re.search(tmpPattern, sInputStr, re.UNICODE)
+            rootVar = re.search(pattern, var[0], re.UNICODE)[0]
+            sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+            sVar = var[0].replace(rootVar, sRootVar)
+            if re.search(r"\[\s*'[\s\-]*\d+\s*'\s*\]", sVar):
+                try:
+                    tmpValue = __getNestedValue(sVar)
+                except:
+                    errorMsg = f"The {rootVar.replace('$$', '$')} expects integer as index. Got string instead in the {sNestedParam}"
+                    self.__reset()
+                    raise Exception(errorMsg)
+            else:
+                tmpValue = __getNestedValue(sVar)
+            if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
-             else:
+            else:
                 sInputStr = sInputStr.replace(var[0], str(tmpValue))
         return sInputStr.replace("$$", "$") if "$$" in sInputStr else sInputStr
 
