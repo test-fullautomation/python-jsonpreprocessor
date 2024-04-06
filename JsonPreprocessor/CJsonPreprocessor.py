@@ -760,15 +760,19 @@ This method replaces all nested parameters in key and value of a JSON object .
             if "${" not in k and CNameMangling.DUPLICATEDKEY_01.value not in k:
                 parentParams = k if parentParams=='' else parentParams + "['" + k + "']"
             keyNested = ''
+            origKey = ''
             bStrConvert = False
             bImplicitCreation = False
             bDuplicatedHandle = False
             if re.match(r"^.+" + CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", k, re.UNICODE):
-                bDuplicatedHandle = True if CNameMangling.DUPLICATEDKEY_00.value not in k else False
+                bDuplicatedHandle = True
                 dupKey = k
                 if CNameMangling.DUPLICATEDKEY_00.value in k:
                     origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", "", k)
-                    oJson = self.__changeDictKey(oJson, k, origKey)
+                    if not re.match(r'^\s*' + pattern + r'\s*$', origKey):
+                        oJson = self.__changeDictKey(oJson, k, origKey)
+                    else:
+                        del oJson[k]
                     k = origKey
                 else:
                     del oJson[k]
@@ -825,33 +829,35 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         if v == sLoopCheck:
                             self.__reset()
                             raise Exception(f"Invalid expression found: '{initValue}'.")
-                if bDuplicatedHandle:
-                    if "${" not in dupKey and parentParams != "":
-                        sParams = parentParams + "['" + k + "']"
-                        lElements = self.__parseDictPath(sParams)
-                        sExec = "self.JPGlobals"
-                        for element in lElements:
-                            if re.match(r"^[\s\-]*\d+$", element) or \
-                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
-                                sExec = sExec + f"[{element}]"
-                            else:
-                                sExec = sExec + f"['{element}']"
-                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
-                    else:
-                        lElements = self.__parseDictPath(k)
-                        sExec = "self.JPGlobals"
-                        for element in lElements:
-                            if re.match(r"^[\s\-]*\d+$", element) or \
-                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
-                                sExec = sExec + f"[{element}]"
-                            else:
-                                sExec = sExec + f"['{element}']"
-                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
-                    try:
-                        exec(sExec)
-                    except:
-                        pass
+            if bDuplicatedHandle:
+                if "${" not in dupKey and parentParams != "":
+                    sParams = parentParams + "['" + k + "']"
+                    lElements = self.__parseDictPath(sParams)
+                    sExec = "self.JPGlobals"
+                    for element in lElements:
+                        if re.match(r"^[\s\-]*\d+$", element) or \
+                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                            sExec = sExec + f"[{element}]"
+                        else:
+                            sExec = sExec + f"['{element}']"
+                    sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
+                else:
+                    lElements = self.__parseDictPath(k)
+                    sExec = "self.JPGlobals"
+                    for element in lElements:
+                        if re.match(r"^[\s\-]*\d+$", element) or \
+                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                            sExec = sExec + f"[{element}]"
+                        else:
+                            sExec = sExec + f"['{element}']"
+                    sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
+                try:
+                    exec(sExec)
+                except:
+                    pass
+                if origKey == '':
                     continue
+                
             __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle, recursive)
             if keyNested != '' and not bStrConvert:
                 transTable = str.maketrans({"[":"\[", "]":"\]"})
@@ -863,7 +869,6 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     self.dUpdatedParams.pop(item)
                 if CNameMangling.DUPLICATEDKEY_01.value not in k:
                     self.dUpdatedParams.update({k:v})
-
             if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
                 parentParams = re.sub("\['" + k + "'\]", "", parentParams)
             if not recursive:
