@@ -852,12 +852,16 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                 else:
                     lElements = self.__parseDictPath(k)
                     sExec = "self.JPGlobals"
+                    dCheck = self.JPGlobals
                     for element in lElements:
+                        if (isinstance(dCheck, dict) or isinstance(dCheck, list)) and element not in dCheck:
+                            dCheck[element.strip("'")] = {}
                         if re.match(r"^[\s\-]*\d+$", element) or \
                             re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
                             sExec = sExec + f"[{element}]"
                         else:
                             sExec = sExec + f"['{element}']"
+                        dCheck = dCheck[element.strip("'")]
                     sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
                 try:
                     exec(sExec)

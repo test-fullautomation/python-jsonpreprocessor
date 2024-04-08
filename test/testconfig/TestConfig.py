@@ -3363,7 +3363,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (4/3) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
 [DICT] (4/4) > {testdict3} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
