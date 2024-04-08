@@ -71,7 +71,7 @@
 * Added mechanism to prevent Python application freeze.
 * Removed globals scope out of all exec method executions.
 * Optimized errors handling while loading parameters.
-* Improved handling of duplicated parameters in configuration files:
+* Improved handling of duplicated parameters:
 
   In following example different values are assigned to the same parameter several times. It can be seen that 
   the last assignment is the valid one. Previously assigned values will be overwritten. Please make sure to add
