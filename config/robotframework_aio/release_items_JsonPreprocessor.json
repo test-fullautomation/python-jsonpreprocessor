@@ -63,9 +63,7 @@
 
   All JsonPreprocessor test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
 "
-                             ]
-                 },
-                 {
+                             ],
                   "0.11." : [
 "
 * Optimized regular expression patterns.
