@@ -63,44 +63,43 @@
 
   All JsonPreprocessor test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
 "
-                             ],
+                             ]
+                 ,
                   "0.11." : [
 "
 * Optimized regular expression patterns.
 * Added mechanism to prevent Python application freeze.
 * Removed globals scope out of all exec method executions.
 * Optimized errors handling while loading parameters.
-* Improved duplicated parameters handling
+* Improved duplicated parameters handling: 
 
-  **Example:**
+  The content of the configuration file:
 
-    The content of the configuration file:
+  | ``\u007b``
+  |    ``...``
+  |    ``\"params\" : \u007b``
+  |       ``\"global\" : \u007b``
+  |          ``\"var1\"              : 1,``
+  |          ``\"var2\"              : 2,``
+  |          ``\"var11\"             : $\u007bparams.global.var1\u007d,``
+  |          ``\"var21\"             : $\u007bparams.global.var2\u007d,``
+  |          ``\"var1\"              : 10,``
+  |          ``$\u007bparams.global.var2\u007d : 20,``
+  |          ``\"var12\"               : $\u007bparams.global.var1\u007d,``
+  |          ``\"var22\"               : $\u007bparams.global.var2\u007d``
+  |        ``\u007d``
+  |    ``\u007d``
+  |    ``...``
+  | ``\u007d``
 
-    | ``\u007b``
-    |    ``...``
-    |    ``\"params\" : \u007b``
-    |       ``\"global\" : \u007b``
-    |          ``\"var1\"              : 1,``
-    |          ``\"var2\"              : 2,``
-    |          ``\"var11\"             : $\u007bparams.global.var1\u007d,``
-    |          ``\"var21\"             : $\u007bparams.global.var2\u007d,``
-    |          ``\"var1\"              : 10,``
-    |          ``$\u007bparams.global.var2\u007d : 20,``
-    |          ``\"var12\"               : $\u007bparams.global.var1\u007d,``
-    |          ``\"var22\"               : $\u007bparams.global.var2\u007d``
-    |        ``\u007d``
-    |    ``\u007d``
-    |    ``...``
-    | ``\u007d``
+  Result:
 
-    Result:
-
-    | ``oJson['params']['global']['var1']  = 10``
-    | ``oJson['params']['global']['var2']  = 20``
-    | ``oJson['params']['global']['var11'] = 1``
-    | ``oJson['params']['global']['var21'] = 2``
-    | ``oJson['params']['global']['var12'] = 10``
-    | ``oJson['params']['global']['var22'] = 20``
+  | ``oJson['params']['global']['var1']  = 10``
+  | ``oJson['params']['global']['var2']  = 20``
+  | ``oJson['params']['global']['var11'] = 1``
+  | ``oJson['params']['global']['var21'] = 2``
+  | ``oJson['params']['global']['var12'] = 10``
+  | ``oJson['params']['global']['var22'] = 20``
 
 * Self test extended by further test cases
 
