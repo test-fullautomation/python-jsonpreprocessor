@@ -567,7 +567,7 @@ only simple data types are allowed to be substituted inside."
                 try:
                     tmpValue = __getNestedValue(sVar)
                 except:
-                    errorMsg = f"The {rootVar.replace('$$', '$')} expects integer as index. Got string instead in the {sNestedParam}"
+                    errorMsg = f"{rootVar.replace('$$', '$')} expects integer as index. Got string instead in {sNestedParam}"
                     self.__reset()
                     raise Exception(errorMsg)
             else:
@@ -735,10 +735,10 @@ This method replaces all nested parameters in key and value of a JSON object .
                     self.JPGlobals.update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
-            varPattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}"
+            varPattern = rf"[^{re.escape(self.specialCharacters)}]*"
             indexPattern = r"\[[\s\-\+\d]*\]"
-            dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + r".*\]+)*|" + indexPattern
-            pattern = varPattern + dictPattern
+            dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + varPattern + r"\s*}.*\]+)*|" + indexPattern
+            pattern = r"\${\s*" + varPattern + r"(\.*\${\s*" + varPattern + r"\s*})*" + dictPattern
             bValueConvertString = False
             if CNameMangling.STRINGCONVERT.value in sInputStr:
                 bValueConvertString = True
@@ -931,7 +931,7 @@ This method handles nested parameters are called recursively in a string value.
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
         indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
-        nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
+        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = r"[0-9\.]+"
 
@@ -1086,7 +1086,11 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
         elif CNameMangling.STRINGCONVERT.value not in sInput and \
             CNameMangling.DUPLICATEDKEY_01.value not in sInput:
             if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
-                errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
+                sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                    errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
+                else:
+                    return True
             else:
                 if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
                     errorMsg = f"Invalid parameter format: {sInput.strip()}"
