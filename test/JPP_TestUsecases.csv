@@ -69,6 +69,7 @@ JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure 
 JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 2)
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
 JPP_0503|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (some lists)
+JPP_0504|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (some dictionaries)
 JPP_0505|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
 JPP_0506|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite strings containing several combinations of curly brackets and special characters before
 JPP_0507|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file containing several string concatenations in separate lines (1)
@@ -125,7 +126,8 @@ JPP_1362|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (0:${ne
 JPP_1363|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (left hand side of colon)
 JPP_1364|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (left hand side of colon)
 JPP_1365|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (combinations with negative integer parameter)
-JPP_1500|STRING_INDICES|GOODCASE|JSON file with indices applied to a string (inside lists and inside dictionaries)
+JPP_1500|STRING_INDICES|GOODCASE|JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)
+JPP_1501|STRING_INDICES|GOODCASE|JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)
 JPP_1650|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (1)
 JPP_1651|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (2)
 JPP_1652|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (3)
@@ -138,4 +140,5 @@ JPP_1660|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters 
 JPP_1661|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (12)
 JPP_1700|LINE_BREAKS|GOODCASE|JSON file with and without line breaks inside expressions
 JPP_1800|SELF_ASSIGNMENTS|GOODCASE|JSON file with self assignments of strings, lists and dictionaries
+JPP_1900|ASSIGNMENTS_BY_REFERENCE|GOODCASE|JSON file with dictionary assignments (by reference)
 JPP_1901|ASSIGNMENTS_BY_REFERENCE|GOODCASE|JSON file with list assignments (by reference)

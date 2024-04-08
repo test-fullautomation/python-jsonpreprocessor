@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 03.04.2024
+# 08.04.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3023,47 +3023,68 @@ dictUsecase['EXPECTEDRETURN']    = None # https://github.com/test-fullautomation
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
+#
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/269
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+#
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1500"
-dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries)"
+dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
 dictUsecase['SECTION']           = "STRING_INDICES"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1500.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1500.jsonp" # partially commented out
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (17/1) > {stringParam} [STR]  :  'ABCDE'
-[DICT] (17/2) > {index} [INT]  :  1
-[DICT] (17/3) > {indexList} [LIST] (3/1) > [INT]  :  0
-[DICT] (17/3) > {indexList} [LIST] (3/2) > [INT]  :  1
-[DICT] (17/3) > {indexList} [LIST] (3/3) > [INT]  :  2
-[DICT] (17/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
-[DICT] (17/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
-[DICT] (17/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
-[DICT] (17/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
-[DICT] (17/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
-[DICT] (17/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
-[DICT] (17/6) > {param01} [STR]  :  'B'
-[DICT] (17/7) > {param02} [STR]  :  'B'
-[DICT] (17/8) > {param03} [STR]  :  'B'
-[DICT] (17/9) > {param04} [STR]  :  'B'
-[DICT] (17/10) > {param05} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/10) > {param05} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/11) > {param06} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/11) > {param06} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/12) > {param07} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/12) > {param07} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/13) > {param08} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/13) > {param08} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/14) > {param09} [DICT] (1/1) > {kA} [STR]  :  'B'
-[DICT] (17/15) > {param10} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/15) > {param10} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/16) > {param11} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/16) > {param11} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
-[DICT] (17/17) > {param12} [DICT] (1/1) > {kA} [LIST] (2/1) > [STR]  :  'B'
-[DICT] (17/17) > {param12} [DICT] (1/1) > {kA} [LIST] (2/2) > [STR]  :  'D'
+[DICT] (8/1) > {stringParam} [STR]  :  'ABCDE'
+[DICT] (8/2) > {index} [INT]  :  1
+[DICT] (8/3) > {indexList} [LIST] (3/1) > [INT]  :  0
+[DICT] (8/3) > {indexList} [LIST] (3/2) > [INT]  :  1
+[DICT] (8/3) > {indexList} [LIST] (3/3) > [INT]  :  2
+[DICT] (8/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
+[DICT] (8/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
+[DICT] (8/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
+[DICT] (8/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (8/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (8/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (8/6) > {param01} [STR]  :  'B'
+[DICT] (8/7) > {param02} [STR]  :  'B'
+[DICT] (8/8) > {param04} [STR]  :  '1'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+#
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/268
+#
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1501"
+dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "STRING_INDICES"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1501.jsonp" # partially commented out
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (9/1) > {stringParam} [STR]  :  'ABCDE'
+[DICT] (9/2) > {index} [INT]  :  1
+[DICT] (9/3) > {indexList} [LIST] (3/1) > [INT]  :  0
+[DICT] (9/3) > {indexList} [LIST] (3/2) > [INT]  :  1
+[DICT] (9/3) > {indexList} [LIST] (3/3) > [INT]  :  2
+[DICT] (9/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
+[DICT] (9/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
+[DICT] (9/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
+[DICT] (9/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (9/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (9/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (9/6) > {param02} [STR]  :  'B'
+[DICT] (9/7) > {param04} [STR]  :  '1'
+[DICT] (9/8) > {param06} [STR]  :  'B'
+[DICT] (9/9) > {param08} [STR]  :  'B'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3346,7 +3367,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/214
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1900"
 dictUsecase['DESCRIPTION']       = "JSON file with dictionary assignments (by reference)"
