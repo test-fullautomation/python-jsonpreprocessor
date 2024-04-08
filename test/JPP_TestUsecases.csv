@@ -136,4 +136,6 @@ JPP_1658|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters 
 JPP_1659|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (10)
 JPP_1660|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (11)
 JPP_1661|NOT_EXISTING_PARAMETERS|BADCASE|JSON file with not existing parameters at several positions (12)
+JPP_1700|LINE_BREAKS|GOODCASE|JSON file with and without line breaks inside expressions
+JPP_1800|SELF_ASSIGNMENTS|GOODCASE|JSON file with self assignments of strings, lists and dictionaries
 JPP_1901|ASSIGNMENTS_BY_REFERENCE|GOODCASE|JSON file with list assignments (by reference)

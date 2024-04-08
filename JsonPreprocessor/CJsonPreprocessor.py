@@ -455,12 +455,29 @@ This method handles nested variables in parameter names or values. Variable synt
             sParameter = self.__multipleReplace(sNestedParam, dReplacements)
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
+            oTmpObj = self.JPGlobals
             for element in lElements:
-                if re.match(r"^[\s\-]*\d+$", element) or \
-                    re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                bList = False
+                if re.match(r"^[\s\-]*\d+$", element):
+                    bList = True
                     sExec = sExec + f"[{element}]"
-                else:
+                elif re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    element = element.strip("'")
+                if not bList:
+                    if isinstance(oTmpObj, dict) and element not in oTmpObj.keys():
+                        sDuplicatedCheck = element + CNameMangling.DUPLICATEDKEY_01.value
+                        for key in oTmpObj.keys():
+                            if sDuplicatedCheck in key and CNameMangling.DUPLICATEDKEY_00.value not in key:
+                                element = key                            
                     sExec = sExec + f"['{element}']"
+                if not bList and isinstance(oTmpObj, dict):
+                    if element in oTmpObj and (isinstance(oTmpObj[element], dict) or \
+                                               isinstance(oTmpObj[element], list)):
+                        oTmpObj = oTmpObj[element]
+                elif bList and isinstance(oTmpObj, list):
+                    if int(element)<len(oTmpObj) and (isinstance(oTmpObj[int(element)], dict) or \
+                                                      isinstance(oTmpObj[int(element)], list)):
+                        oTmpObj = oTmpObj[int(element)]
             try:
                 ldict = {}
                 exec(sExec, locals(), ldict)
@@ -535,21 +552,29 @@ only simple data types are allowed to be substituted inside."
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-             tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
-             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
+            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+            if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
                 sInputStr = sInputStr.replace(rootVar, sRootVar)
                 dReplacements = {"$${" : "", "}" : ""}
                 return self.__multipleReplace(sInputStr, dReplacements)
-             var = re.search(tmpPattern, sInputStr, re.UNICODE)
-             rootVar = re.search(pattern, var[0], re.UNICODE)[0]
-             sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
-             sVar = var[0].replace(rootVar, sRootVar)
-             tmpValue = __getNestedValue(sVar)
-             if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
+            var = re.search(tmpPattern, sInputStr, re.UNICODE)
+            rootVar = re.search(pattern, var[0], re.UNICODE)[0]
+            sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+            sVar = var[0].replace(rootVar, sRootVar)
+            if re.search(r"\[\s*'[\s\-]*\d+\s*'\s*\]", sVar):
+                try:
+                    tmpValue = __getNestedValue(sVar)
+                except:
+                    errorMsg = f"{rootVar.replace('$$', '$')} expects integer as index. Got string instead in {sNestedParam}"
+                    self.__reset()
+                    raise Exception(errorMsg)
+            else:
+                tmpValue = __getNestedValue(sVar)
+            if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
-             else:
+            else:
                 sInputStr = sInputStr.replace(var[0], str(tmpValue))
         return sInputStr.replace("$$", "$") if "$$" in sInputStr else sInputStr
 
@@ -710,10 +735,10 @@ This method replaces all nested parameters in key and value of a JSON object .
                     self.JPGlobals.update({k:v})
 
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
-            varPattern = rf"\${{\s*[^{re.escape(self.specialCharacters)}]*\s*}}"
+            varPattern = rf"[^{re.escape(self.specialCharacters)}]*"
             indexPattern = r"\[[\s\-\+\d]*\]"
-            dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*" + varPattern + r".*\]+)*|" + indexPattern
-            pattern = varPattern + dictPattern
+            dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + varPattern + r"\s*}.*\]+)*|" + indexPattern
+            pattern = r"\${\s*" + varPattern + r"(\.*\${\s*" + varPattern + r"\s*})*" + dictPattern
             bValueConvertString = False
             if CNameMangling.STRINGCONVERT.value in sInputStr:
                 bValueConvertString = True
@@ -743,15 +768,19 @@ This method replaces all nested parameters in key and value of a JSON object .
             if "${" not in k and CNameMangling.DUPLICATEDKEY_01.value not in k:
                 parentParams = k if parentParams=='' else parentParams + "['" + k + "']"
             keyNested = ''
+            origKey = ''
             bStrConvert = False
             bImplicitCreation = False
             bDuplicatedHandle = False
             if re.match(r"^.+" + CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", k, re.UNICODE):
-                bDuplicatedHandle = True if CNameMangling.DUPLICATEDKEY_00.value not in k else False
+                bDuplicatedHandle = True
                 dupKey = k
                 if CNameMangling.DUPLICATEDKEY_00.value in k:
                     origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + r"\d+$", "", k)
-                    oJson = self.__changeDictKey(oJson, k, origKey)
+                    if not re.match(r'^\s*' + pattern + r'\s*$', origKey):
+                        oJson = self.__changeDictKey(oJson, k, origKey)
+                    else:
+                        del oJson[k]
                     k = origKey
                 else:
                     del oJson[k]
@@ -808,33 +837,39 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         if v == sLoopCheck:
                             self.__reset()
                             raise Exception(f"Invalid expression found: '{initValue}'.")
-                if bDuplicatedHandle:
-                    if "${" not in dupKey and parentParams != "":
-                        sParams = parentParams + "['" + k + "']"
-                        lElements = self.__parseDictPath(sParams)
-                        sExec = "self.JPGlobals"
-                        for element in lElements:
-                            if re.match(r"^[\s\-]*\d+$", element) or \
-                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
-                                sExec = sExec + f"[{element}]"
-                            else:
-                                sExec = sExec + f"['{element}']"
-                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
-                    else:
-                        lElements = self.__parseDictPath(k)
-                        sExec = "self.JPGlobals"
-                        for element in lElements:
-                            if re.match(r"^[\s\-]*\d+$", element) or \
-                                re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
-                                sExec = sExec + f"[{element}]"
-                            else:
-                                sExec = sExec + f"['{element}']"
-                        sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
-                    try:
-                        exec(sExec)
-                    except:
-                        pass
+            if bDuplicatedHandle:
+                if "${" not in dupKey and parentParams != "":
+                    sParams = parentParams + "['" + k + "']"
+                    lElements = self.__parseDictPath(sParams)
+                    sExec = "self.JPGlobals"
+                    for element in lElements:
+                        if re.match(r"^[\s\-]*\d+$", element) or \
+                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                            sExec = sExec + f"[{element}]"
+                        else:
+                            sExec = sExec + f"['{element}']"
+                    sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
+                else:
+                    lElements = self.__parseDictPath(k)
+                    sExec = "self.JPGlobals"
+                    dCheck = self.JPGlobals
+                    for element in lElements:
+                        if (isinstance(dCheck, dict) or isinstance(dCheck, list)) and element not in dCheck:
+                            dCheck[element.strip("'")] = {}
+                        if re.match(r"^[\s\-]*\d+$", element) or \
+                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                            sExec = sExec + f"[{element}]"
+                        else:
+                            sExec = sExec + f"['{element}']"
+                        dCheck = dCheck[element.strip("'")]
+                    sExec = sExec + f" = \"{v}\"" if isinstance(v, str) else sExec + f" = {str(v)}"
+                try:
+                    exec(sExec)
+                except:
+                    pass
+                if origKey == '':
                     continue
+                
             __jsonUpdated(k, v, oJson, bNested, keyNested, bDuplicatedHandle, recursive)
             if keyNested != '' and not bStrConvert:
                 transTable = str.maketrans({"[":"\[", "]":"\]"})
@@ -846,7 +881,6 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     self.dUpdatedParams.pop(item)
                 if CNameMangling.DUPLICATEDKEY_01.value not in k:
                     self.dUpdatedParams.update({k:v})
-
             if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
                 parentParams = re.sub("\['" + k + "'\]", "", parentParams)
             if not recursive:
@@ -897,7 +931,7 @@ This method handles nested parameters are called recursively in a string value.
         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
         indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
-        nestedPattern = r"\${\s*" + variablePattern + r"(\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
+        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
         valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
         valueNumberPattern = r"[0-9\.]+"
 
@@ -1052,7 +1086,11 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
         elif CNameMangling.STRINGCONVERT.value not in sInput and \
             CNameMangling.DUPLICATEDKEY_01.value not in sInput:
             if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
-                errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
+                sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                    errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
+                else:
+                    return True
             else:
                 if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
                     errorMsg = f"Invalid parameter format: {sInput.strip()}"

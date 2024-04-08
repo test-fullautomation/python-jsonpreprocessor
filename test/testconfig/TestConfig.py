@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 27.03.2024
+# 03.04.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1341,7 +1341,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0270.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The variable '${listval}['1']' is not available!" # but not the desired one; better: list incices must be of type int
+dictUsecase['EXPECTEDEXCEPTION'] = "expects integer as index. Got string instead in"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2042,7 +2042,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (20/19) > {val14} [INT]  :  345
 [DICT] (20/20) > {val15} [STR]  :  '345'
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3282,7 +3282,6 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1700"
 dictUsecase['DESCRIPTION']       = "JSON file with and without line breaks inside expressions"
@@ -3323,8 +3322,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-# https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/253
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/213
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1800"
 dictUsecase['DESCRIPTION']       = "JSON file with self assignments of strings, lists and dictionaries"
@@ -3335,8 +3332,17 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1800.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # Error: 'The variable '${params}['global']['param']' is not available!'!
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (6/1) > {param1} [STR]  :  'value'
+[DICT] (6/2) > {params2} [DICT] (1/1) > {global} [DICT] (1/1) > {param2} [STR]  :  'value'
+[DICT] (6/3) > {param3} [DICT] (1/1) > {A} [INT]  :  1
+[DICT] (6/4) > {params3} [DICT] (1/1) > {global} [DICT] (1/1) > {param3} [DICT] (1/1) > {A} [INT]  :  1
+[DICT] (6/5) > {param4} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (6/5) > {param4} [LIST] (2/2) > [INT]  :  1
+[DICT] (6/6) > {params5} [DICT] (1/1) > {global} [DICT] (1/1) > {param5} [LIST] (2/1) > [STR]  :  'A'
+[DICT] (6/6) > {params5} [DICT] (1/1) > {global} [DICT] (1/1) > {param5} [LIST] (2/2) > [INT]  :  1
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -3357,7 +3363,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DICT] (4/3) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  3
 [DICT] (4/4) > {testdict3} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [INT]  :  6
 """
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

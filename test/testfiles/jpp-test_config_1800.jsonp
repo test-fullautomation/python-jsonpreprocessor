@@ -14,9 +14,6 @@
 //**************************************************************************
 
 {
-   // https://github.com/test-fullautomation/robotframework-testsuitesmanagement/issues/253
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/213
-
    "param1"  : "value",
    ${param1} : ${param1},
 
