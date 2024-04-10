@@ -61,7 +61,7 @@
 * Improved index handling together with nested parameters
 * Self test extended by further test cases
 
-  All JsonPreprocessor test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
+  All **JsonPreprocessor** test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
 "
                              ]
                  ,
@@ -90,9 +90,18 @@
 
   Finally, the value of ``var1`` is 2 and the value of ``var2`` is 3.
 
-* Self test extended by further test cases
+* Self test extended by further test cases.
 
-  All JsonPreprocessor test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
+  Overview about **JsonPreprocessor** test cases: `JPP_TestUsecases.html <https://htmlpreview.github.io/?https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/test/JPP_TestUsecases.html>`_
+
+* Extended debugging support:
+
+  In case of JSON syntax errors, the log file contains an extract of the JSON content nearby the position, where the error occurred.
+  Line breaks in JSON content are replaced by '``\\n``' in log output.
+
+  | ``'Expecting ',' delimiter: line 3 column 4 (char 43)``
+  | ``Nearby: '... \u007b\\n   \"dict_param\" : \u007b\"A\" : 1 , \"B\" : 2\u007d\\n   \"list_param\" : [\"A\", ...'``
+
 "
                             ]
                 }
