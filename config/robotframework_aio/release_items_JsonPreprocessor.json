@@ -97,7 +97,7 @@
 * Extended debugging support:
 
   In case of JSON syntax errors, the **JsonPreprocessor** exception contains an extract of the JSON content nearby the position, where the error occurred.
-  Line breaks in JSON content are replaced by '``\\n``' in log output.
+  Line breaks in JSON content are replaced by '``\\n``'.
 
   | ``'Expecting ',' delimiter: line 3 column 4 (char 43)``
   | ``Nearby: '... \u007b\\n   \"dict_param\" : \u007b\"A\" : 1 , \"B\" : 2\u007d\\n   \"list_param\" : [\"A\", ...'``
