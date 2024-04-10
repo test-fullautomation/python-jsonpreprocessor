@@ -96,7 +96,7 @@
 
 * Extended debugging support:
 
-  In case of JSON syntax errors, the log file contains an extract of the JSON content nearby the position, where the error occurred.
+  In case of JSON syntax errors, the **JsonPreprocessor** exception contains an extract of the JSON content nearby the position, where the error occurred.
   Line breaks in JSON content are replaced by '``\\n``' in log output.
 
   | ``'Expecting ',' delimiter: line 3 column 4 (char 43)``
