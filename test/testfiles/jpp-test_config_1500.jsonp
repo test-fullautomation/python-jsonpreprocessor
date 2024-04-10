@@ -13,6 +13,9 @@
 //  limitations under the License.
 //**************************************************************************
 
+// https://github.com/test-fullautomation/python-jsonpreprocessor/issues/269
+// https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+
 {
    "stringParam" : "ABCDE",
    //
@@ -22,17 +25,40 @@
    "keyList"     : ["A", "B", "C"],
    //
    "param01"      : ${stringParam}[${index}],
-   "param02"      : ${stringParam}[${indexList}[${index}]],
-   "param03"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
-   "param04"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   "param02"      : "${stringParam}[${index}]",
    //
-   "param05"      : [${stringParam}[${index}], "D"],
-   "param06"      : [${stringParam}[${indexList}[${index}]], "D"],
-   "param07"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"],
-   "param08"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "D"],
+   // "param03"      : ${indexList}[${indexList}[${index}]],         // returns STR instead of INT
+   "param04"      : "${indexList}[${indexList}[${index}]]"
    //
-   "param09"      : {"kA" : ${stringParam}[${index}]},
-   "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
-   "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
-   "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
+   // --> several errors (invalid param, missing delimiter):
+   //
+   // "param05"      : ${stringParam}[${indexList}[${indexList}[${index}]],
+   // "param06"      : "${stringParam}[${indexList}[${indexList}[${index}]]",
+   //
+   // "param07"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   // "param08"      : "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]",
+   //
+   // the same within lists
+   // "param10"      : [${stringParam}[${index}], "${stringParam}[${index}]"],
+   // "param11"      : [${indexList}[${indexList}[${index}]]], "${indexList}[${indexList}[${index}]]"],
+   // "param12"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "${stringParam}[${indexList}[${indexList}[${index}]]]"],
+   // "param13"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"],
+   //
+   // the same within dictionaries
+   // "param20"      : {"k20A" : ${stringParam}[${index}],
+                     // "k20B" : "${stringParam}[${index}]",
+                     // "k20C" : ${indexList}[${indexList}[${index}]],
+                     // "k20D" : "${indexList}[${indexList}[${index}]]",
+                     // "k20E" : ${stringParam}[${indexList}[${indexList}[${index}]]],
+                     // "k20F" : "${stringParam}[${indexList}[${indexList}[${index}]]]",
+                     // "k20G" : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+                     // "k20H" : "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"}
+   //
+   // the same with lists as dictionay key values
+   // "param21"      : {"k21A" : [${stringParam}[${index}], "${stringParam}[${index}]"],
+                     // "k21B" : [${indexList}[${indexList}[${index}]], "${indexList}[${indexList}[${index}]]"],
+                     // "k21C" : [${stringParam}[${indexList}[${indexList}[${index}]]], "${stringParam}[${indexList}[${indexList}[${index}]]]"],
+                     // "k21D" : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"]}
 }
+
+

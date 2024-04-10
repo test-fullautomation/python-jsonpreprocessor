@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 03.04.2024 - 09:23:46
+# 08.04.2024 - 14:47:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -29,6 +29,14 @@ from pytestlibs.CExecute import CExecute
 
 class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
 
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with dictionary assignments (by reference)",]
+   )
+   def test_JPP_1900(self, Description):
+      nReturn = CExecute.Execute("JPP_1900")
+      assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
