@@ -1320,9 +1320,9 @@ This function handle a last element of a list or dictionary
             failedJsonDoc = self.__getFailedJsonDoc(jsonDecodeError=error)
             jsonException = "not defined"
             if failedJsonDoc is None:
-                jsonException = f"${error}\nIn file: '{jFile}'"
+                jsonException = f"{error}\nIn file: '{jFile}'"
             else:
-                jsonException = f"${error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
             raise Exception(jsonException)
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
