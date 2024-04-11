@@ -197,7 +197,7 @@ Constructor
         self.jsonCheck = {}
         self.JPGlobals = {}
 
-    def __getFailedJsonDoc(jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
+    def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
         if jsonDecodeError is None:
             return failedJsonDoc
@@ -1300,7 +1300,7 @@ This function handle a last element of a list or dictionary
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                failedJsonDoc = self.__getFailedJsonDoc(error)
+                failedJsonDoc = self.__getFailedJsonDoc(jsonDecodeError=error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
                     jsonException = f"{error}\nIn file: '{jFile}'"
@@ -1317,7 +1317,7 @@ This function handle a last element of a list or dictionary
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            failedJsonDoc = self.__getFailedJsonDoc(error)
+            failedJsonDoc = self.__getFailedJsonDoc(jsonDecodeError=error)
             jsonException = "not defined"
             if failedJsonDoc is None:
                 jsonException = f"${error}\nIn file: '{jFile}'"
