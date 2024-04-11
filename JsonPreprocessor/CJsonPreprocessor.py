@@ -197,6 +197,27 @@ Constructor
         self.jsonCheck = {}
         self.JPGlobals = {}
 
+    def __getFailedJsonDoc(jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
+        failedJsonDoc = None
+        if jsonDecodeError is None:
+            return failedJsonDoc
+        try:
+            jsonDoc = jsonDecodeError.doc
+        except:
+            # 'jsonDecodeError' seems not to be a JSON exception object ('doc' not available)
+            return failedJsonDoc
+        jsonDocSize     = len(jsonDoc)
+        positionOfError = jsonDecodeError.pos
+        if areaBeforePosition > positionOfError:
+            areaBeforePosition = positionOfError
+        if areaAfterPosition > (jsonDocSize - positionOfError):
+            areaAfterPosition = jsonDocSize - positionOfError
+        failedJsonDoc = jsonDoc[positionOfError-areaBeforePosition:positionOfError+areaAfterPosition]
+        failedJsonDoc = f"... {failedJsonDoc} ..."
+        if oneLine is True:
+            failedJsonDoc = failedJsonDoc.replace("\n", r"\n")
+        return failedJsonDoc
+
     def __reset(self) -> None:
         """
 Reset initial variables which are set in constructor method after master JSON file is loaded.
@@ -684,7 +705,6 @@ This method replaces all nested parameters in key and value of a JSON object .
 
   Output JSON object as dictionary with all variables resolved.
         """
-
         def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False, recursive = False):
             if keyNested != '':
                 if not bDuplicatedHandle and keyNested in oJson.keys():
@@ -1281,7 +1301,13 @@ This function handle a last element of a list or dictionary
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                raise Exception(f"JSON file: {jFile}\n{error}")
+                failedJsonDoc = self.__getFailedJsonDoc(error)
+                jsonException = "not defined"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{jFile}'"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -1292,7 +1318,13 @@ This function handle a last element of a list or dictionary
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            raise Exception(f"JSON file: {jFile}\n{error}")
+            failedJsonDoc = self.__getFailedJsonDoc(error)
+            jsonException = "not defined"
+            if failedJsonDoc is None:
+                jsonException = f"${error}\nIn file: '{jFile}'"
+            else:
+                jsonException = f"${error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+            raise Exception(jsonException)
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
