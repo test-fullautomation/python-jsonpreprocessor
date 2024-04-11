@@ -1216,8 +1216,7 @@ This function handle a last element of a list or dictionary
                         variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
                         indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
                         dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
-                        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*}\.*|\.*" + variablePattern + \
-                                        r"\.*)*" + r"\s*}(" + dictPattern + r")*"
+                        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
                         bHandle = False
                         if '"' in item and item.count('"')%2==0:
                             tmpList = re.findall(r'"[^"]+"', item)
