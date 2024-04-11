@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 25.03.2024 - 13:09:36
+# 08.04.2024 - 14:47:37
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -32,9 +32,17 @@ class Test_STRING_INDICES_GOODCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with indices applied to a string (inside lists and inside dictionaries)",]
+      "Description", ["JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)",]
    )
    def test_JPP_1500(self, Description):
       nReturn = CExecute.Execute("JPP_1500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)",]
+   )
+   def test_JPP_1501(self, Description):
+      nReturn = CExecute.Execute("JPP_1501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

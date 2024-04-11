@@ -322,6 +322,10 @@ Test JPP_0503 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite data structure (some lists)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0504 / COMPOSITE_EXPRESSIONS / GOODCASE
+Description: JSON file with composite data structure (some dictionaries)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0505 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite strings containing several times a colon and a comma (JSON syntax elements)
 Expectation: JsonPreprocessor returns expected value
@@ -550,7 +554,11 @@ Description: JSON file with blocked slicing notation (combinations with negative
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1500 / STRING_INDICES / GOODCASE
-Description: JSON file with indices applied to a string (inside lists and inside dictionaries)
+Description: JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1501 / STRING_INDICES / GOODCASE
+Description: JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1650 / NOT_EXISTING_PARAMETERS / BADCASE
@@ -601,9 +609,13 @@ Test JPP_1800 / SELF_ASSIGNMENTS / GOODCASE
 Description: JSON file with self assignments of strings, lists and dictionaries
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1900 / ASSIGNMENTS_BY_REFERENCE / GOODCASE
+Description: JSON file with dictionary assignments (by reference)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1901 / ASSIGNMENTS_BY_REFERENCE / GOODCASE
 Description: JSON file with list assignments (by reference)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 03.04.2024 - 09:23:46
+Generated: 08.04.2024 - 14:47:37
 

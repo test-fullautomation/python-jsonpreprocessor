@@ -68,6 +68,7 @@ class CNameMangling(Enum):
     STRINGCONVERT    = "__ConvertParameterToString__"
     LISTINDEX        = "__IndexOfList__"
     SLICEINDEX       = "__SlicingIndex__"
+    STRINGVALUE      = "__StringValueMake-up__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -195,6 +196,27 @@ Constructor
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
         self.JPGlobals = {}
+
+    def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
+        failedJsonDoc = None
+        if jsonDecodeError is None:
+            return failedJsonDoc
+        try:
+            jsonDoc = jsonDecodeError.doc
+        except:
+            # 'jsonDecodeError' seems not to be a JSON exception object ('doc' not available)
+            return failedJsonDoc
+        jsonDocSize     = len(jsonDoc)
+        positionOfError = jsonDecodeError.pos
+        if areaBeforePosition > positionOfError:
+            areaBeforePosition = positionOfError
+        if areaAfterPosition > (jsonDocSize - positionOfError):
+            areaAfterPosition = jsonDocSize - positionOfError
+        failedJsonDoc = jsonDoc[positionOfError-areaBeforePosition:positionOfError+areaAfterPosition]
+        failedJsonDoc = f"... {failedJsonDoc} ..."
+        if oneLine is True:
+            failedJsonDoc = failedJsonDoc.replace("\n", r"\n")
+        return failedJsonDoc
 
     def __reset(self) -> None:
         """
@@ -683,7 +705,6 @@ This method replaces all nested parameters in key and value of a JSON object .
 
   Output JSON object as dictionary with all variables resolved.
         """
-
         def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False, recursive = False):
             if keyNested != '':
                 if not bDuplicatedHandle and keyNested in oJson.keys():
@@ -888,116 +909,6 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
         del tmpJson
         return oJson, bNested
 
-    def __checkAndUpdateKeyValue(self, sInputStr: str, nestedKey = False) -> str:
-        """
-This function checks and makes up all nested parameters in JSON configuration files.
-
-**Arguments:**
-
-* ``sInputStr*``
-
-  / *Condition*: required / *Type*: str /
-
-  Key or value which is parsed from JSON configuration file.
-
-**Returns:**
-   The string after nested parameters are made up.
-
-   Ex:
-
-      Nested param ${abc}['xyz'] -> "${abc}['xyz']"
-
-      Nested param "${abc}['xyz']" -> "${abc}['xyz']__ConvertParameterToString__"
-        """
-        def __recursiveNestedHandling(sInputStr: str, lNestedParam: list) -> str:
-            """
-This method handles nested parameters are called recursively in a string value.
-            """
-            tmpList = []
-            for item in lNestedParam:
-                item = re.sub(r'([$()\[\]])', r'\\\1', item)
-                pattern = rf"(\${{\s*[^{re.escape(self.specialCharacters)}]*" + item + \
-                            rf"[^{re.escape(self.specialCharacters)}]*\s*}}(\[\s*.+\s*\])*)"
-                if re.search(pattern, sInputStr, re.UNICODE):
-                    sInputStr = re.sub("(" + pattern + ")", "\\1" + CNameMangling.STRINGCONVERT.value, sInputStr, re.UNICODE)
-                tmpResults = re.findall("(" + pattern + CNameMangling.STRINGCONVERT.value + ")", sInputStr, re.UNICODE)
-                for result in tmpResults:
-                    tmpList.append(result[0])
-            if tmpList != []:
-                sInputStr = __recursiveNestedHandling(sInputStr, tmpList)
-
-            return sInputStr
-
-        variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
-        indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
-        dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
-        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
-        valueStrPattern = r"[\"|\']\s*[0-9A-Za-z_\-\s*]+[\"|\']"
-        valueNumberPattern = r"[0-9\.]+"
-
-        if "${" in sInputStr:
-            if re.match(r"^\s*" + nestedPattern + r"[\s,\]}]*$", sInputStr, re.UNICODE):
-                iCheck = sInputStr.count("]") - sInputStr.count("[")
-                if iCheck > 0:
-                    tmpItems = sInputStr.split("]")
-                    index = len(tmpItems) - iCheck
-                    sParam = "]".join(tmpItems[:index])
-                    dReplacements = {"$":"\$", "[":"\[", "]":"\]", "-":"\-", "+":"\+"}
-                    paramPattern = self.__multipleReplace(sParam, dReplacements)
-                    sInputStr = re.sub("(" + paramPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
-                else:
-                    sInputStr = re.sub("(" + nestedPattern + ")", "\"\\1\"", sInputStr, re.UNICODE)
-                nestedParam = re.sub(r"^\s*\"(.+)\".*$", "\\1", sInputStr)
-                self.lNestedParams.append(nestedParam)
-            elif re.match(r"^\s*\"\s*" + nestedPattern + r"\"[\s,\]}]*$", sInputStr, re.UNICODE):
-                nestedParam = re.sub(r"^\s*\"(.+)\".*$", "\\1", sInputStr)
-                self.lNestedParams.append(nestedParam)
-                sInputStr = sInputStr.replace(nestedParam, nestedParam + CNameMangling.STRINGCONVERT.value)
-            elif ((re.match(r"[\s{\[]*\".+\"\s*", sInputStr) and sInputStr.count("\"")==2) \
-                or (re.match(r"^\s*\${.+}[,\s]*$", sInputStr) and sInputStr.count("{")==sInputStr.count("}") \
-                    and not re.search(r"(?<!^)(?<!\.)[^\.]\${", sInputStr.strip()) and not nestedKey)) \
-                and re.search("(" + nestedPattern + ")", sInputStr, re.UNICODE):
-                if sInputStr.strip()[-1] == ",":
-                    sInputStr = sInputStr.strip()[:-2] + CNameMangling.STRINGCONVERT.value + "\","
-                else:
-                    sInputStr = sInputStr.strip()[:-1] + CNameMangling.STRINGCONVERT.value + "\""
-            elif "," in sInputStr.strip()[:-1]:
-                listPattern = r"^\s*(\"*" + nestedPattern + r"\"*\s*,+\s*|" + valueStrPattern + r"\s*,+\s*|" + valueNumberPattern + r"\s*,+\s*)+" + \
-                            r"(\"*" + nestedPattern + r"\"*\s*,*\s*|" + valueStrPattern + r"\s*,*\s*|" + valueNumberPattern + r"[\s,]*)*[\]}\s]*$"
-                lNestedParam = re.findall("(" + nestedPattern + ")", sInputStr, re.UNICODE)
-                for nestedParam in lNestedParam:
-                    self.lNestedParams.append(nestedParam[0])
-                if re.match(listPattern, sInputStr):
-                    items = sInputStr.split(",")
-                    newInputStr = ''
-                    for item in items:
-                        tmpItem = item
-                        if "${" in item:
-                            if not re.match(r"^[\s\"]*" + nestedPattern + r"[\"\]}\s]*$", item, re.UNICODE):
-                                self.__reset()
-                                raise Exception(f"Invalid parameter format: {item}")
-                            elif re.match(r"^\s*\".*" + nestedPattern + r".*\"\s*$", item, re.UNICODE):
-                                item = re.sub("(" + nestedPattern + ")", "\\1" + CNameMangling.STRINGCONVERT.value, item)
-                                tmpList = []
-                                for subItem in re.findall("(" + nestedPattern + CNameMangling.STRINGCONVERT.value + ")", item, re.UNICODE):
-                                    tmpList.append(subItem[0])
-                                item = __recursiveNestedHandling(item, tmpList)
-                            elif re.match(r"^\s*" + nestedPattern + r"[\s\]}]*$", item, re.UNICODE):
-                                item = re.sub("(" + nestedPattern + ")", "\"\\1\"", item, re.UNICODE)
-                                nestedParam = re.sub(r"^\s*\"(.+)\".*$", "\\1", item)
-                                self.lNestedParams.append(nestedParam)
-                        newInputStr = newInputStr + item if tmpItem==items[len(items)-1] else newInputStr + item + ","
-                    sInputStr = newInputStr
-            elif nestedKey and re.match(r"^\s*\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+\s*$", sInputStr):
-                sInputStr = re.sub(r"^\s*(\${[^\(\)\!@#%\^\&\-\+\/\\\=`~\?]+[}\[\]]+)\s*$", "\"\\1\"", sInputStr)
-            elif not re.match(r"^\s*\".+\"[,\s]*$", sInputStr):
-                if not re.match(r"^.+,\s*$", sInputStr):
-                    sInputStr = re.sub(r"^\s*(.+)\s*$", "\"\\1\"", sInputStr)
-                else:
-                    sInputStr = re.sub(r"^\s*(.+)\s*,\s*$", "\"\\1\",", sInputStr)
-        sOutput = sInputStr
-        return sOutput
-
     def __checkDotInParamName(self, oJson : dict):
         """
 This is recrusive funtion collects all parameters which contain "." in the name.
@@ -1179,18 +1090,6 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
-        def __handleListElements(sInput : str) -> str:
-            items = re.split("\s*,\s*", sInput)
-            j=0
-            newItem = ""
-            for item in items:
-                j+=1
-                if j<len(items):
-                    newItem = newItem + self.__checkAndUpdateKeyValue(item) + ","
-                else:
-                    newItem = newItem + self.__checkAndUpdateKeyValue(item)
-            return newItem
-        
         def __handleDuplicatedKey(dInput : dict) -> dict:
             listKeys = list(dInput.keys())
             dictValues = {}
@@ -1235,6 +1134,28 @@ This function checks key names in JSON configuration files.
                             self.__checkNestedParam(item)
                 elif isinstance(v, dict):
                     __checkKeynameFormat(v)
+        
+        def __handleLastElement(sInput : str) -> str:
+            '''
+This function handle a last element of a list or dictionary
+            '''
+            param = re.search(r'(' + nestedPattern + r')', sInput)
+            if param is not None and re.match(r'^[\s\[\]{}]*$', sInput.replace(param[0], '')):
+                sParam = param[0]
+                if sParam.count('[')<sParam.count(']'):
+                    while re.search(r'\[[^\]]+\]', sParam):
+                        sParam = re.sub(r'\[[^\]]+\]', '', sParam)
+                    while re.search(r'\${[^}]+}', sParam):
+                        sParam = re.sub(r'\${[^}]+}', '', sParam)
+                    index = len(sParam)
+                    sParam = param[0]
+                    sParam = sParam[:-index]
+                dReplacements = {"$":"\$", "[":"\[", "]":"\]", ".":"\.", "-":"\-", "+":"\+"}
+                tmpPattern = self.__multipleReplace(sParam, dReplacements)
+                sInput = re.sub(r'(' + tmpPattern + r')', '"\\1"', sInput)
+            else:
+                sInput = '"' + sInput.strip() + '"'
+            return sInput
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         if  not(os.path.isfile(jFile)):
@@ -1260,6 +1181,7 @@ This function checks key names in JSON configuration files.
                 raise Exception(f"\n{str(error)} in line: '{line}'")
 
             if "${" in line:
+                curLine = line
                 lNestedVar = re.findall(rf"\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}", line, re.UNICODE)
                 for nestedVar in lNestedVar:
                     if nestedVar[0].isdigit():
@@ -1275,13 +1197,11 @@ This function checks key names in JSON configuration files.
                     indexList = re.findall(indexPattern, line)
                     line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
                 items = re.split("\s*:\s*", line)
-                newLine = ""
-                i=0
+                iItems = len(items)-1 if items[-1]=='' else len(items) 
+                newLine = ''
+                preItem = ''
+                i=1
                 for item in items:
-                    nestedKey = False
-                    nestedKeyPattern = r"^\s*,\s*\${.+[\]}]\s*$"
-                    if i==0 or re.match(nestedKeyPattern, item):
-                        nestedKey = True
                     if CNameMangling.COLONS.value in item:
                         while CNameMangling.COLONS.value in item:
                             item = item.replace(CNameMangling.COLONS.value, tmpList01.pop(0), 1)
@@ -1291,42 +1211,63 @@ This function checks key names in JSON configuration files.
                     elif CNameMangling.SLICEINDEX.value in item:
                         while CNameMangling.SLICEINDEX.value in item:
                             item = item.replace(CNameMangling.SLICEINDEX.value, tmpList02.pop(0), 1)
+                    curItem = item
+                    if "${" in item:
+                        variablePattern = rf"[^{re.escape(self.specialCharacters)}]+"
+                        indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
+                        dictPattern = r"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*" + variablePattern + r"\s*}.*\]+|" + indexPattern
+                        nestedPattern = r"\${\s*" + variablePattern + r"(\.*\${\s*" + variablePattern + r"\s*})*" + r"\s*}(" + dictPattern + r")*"
+                        bHandle = False
+                        if '"' in item and item.count('"')%2==0:
+                            tmpList = re.findall(r'"[^"]+"', item)
+                            item = re.sub(r'"[^"]+"', CNameMangling.STRINGVALUE.value, item)
+                        if re.search(r'[\(\)\!@#%\^\&\/\\\=`~\?]+', item):
+                            item = re.sub(r'^\s*(.+)\s*,*', '"\\1"', item)
+                            bHandle = True
+                        if "," in item and not bHandle:
+                            if item.count(',')>1 and not re.match(r'^\[|{.+$', item.strip()):
+                                dReplacements = {"$":"\$", "[":"\[", "]":"\]", ".":"\.", "-":"\-", "+":"\+"}
+                                tmpPattern1 = self.__multipleReplace(preItem, dReplacements)
+                                tmpPattern2 = self.__multipleReplace(curItem, dReplacements)
+                                if re.search(tmpPattern1 + '\s*:\s*' + tmpPattern2, curLine):
+                                    item = re.sub(r'^\s*(.+)\s*', '"\\1"', item)
+                                    bHandle = True
+                            if not bHandle:
+                                subItems = item.split(',')
+                                iSubItems = len(subItems) -1 if subItems[-1]=='' else len(subItems)
+                                newSubItem = ""
+                                j=1
+                                for subItem in subItems:
+                                    if "${" in subItem:
+                                        if iSubItems>1 and j<iSubItems:
+                                            if re.match(r'^\${.+$', subItem.strip()):
+                                                subItem = '"' + subItem.strip() + '"'
+                                            else:
+                                                subItem = re.sub(r'(\${.+$)', '"\\1"', subItem.strip())
+                                        else:
+                                            subItem = __handleLastElement(subItem)   
+                                    if j < iSubItems:
+                                        newSubItem = newSubItem + subItem + ', '
+                                    else:
+                                        newSubItem = newSubItem + subItem + ',' if subItem=='' else newSubItem + subItem
+                                    j+=1
+                                item = newSubItem
+                        else:
+                            if "${" in item and not bHandle:
+                                item = __handleLastElement(item)
+                        while CNameMangling.STRINGVALUE.value in item:
+                            if "${" in tmpList[0]:
+                                sValue = tmpList.pop(0)
+                                sValue = re.sub(r'(' + nestedPattern + r')', '\\1' + CNameMangling.STRINGCONVERT.value, sValue)
+                                item = item.replace(CNameMangling.STRINGVALUE.value, sValue, 1)
+                            else:
+                                item = item.replace(CNameMangling.STRINGVALUE.value, tmpList.pop(0), 1)
+                    if i<iItems:
+                        newLine = newLine + item + " : "
+                    else:
+                        newLine = newLine + item + " :" if item=='' else newLine + item
+                    preItem = curItem
                     i+=1
-                    newSubItem = ""
-                    if re.search(r"^\s*\[.+\][\s,]*$", item) and item.count('[')==item.count(']'):
-                        item = item.strip()
-                        bLastElement = True
-                        if item.endswith(","):
-                            bLastElement = False
-                        item = re.sub(r"^\[", "", item)
-                        item = re.sub(r"\s*\][\s,]*$", "", item)
-                        newSubItem = __handleListElements(item)
-                        newSubItem = "[" + newSubItem + "]" if bLastElement else "[" + newSubItem + "],"
-                    elif re.search(r"^\s*\[.*\${.+", item):
-                        item = item.strip()
-                        item = re.sub(r"^\[", "", item)
-                        newSubItem = __handleListElements(item)
-                        newSubItem = "[" + newSubItem
-                    elif re.search(r"]\s*,*\s*", item) and item.count('[') < item.count(']') and \
-                        re.match(r"^.+[\]}\"]+\s*\],*\s*$", item):
-                        item = item.rstrip()
-                        bLastElement = True
-                        if item.endswith(","):
-                            bLastElement = False
-                        item = re.sub(r"\s*\][\s,]*$", "", item)
-                        newSubItem = __handleListElements(item)
-                        newSubItem = newSubItem + "]" if bLastElement else newSubItem + "],"
-                    elif re.match(r"^[\s\"]*\${.+[}\]]+[\"\s]*,[\s\"]*\${.+[}\]]+[\"\s]*$", item):
-                        subItems = re.split("\s*,\s*", item)
-                        subItem1 = self.__checkAndUpdateKeyValue(subItems[0], nestedKey)
-                        subItem2 = self.__checkAndUpdateKeyValue(subItems[1], nestedKey=True)
-                        newSubItem = subItem1 + ", " + subItem2
-                    else:
-                        newSubItem = self.__checkAndUpdateKeyValue(item, nestedKey)
-                    if i<len(items):
-                        newLine = newLine + newSubItem + " : "
-                    else:
-                        newLine = newLine + newSubItem
                 for nestedParam in self.lNestedParams:
                     dReplacements = {"$" : "\$", "[" : "\[", "]" : "\]"}
                     tmpNestedParam = self.__multipleReplace(nestedParam, dReplacements)
@@ -1335,16 +1276,6 @@ This function checks key names in JSON configuration files.
                         self.lNestedParams.remove(nestedParam)
                 if re.search(r"\[\s*\+\s*\d+\s*\]", newLine):
                     newLine = re.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", newLine)
-                if ":" in newLine:
-                    tmpValue = re.search(r"^.+:\s*([0-9a-zA-Z\${},\[\]\.\_\-\+;/\s]*),*\s*$", newLine) 
-                    if tmpValue is not None:
-                        tmpStr = tmpValue.group(1)
-                        if re.match(r"^[^\[{]+", tmpStr):
-                            tmpStr = tmpStr.strip()[:-1] if tmpStr.strip()[-1] == "," else tmpStr.strip()
-                            if "${" in tmpStr:
-                                dReplacements = {"$":"\$", "[":"\[", "]":"\]", ".":"\.", "-":"\-", "+":"\+"}
-                                tmpPattern = self.__multipleReplace(tmpStr, dReplacements)
-                                newLine = re.sub("(" + tmpPattern + ")", '"\\1"', newLine)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
@@ -1369,7 +1300,13 @@ This function checks key names in JSON configuration files.
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                raise Exception(f"JSON file: {jFile}\n{error}")
+                failedJsonDoc = self.__getFailedJsonDoc(error)
+                jsonException = "not defined"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{jFile}'"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -1380,7 +1317,13 @@ This function checks key names in JSON configuration files.
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            raise Exception(f"JSON file: {jFile}\n{error}")
+            failedJsonDoc = self.__getFailedJsonDoc(error)
+            jsonException = "not defined"
+            if failedJsonDoc is None:
+                jsonException = f"{error}\nIn file: '{jFile}'"
+            else:
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+            raise Exception(jsonException)
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 

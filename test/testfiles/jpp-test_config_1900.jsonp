@@ -14,8 +14,6 @@
 //**************************************************************************
 
 {
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/214
-   //
    ${testdict1.subKey1.subKey2} : 1,
    "testdict2" : ${testdict1},
    ${testdict2.subKey1.subKey2} : 2,

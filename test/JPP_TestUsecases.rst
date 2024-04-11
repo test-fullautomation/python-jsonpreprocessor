@@ -767,6 +767,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0504**
+
+  [COMPOSITE_EXPRESSIONS / GOODCASE]
+
+   **JSON file with composite data structure (some dictionaries)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_0505**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -1337,7 +1347,17 @@ Test Use Cases
 
   [STRING_INDICES / GOODCASE]
 
-   **JSON file with indices applied to a string (inside lists and inside dictionaries)**
+   **JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_1501**
+
+  [STRING_INDICES / GOODCASE]
+
+   **JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)**
 
    Expected: JsonPreprocessor returns expected value
 
@@ -1463,6 +1483,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1900**
+
+  [ASSIGNMENTS_BY_REFERENCE / GOODCASE]
+
+   **JSON file with dictionary assignments (by reference)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_1901**
 
   [ASSIGNMENTS_BY_REFERENCE / GOODCASE]
@@ -1473,5 +1503,5 @@ Test Use Cases
 
 ----
 
-Generated: 03.04.2024 - 09:23:46
+Generated: 08.04.2024 - 14:47:37
 
