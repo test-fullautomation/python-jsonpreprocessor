@@ -56,27 +56,6 @@ from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
 from JsonPreprocessor.version import VERSION, VERSION_DATE
 
-def get_failed_json_doc(json_decode_error=None, area_before_position=50, area_after_position=20, one_line=True):
-   failed_json_doc = None
-   if json_decode_error is None:
-      return failed_json_doc
-   try:
-      json_doc = json_decode_error.doc
-   except:
-      # 'json_decode_error' seems not to be a JSON exception object ('doc' not available)
-      return failed_json_doc
-   json_doc_size     = len(json_doc)
-   position_of_error = json_decode_error.pos
-   if area_before_position > position_of_error:
-      area_before_position = position_of_error
-   if area_after_position > (json_doc_size - position_of_error):
-      area_after_position = json_doc_size - position_of_error
-   failed_json_doc = json_doc[position_of_error-area_before_position:position_of_error+area_after_position]
-   failed_json_doc = f"... {failed_json_doc} ..."
-   if one_line is True:
-      failed_json_doc = failed_json_doc.replace("\n", r"\n")
-   return failed_json_doc
-
 class CSyntaxType():
     python = "python"
     json = "json"
@@ -217,6 +196,27 @@ Constructor
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
         self.JPGlobals = {}
+
+    def __getFailedJsonDoc(jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
+        failedJsonDoc = None
+        if jsonDecodeError is None:
+            return failedJsonDoc
+        try:
+            jsonDoc = jsonDecodeError.doc
+        except:
+            # 'jsonDecodeError' seems not to be a JSON exception object ('doc' not available)
+            return failedJsonDoc
+        jsonDocSize     = len(jsonDoc)
+        positionOfError = jsonDecodeError.pos
+        if areaBeforePosition > positionOfError:
+            areaBeforePosition = positionOfError
+        if areaAfterPosition > (jsonDocSize - positionOfError):
+            areaAfterPosition = jsonDocSize - positionOfError
+        failedJsonDoc = jsonDoc[positionOfError-areaBeforePosition:positionOfError+areaAfterPosition]
+        failedJsonDoc = f"... {failedJsonDoc} ..."
+        if oneLine is True:
+            failedJsonDoc = failedJsonDoc.replace("\n", r"\n")
+        return failedJsonDoc
 
     def __reset(self) -> None:
         """
@@ -705,7 +705,6 @@ This method replaces all nested parameters in key and value of a JSON object .
 
   Output JSON object as dictionary with all variables resolved.
         """
-
         def __jsonUpdated(k, v, oJson, bNested, keyNested = '', bDuplicatedHandle=False, recursive = False):
             if keyNested != '':
                 if not bDuplicatedHandle and keyNested in oJson.keys():
@@ -1302,19 +1301,13 @@ This function handle a last element of a list or dictionary
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                # -----------------------------------------------
-                # original version
-                # raise Exception(f"JSON file: {jFile}\n{error}")
-                #
-                # extended version
-                failed_json_doc = get_failed_json_doc(error)
-                json_exception = "not defined"
-                if failed_json_doc is None:
-                    json_exception = f"${error}\nIn file: '{jFile}'"
+                failedJsonDoc = self.__getFailedJsonDoc(error)
+                jsonException = "not defined"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{jFile}'"
                 else:
-                    json_exception = f"${error}\nNearby: '{failed_json_doc}'\nIn file: '{jFile}'"
-                raise Exception(json_exception)
-                # -----------------------------------------------
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -1325,19 +1318,13 @@ This function handle a last element of a list or dictionary
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            # -----------------------------------------------
-            # original version
-            # raise Exception(f"JSON file: {jFile}\n{error}")
-            #
-            # extended version
-            failed_json_doc = get_failed_json_doc(error)
-            json_exception = "not defined"
-            if failed_json_doc is None:
-                json_exception = f"${error}\nIn file: '{jFile}'"
+            failedJsonDoc = self.__getFailedJsonDoc(error)
+            jsonException = "not defined"
+            if failedJsonDoc is None:
+                jsonException = f"${error}\nIn file: '{jFile}'"
             else:
-                json_exception = f"${error}\nNearby: '{failed_json_doc}'\nIn file: '{jFile}'"
-            raise Exception(json_exception)
-            # -----------------------------------------------
+                jsonException = f"${error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+            raise Exception(jsonException)
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
