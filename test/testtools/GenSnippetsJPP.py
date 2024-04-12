@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.22.0"
-VERSION_DATE = "27.03.2024"
+VERSION      = "0.23.0"
+VERSION_DATE = "12.04.2024"
 #
 # **************************************************************************************************************
 
@@ -575,7 +575,7 @@ class CHTMLPattern():
 """
 
    sHTMLLink = """
-<p align="center">
+<p>
 <a href="####LINK###">
 <font face="Arial" color="blue">
 ###TEXT###
@@ -1364,31 +1364,6 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 """)
 
       listCodeSnippets.append("""{
-   "stringParam" : "ABCDE",
-   //
-   "index"       : 1,
-   "indexList"   : [0,1,2],
-   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
-   "keyList"     : ["A", "B", "C"],
-   //
-   "param01"      : ${stringParam}[${index}],
-   "param02"      : ${stringParam}[${indexList}[${index}]],
-   "param03"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
-   "param04"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
-   //
-   "param05"      : [${stringParam}[${index}], "D"],
-   "param06"      : [${stringParam}[${indexList}[${index}]], "D"],
-   "param07"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"],
-   "param08"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "D"],
-   //
-   "param09"      : {"kA" : ${stringParam}[${index}]},
-   "param10"      : {"kA" : [${stringParam}[${index}], "D"]},
-   "param11"      : {"kA" : [${stringParam}[${indexList}[${index}]], "D"]},
-   "param12"      : {"kA" : [${stringParam}[${indexList}[${indexList}[${index}]]], "D"]}
-}
-""")
-
-      listCodeSnippets.append("""{
    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
    "dictParam1" : {"kA" : "A", "kB" : "B"},
    "dictParam2" : {"kA" : "A",
@@ -1420,6 +1395,517 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
                   "B" : 2},
    "param1" : ${dictParam}['AB.CD'],
    "param2" : ${dictParam.AB.CD}
+}
+""")
+
+      # some snippets that caused performance issues
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "teststring/1"  : "teststring/1 value",
+   ${params.global.teststring/1} : "${params.global.teststring/1} extended"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "list_param" : ["A", "B", "C"],
+   "val2" : "${params.global.list_param[1]}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "dict_param" : {"A" : 1 , "B" : 2},
+   "list_param" : ["A", "B", "C"],
+   "val3"       : "${params.global.list_param[${params.global.dict_param}['A']]}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "dict_param" : {"A" : 1 , "B" : 2},
+   "list_param" : ["A", "B", "C"],
+   "val4"       : "${params.global.list_param[${params.global.dict_param}[${params.global.list_param}[0]]]}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "dict_param" : {"A" : 1 , "B" : 2},
+   "list_param" : ["A", "B", "C"],
+   "val5"       : "${params.global.list_param[${params.global.dict_param}['${params.global.list_param}[0]']]}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "params" : {"global" : "teststring*1"  : "teststring*1 value",
+   ${params.global.teststring*1} : "${params.global.teststring*1} extended"}
+}
+""")
+
+      # some snippets with special characters
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${+}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${-}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${*}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${/}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${\\}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${&}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${$}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${%}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${#}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${~}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${?}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${ß}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${'}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${´}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${`}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${!}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${€}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${𠼭}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${{}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${}}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${[}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${]}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${(}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param" : {"key" : "${)}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "+"     : 1,
+   "param" : ${+}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "-"     : 2,
+   "param" : ${-}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "*"     : 3,
+   "param" : ${*}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "/"     : 4,
+   "param" : ${/}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "\\"    : 5,
+   "param" : ${\\}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "&"     : 6,
+   "param" : ${&}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "$"     : 7,
+   "param" : ${$}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "%"     : 8,
+   "param" : ${%}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "#"     : 9,
+   "param" : ${#}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "~"     : 10,
+   "param" : ${~}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "?"     : 11,
+   "param" : ${?}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "ß"     : 12,
+   "param" : ${ß}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "'"     : 13,
+   "param" : ${'}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "´"     : 14,
+   "param" : ${´}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "`"     : 15,
+   "param" : ${`}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "!"     : 16,
+   "param" : ${!}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "€"     : 17,
+   "param" : ${€}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "𠼭"    : 18,
+   "param" : ${𠼭}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "{"     : 19,
+   "param" : ${{}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "}"     : 20,
+   "param" : ${}}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "["     : 21,
+   "param" : ${[}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "]"     : 22,
+   "param" : ${]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "("     : 23,
+   "param" : ${(}
+}
+""")
+
+      listCodeSnippets.append("""{
+   ")"     : 24,
+   "param" : ${)}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\\1" : "value"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\\C" : "value"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\n" : "value"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\\n" : "value"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\t" : "value"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "param\\t" : "value"
+}
+""")
+
+      # several combinations with indices
+      # (to be updated in official self test when feature runs stable)
+      # > python-jsonpreprocessor\test\testfiles\jpp-test_config_1500.jsonp
+      # > python-jsonpreprocessor\test\testfiles\jpp-test_config_1501.jsonp
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-1",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param01"      : ${stringParam}[${index}],
+   "param02"      : "${stringParam}[${index}]",
+   //
+   "param03"      : ${indexList}[${indexList}[${index}]],         // returns STR instead of INT
+   "param04"      : "${indexList}[${indexList}[${index}]]",
+   //
+   "param05"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
+   "param06"      : "${stringParam}[${indexList}[${indexList}[${index}]]]",
+   //
+   "param07"      : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+   "param08"      : "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"
+}
+""")
+
+      # the same like above, but within lists
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-2",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param10"      : [${stringParam}[${index}], "${stringParam}[${index}]"],
+   "param11"      : [${indexList}[${indexList}[${index}]], "${indexList}[${indexList}[${index}]]"],
+   "param12"      : [${stringParam}[${indexList}[${indexList}[${index}]]], "${stringParam}[${indexList}[${indexList}[${index}]]]"],
+   "param13"      : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"]
+}
+""")
+
+      # the same like above, but within dictionaries
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-3",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param20"      : {"k20A" : ${stringParam}[${index}],
+                     "k20B" : "${stringParam}[${index}]",
+                     "k20C" : ${indexList}[${indexList}[${index}]],
+                     "k20D" : "${indexList}[${indexList}[${index}]]",
+                     "k20E" : ${stringParam}[${indexList}[${indexList}[${index}]]],
+                     "k20F" : "${stringParam}[${indexList}[${indexList}[${index}]]]",
+                     "k20G" : ${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]],
+                     "k20H" : "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"}
+}
+""")
+
+      # the same like above, but with lists as dictionary key values
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-4",
+   //
+   "index"       : 1,
+   "indexList"   : [0,1,2],
+   "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"     : ["A", "B", "C"],
+   //
+   "param21"     : {"k21A" : [${stringParam}[${index}], "${stringParam}[${index}]"],
+                    "k21B" : [${indexList}[${indexList}[${index}]], "${indexList}[${indexList}[${index}]]"],
+                    "k21C" : [${stringParam}[${indexList}[${indexList}[${index}]]], "${stringParam}[${indexList}[${indexList}[${index}]]]"],
+                    "k21D" : [${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]], "${stringParam}[${indexDict}[${keyList}[${indexList}[${index}]]]]"]}
+}
+""")
+
+
+      # several combinations with indices
+      # (to be updated in official self test when feature runs stable)
+      # > python-jsonpreprocessor\test\testfiles\jpp-test_config_1500.jsonp
+      # > python-jsonpreprocessor\test\testfiles\jpp-test_config_1501.jsonp
+
+      # all the same like above, but in dotdict notation
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-5",
+   //
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "indexDict" : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"   : ["A", "B", "C"],
+   //
+   "param01"   : ${stringParam.${index}},
+   "param02"   : "${stringParam.${index}}",
+   //
+   "param03"   : ${indexList.${indexList.${index}}},
+   "param04"   : "${indexList.${indexList.${index}}}",
+   //
+   "param05"   : ${stringParam.${indexList.${indexList.${index}}}},
+   "param06"   : "${stringParam.${indexList.${indexList.${index}}}}",
+   //
+   "param07"   : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},
+   "param08"   : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"
+}
+""")
+
+      # the same like above, but within lists
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-6",
+   //
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "indexDict" : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"   : ["A", "B", "C"],
+   //
+   "param10"   : [${stringParam.${index}}, "${stringParam.${index}}"],
+   "param11"   : [${indexList.${indexList.${index}}}, "${indexList.${indexList.${index}}}"],
+   "param12"   : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
+   "param13"   : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"]
+}
+""")
+
+      # the same like above, but within dictionaries
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-7",
+   //
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "indexDict" : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"   : ["A", "B", "C"],
+   //
+   "param20"   : {"k20A" : ${stringParam.${index}},
+                  "k20B" : "${stringParam.${index}}",
+                  "k20C" : ${indexList.${indexList.${index}}},
+                  "k20D" : "${indexList.${indexList.${index}}}",
+                  "k20E" : ${stringParam.${indexList.${indexList.${index}}}},
+                  "k20F" : "${stringParam.${indexList.${indexList.${index}}}}",
+                  "k20G" : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},
+                  "k20H" : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"}
+}
+""")
+
+      # the same like above, but with lists as dictionary key values
+
+      listCodeSnippets.append("""{
+   "stringParam" : "ABCDE-8",
+   //
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "indexDict" : {"A" : 0, "B" : 1, "C" : 2},
+   "keyList"   : ["A", "B", "C"],
+   //
+   "param21"   : {"k21A" : [${stringParam.${index}}, "${stringParam.${index}}"],
+                  "k21B" : [${indexList.${indexList.${index}}}, "${indexList.${indexList.${index}}}"],
+                  "k21C" : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
+                  "k21D" : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param"     : [${indexList}[${index}], [${indexList}[${index}], ${indexList}[${index}]], ${indexList}[${index}]]
 }
 """)
 
@@ -2276,7 +2762,7 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
       sDefinitions = """   "index"     : 0,
    "listParam" : [0,1,2],
    "value"     : "A",
-   "dictParam" : {"A" : 1, "B" : 2}
+   "dictParam" : {"A" : 1, "B" : 2},
 """
 
       sCodeSnippetPattern = """{
