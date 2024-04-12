@@ -1347,7 +1347,7 @@ Test Use Cases
 
   [STRING_INDICES / GOODCASE]
 
-   **JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)**
+   **JSON file with several combinations with indices (standard notation)**
 
    Expected: JsonPreprocessor returns expected value
 
@@ -1357,7 +1357,7 @@ Test Use Cases
 
   [STRING_INDICES / GOODCASE]
 
-   **JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)**
+   **JSON file with several combinations with indices (dotdict notation)**
 
    Expected: JsonPreprocessor returns expected value
 
@@ -1503,5 +1503,5 @@ Test Use Cases
 
 ----
 
-Generated: 08.04.2024 - 14:47:37
+Generated: 12.04.2024 - 16:42:21
 

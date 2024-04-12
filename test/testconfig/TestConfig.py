@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 08.04.2024
+# 12.04.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3023,68 +3023,106 @@ dictUsecase['EXPECTEDRETURN']    = None # https://github.com/test-fullautomation
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-#
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/269
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
-#
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1500"
-dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)"
+dictUsecase['DESCRIPTION']       = "JSON file with several combinations with indices (standard notation)"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
 dictUsecase['SECTION']           = "STRING_INDICES"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1500.jsonp" # partially commented out
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1500.jsonp" # partially commented out // "param03"      : ${indexList}[${indexList}[${index}]],         // !!! returns STR instead of INT (also param11, k20C, k21B) !!!
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (8/1) > {stringParam} [STR]  :  'ABCDE'
-[DICT] (8/2) > {index} [INT]  :  1
-[DICT] (8/3) > {indexList} [LIST] (3/1) > [INT]  :  0
-[DICT] (8/3) > {indexList} [LIST] (3/2) > [INT]  :  1
-[DICT] (8/3) > {indexList} [LIST] (3/3) > [INT]  :  2
-[DICT] (8/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
-[DICT] (8/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
-[DICT] (8/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
-[DICT] (8/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
-[DICT] (8/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
-[DICT] (8/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
-[DICT] (8/6) > {param01} [STR]  :  'B'
-[DICT] (8/7) > {param02} [STR]  :  'B'
-[DICT] (8/8) > {param04} [STR]  :  '1'
+[DICT] (17/1) > {stringParam} [STR]  :  'ABCDE'
+[DICT] (17/2) > {index} [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/1) > [INT]  :  0
+[DICT] (17/3) > {indexList} [LIST] (3/2) > [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/3) > [INT]  :  2
+[DICT] (17/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
+[DICT] (17/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
+[DICT] (17/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
+[DICT] (17/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (17/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (17/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (17/6) > {param01} [STR]  :  'B'
+[DICT] (17/7) > {param02} [STR]  :  'B'
+[DICT] (17/8) > {param04} [STR]  :  '1'
+[DICT] (17/9) > {param05} [STR]  :  'B'
+[DICT] (17/10) > {param06} [STR]  :  'B'
+[DICT] (17/11) > {param07} [STR]  :  'B'
+[DICT] (17/12) > {param08} [STR]  :  'B'
+[DICT] (17/13) > {param10} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/13) > {param10} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/14) > {param12} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/14) > {param12} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/15) > {param13} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/15) > {param13} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/1) > {k20A} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/2) > {k20B} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/3) > {k20D} [STR]  :  '1'
+[DICT] (17/16) > {param20} [DICT] (7/4) > {k20E} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/5) > {k20F} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/6) > {k20G} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/7) > {k20H} [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/1) > {k21A} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/1) > {k21A} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/2) > {k21C} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/2) > {k21C} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/3) > {k21D} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/3) > {k21D} [LIST] (2/2) > [STR]  :  'B'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-#
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/268
-#
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1501"
-dictUsecase['DESCRIPTION']       = "JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)"
+dictUsecase['DESCRIPTION']       = "JSON file with several combinations with indices (dotdict notation)"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
 dictUsecase['SECTION']           = "STRING_INDICES"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1501.jsonp" # partially commented out
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1501.jsonp" # partially commented out // "param03"      : ${indexList.${indexList.${index}}},   // !!! returns STR instead of INT (also param11, k20C, k21B) !!!
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (9/1) > {stringParam} [STR]  :  'ABCDE'
-[DICT] (9/2) > {index} [INT]  :  1
-[DICT] (9/3) > {indexList} [LIST] (3/1) > [INT]  :  0
-[DICT] (9/3) > {indexList} [LIST] (3/2) > [INT]  :  1
-[DICT] (9/3) > {indexList} [LIST] (3/3) > [INT]  :  2
-[DICT] (9/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
-[DICT] (9/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
-[DICT] (9/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
-[DICT] (9/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
-[DICT] (9/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
-[DICT] (9/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
-[DICT] (9/6) > {param02} [STR]  :  'B'
-[DICT] (9/7) > {param04} [STR]  :  '1'
-[DICT] (9/8) > {param06} [STR]  :  'B'
-[DICT] (9/9) > {param08} [STR]  :  'B'
+[DICT] (17/1) > {stringParam} [STR]  :  'ABCDE'
+[DICT] (17/2) > {index} [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/1) > [INT]  :  0
+[DICT] (17/3) > {indexList} [LIST] (3/2) > [INT]  :  1
+[DICT] (17/3) > {indexList} [LIST] (3/3) > [INT]  :  2
+[DICT] (17/4) > {indexDict} [DICT] (3/1) > {A} [INT]  :  0
+[DICT] (17/4) > {indexDict} [DICT] (3/2) > {B} [INT]  :  1
+[DICT] (17/4) > {indexDict} [DICT] (3/3) > {C} [INT]  :  2
+[DICT] (17/5) > {keyList} [LIST] (3/1) > [STR]  :  'A'
+[DICT] (17/5) > {keyList} [LIST] (3/2) > [STR]  :  'B'
+[DICT] (17/5) > {keyList} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (17/6) > {param01} [STR]  :  'B'
+[DICT] (17/7) > {param02} [STR]  :  'B'
+[DICT] (17/8) > {param04} [STR]  :  '1'
+[DICT] (17/9) > {param05} [STR]  :  'B'
+[DICT] (17/10) > {param06} [STR]  :  'B'
+[DICT] (17/11) > {param07} [STR]  :  'B'
+[DICT] (17/12) > {param08} [STR]  :  'B'
+[DICT] (17/13) > {param10} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/13) > {param10} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/14) > {param12} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/14) > {param12} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/15) > {param13} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/15) > {param13} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/1) > {k20A} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/2) > {k20B} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/3) > {k20D} [STR]  :  '1'
+[DICT] (17/16) > {param20} [DICT] (7/4) > {k20E} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/5) > {k20F} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/6) > {k20G} [STR]  :  'B'
+[DICT] (17/16) > {param20} [DICT] (7/7) > {k20H} [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/1) > {k21A} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/1) > {k21A} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/2) > {k21C} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/2) > {k21C} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/3) > {k21D} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (17/17) > {param21} [DICT] (3/3) > {k21D} [LIST] (2/2) > [STR]  :  'B'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
