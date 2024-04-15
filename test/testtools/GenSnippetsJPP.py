@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.23.0"
-VERSION_DATE = "12.04.2024"
+VERSION      = "0.24.0"
+VERSION_DATE = "15.04.2024"
 #
 # **************************************************************************************************************
 
@@ -1909,6 +1909,58 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 }
 """)
 
+      # combinations with internal token strings
+
+      listCodeSnippets.append("""{
+   "testlist"         : ["A", "B", "C", "D"],
+   "__SlicingIndex__" : 1,
+   "param"            : ${testlist}[0:${__SlicingIndex__}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "testlist"        : ["A", "B", "C", "D"],
+   "__IndexOfList__" : 1,
+   "param"           : ${testlist}[${__IndexOfList__}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "__ConvertParameterToString__" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "__ConvertParameterToString__" : 1,
+   "param"                        : "${__ConvertParameterToString__}"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "__handleColonsInLine__" : 1,
+   "param"                  : "${__handleColonsInLine__} : ${__handleColonsInLine__}"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "__handleDuplicatedKey__00" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "__handleDuplicatedKey__00--A" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+   "testdict" : {"__handleDuplicatedKey__00" : 1, "__handleDuplicatedKey__00" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "testdict" : {"__handleDuplicatedKey__00--A" : 1, "__handleDuplicatedKey__00--B" : 2}
+}
+""")
 
       # listCodeSnippets.append("""{
 # }
@@ -2815,6 +2867,111 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
    # --------------------------------------------------------------------------------------------------------------
 
+   def GetInternalTokenStrings(self):
+      """Several snippets containing JsonPreprocessor internal token strings
+      """
+
+      sHeadline = "Several snippets containing JsonPreprocessor internal token strings"
+
+      listDataStructures =[]
+
+      sDataStructure = """   "*01*" : 1
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "prefix_*01*_suffix" : 2
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "*01*" : 3,
+   "param1" : ${*01*}
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "*01*" : 4,
+   "param2" : "${*01*}"
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "testlist" : [0,1,2,3,4,5,6,7,8,9],
+   "*01*" : 5,
+   "param3" : ${testlist}[${*01*}]
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "testlist" : [0,1,2,3,4,5,6,7,8,9],
+   "*01*"   : 6,
+   "param4" : "${testlist}[${*01*}]"
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "*01*" : 7,
+   "param5" : "${*01*} : ${*01*}"
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "testlist" : [0,1,2,3,4,5,6,7,8,9],
+   "*01*" : 8,
+   "param6" : ${testlist}[0:${*01*}]
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "testdict1" : {"*01*" : 1, "*01*" : 2}
+"""
+      listDataStructures.append(sDataStructure)
+
+      sDataStructure = """   "testdict2" : {"prefix_*01*_suffix" : 1, "prefix_*01*_suffix" : 2}
+"""
+      listDataStructures.append(sDataStructure)
+
+      sCodeSnippetPattern = """{
+####DATASTRUCTURE####}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["__handleColonsInLine__","__handleDuplicatedKey__00","__handleDuplicatedKey__","__ConvertParameterToString__",
+                         "__IndexOfList__","__SlicingIndex__","__StringValueMake-up__"]
+
+      listPlaceholders = ["*01*",]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["F01",] # as much elements as in listPlaceholders
+
+      # put all things together
+
+      listCodeSnippets = []
+
+      # sDataStructure1
+
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            for sDataStructure in listDataStructures: # init a new data structure from pattern sDataStructure1
+               sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+               oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+               for sPlaceholder in listPlaceholders:
+                  sFiller = oFiller.GetElement()
+                  if sPosition == sPlaceholder:
+                     sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+                  else:
+                     sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+               # eof for sPlaceholder in listPlaceholders:
+               sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+               listCodeSnippets.append(sCodeSnippet)
+            # eof for sDataStructure in listDataStructures:
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetInternalTokenStrings(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
 # eof class CSnippets():
 
 # --------------------------------------------------------------------------------------------------------------
@@ -2957,6 +3114,9 @@ sHeadline, listCodeSnippets = oSnippets.GetBlockedSubstitutions()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetSpacesAndLineBreaks()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetInternalTokenStrings()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 print()
