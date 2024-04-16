@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.24.0"
-VERSION_DATE = "15.04.2024"
+VERSION      = "0.25.0"
+VERSION_DATE = "16.04.2024"
 #
 # **************************************************************************************************************
 
@@ -1959,6 +1959,50 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
 
       listCodeSnippets.append("""{
    "testdict" : {"__handleDuplicatedKey__00--A" : 1, "__handleDuplicatedKey__00--B" : 2}
+}
+""")
+
+      # additional brackets and spaces
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param1"    : ${indexList}[${indexList}[[${index}]]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param2"    : "${indexList}[${indexList}[[${index}]]"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param3"    : "${indexList} [${indexList}[${index}]]"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param4"    : "${indexList}[${indexList} [${index}]]"
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param5"    : "  ${indexList}  [  ${indexList}  [  ${index}  ]  ]  "
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"     : 1,
+   "indexList" : [0,1,2],
+   "param6"    : "${  indexList  }[${indexList}[${index}]]"
 }
 """)
 
