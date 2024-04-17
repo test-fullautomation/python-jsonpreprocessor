@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_19_SELF_ASSIGNMENTS_GOODCASE.py
+# test_21_ASSIGNMENTS_BY_REFERENCE_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 03.04.2024 - 09:23:46
+# 17.04.2024 - 17:34:52
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_SELF_ASSIGNMENTS_GOODCASE:
+class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with self assignments of strings, lists and dictionaries",]
+      "Description", ["JSON file with dictionary assignments (by reference)",]
    )
-   def test_JPP_1800(self, Description):
-      nReturn = CExecute.Execute("JPP_1800")
+   def test_JPP_1900(self, Description):
+      nReturn = CExecute.Execute("JPP_1900")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with list assignments (by reference)",]
+   )
+   def test_JPP_1901(self, Description):
+      nReturn = CExecute.Execute("JPP_1901")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

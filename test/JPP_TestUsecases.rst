@@ -1343,6 +1343,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1400**
+
+  [NESTED_LISTS / GOODCASE]
+
+   **JSON file with several nested lists**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_1500**
 
   [STRING_INDICES / GOODCASE]
@@ -1403,11 +1413,31 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1654**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_1655**
 
   [NOT_EXISTING_PARAMETERS / BADCASE]
 
    **JSON file with not existing parameters at several positions (6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1656**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (7)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1463,6 +1493,36 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1662**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (13)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1663**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (14)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1664**
+
+  [NOT_EXISTING_PARAMETERS / BADCASE]
+
+   **JSON file with not existing parameters at several positions (15)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_1700**
 
   [LINE_BREAKS / GOODCASE]
@@ -1503,5 +1563,5 @@ Test Use Cases
 
 ----
 
-Generated: 12.04.2024 - 16:42:21
+Generated: 17.04.2024 - 17:34:51
 

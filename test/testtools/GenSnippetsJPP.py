@@ -22,7 +22,7 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.26.1"
+VERSION      = "0.26.2"
 VERSION_DATE = "17.04.2024"
 #
 # **************************************************************************************************************
@@ -1148,14 +1148,12 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
    "listP"  : ["A", "B"],
    "params" : [{"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}, "GHI"]
 }
 """)
 
       listCodeSnippets.append("""{
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
    "listP"  : ["A", "B"],
    "params" : [{"ABC" : ["DEF", ${listP}[${IAMNOTEXISTING}]]}, "GHI"]
 }

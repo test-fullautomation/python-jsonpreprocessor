@@ -3229,9 +3229,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1654.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # 'Invalid expression found
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3257,9 +3257,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1656.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # Invalid expression found
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING2}' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3341,9 +3341,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1662.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # [STR]  :  '${listP}[${IAMNOTEXISTING}]'
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3355,9 +3355,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1663.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # '${listP}[${IAMNOTEXISTING}]'
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3369,9 +3369,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1664.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # Expecting ':' delimiter: line
+dictUsecase['EXPECTEDEXCEPTION'] = "'The variable '${IAMNOTEXISTING}' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
