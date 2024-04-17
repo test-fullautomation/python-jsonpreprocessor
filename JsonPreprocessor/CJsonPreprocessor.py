@@ -789,7 +789,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                             raise Exception(f"Invalid expression found: '{initItem}'.")
                 elif isinstance(item, list) and "${" in str(item):
                     item = __handleList(item, bNested)
-                elif isinstance(item, list) and "${" in str(item):
+                elif isinstance(item, dict) and "${" in str(item):
                     item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True)
                 tmpValue.append(item)
             return tmpValue
