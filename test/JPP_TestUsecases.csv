@@ -98,6 +98,7 @@ JPP_1000|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created
 JPP_1001|IMPLICIT_CREATION|GOODCASE|JSON file with dictionary keys to be created implicitly (same key names at all levels)
 JPP_1002|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of implicit and explicit creation / with and without initialization
 JPP_1003|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference
+JPP_1004|IMPLICIT_CREATION|GOODCASE|JSON file with combinations of ascending and descending dotdict syntax
 JPP_1050|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (1)
 JPP_1051|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (2)
 JPP_1052|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (3)

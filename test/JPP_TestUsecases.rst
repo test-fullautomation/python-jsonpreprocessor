@@ -1061,6 +1061,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1004**
+
+  [IMPLICIT_CREATION / GOODCASE]
+
+   **JSON file with combinations of ascending and descending dotdict syntax**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1050**
 
   [IMPLICIT_CREATION / BADCASE]
@@ -1563,5 +1573,5 @@ Test Use Cases
 
 ----
 
-Generated: 17.04.2024 - 17:34:51
+Generated: 17.04.2024 - 20:03:38
 

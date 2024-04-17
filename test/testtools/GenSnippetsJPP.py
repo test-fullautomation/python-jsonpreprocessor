@@ -22,7 +22,7 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.26.2"
+VERSION      = "0.27.0"
 VERSION_DATE = "17.04.2024"
 #
 # **************************************************************************************************************
@@ -1193,18 +1193,21 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
+   // implicit creation in ascending dotdict syntax:
    ${testdict1} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 0}}}},
    ${testdict1.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 1}}},
    ${testdict1.subKey1.subKey2} : {"subKey3" : {"subKey4" : 2}},
    ${testdict1.subKey1.subKey2.subKey3} : {"subKey4" : 3},
    ${testdict1.subKey1.subKey2.subKey3.subKey4} : 4,
    //
+   // values overwritten in descending dotdict syntax:
    ${testdict2.subKey1.subKey2.subKey3.subKey4} : 5,
    ${testdict2.subKey1.subKey2.subKey3} : {"subKey4" : 6},
    ${testdict2.subKey1.subKey2} : {"subKey3" : {"subKey4" : 7}},
    ${testdict2.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 8}}},
    ${testdict2} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 9}}}},
    //
+   // cross check:
    ${testdict3} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 10}}}},
    "testdict4" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 20}}}}
 }
@@ -1247,6 +1250,15 @@ class CSnippets():
    "newparam_7" : "${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']",      // => "${dictP}['A']" -> 'B'
    "newparam_8" : "${${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']}",   // => "${B}"          -> 'keyP'
    "newparam_9" : "${${${dictP}['${${${dictP}['${${${dictP}['${keyP}']}}']}}']}}" // => "${keyP}"       -> 'A'
+}
+""")
+
+      listCodeSnippets.append("""{
+"keyP"       : "A",
+"B"          : 1,
+"dictP"      : {"A" : "B", "C" : 2},
+"newparam_1" : "${${dictP}[${keyP}]}",
+"newparam_2" : "${${dictP}['${keyP}']}"
 }
 """)
 

@@ -440,6 +440,10 @@ Test JPP_1003 / IMPLICIT_CREATION / GOODCASE
 Description: JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1004 / IMPLICIT_CREATION / GOODCASE
+Description: JSON file with combinations of ascending and descending dotdict syntax
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1050 / IMPLICIT_CREATION / BADCASE
 Description: JSON file with implicit creation of data structures based on parameters (1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -641,5 +645,5 @@ Test JPP_1901 / ASSIGNMENTS_BY_REFERENCE / GOODCASE
 Description: JSON file with list assignments (by reference)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 17.04.2024 - 17:34:51
+Generated: 17.04.2024 - 20:03:38
 
