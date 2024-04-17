@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 12.04.2024
+# 17.04.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2579,7 +2579,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# ====== still one line in jpp-test_config_1003.jsonp commented out; remaining code run properly
 dictUsecase['TESTID']            = "JPP_1003"
 dictUsecase['DESCRIPTION']       = "JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2590,14 +2589,16 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DICT] (8/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
-[DICT] (8/2) > {param1} [STR]  :  'subKey1'
-[DICT] (8/3) > {param2} [STR]  :  'subKey2'
-[DICT] (8/4) > {param3} [STR]  :  'subKey3'
-[DICT] (8/5) > {param4} [STR]  :  'subKey4'
-[DICT] (8/6) > {param5} [INT]  :  3
-[DICT] (8/7) > {param7} [STR]  :  '3'
-[DICT] (8/8) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (10/1) > {testdict2} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
+[DICT] (10/2) > {param1} [STR]  :  'subKey1'
+[DICT] (10/3) > {param2} [STR]  :  'subKey2'
+[DICT] (10/4) > {param3} [STR]  :  'subKey3'
+[DICT] (10/5) > {param4} [STR]  :  'subKey4'
+[DICT] (10/6) > {param5} [INT]  :  3
+[DICT] (10/7) > {param6} [STR]  :  '3'
+[DICT] (10/8) > {param7} [INT]  :  3
+[DICT] (10/9) > {param8} [STR]  :  '3'
+[DICT] (10/10) > {testdict1} [DICT] (1/1) > {subKey1} [DICT] (1/1) > {subKey2} [DICT] (1/1) > {subKey3} [DICT] (1/1) > {subKey4} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
