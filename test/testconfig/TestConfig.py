@@ -3018,8 +3018,41 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1400.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DICT] (11/1) > {listParam} [LIST] (3/1) > [INT]  :  0
+[DICT] (11/1) > {listParam} [LIST] (3/2) > [INT]  :  1
+[DICT] (11/1) > {listParam} [LIST] (3/3) > [INT]  :  2
+[DICT] (11/2) > {index} [INT]  :  1
+[DICT] (11/3) > {param1} [LIST] (2/1) > [INT]  :  1
+[DICT] (11/3) > {param1} [LIST] (2/2) > [STR]  :  'A'
+[DICT] (11/4) > {param2} [LIST] (2/1) > [INT]  :  1
+[DICT] (11/4) > {param2} [LIST] (2/2) > [STR]  :  'A'
+[DICT] (11/5) > {param3} [LIST] (2/1) > [LIST] (2/1) > [INT]  :  1
+[DICT] (11/5) > {param3} [LIST] (2/1) > [LIST] (2/2) > [STR]  :  'A'
+[DICT] (11/5) > {param3} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (11/6) > {param4} [LIST] (2/1) > [LIST] (2/1) > [STR]  :  'A'
+[DICT] (11/6) > {param4} [LIST] (2/1) > [LIST] (2/2) > [INT]  :  1
+[DICT] (11/6) > {param4} [LIST] (2/2) > [STR]  :  'B'
+[DICT] (11/7) > {param5} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (11/7) > {param5} [LIST] (2/2) > [LIST] (2/1) > [INT]  :  1
+[DICT] (11/7) > {param5} [LIST] (2/2) > [LIST] (2/2) > [STR]  :  'A'
+[DICT] (11/8) > {param6} [LIST] (2/1) > [STR]  :  'B'
+[DICT] (11/8) > {param6} [LIST] (2/2) > [LIST] (2/1) > [STR]  :  'A'
+[DICT] (11/8) > {param6} [LIST] (2/2) > [LIST] (2/2) > [INT]  :  1
+[DICT] (11/9) > {param7} [LIST] (3/1) > [STR]  :  'B'
+[DICT] (11/9) > {param7} [LIST] (3/2) > [LIST] (2/1) > [INT]  :  1
+[DICT] (11/9) > {param7} [LIST] (3/2) > [LIST] (2/2) > [STR]  :  'A'
+[DICT] (11/9) > {param7} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (11/10) > {param8} [LIST] (3/1) > [STR]  :  'B'
+[DICT] (11/10) > {param8} [LIST] (3/2) > [LIST] (2/1) > [STR]  :  'A'
+[DICT] (11/10) > {param8} [LIST] (3/2) > [LIST] (2/2) > [INT]  :  1
+[DICT] (11/10) > {param8} [LIST] (3/3) > [STR]  :  'C'
+[DICT] (11/11) > {param9} [LIST] (3/1) > [INT]  :  1
+[DICT] (11/11) > {param9} [LIST] (3/2) > [LIST] (2/1) > [INT]  :  1
+[DICT] (11/11) > {param9} [LIST] (3/2) > [LIST] (2/2) > [INT]  :  1
+[DICT] (11/11) > {param9} [LIST] (3/3) > [INT]  :  1
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

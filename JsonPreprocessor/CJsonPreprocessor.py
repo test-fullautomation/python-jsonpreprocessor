@@ -775,6 +775,25 @@ This method replaces all nested parameters in key and value of a JSON object .
                 handledValue = str(handledValue)
             return handledValue
 
+        def __handleList(lInput : list, bNested : bool) -> list:
+            tmpValue = []
+            for item in lInput:
+                if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
+                    bNested = True
+                    initItem = item
+                    while isinstance(item, str) and "${" in item:
+                        sLoopCheck = item
+                        item = __loadNestedValue(initItem, item)
+                        if item==sLoopCheck:
+                            self.__reset()
+                            raise Exception(f"Invalid expression found: '{initItem}'.")
+                elif isinstance(item, list) and "${" in str(item):
+                    item = __handleList(item, bNested)
+                elif isinstance(item, list) and "${" in str(item):
+                    item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True)
+                tmpValue.append(item)
+            return tmpValue
+
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 if k in self.lDataTypes:
@@ -834,20 +853,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
-                tmpValue = []
-                for item in v:
-                    if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
-                        bNested = True
-                        initItem = item
-                        while isinstance(item, str) and "${" in item:
-                            sLoopCheck = item
-                            item = __loadNestedValue(initItem, item)
-                            if item==sLoopCheck:
-                                self.__reset()
-                                raise Exception(f"Invalid expression found: '{initItem}'.")
-                    tmpValue.append(item)
-                v = tmpValue
-                del tmpValue
+                v = __handleList(v, bNested)
             elif isinstance(v, str) and self.__checkNestedParam(v):
                 if re.search(pattern, v, re.UNICODE):
                     bNested = True
@@ -1240,7 +1246,9 @@ This function handle a last element of a list or dictionary
                                 for subItem in subItems:
                                     if "${" in subItem:
                                         if iSubItems>1 and j<iSubItems:
-                                            if re.match(r'^\${.+$', subItem.strip()):
+                                            if subItem.count("${") < subItem.count("}") or subItem.count("[") < subItem.count("]"):
+                                                subItem = __handleLastElement(subItem)
+                                            elif re.match(r'^\${.+$', subItem.strip()):
                                                 subItem = '"' + subItem.strip() + '"'
                                             else:
                                                 subItem = re.sub(r'(\${.+$)', '"\\1"', subItem.strip())
