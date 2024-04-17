@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.25.0"
-VERSION_DATE = "16.04.2024"
+VERSION      = "0.26.1"
+VERSION_DATE = "17.04.2024"
 #
 # **************************************************************************************************************
 
@@ -850,8 +850,9 @@ class CSnippets():
    ${testdict2.${param1}.subKey2.${param3}.subKey4} : 3,
    // assign modified values to new parameters
    "param5" : ${testdict1}[${param1}]['${param2}']['subKey3'][${param4}],
-   // still issue: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/232
-   "param6" : ${testdict2.${param1}.subKey2.${param3}.subKey4}  // Expecting value: line 11 column 15 (char 412)'!
+   "param6" : "${testdict1}[${param1}]['${param2}']['subKey3'][${param4}]",
+   "param7" : ${testdict2.${param1}.subKey2.${param3}.subKey4},
+   "param8" : "${testdict2.${param1}.subKey2.${param3}.subKey4}"
 }
 """)
 
@@ -1161,7 +1162,6 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
    "listP"  : ["A", "B"],
    "params" : [[[${listP}[${IAMNOTEXISTING}], 123], ${listP}[${IAMNOTEXISTING}]], ${listP}[${IAMNOTEXISTING}]]
 }
@@ -1175,8 +1175,8 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-${testdict.subKey.subKey.subKey} : {"A" : 1},
-"testdict": {"subKey": {"subKey": {"subKey": {"A": 2}}}}
+   ${testdict.subKey.subKey.subKey} : {"A" : 1},
+   "testdict": {"subKey": {"subKey": {"subKey": {"A": 2}}}}
 }
 """)
 
@@ -1348,23 +1348,21 @@ ${testdict.subKey.subKey.subKey} : {"A" : 1},
    "param1"    : [${index}, "A"],
    "param2"    : [${listParam}[${index}], "A"],
    //
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+   "param3"    : [[${listParam}[${index}], "A"], "B"],
+   "param4"    : [["A", ${listParam}[${index}]], "B"],
    //
-   "param3"    : [[${listParam}[${index}], "A"], "B"],      // Expecting ':' delimiter: line ...
-   "param4"    : [["A", ${listParam}[${index}]], "B"],      // Expecting ',' delimiter: line ...
+   "param5"    : ["B", [${listParam}[${index}], "A"]],
+   "param6"    : ["B", ["A", ${listParam}[${index}]]],
+   "param7"    : ["B", [${listParam}[${index}], "A"], "C"],
+   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"],
    //
-   "param5"    : ["B", [${listParam}[${index}], "A"]],      // Expecting ',' delimiter: line ...
-   "param6"    : ["B", ["A", ${listParam}[${index}]]],      // Expecting ',' delimiter: line ...
-   "param7"    : ["B", [${listParam}[${index}], "A"], "C"], // Expecting ':' delimiter: line ...
-   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"], // Expecting ',' delimiter: line ...
+   "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]],
    //
-   // Error: 'Invalid expression while handling the parameter '[${listParam}[${index}]'.'!
-   "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]
+   "param10"   : "[${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]"
 }
 """)
 
       listCodeSnippets.append("""{
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/259
    "dictParam1" : {"kA" : "A", "kB" : "B"},
    "dictParam2" : {"kA" : "A",
                    "kB" : "B"},
