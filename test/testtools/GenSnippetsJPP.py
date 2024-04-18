@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.27.0"
-VERSION_DATE = "17.04.2024"
+VERSION      = "0.28.0"
+VERSION_DATE = "18.04.2024"
 #
 # **************************************************************************************************************
 
@@ -2013,6 +2013,341 @@ class CSnippets():
    "param6"    : "${  indexList  }[${indexList}[${index}]]"
 }
 """)
+
+      # '+' / '-' combinations in indices
+      # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/291
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+++1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+++1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+++1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+++${index}]
+}
+""")
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+++${index}]}
+}
+""")
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+++${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[-1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[-1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[-1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[-${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[-${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[-${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[--1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[--1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[--1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[--${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[--${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[--${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[---1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[---1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[---1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[---${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[---${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[---${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+-1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+-1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+-1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+-${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+-${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+-${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[-+1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[-+1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[-+1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[-+${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[-+${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[-+${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+-+1]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+-+1]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+-+1]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+-+${index}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[+-+${index}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[+-+${index}]]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "negindex"   : -1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[-${negindex}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "negindex"   : -1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : ${listvalues}[-${negindex}]}
+}
+""")
+
+      listCodeSnippets.append("""{
+   "negindex"   : -1,
+   "listvalues" : [1, 2, 3],
+   "param"      : {"key" : [1, ${listvalues}[-${negindex}]]}
+}
+""")
+
 
       # listCodeSnippets.append("""{
 # }
