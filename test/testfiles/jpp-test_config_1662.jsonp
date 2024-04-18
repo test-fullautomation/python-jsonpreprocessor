@@ -14,7 +14,6 @@
 //**************************************************************************
 
 {
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/252
    "listP"  : ["A", "B"],
    "params" : [{"ABC" : [${listP}[${IAMNOTEXISTING}], "DEF"]}, "GHI"]
 }

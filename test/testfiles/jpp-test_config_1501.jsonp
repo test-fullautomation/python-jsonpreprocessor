@@ -12,11 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //**************************************************************************
-//
-// https://github.com/test-fullautomation/python-jsonpreprocessor/issues/268
-//
-// All combinations should be valid. Combinations with quotes work, combinations without quotes throw errors.
-//
 {
    "stringParam" : "ABCDE",
    //
@@ -25,37 +20,37 @@
    "indexDict"   : {"A" : 0, "B" : 1, "C" : 2},
    "keyList"     : ["A", "B", "C"],
    //
-   // "param01"      : ${stringParam.${index}},     // 'Invalid expression found: '${stringParam.${index}}'.'!
-   "param02"      : "${stringParam.${index}}",   // {param02} [STR]  :  'B' (like expected)
+   "param01"      : ${stringParam.${index}},
+   "param02"      : "${stringParam.${index}}",
    //
-   // "param03"      : ${indexList.${indexList.${index}}},     // Expecting value: line 7 column 16 (char 179)'! / reference: ${stringParam}[${indexList}[${index}]]
-   "param04"      : "${indexList.${indexList.${index}}}",   // {param03} [STR]  :  '1' (like expected)
+   // "param03"      : ${indexList.${indexList.${index}}},   // !!! returns STR instead of INT (also param11, k20C, k21B) !!!
+   "param04"      : "${indexList.${indexList.${index}}}",
    //
-   // "param05"      : ${stringParam.${indexList.${indexList.${index}}}},     // Expecting value: line 7 column 16 (char 179)'!
-   "param06"      : "${stringParam.${indexList.${indexList.${index}}}}",   // {param05} [STR]  :  'B' (like expected)
+   "param05"      : ${stringParam.${indexList.${indexList.${index}}}},
+   "param06"      : "${stringParam.${indexList.${indexList.${index}}}}",
    //
-   // "param07"      : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},     // Expecting value: line 7 column 16 (char 179)'!
-   "param08"      : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"   //  {param07} [STR]  :  'B' (like expected)
+   "param07"      : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},
+   "param08"      : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}",
    //
    // the same within lists
-   // "param10"      : [${stringParam.${index}}, "${stringParam.${index}}"],
+   "param10"      : [${stringParam.${index}}, "${stringParam.${index}}"],
    // "param11"      : [${indexList.${indexList.${index}}}, "${indexList.${indexList.${index}}}"],
-   // "param12"      : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
-   // "param13"      : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"],
+   "param12"      : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
+   "param13"      : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"],
    //
    // the same within dictionaries
-   // "param20"      : {"k20A" : ${stringParam.${index}},
-                     // "k20B" : "${stringParam.${index}}",
+   "param20"      : {"k20A" : ${stringParam.${index}},
+                     "k20B" : "${stringParam.${index}}",
                      // "k20C" : ${indexList.${indexList.${index}}},
-                     // "k20D" : "${indexList.${indexList.${index}}}",
-                     // "k20E" : ${stringParam.${indexList.${indexList.${index}}}},
-                     // "k20F" : "${stringParam.${indexList.${indexList.${index}}}}",
-                     // "k20G" : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},
-                     // "k20H" : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"},
+                     "k20D" : "${indexList.${indexList.${index}}}",
+                     "k20E" : ${stringParam.${indexList.${indexList.${index}}}},
+                     "k20F" : "${stringParam.${indexList.${indexList.${index}}}}",
+                     "k20G" : ${stringParam.${indexDict.${keyList.${indexList.${index}}}}},
+                     "k20H" : "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"},
    //
    // the same with lists as dictionay key values
-   // "param21"      : {"k21A" : [${stringParam.${index}}, "${stringParam.${index}}"],
+   "param21"      : {"k21A" : [${stringParam.${index}}, "${stringParam.${index}}"],
                      // "k21B" : [${indexList.${indexList.${index}}}, "${indexList.${indexList.${index}}}"],
-                     // "k21C" : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
-                     // "k21D" : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"]}
+                     "k21C" : [${stringParam.${indexList.${indexList.${index}}}}, "${stringParam.${indexList.${indexList.${index}}}}"],
+                     "k21D" : [${stringParam.${indexDict.${keyList.${indexList.${index}}}}}, "${stringParam.${indexDict.${keyList.${indexList.${index}}}}}"]}
 }

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_17_NOT_EXISTING_PARAMETERS_BADCASE.py
+# test_18_NOT_EXISTING_PARAMETERS_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 26.03.2024 - 14:29:20
+# 17.04.2024 - 17:34:52
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -64,10 +64,26 @@ class Test_NOT_EXISTING_PARAMETERS_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameters at several positions (5)",]
+   )
+   def test_JPP_1654(self, Description):
+      nReturn = CExecute.Execute("JPP_1654")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with not existing parameters at several positions (6)",]
    )
    def test_JPP_1655(self, Description):
       nReturn = CExecute.Execute("JPP_1655")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameters at several positions (7)",]
+   )
+   def test_JPP_1656(self, Description):
+      nReturn = CExecute.Execute("JPP_1656")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
@@ -108,5 +124,29 @@ class Test_NOT_EXISTING_PARAMETERS_BADCASE:
    )
    def test_JPP_1661(self, Description):
       nReturn = CExecute.Execute("JPP_1661")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameters at several positions (13)",]
+   )
+   def test_JPP_1662(self, Description):
+      nReturn = CExecute.Execute("JPP_1662")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameters at several positions (14)",]
+   )
+   def test_JPP_1663(self, Description):
+      nReturn = CExecute.Execute("JPP_1663")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameters at several positions (15)",]
+   )
+   def test_JPP_1664(self, Description):
+      nReturn = CExecute.Execute("JPP_1664")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

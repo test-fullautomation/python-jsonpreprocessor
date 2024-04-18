@@ -19,16 +19,13 @@
    "param1"    : [${index}, "A"],
    "param2"    : [${listParam}[${index}], "A"],
    //
-   // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/253
+   "param3"    : [[${listParam}[${index}], "A"], "B"],
+   "param4"    : [["A", ${listParam}[${index}]], "B"],
    //
-   "param3"    : [[${listParam}[${index}], "A"], "B"],      // Expecting ':' delimiter: line ...
-   "param4"    : [["A", ${listParam}[${index}]], "B"],      // Expecting ',' delimiter: line ...
+   "param5"    : ["B", [${listParam}[${index}], "A"]],
+   "param6"    : ["B", ["A", ${listParam}[${index}]]],
+   "param7"    : ["B", [${listParam}[${index}], "A"], "C"],
+   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"],
    //
-   "param5"    : ["B", [${listParam}[${index}], "A"]],      // Expecting ',' delimiter: line ...
-   "param6"    : ["B", ["A", ${listParam}[${index}]]],      // Expecting ',' delimiter: line ...
-   "param7"    : ["B", [${listParam}[${index}], "A"], "C"], // Expecting ':' delimiter: line ...
-   "param8"    : ["B", ["A", ${listParam}[${index}]], "C"], // Expecting ',' delimiter: line ...
-   //
-   // Error: 'Invalid expression while handling the parameter '[${listParam}[${index}]'.'!
    "param9"    : [${listParam}[${index}], [${listParam}[${index}], ${listParam}[${index}]], ${listParam}[${index}]]
 }

@@ -18,7 +18,7 @@
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 07.03.2024 - 14:58:30
+# 17.04.2024 - 20:03:38
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -60,5 +60,13 @@ class Test_IMPLICIT_CREATION_GOODCASE:
    )
    def test_JPP_1003(self, Description):
       nReturn = CExecute.Execute("JPP_1003")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with combinations of ascending and descending dotdict syntax",]
+   )
+   def test_JPP_1004(self, Description):
+      nReturn = CExecute.Execute("JPP_1004")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

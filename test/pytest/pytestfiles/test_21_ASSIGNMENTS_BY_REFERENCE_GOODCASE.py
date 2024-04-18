@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_16_STRING_INDICES_GOODCASE.py
+# test_21_ASSIGNMENTS_BY_REFERENCE_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 08.04.2024 - 14:47:37
+# 17.04.2024 - 17:34:52
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_STRING_INDICES_GOODCASE:
+class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with indices applied to a string (inside lists and inside dictionaries; standard notation)",]
+      "Description", ["JSON file with dictionary assignments (by reference)",]
    )
-   def test_JPP_1500(self, Description):
-      nReturn = CExecute.Execute("JPP_1500")
+   def test_JPP_1900(self, Description):
+      nReturn = CExecute.Execute("JPP_1900")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with indices applied to a string (inside lists and inside dictionaries; dotdict notation)",]
+      "Description", ["JSON file with list assignments (by reference)",]
    )
-   def test_JPP_1501(self, Description):
-      nReturn = CExecute.Execute("JPP_1501")
+   def test_JPP_1901(self, Description):
+      nReturn = CExecute.Execute("JPP_1901")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
