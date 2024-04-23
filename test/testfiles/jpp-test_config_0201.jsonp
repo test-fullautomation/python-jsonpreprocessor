@@ -15,6 +15,7 @@
 {
    // taking over the already defined basic data types
    "[import]" : "./jpp-test_config_testdata_1.jsonp",
-   //
-   "${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
+   // Updated the key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "${m${il${innermost_milestone_name}o}ne}_${milestone_number}" : "MILESTONE_2 (new value)"
+   ${milestone_2} : "MILESTONE_2 (new value)"
 }

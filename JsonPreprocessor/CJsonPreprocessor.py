@@ -1011,6 +1011,8 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
             else:
                 return True
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
+            if CNameMangling.STRINGCONVERT.value in sInput:
+                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
             errorMsg = f"Slicing is not supported! Please update the expression '{sInput}'."
             self.__reset()
             raise Exception(errorMsg)
@@ -1093,9 +1095,12 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
   *No return value*
         """
         pattern = r'[\x00-\x1F\x7F]' # This pattern uses to detect double quotes and control characters.
-        if re.search(pattern, sInput) or "\\" in sInput:
-            if CNameMangling.STRINGCONVERT.value in sInput:
-                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+        if CNameMangling.STRINGCONVERT.value in sInput:
+            sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+            errorMsg = f"A substitution in key names is not allowed! Please update the key name {sInput}"
+            self.__reset()
+            raise Exception(errorMsg)
+        elif re.search(pattern, sInput) or "\\" in sInput:
             errorMsg = f"Invalid key name detected: {repr(sInput)}. Key names in JSON objects must adhere to \
 the following rules: they must be strings enclosed in double quotes, must not contain control characters."
             self.__reset()

@@ -1,0 +1,6 @@
+{
+   "listParam"        : [1,2,3],
+   // Updated key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "${listParam}[-1]" : 4
+   "newVar" : "${listParam}[-1]"
+}

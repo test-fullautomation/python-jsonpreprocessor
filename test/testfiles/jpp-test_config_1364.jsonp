@@ -16,5 +16,7 @@
 {
    "negindex"                  : -1,
    "listParam"                 : [1,2,3],
-   "${listParam}[${negindex}]" : 4
+   // Updated key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "${listParam}[${negindex}]" : 4
+   "testVar" : "${listParam}[${negindex}]"
 }

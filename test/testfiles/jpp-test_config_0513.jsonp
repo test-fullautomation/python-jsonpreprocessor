@@ -40,12 +40,18 @@
    ${dictparam}[${stringparam}]   : 4,
    ${dictparam}['${stringparam}'] : 5,
    ${dictparam}['B']              : 6,
-   //
-   "${listparam}[${intparam}]"      : "E",
-   "${listparam}[1]"                : "F",
-   "${dictparam}['${intparam}']"    : 3,
-   "${dictparam}[${stringparam}]"   : 4,
-   "${dictparam}['${stringparam}']" : 5,
-   "${dictparam}['B']"              : 6
+   // Updated key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "${listparam}[${intparam}]"      : "E",
+   // "${listparam}[1]"                : "F",
+   // "${dictparam}['${intparam}']"    : 3,
+   // "${dictparam}[${stringparam}]"   : 4,
+   // "${dictparam}['${stringparam}']" : 5,
+   // "${dictparam}['B']"              : 6
+   "C"                             : "E",
+   "D"                             : "F",
+   "3"                             : 3,
+   "5"                             : 4,
+   "5"                             : 5,
+   "6"                             : 6
 }
 

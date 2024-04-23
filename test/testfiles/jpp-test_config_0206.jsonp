@@ -15,6 +15,7 @@
 {
    // taking over the already defined basic data types
    "[import]" : "./jpp-test_config_testdata_1.jsonp",
-   //
-   "VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+   // Updated key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "VAR_${dict_variants}['${variant_key_${variant_number}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+   ${VAR_VARIANT_1_MS_MILESTONE_2_param} : "value"
 }
