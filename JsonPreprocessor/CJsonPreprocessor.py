@@ -54,6 +54,8 @@ import shlex
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
+from collections import OrderedDict
+from collections.abc import Mapping
 from JsonPreprocessor.version import VERSION, VERSION_DATE
 
 class CSyntaxType():
@@ -139,6 +141,31 @@ Extends the JSON syntax by the Python keywords ``True``, ``False`` and ``None``.
             return self._custom_scan_once(string, idx)
         finally:
             self.memo.clear()
+
+class DotDict(OrderedDict):
+    """
+This class is a custom dictionary implementation that enables dot-style access to dictionary keys, 
+similar to accessing attributes of an object.
+    """
+    def __init__(self, *args, **kwds):
+        args = [self.__convertNestedInitialDicts(arg) for arg in args]
+        kwds = self.__convertNestedInitialDicts(kwds)
+        OrderedDict.__init__(self, *args, **kwds)
+
+    def __convertNestedInitialDicts(self, value):
+        items = value.items() if isinstance(value, Mapping) else value
+        return OrderedDict((key, self.__convertNestedDicts(value)) for key, value in items)
+
+    def __convertNestedDicts(self, value):
+        if isinstance(value, DotDict):
+            return value
+        if isinstance(value, Mapping):
+            return DotDict(value)
+        if isinstance(value, list):
+            value[:] = [self.__convertNestedDicts(item) for item in value]
+        return value
+    
+    __repr__ = dict.__repr__
 
 class CJsonPreprocessor():
     """
@@ -1372,6 +1399,7 @@ This function handle a last element of a list or dictionary
                 
             self.__reset()
             __removeDuplicatedKey(oJson)
+            oJson = DotDict(oJson)
         return oJson
 
     def jsonDump(self, oJson : dict, outFile : str) -> str:
