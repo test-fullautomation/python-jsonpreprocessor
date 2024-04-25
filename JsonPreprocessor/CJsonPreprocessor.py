@@ -223,6 +223,8 @@ Constructor
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
         self.JPGlobals = {}
+        self.pythonTypeError = ["object is not subscriptable", \
+                                "string indices must be integers"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
@@ -531,9 +533,17 @@ This method handles nested variables in parameter names or values. Variable synt
                 ldict = {}
                 exec(sExec, locals(), ldict)
                 tmpValue = ldict['value']
-            except:
+            except Exception as error:
                 self.__reset()
-                raise Exception(f"The variable '{sNestedParam.replace('$$', '$')}' is not available!")
+                errorMsg = ''
+                for errorType in self.pythonTypeError:
+                    if errorType in str(error):
+                        errorMsg = f"Could not resolved the expression '{sNestedParam.replace('$$', '$')}'."
+                if errorMsg != '':
+                    errorMsg = errorMsg + f" Reason: {error}"
+                else:
+                    errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                raise Exception(errorMsg)
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 self.__reset()
                 errorMsg = f"Found expression '{sNestedParam.replace('$$', '$')}' with at least one parameter of composite data type \
