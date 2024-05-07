@@ -597,8 +597,16 @@ only simple data types are allowed to be substituted inside."
                             var = var[0].replace("$$", "$")
                             errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of variable \
 '{var}' have to 'int' or 'str'."
+                            self.__reset()
                             raise Exception(errorMsg)
                     else:
+                        if "." + var[0] in sInputStr or not bConvertToStr:
+                            if not (isinstance(tmpValue, str) or isinstance(tmpValue, int)):
+                                dType = re.search(r"'[^']+'", str(type(tmpValue)))[0]
+                                errorMsg = f"Could not resolved the expression {sInputStr.replace('$$', '$')}. The datatype of \
+{var[0].replace('$$', '$')} must be 'str' or 'int' not {dType}."
+                                self.__reset()
+                                raise Exception(errorMsg)
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
                     if sInputStr==sLoopCheck1:
                         self.__reset()
