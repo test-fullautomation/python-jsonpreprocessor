@@ -538,7 +538,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 errorMsg = ''
                 for errorType in self.pythonTypeError:
                     if errorType in str(error):
-                        errorMsg = f"Could not resolved the expression '{sNestedParam.replace('$$', '$')}'."
+                        errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
                 if errorMsg != '':
                     errorMsg = errorMsg + f" Reason: {error}"
                 else:
@@ -559,7 +559,12 @@ only simple data types are allowed to be substituted inside."
             sVar = '$${' + lElements[0] + '}'
             lElements.pop(0)
             for item in lElements:
-                sVar = sVar + "[" + item + "]" if re.match(r'^\d+$', item) else sVar + "['" + item + "']"
+                if re.match(r'^\d+$', item):
+                    sVar = sVar + "[" + item + "]"
+                elif re.search(r'[{}\[\]\(\)]+', item) and "${" not in item:
+                    sVar = sVar + "[" + item + "]"
+                else:
+                    sVar = sVar + "['" + item + "']"
             return sVar
 
         pattern = rf'\$\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}'
@@ -597,6 +602,7 @@ only simple data types are allowed to be substituted inside."
                             var = var[0].replace("$$", "$")
                             errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of variable \
 '{var}' have to 'int' or 'str'."
+                            self.__reset()
                             raise Exception(errorMsg)
                     else:
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
@@ -619,9 +625,30 @@ only simple data types are allowed to be substituted inside."
                 dReplacements = {"$${" : "", "}" : ""}
                 return self.__multipleReplace(sInputStr, dReplacements)
             var = re.search(tmpPattern, sInputStr, re.UNICODE)
-            rootVar = re.search(pattern, var[0], re.UNICODE)[0]
-            sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
-            sVar = var[0].replace(rootVar, sRootVar)
+            if var==None:
+                sVar = __handleDotInNestedParam(sInputStr) if "." in sInputStr else sInputStr
+                sVar = re.sub(r'^\s*\$\${\s*([^}]+)}', "['\\1']", sVar)
+                sExec = "value = self.JPGlobals" + sVar
+                try:
+                    ldict = {}
+                    exec(sExec, locals(), ldict)
+                    tmpValue = ldict['value']
+                except Exception as error:
+                    self.__reset()
+                    errorMsg = ''
+                    for errorType in self.pythonTypeError:
+                        if errorType in str(error):
+                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
+                    if errorMsg != '':
+                        errorMsg = errorMsg + f" Reason: {error}"
+                    else:
+                        errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                    raise Exception(errorMsg)
+                return tmpValue
+            else:
+                rootVar = re.search(pattern, var[0], re.UNICODE)[0]
+                sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+                sVar = var[0].replace(rootVar, sRootVar)
             if re.search(r"\[\s*'[\s\-]*\d+\s*'\s*\]", sVar):
                 try:
                     tmpValue = __getNestedValue(sVar)
