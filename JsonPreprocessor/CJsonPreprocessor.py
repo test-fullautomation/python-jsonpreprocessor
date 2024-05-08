@@ -538,7 +538,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 errorMsg = ''
                 for errorType in self.pythonTypeError:
                     if errorType in str(error):
-                        errorMsg = f"Could not resolved the expression '{sNestedParam.replace('$$', '$')}'."
+                        errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
                 if errorMsg != '':
                     errorMsg = errorMsg + f" Reason: {error}"
                 else:
@@ -638,7 +638,7 @@ only simple data types are allowed to be substituted inside."
                     errorMsg = ''
                     for errorType in self.pythonTypeError:
                         if errorType in str(error):
-                            errorMsg = f"Could not resolved the expression '{sNestedParam.replace('$$', '$')}'."
+                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
                     if errorMsg != '':
                         errorMsg = errorMsg + f" Reason: {error}"
                     else:
