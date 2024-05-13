@@ -2076,14 +2076,11 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0506.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (12/1) > {param1} [DOTDICT] (2/1) > {A} [INT]  :  1
-[DOTDICT] (12/1) > {param1} [DOTDICT] (2/2) > {B} [INT]  :  2
-[DOTDICT] (12/2) > {param2} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (12/2) > {param2} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (12/2) > {param2} [LIST] (3/3) > [INT]  :  3
+[DOTDICT] (12/1) > {param1} [STR]  :  '{"A" : 1, "B" : 2}'
+[DOTDICT] (12/2) > {param2} [STR]  :  '[1,2,3]'
 [DOTDICT] (12/3) > {param3} [STR]  :  'value'
-[DOTDICT] (12/4) > {var1} [STR]  :  'value 1 > {'A': 1, 'B': 2}'
-[DOTDICT] (12/5) > {var2} [STR]  :  'value 2 > [1, 2, 3]'
+[DOTDICT] (12/4) > {var1} [STR]  :  'value 1 > {"A" : 1, "B" : 2}'
+[DOTDICT] (12/5) > {var2} [STR]  :  'value 2 > [1,2,3]'
 [DOTDICT] (12/6) > {var3} [STR]  :  'value 3 > value'
 [DOTDICT] (12/7) > {var4} [STR]  :  'value 4 > &{param1}'
 [DOTDICT] (12/8) > {var5} [STR]  :  'value 5 > &{param2}'
