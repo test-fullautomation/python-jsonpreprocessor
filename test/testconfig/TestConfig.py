@@ -2632,7 +2632,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1050.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2646,7 +2646,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1051.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2660,7 +2660,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1052.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2716,7 +2716,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1056.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2730,7 +2730,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2744,7 +2744,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1058.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The implicit creation of data structures based on parameter is not supported"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

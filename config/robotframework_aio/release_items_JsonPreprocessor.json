@@ -117,19 +117,16 @@
   Previously, JsonPreprocess allows dynamic key names as example below:
 
   | ``\u007b``
-  |    ``\"params\" : \u007b``
-  |         ``\"global\" : \u007b``
-  |              ``\"var1\" : \"testVar\",``
-  |              ``\"$\u007bparams.global.var1\u007b\" : 1``
-  |         ``\u007d``
-  |    ``\u007d``
+  |    ``\"param1\" : \"ABC\",``
+  |    ``\"param2\" : \"XYZ\",``
+  |    ``\"$\u007bparam2\u007b\" : 1``
   | ``\u007d``
 
-  And the variable ``testVar`` is available with value ``1``.
+  And parameter ``\"XYZ\"`` is created with value ``1``.
   
-  From version ``0.12``, the dynamic key names as the description above is not allowed.
+  Now, the parameter ``\"XYZ\"`` will no longer be created; instead, an error message will be raised.
 
-* Improved error message logs.
+* Improved error messages.
 "
                             ]
                 }

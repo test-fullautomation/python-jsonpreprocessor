@@ -54,9 +54,8 @@ import shlex
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
-from collections import OrderedDict
-from collections.abc import Mapping
 from JsonPreprocessor.version import VERSION, VERSION_DATE
+from pydotdict import DotDict
 
 class CSyntaxType():
     python = "python"
@@ -141,31 +140,6 @@ Extends the JSON syntax by the Python keywords ``True``, ``False`` and ``None``.
             return self._custom_scan_once(string, idx)
         finally:
             self.memo.clear()
-
-class DotDict(OrderedDict):
-    """
-This class is a custom dictionary implementation that enables dot-style access to dictionary keys, 
-similar to accessing attributes of an object.
-    """
-    def __init__(self, *args, **kwds):
-        args = [self.__convertNestedInitialDicts(arg) for arg in args]
-        kwds = self.__convertNestedInitialDicts(kwds)
-        OrderedDict.__init__(self, *args, **kwds)
-
-    def __convertNestedInitialDicts(self, value):
-        items = value.items() if isinstance(value, Mapping) else value
-        return OrderedDict((key, self.__convertNestedDicts(value)) for key, value in items)
-
-    def __convertNestedDicts(self, value):
-        if isinstance(value, DotDict):
-            return value
-        if isinstance(value, Mapping):
-            return DotDict(value)
-        if isinstance(value, list):
-            value[:] = [self.__convertNestedDicts(item) for item in value]
-        return value
-    
-    __repr__ = dict.__repr__
 
 class CJsonPreprocessor():
     """
@@ -725,12 +699,14 @@ This method checks and creates new elements if they are not already existing.
                     sExec = sExec + f"['{element}']"
                 try:
                     exec(sExec)
-                except Exception as error:
+                except Exception as error: 
                     if "list indices must be integers" in str(error):
                         if keyNested != '':
-                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
                         else:
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
                         self.__reset()
                         raise Exception(errorMsg)
                     if bCheck==True:
@@ -902,13 +878,42 @@ This method replaces all nested parameters in key and value of a JSON object .
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
+                bCheckDynamicKey = False
                 keyNested = k
+                if k.count("${")>1:
+                    bCheckDynamicKey = True
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
                     re.search(r"\." + pattern + r"[\.}]+", keyNested, re.UNICODE):
                     bImplicitCreation = True
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
+                sExec = 'dummyData = self.JPGlobals'
+                dReplacements = {"[":"\[", "]":"\]", ".":"\.", "-":"\-"}
+                tmpPattern = self.__multipleReplace(parentParams, dReplacements)
+                if parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k):
+                    tmpParam = re.sub(r'^\s*([^\[]+)', "${\\1}", parentParams) + re.sub(r'^\s*([^\[]+)', "['\\1']", k)
+                    sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)\[*.*$', "['\\1']", k)
+                    k = parentParams + re.sub(r'^\s*([^\[]+)', "['\\1']", k) # Update absolute path of nested key
+                    try:
+                        exec(sExec)
+                    except:
+                        self.__reset()
+                        raise Exception(f"Could not set the value for parameter '{keyNested}'.\nPlease set this parameter with \
+an absolute path, for example: '{tmpParam}'")
+                elif bCheckDynamicKey:
+                    sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)', "['\\1']", k)
+                    try:
+                        exec(sExec)
+                    except Exception as error:
+                        if 'list indices must be integers' in str(error):
+                            pass
+                        else:
+                            self.__reset()
+                            raise Exception(f"Identified dynamic name of key '{keyNested}' that does not exist. But new keys can \
+only be created based on hard code names.")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on parameter is not supported. \
