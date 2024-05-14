@@ -104,5 +104,30 @@
 
 "
                             ]
+                 ,
+                  "0.12." : [
+"
+* JsonPreprocessor returns a dotdict.
+
+  JsonPreprocessor now supports returning a DotDict after loading jsonp files. It facilitates seamless 
+  navigation through dictionary structures, making it easier to access values.
+
+* Blocked dynamic key names.
+
+  Previously, JsonPreprocess allows dynamic key names as example below:
+
+  | ``\u007b``
+  |    ``\"param1\" : \"ABC\",``
+  |    ``\"param2\" : \"XYZ\",``
+  |    ``\"$\u007bparam2\u007b\" : 1``
+  | ``\u007d``
+
+  And parameter ``\"XYZ\"`` is created with value ``1``.
+  
+  Now, the parameter ``\"XYZ\"`` will no longer be created; instead, an error message will be raised.
+
+* Improved error messages.
+"
+                            ]
                 }
 }

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_19_SELF_ASSIGNMENTS_GOODCASE.py
+# test_17_STRING_INDICES_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 03.04.2024 - 09:23:46
+# 17.04.2024 - 17:34:52
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_SELF_ASSIGNMENTS_GOODCASE:
+class Test_STRING_INDICES_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with self assignments of strings, lists and dictionaries",]
+      "Description", ["JSON file with several combinations with indices (standard notation)",]
    )
-   def test_JPP_1800(self, Description):
-      nReturn = CExecute.Execute("JPP_1800")
+   def test_JPP_1500(self, Description):
+      nReturn = CExecute.Execute("JPP_1500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
+   )
+   def test_JPP_1501(self, Description):
+      nReturn = CExecute.Execute("JPP_1501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

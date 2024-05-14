@@ -14,5 +14,7 @@
 //**************************************************************************
 
 {
-   "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']" : 4
+   // Updated key name due to enhancement 270 - Dynamic key names shall be blocked
+   // "${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}']" : 4
+   ${IAMNOTEXISTING1.${IAMNOTEXISTING2}}['${IAMNOTEXISTING3}'] : 4
 }

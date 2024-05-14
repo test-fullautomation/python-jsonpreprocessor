@@ -55,6 +55,7 @@ import shlex
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
 from JsonPreprocessor.version import VERSION, VERSION_DATE
+from pydotdict import DotDict
 
 class CSyntaxType():
     python = "python"
@@ -196,6 +197,8 @@ Constructor
         self.bDuplicatedKeys = True
         self.jsonCheck = {}
         self.JPGlobals = {}
+        self.pythonTypeError = ["object is not subscriptable", \
+                                "string indices must be integers"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
@@ -504,9 +507,17 @@ This method handles nested variables in parameter names or values. Variable synt
                 ldict = {}
                 exec(sExec, locals(), ldict)
                 tmpValue = ldict['value']
-            except:
+            except Exception as error:
                 self.__reset()
-                raise Exception(f"The variable '{sNestedParam.replace('$$', '$')}' is not available!")
+                errorMsg = ''
+                for errorType in self.pythonTypeError:
+                    if errorType in str(error):
+                        errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
+                if errorMsg != '':
+                    errorMsg = errorMsg + f" Reason: {error}"
+                else:
+                    errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                raise Exception(errorMsg)
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 self.__reset()
                 errorMsg = f"Found expression '{sNestedParam.replace('$$', '$')}' with at least one parameter of composite data type \
@@ -522,7 +533,12 @@ only simple data types are allowed to be substituted inside."
             sVar = '$${' + lElements[0] + '}'
             lElements.pop(0)
             for item in lElements:
-                sVar = sVar + "[" + item + "]" if re.match(r'^\d+$', item) else sVar + "['" + item + "']"
+                if re.match(r'^\d+$', item):
+                    sVar = sVar + "[" + item + "]"
+                elif re.search(r'[{}\[\]\(\)]+', item) and "${" not in item:
+                    sVar = sVar + "[" + item + "]"
+                else:
+                    sVar = sVar + "['" + item + "']"
             return sVar
 
         pattern = rf'\$\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}'
@@ -544,6 +560,12 @@ only simple data types are allowed to be substituted inside."
             for var in referVars:
                 sVar = __handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
                 tmpValue = __getNestedValue(sVar)
+                if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
+                    dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
+                    self.__reset()
+                    raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
+value '{sInputStr.replace('$$', '$')}' is not supported! The composite data types between 'str' \
+and '{dataType}' is not acceptable.")
                 while var[0] in sInputStr:
                     sLoopCheck1 = sInputStr
                     dReplacements = {"$" : "\$", "[" : "\[", "]" : "\]"}
@@ -560,6 +582,7 @@ only simple data types are allowed to be substituted inside."
                             var = var[0].replace("$$", "$")
                             errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of variable \
 '{var}' have to 'int' or 'str'."
+                            self.__reset()
                             raise Exception(errorMsg)
                     else:
                         sInputStr = sInputStr.replace(var[0], str(tmpValue))
@@ -582,9 +605,30 @@ only simple data types are allowed to be substituted inside."
                 dReplacements = {"$${" : "", "}" : ""}
                 return self.__multipleReplace(sInputStr, dReplacements)
             var = re.search(tmpPattern, sInputStr, re.UNICODE)
-            rootVar = re.search(pattern, var[0], re.UNICODE)[0]
-            sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
-            sVar = var[0].replace(rootVar, sRootVar)
+            if var==None:
+                sVar = __handleDotInNestedParam(sInputStr) if "." in sInputStr else sInputStr
+                sVar = re.sub(r'^\s*\$\${\s*([^}]+)}', "['\\1']", sVar)
+                sExec = "value = self.JPGlobals" + sVar
+                try:
+                    ldict = {}
+                    exec(sExec, locals(), ldict)
+                    tmpValue = ldict['value']
+                except Exception as error:
+                    self.__reset()
+                    errorMsg = ''
+                    for errorType in self.pythonTypeError:
+                        if errorType in str(error):
+                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
+                    if errorMsg != '':
+                        errorMsg = errorMsg + f" Reason: {error}"
+                    else:
+                        errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                    raise Exception(errorMsg)
+                return tmpValue
+            else:
+                rootVar = re.search(pattern, var[0], re.UNICODE)[0]
+                sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+                sVar = var[0].replace(rootVar, sRootVar)
             if re.search(r"\[\s*'[\s\-]*\d+\s*'\s*\]", sVar):
                 try:
                     tmpValue = __getNestedValue(sVar)
@@ -594,6 +638,13 @@ only simple data types are allowed to be substituted inside."
                     raise Exception(errorMsg)
             else:
                 tmpValue = __getNestedValue(sVar)
+            if len(sInputStr.strip())>len(sVar.strip()) and bConvertToStr and \
+                    (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
+                self.__reset()
+                raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
+value '{sInputStr.replace('$$', '$')}' is not supported! The composite data types between 'str' \
+and '{dataType}' is not acceptable.")
             if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
             else:
@@ -661,12 +712,14 @@ This method checks and creates new elements if they are not already existing.
                     sExec = sExec + f"['{element}']"
                 try:
                     exec(sExec)
-                except Exception as error:
+                except Exception as error: 
                     if "list indices must be integers" in str(error):
                         if keyNested != '':
-                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
                         else:
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
                         self.__reset()
                         raise Exception(errorMsg)
                     if bCheck==True:
@@ -775,6 +828,25 @@ This method replaces all nested parameters in key and value of a JSON object .
                 handledValue = str(handledValue)
             return handledValue
 
+        def __handleList(lInput : list, bNested : bool) -> list:
+            tmpValue = []
+            for item in lInput:
+                if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
+                    bNested = True
+                    initItem = item
+                    while isinstance(item, str) and "${" in item:
+                        sLoopCheck = item
+                        item = __loadNestedValue(initItem, item)
+                        if item==sLoopCheck:
+                            self.__reset()
+                            raise Exception(f"Invalid expression found: '{initItem}'.")
+                elif isinstance(item, list) and "${" in str(item):
+                    item = __handleList(item, bNested)
+                elif isinstance(item, dict) and "${" in str(item):
+                    item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True)
+                tmpValue.append(item)
+            return tmpValue
+
         if bool(self.currentCfg) and not recursive:
             for k, v in self.currentCfg.items():
                 if k in self.lDataTypes:
@@ -819,13 +891,42 @@ This method replaces all nested parameters in key and value of a JSON object .
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{keyNested}'.")
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
+                bCheckDynamicKey = False
                 keyNested = k
+                if k.count("${")>1:
+                    bCheckDynamicKey = True
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
                     re.search(r"\." + pattern + r"[\.}]+", keyNested, re.UNICODE):
                     bImplicitCreation = True
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
+                sExec = 'dummyData = self.JPGlobals'
+                dReplacements = {"[":"\[", "]":"\]", ".":"\.", "-":"\-"}
+                tmpPattern = self.__multipleReplace(parentParams, dReplacements)
+                if parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k):
+                    tmpParam = re.sub(r'^\s*([^\[]+)', "${\\1}", parentParams) + re.sub(r'^\s*([^\[]+)', "['\\1']", k)
+                    sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)\[*.*$', "['\\1']", k)
+                    k = parentParams + re.sub(r'^\s*([^\[]+)', "['\\1']", k) # Update absolute path of nested key
+                    try:
+                        exec(sExec)
+                    except:
+                        self.__reset()
+                        raise Exception(f"Could not set the value for parameter '{keyNested}'.\nPlease set this parameter with \
+an absolute path, for example: '{tmpParam}'")
+                elif bCheckDynamicKey:
+                    sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)', "['\\1']", k)
+                    try:
+                        exec(sExec)
+                    except Exception as error:
+                        if 'list indices must be integers' in str(error):
+                            pass
+                        else:
+                            self.__reset()
+                            raise Exception(f"Identified dynamic name of key '{keyNested}' that does not exist. But new keys can \
+only be created based on hard code names.")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on parameter is not supported. \
@@ -834,20 +935,7 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
-                tmpValue = []
-                for item in v:
-                    if isinstance(item, str) and re.search(pattern, item, re.UNICODE):
-                        bNested = True
-                        initItem = item
-                        while isinstance(item, str) and "${" in item:
-                            sLoopCheck = item
-                            item = __loadNestedValue(initItem, item)
-                            if item==sLoopCheck:
-                                self.__reset()
-                                raise Exception(f"Invalid expression found: '{initItem}'.")
-                    tmpValue.append(item)
-                v = tmpValue
-                del tmpValue
+                v = __handleList(v, bNested)
             elif isinstance(v, str) and self.__checkNestedParam(v):
                 if re.search(pattern, v, re.UNICODE):
                     bNested = True
@@ -978,6 +1066,8 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
             else:
                 return True
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
+            if CNameMangling.STRINGCONVERT.value in sInput:
+                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
             errorMsg = f"Slicing is not supported! Please update the expression '{sInput}'."
             self.__reset()
             raise Exception(errorMsg)
@@ -1059,12 +1149,9 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
-        pattern = r'[\x00-\x1F\x7F]' # This pattern uses to detect double quotes and control characters.
-        if re.search(pattern, sInput) or "\\" in sInput:
-            if CNameMangling.STRINGCONVERT.value in sInput:
-                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
-            errorMsg = f"Invalid key name detected: {repr(sInput)}. Key names in JSON objects must adhere to \
-the following rules: they must be strings enclosed in double quotes, must not contain control characters."
+        if CNameMangling.STRINGCONVERT.value in sInput:
+            sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+            errorMsg = f"A substitution in key names is not allowed! Please update the key name {sInput}"
             self.__reset()
             raise Exception(errorMsg)
 
@@ -1240,7 +1327,9 @@ This function handle a last element of a list or dictionary
                                 for subItem in subItems:
                                     if "${" in subItem:
                                         if iSubItems>1 and j<iSubItems:
-                                            if re.match(r'^\${.+$', subItem.strip()):
+                                            if subItem.count("${") < subItem.count("}") or subItem.count("[") < subItem.count("]"):
+                                                subItem = __handleLastElement(subItem)
+                                            elif re.match(r'^\${.+$', subItem.strip()):
                                                 subItem = '"' + subItem.strip() + '"'
                                             else:
                                                 subItem = re.sub(r'(\${.+$)', '"\\1"', subItem.strip())
@@ -1364,6 +1453,7 @@ This function handle a last element of a list or dictionary
                 
             self.__reset()
             __removeDuplicatedKey(oJson)
+            oJson = DotDict(oJson)
         return oJson
 
     def jsonDump(self, oJson : dict, outFile : str) -> str:

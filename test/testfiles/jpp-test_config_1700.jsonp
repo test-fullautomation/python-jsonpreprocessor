@@ -35,5 +35,5 @@
                    "kC" : "C"},
 
    "dictParam10" : {"kA" : "A",
-                    "kB" : ${A}, "${A}" : "C"}
+                    "kB" : ${A}, "1" : "C"} // Updated key name ("${A}" -> "1") due to enhancement 270 - Dynamic key names shall be blocked
 }
