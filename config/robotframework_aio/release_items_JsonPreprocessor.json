@@ -107,26 +107,26 @@
                  ,
                   "0.12." : [
 "
-* JsonPreprocessor returns a dotdict.
+* Changed data type of return value
 
-  JsonPreprocessor now supports returning a DotDict after loading jsonp files. It facilitates seamless 
-  navigation through dictionary structures, making it easier to access values.
+  **JsonPreprocessor** now returns a ``dotdict`` (instead of a standard Python dictionary). With the ``dotdict`` notation, dictionary keys can be accessed as attributes.
+  The resulting code is shorter and therefore easier to read.
 
-* Blocked dynamic key names.
+* Blocked dynamic key names
 
-  Previously, JsonPreprocess allows dynamic key names as example below:
+  In opposite to previous versions of the **JsonPreprocessor**, the creation of new keys based on parameter (dynamic key names), **is not supported an more**!
+
+  Example:
 
   | ``\u007b``
   |    ``\"param1\" : \"ABC\",``
   |    ``\"param2\" : \"XYZ\",``
-  |    ``\"$\u007bparam2\u007b\" : 1``
+  |    ``\"$\u007bparam2\u007d\" : 1``
   | ``\u007d``
 
-  And parameter ``\"XYZ\"`` is created with value ``1``.
+  This code previously created a new parameter ``\"XYZ\"`` with value ``1``. Now an error message will be raised.
   
-  Now, the parameter ``\"XYZ\"`` will no longer be created; instead, an error message will be raised.
-
-* Improved error messages.
+* Improved error messages
 "
                             ]
                 }
