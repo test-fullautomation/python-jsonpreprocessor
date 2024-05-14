@@ -26,6 +26,7 @@ jobs:
             sudo apt-get install -y texlive-latex-*
             echo "GENDOC_LATEXPATH=$(dirname $(which pdflatex))" >> $GITHUB_ENV
             python -m pip install --upgrade build twine wheel GenPackageDoc PythonExtensionsCollection
+            python -m pip install -r ./requirements.txt
 
         - name: Build source and wheel distributions
           run: |
