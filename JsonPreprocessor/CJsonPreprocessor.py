@@ -564,8 +564,8 @@ only simple data types are allowed to be substituted inside."
                     dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                     self.__reset()
                     raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sInputStr.replace('$$', '$')}' is not supported! The composite data types between 'str' \
-and '{dataType}' is not acceptable.")
+value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
+be substituted inside strings.")
                 while var[0] in sInputStr:
                     sLoopCheck1 = sInputStr
                     dReplacements = {"$" : "\$", "[" : "\[", "]" : "\]"}
@@ -638,13 +638,12 @@ and '{dataType}' is not acceptable.")
                     raise Exception(errorMsg)
             else:
                 tmpValue = __getNestedValue(sVar)
-            if len(sInputStr.strip())>len(sVar.strip()) and bConvertToStr and \
-                    (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+            if bConvertToStr and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
                 raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sInputStr.replace('$$', '$')}' is not supported! The composite data types between 'str' \
-and '{dataType}' is not acceptable.")
+value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
+be substituted inside strings.")
             if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
             else:
