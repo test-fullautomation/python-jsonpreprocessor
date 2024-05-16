@@ -198,7 +198,8 @@ Constructor
         self.jsonCheck = {}
         self.JPGlobals = {}
         self.pythonTypeError = ["object is not subscriptable", \
-                                "string indices must be integers"]
+                                "string indices must be integers", \
+                                "list indices must be integers"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
@@ -514,7 +515,8 @@ This method handles nested variables in parameter names or values. Variable synt
                     if errorType in str(error):
                         errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
                 if errorMsg != '':
-                    errorMsg = errorMsg + f" Reason: {error}"
+                    errorMsg = errorMsg + f" Reason: {error}" if ' or slices' not in str(error) else \
+                                errorMsg + f" Reason: {str(error).replace(' or slices', '')}"
                 else:
                     errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
                 raise Exception(errorMsg)
@@ -629,15 +631,7 @@ be substituted inside strings.")
                 rootVar = re.search(pattern, var[0], re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
                 sVar = var[0].replace(rootVar, sRootVar)
-            if re.search(r"\[\s*'[\s\-]*\d+\s*'\s*\]", sVar):
-                try:
-                    tmpValue = __getNestedValue(sVar)
-                except:
-                    errorMsg = f"{rootVar.replace('$$', '$')} expects integer as index. Got string instead in {sNestedParam}"
-                    self.__reset()
-                    raise Exception(errorMsg)
-            else:
-                tmpValue = __getNestedValue(sVar)
+            tmpValue = __getNestedValue(sVar)
             if bConvertToStr and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
