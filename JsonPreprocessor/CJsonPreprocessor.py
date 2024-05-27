@@ -730,7 +730,8 @@ Reason: {str(error).replace(' or slices', '')}"
                             raise Exception(errorMsg)
             return True
 
-    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, parentParams : str = ''):
+    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, \
+                                      parentParams : str = '', bDictInList : bool = False):
         """
 This method replaces all nested parameters in key and value of a JSON object .
 
@@ -835,8 +836,16 @@ This method replaces all nested parameters in key and value of a JSON object .
                             raise Exception(f"Invalid expression found: '{initItem}'.")
                 elif isinstance(item, list) and "${" in str(item):
                     item = __handleList(item, bNested)
-                elif isinstance(item, dict) and "${" in str(item):
-                    item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True)
+                elif isinstance(item, dict):
+                    tmpItem = copy.deepcopy(item)
+                    for key, value in tmpItem.items():
+                        if isinstance(value, list) and value[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                            item[key] = value[-1]
+                        if CNameMangling.DUPLICATEDKEY_01.value in key:
+                            item.pop(key)
+                    del tmpItem
+                    if "${" in str(item):
+                        item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True, bDictInList=True)
                 tmpValue.append(item)
             return tmpValue
 
@@ -894,10 +903,27 @@ This method replaces all nested parameters in key and value of a JSON object .
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
-                sExec = 'dummyData = self.JPGlobals'
+                sExec = 'dummyData = self.JPGlobals' if not bDictInList else 'dummyData = oJson'
+                # Check digits inside a square brackets indicating a key name of a dict or index of a list
+                while re.search(r'\[\d+\]', k):
+                    tmpK = re.sub(r'\[\d+\].*$', '', k)
+                    tmpK = re.sub(r'_listIndex_', '', tmpK)
+                    sTmpExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)', "['\\1']", tmpK)
+                    try:
+                        ldict = {}
+                        exec(sTmpExec, locals(), ldict)
+                    except:
+                        pass
+                    if len(ldict)>0 and isinstance(ldict['dummyData'], dict):
+                        k = re.sub(r'\[(\d+)\]', "['\\1']", k, count=1) # if it a key name, put inside single quotes
+                    else:
+                        k = re.sub(r'\[(\d+)\]', "[\\1_listIndex_]", k, count=1) # add temporary suffix to the index due to while condition
+                if '_listIndex_' in k:
+                    k = re.sub(r'_listIndex_', '', k)
                 dReplacements = {"[":"\[", "]":"\]", ".":"\.", "-":"\-"}
                 tmpPattern = self.__multipleReplace(parentParams, dReplacements)
-                if parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k):
+                if (parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k)) or bDictInList:
                     tmpParam = re.sub(r'^\s*([^\[]+)', "${\\1}", parentParams) + re.sub(r'^\s*([^\[]+)', "['\\1']", k)
                     sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
                                     re.sub(r'^\s*([^\[]+)\[*.*$', "['\\1']", k)
@@ -906,8 +932,8 @@ This method replaces all nested parameters in key and value of a JSON object .
                         exec(sExec)
                     except:
                         self.__reset()
-                        raise Exception(f"Could not set the value for parameter '{keyNested}'.\nPlease set this parameter with \
-an absolute path, for example: '{tmpParam}'")
+                        raise Exception(f"A key with name '{keyNested}' does not exist at this position. \
+Use the '<name> : <value>' syntax to create a new key.")
                 elif bCheckDynamicKey:
                     sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
                                     re.sub(r'^\s*([^\[]+)', "['\\1']", k)
