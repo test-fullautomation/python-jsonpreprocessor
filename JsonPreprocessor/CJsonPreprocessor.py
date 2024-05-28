@@ -948,8 +948,8 @@ Use the '<name> : <value>' syntax to create a new key.")
 only be created based on hard code names.")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
-                    raise Exception(f"The implicit creation of data structures based on parameter is not supported. \
-New parameter '{k}' could not be created by the expression '{keyNested}'")
+                    raise Exception(f"The implicit creation of data structures based on parameters is not supported \
+(affected expression: '{keyNested}').")
             
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
