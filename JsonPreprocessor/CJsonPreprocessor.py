@@ -199,7 +199,8 @@ Constructor
         self.JPGlobals = {}
         self.pythonTypeError = ["object is not subscriptable", \
                                 "string indices must be integers", \
-                                "list indices must be integers"]
+                                "list indices must be integers", \
+                                "index out of range"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
