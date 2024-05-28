@@ -522,7 +522,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 raise Exception(errorMsg)
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 self.__reset()
-                errorMsg = f"Found expression '{sNestedParam.replace('$$', '$')}' with at least one parameter of composite data type \
+                errorMsg = f"Found parameter '{sNestedParam.replace('$$', '$')}' of composite data type \
 ('{sNestedParam.replace('$$', '$')}' is of type {type(tmpValue)}). Because of this expression is the name of a parameter, \
 only simple data types are allowed to be substituted inside."
                 raise Exception(errorMsg)
@@ -1260,7 +1260,8 @@ This function handle a last element of a list or dictionary
                 tmpPattern = self.__multipleReplace(sParam, dReplacements)
                 sInput = re.sub(r'(' + tmpPattern + r')', '"\\1"', sInput)
             else:
-                sInput = '"' + sInput.strip() + '"'
+                sParam = re.findall(r'^[{\[\s*]*(.+)$', sInput.strip())[0]
+                sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
