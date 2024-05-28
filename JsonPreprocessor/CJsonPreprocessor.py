@@ -519,7 +519,11 @@ This method handles nested variables in parameter names or values. Variable synt
                     errorMsg = errorMsg + f" Reason: {error}" if ' or slices' not in str(error) else \
                                 errorMsg + f" Reason: {str(error).replace(' or slices', '')}"
                 else:
-                    errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                    if isinstance(error, KeyError) and re.search(r"\[\s*" + str(error) + "\s*\]", sNestedParam):
+                        errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'. \
+Reason: Key error {error}"
+                    else:
+                        errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
                 raise Exception(errorMsg)
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 self.__reset()

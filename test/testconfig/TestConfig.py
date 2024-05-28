@@ -2318,7 +2318,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Dotdict notation (ambiguous in this case)"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0550.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "is not available"
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not resolve expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
