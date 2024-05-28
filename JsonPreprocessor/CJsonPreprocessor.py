@@ -599,7 +599,7 @@ be substituted inside strings.")
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[[\s\']*[^{re.escape(self.specialCharacters)}]+[\'\s]*\])*'
             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
