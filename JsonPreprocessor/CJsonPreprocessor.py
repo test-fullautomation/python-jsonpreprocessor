@@ -583,8 +583,8 @@ be substituted inside strings.")
                         else:
                             sInputStr = sInputStr.replace("$$", "$")
                             var = var[0].replace("$$", "$")
-                            errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of variable \
-'{var}' have to 'int' or 'str'."
+                            errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of parameter \
+'{var}' has to be 'int' or 'str'."
                             self.__reset()
                             raise Exception(errorMsg)
                     else:
