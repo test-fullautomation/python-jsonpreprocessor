@@ -713,10 +713,10 @@ This method checks and creates new elements if they are not already existing.
                 except Exception as error: 
                     if "list indices must be integers" in str(error):
                         if keyNested != '':
-                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! \
+                            errorMsg = f"Could not set parameter '{keyNested}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
                         else:
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! \
+                            errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
                         self.__reset()
                         raise Exception(errorMsg)
@@ -731,7 +731,7 @@ Reason: {str(error).replace(' or slices', '')}"
                             self.__reset()
                             if keyNested != '':
                                 sKey = keyNested
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! Reason: {error}"
                             raise Exception(errorMsg)
             return True
 
@@ -788,7 +788,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                         exec(sExec)
                     except Exception as error:
                         self.__reset()
-                        errorMsg = f"Could not set variable '{keyNested}' with value '{v}'! Reason: {error}"
+                        errorMsg = f"Could not set parameter '{keyNested}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
                     if not recursive:
                         oJson[rootKey] = self.JPGlobals[rootKey]

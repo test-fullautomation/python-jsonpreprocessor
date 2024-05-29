@@ -2332,7 +2332,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "List indices must be of type 'int'"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0551.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set variable '${listval}['${intval}']' with value '4'! Reason: list indices must be integers"
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${listval}['${intval}']' with value '4'! Reason: list indices must be integers"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
