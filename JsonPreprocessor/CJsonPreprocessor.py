@@ -1201,6 +1201,41 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
+        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        if  not(os.path.isfile(jFile)):
+            self.__reset()
+            raise Exception(f"File '{jFile}' is not existing!")
+
+        self.lImportedFiles.append(jFile)
+        self.jsonPath = os.path.dirname(jFile)
+        try:
+            sJsonData= self.__load_and_removeComments(jFile)
+        except Exception as reason:
+            self.__reset()
+            raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
+        
+        return self.jsonLoads(sJsonData, jFile, masterFile)
+
+    def jsonLoads(self, sJsonpContent : str, jFile : str = '', masterFile : bool = True):
+        """
+``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
+
+**Arguments:**
+
+* ``sJsonpContent``
+
+  / *Condition*: required / *Type*: str /
+
+  The JSONP content.
+
+**Returns:**
+
+* ``oJson``
+
+  / *Type*: dict /
+
+  Preprocessed JSON content as Python dictionary
+        """
         def __handleDuplicatedKey(dInput : dict) -> dict:
             listKeys = list(dInput.keys())
             dictValues = {}
@@ -1269,21 +1304,8 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
-        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
-        if  not(os.path.isfile(jFile)):
-            self.__reset()
-            raise Exception(f"File '{jFile}' is not existing!")
-
-        self.lImportedFiles.append(jFile)
-        self.jsonPath = os.path.dirname(jFile)
-        try:
-            sJsonData= self.__load_and_removeComments(jFile)
-        except Exception as reason:
-            self.__reset()
-            raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
-
         sJsonDataUpdated = ""
-        for line in sJsonData.splitlines():
+        for line in sJsonpContent.splitlines():
             if line == '' or line.isspace():
                 continue
             try:
@@ -1414,13 +1436,16 @@ This function handle a last element of a list or dictionary
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                failedJsonDoc = self.__getFailedJsonDoc(error)
-                jsonException = "not defined"
-                if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{jFile}'"
+                if jFile != '':
+                    failedJsonDoc = self.__getFailedJsonDoc(error)
+                    jsonException = "not defined"
+                    if failedJsonDoc is None:
+                        jsonException = f"{error}\nIn file: '{jFile}'"
+                    else:
+                        jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                    raise Exception(jsonException)
                 else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
-                raise Exception(jsonException)
+                    raise Exception(error)
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -1431,13 +1456,16 @@ This function handle a last element of a list or dictionary
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            failedJsonDoc = self.__getFailedJsonDoc(error)
-            jsonException = "not defined"
-            if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{jFile}'"
+            if jFile != '':
+                failedJsonDoc = self.__getFailedJsonDoc(error)
+                jsonException = "not defined"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{jFile}'"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                raise Exception(jsonException)
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
-            raise Exception(jsonException)
+                raise Exception(error)
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
