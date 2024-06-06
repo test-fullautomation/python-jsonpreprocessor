@@ -187,8 +187,7 @@ Constructor
         self.specialCharacters = r'!@#$%^&*()+=[\]{}|;:\'",<>?/`~'
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = ''
-        self.handlingFile    = ''
-        self.bLoadFromFile   = False
+        self.masterFile      = ''
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.syntax          = syntax
@@ -230,8 +229,7 @@ Constructor
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
         self.jsonPath        = ''
-        self.handlingFile    = ''
-        self.bLoadFromFile   = False
+        self.masterFile      = ''
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
@@ -274,7 +272,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
 
                 # length of lImportedFiles should equal to recursive_level
-                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.bLoadFromFile else \
+                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile!='' else \
                                         self.lImportedFiles[:self.recursive_level-1]
                 if abs_path_file in self.lImportedFiles:
                     self.__reset()
@@ -1209,10 +1207,9 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
-        if masterFile:
-            self.bLoadFromFile = True
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
-        self.handlingFile = jFile
+        if masterFile:
+            self.masterFile = jFile
         if  not(os.path.isfile(jFile)):
             self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
@@ -1319,7 +1316,7 @@ This function handle a last element of a list or dictionary
             if not os.path.exists(self.jsonPath):
                 self.__reset()
                 raise Exception(f"Reference directory '{referenceDir}' is not existing!")
-        if not self.bLoadFromFile or not firstLevel:
+        if self.masterFile=='' or not firstLevel:
             try:
                 sJsonData= self.__load_and_removeComments(sJsonpContent, isFile=False)
             except Exception as reason:
@@ -1462,9 +1459,9 @@ This function handle a last element of a list or dictionary
                 failedJsonDoc = self.__getFailedJsonDoc(error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else f"{error}"
+                    jsonException = f"{error}\nIn file: '{self.masterFile}'" if self.masterFile!='' else f"{error}"
                 else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else \
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
                 raise Exception(jsonException)
             self.bDuplicatedKeys = True
@@ -1480,9 +1477,9 @@ This function handle a last element of a list or dictionary
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else f"{error}"
+                jsonException = f"{error}\nIn file: '{self.masterFile}'" if self.masterFile!='' else f"{error}"
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else \
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
                                 f"{error}\nNearby: '{failedJsonDoc}'"
             raise Exception(jsonException)
 
