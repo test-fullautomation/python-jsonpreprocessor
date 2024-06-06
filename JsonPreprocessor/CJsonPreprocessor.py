@@ -1455,7 +1455,6 @@ This function handle a last element of a list or dictionary
                                 cls=CJSONDecoder,
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
-                self.__reset()
                 failedJsonDoc = self.__getFailedJsonDoc(error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
@@ -1463,6 +1462,7 @@ This function handle a last element of a list or dictionary
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
+                self.__reset()
                 raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
@@ -1473,7 +1473,6 @@ This function handle a last element of a list or dictionary
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            self.__reset()
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if failedJsonDoc is None:
@@ -1481,6 +1480,7 @@ This function handle a last element of a list or dictionary
             else:
                 jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
                                 f"{error}\nNearby: '{failedJsonDoc}'"
+            self.__reset()
             raise Exception(jsonException)
 
         self.__checkDotInParamName(oJson)
