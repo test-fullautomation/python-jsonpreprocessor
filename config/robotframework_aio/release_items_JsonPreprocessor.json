@@ -127,6 +127,14 @@
   This code previously created a new parameter ``\"XYZ\"`` with value ``1``. Now an error message will be raised.
   
 * Improved error messages
+
+* Added ``jsonLoads`` method that allows users to directly parse JSONP content from strings
+
+  **Example:**
+
+  | ``jsonpStr = \u007b\"A\" : 1,\n \"[import]\" : \"./imported_file.jsonp\", // relative path of imported file \n \"B\" : 2\u007d``
+  | ``json_preprocessor = CJsonPreprocessor()``
+  | ``json_preprocessor.jsonLoads(jsonpStr, referenceDir=\"path_to_reference_dir\")``
 "
                             ]
                 }

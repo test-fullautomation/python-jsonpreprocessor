@@ -186,17 +186,19 @@ Constructor
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r'!@#$%^&*()+=[\]{}|;:\'",<>?/`~'
         self.lDataTypes.append(keyword.kwlist)
-        self.jsonPath = ''
-        self.lImportedFiles = []
+        self.jsonPath        = ''
+        self.handlingFile    = ''
+        self.bLoadFromFile   = False
+        self.lImportedFiles  = []
         self.recursive_level = 0
-        self.syntax = syntax
-        self.currentCfg = currentCfg
-        self.dUpdatedParams = {}
-        self.lNestedParams = []
+        self.syntax          = syntax
+        self.currentCfg      = currentCfg
+        self.dUpdatedParams  = {}
+        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
-        self.jsonCheck = {}
-        self.JPGlobals = {}
+        self.jsonCheck       = {}
+        self.JPGlobals       = {}
         self.pythonTypeError = ["object is not subscriptable", \
                                 "string indices must be integers", \
                                 "list indices must be integers", \
@@ -227,15 +229,17 @@ Constructor
         """
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
-        self.jsonPath = ''
-        self.lImportedFiles = []
+        self.jsonPath        = ''
+        self.handlingFile    = ''
+        self.bLoadFromFile   = False
+        self.lImportedFiles  = []
         self.recursive_level = 0
-        self.dUpdatedParams = {}
-        self.lNestedParams = []
+        self.dUpdatedParams  = {}
+        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
-        self.jsonCheck = {}
-        self.JPGlobals = {}
+        self.jsonCheck       = {}
+        self.JPGlobals       = {}
 
     def __processImportFiles(self, input_data : dict) -> dict:
         """
@@ -270,7 +274,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
 
                 # length of lImportedFiles should equal to recursive_level
-                self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
+                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.bLoadFromFile else \
+                                        self.lImportedFiles[:self.recursive_level-1]
                 if abs_path_file in self.lImportedFiles:
                     self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
@@ -342,7 +347,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             i+=1
         return out_dict
 
-    def __load_and_removeComments(self, jsonFile : str) -> str:
+    def __load_and_removeComments(self, jsonP : str, isFile = True) -> str:
         """
 Loads a given json file and filters all C/C++ style comments.
 
@@ -369,9 +374,12 @@ Loads a given json file and filters all C/C++ style comments.
             else:
                 return s
 
-        file=open(jsonFile, mode='r', encoding='utf-8')
-        sContent=file.read()
-        file.close()
+        if isFile:
+            file=open(jsonP, mode='r', encoding='utf-8')
+            sContent=file.read()
+            file.close()
+        else:
+            sContent = jsonP
 
         pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
         sContentCleaned=re.sub(pattern, replacer, sContent)
@@ -1201,7 +1209,10 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
+        if masterFile:
+            self.bLoadFromFile = True
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        self.handlingFile = jFile
         if  not(os.path.isfile(jFile)):
             self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
@@ -1213,10 +1224,9 @@ This method is the entry point of JsonPreprocessor.
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
-        
-        return self.jsonLoads(sJsonData, jFile, masterFile)
+        return self.jsonLoads(sJsonData, firstLevel=masterFile)
 
-    def jsonLoads(self, sJsonpContent : str, jFile : str = '', masterFile : bool = True):
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = '', firstLevel : bool = True):
         """
 ``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
 
@@ -1304,8 +1314,21 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
+        if referenceDir != '':
+            self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+            if not os.path.exists(self.jsonPath):
+                self.__reset()
+                raise Exception(f"Reference directory '{referenceDir}' is not existing!")
+        if not self.bLoadFromFile or not firstLevel:
+            try:
+                sJsonData= self.__load_and_removeComments(sJsonpContent, isFile=False)
+            except Exception as reason:
+                self.__reset()
+                raise Exception(f"Could not read JSONP content due to: '{reason}'!")
+        else:
+            sJsonData = sJsonpContent
         sJsonDataUpdated = ""
-        for line in sJsonpContent.splitlines():
+        for line in sJsonData.splitlines():
             if line == '' or line.isspace():
                 continue
             try:
@@ -1428,7 +1451,7 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
         # Load the temporary Json object without checking duplicated keys for 
         # verifying duplicated keys later.
-        if masterFile:
+        if firstLevel:
             self.bDuplicatedKeys = False
             try:
                 self.jsonCheck = json.loads(sJsonDataUpdated,
@@ -1436,16 +1459,14 @@ This function handle a last element of a list or dictionary
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
                 self.__reset()
-                if jFile != '':
-                    failedJsonDoc = self.__getFailedJsonDoc(error)
-                    jsonException = "not defined"
-                    if failedJsonDoc is None:
-                        jsonException = f"{error}\nIn file: '{jFile}'"
-                    else:
-                        jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
-                    raise Exception(jsonException)
+                failedJsonDoc = self.__getFailedJsonDoc(error)
+                jsonException = "not defined"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else f"{error}"
                 else:
-                    raise Exception(error)
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
+                raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -1456,20 +1477,19 @@ This function handle a last element of a list or dictionary
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             self.__reset()
-            if jFile != '':
-                failedJsonDoc = self.__getFailedJsonDoc(error)
-                jsonException = "not defined"
-                if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{jFile}'"
-                else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
-                raise Exception(jsonException)
+            failedJsonDoc = self.__getFailedJsonDoc(error)
+            jsonException = "not defined"
+            if failedJsonDoc is None:
+                jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else f"{error}"
             else:
-                raise Exception(error)
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile!='' else \
+                                f"{error}\nNearby: '{failedJsonDoc}'"
+            raise Exception(jsonException)
+
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
-        if masterFile:
+        if firstLevel:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
                 if re.match(r"^[0-9]+.*$", k) or re.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
