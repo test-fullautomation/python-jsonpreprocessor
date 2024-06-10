@@ -723,19 +723,26 @@ This method checks and creates new elements if they are not already existing.
                     sExec = sExec + f"['{element}']"
                 try:
                     exec(sExec)
-                except Exception as error: 
-                    if "list indices must be integers" in str(error):
+                except Exception as error:
+                    if isinstance(error, TypeError): # If Python's type errors occur when executing an expression
+                        for eType in self.pythonTypeError:
+                            if eType in str(error):
+                                if keyNested != '':
+                                    errorMsg = f"Could not set parameter '{keyNested}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
+                                else:
+                                    errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! \
+Reason: {str(error).replace(' or slices', '')}"
+                                self.__reset()
+                                raise Exception(errorMsg)
+                    elif isinstance(error, KeyError) and bCheck: # Check key error of the implicit creation of data structure
                         if keyNested != '':
-                            errorMsg = f"Could not set parameter '{keyNested}' with value '{value}'! \
-Reason: {str(error).replace(' or slices', '')}"
+                            errorMsg = f"Could not set parameter '{keyNested}' with value '{value}'! Reason: Key error {error}"
                         else:
-                            errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! \
-Reason: {str(error).replace(' or slices', '')}"
+                            errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! Reason: Key error {error}"
                         self.__reset()
                         raise Exception(errorMsg)
-                    if bCheck==True:
-                        return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
-                    else:
+                    if not bCheck: # if bCheck flag is False, this function will create a new data structure with default value is empty dict.
                         index = sExec.index("=")
                         sExec1 = sExec[index+1:].strip() + " = {}"
                         try:
@@ -913,7 +920,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 bCheckDynamicKey = False
                 keyNested = k
-                if k.count("${")>1:
+                if k.count("${")>1 and re.match(r'^\s*"\s*' + pattern + r'\s*"\s*$', k, re.UNICODE):
                     bCheckDynamicKey = True
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
                     re.search(r"\." + pattern + r"[\.}]+", keyNested, re.UNICODE):
@@ -964,11 +971,8 @@ Use the '<name> : <value>' syntax to create a new key.")
                             self.__reset()
                             raise Exception(f"Identified dynamic name of key '{keyNested}' that does not exist. But new keys can \
 only be created based on hard code names.")
-                if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
-                    self.__reset()
-                    raise Exception(f"The implicit creation of data structures based on parameters is not supported \
-(affected expression: '{keyNested}').")
-            
+                if bImplicitCreation:
+                    self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested)     
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
