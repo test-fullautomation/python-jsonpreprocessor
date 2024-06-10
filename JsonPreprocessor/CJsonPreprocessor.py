@@ -188,7 +188,7 @@ Constructor
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
-        self.handlingFile    = None
+        self.handlingFile    = []
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.syntax          = syntax
@@ -231,7 +231,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         """
         self.jsonPath        = None
         self.masterFile      = None
-        self.handlingFile    = None
+        self.handlingFile    = []
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
@@ -277,7 +277,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile is not None else \
                                         self.lImportedFiles[:self.recursive_level-1]
                 if abs_path_file in self.lImportedFiles:
-                    self.__reset()
+                    # self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
@@ -1221,7 +1221,7 @@ This method is the entry point of JsonPreprocessor.
   Preprocessed JSON file(s) as Python dictionary
         """
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
-        self.handlingFile = jFile
+        self.handlingFile.append(jFile)
         if masterFile:
             self.masterFile = jFile
         if  not(os.path.isfile(jFile)):
@@ -1484,9 +1484,9 @@ This function handle a last element of a list or dictionary
                 failedJsonDoc = self.__getFailedJsonDoc(error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else f"{error}"
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
                 else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else \
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
                 self.__reset()
                 raise Exception(jsonException)
@@ -1502,11 +1502,12 @@ This function handle a last element of a list or dictionary
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else f"{error}"
+                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else \
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                 f"{error}\nNearby: '{failedJsonDoc}'"
-            self.__reset()
+            if firstLevel:
+                self.__reset()
             raise Exception(jsonException)
 
         self.__checkDotInParamName(oJson)
