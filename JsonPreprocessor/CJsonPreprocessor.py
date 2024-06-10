@@ -186,8 +186,9 @@ Constructor
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r'!@#$%^&*()+=[\]{}|;:\'",<>?/`~'
         self.lDataTypes.append(keyword.kwlist)
-        self.jsonPath        = ''
-        self.masterFile      = ''
+        self.jsonPath        = None
+        self.masterFile      = None
+        self.handlingFile    = None
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.syntax          = syntax
@@ -228,8 +229,9 @@ Constructor
         """
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
-        self.jsonPath        = ''
-        self.masterFile      = ''
+        self.jsonPath        = None
+        self.masterFile      = None
+        self.handlingFile    = None
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
@@ -272,7 +274,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
 
                 # length of lImportedFiles should equal to recursive_level
-                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile!='' else \
+                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile is not None else \
                                         self.lImportedFiles[:self.recursive_level-1]
                 if abs_path_file in self.lImportedFiles:
                     self.__reset()
@@ -345,17 +347,23 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             i+=1
         return out_dict
 
-    def __load_and_removeComments(self, jsonP : str, isFile = True) -> str:
+    def __loadAndRemoveComments(self, jsonP : str, isFile = True) -> str:
         """
-Loads a given json file and filters all C/C++ style comments.
+Loads a given json file or json content and filters all C/C++ style comments.
 
 **Arguments:**
 
-* ``jsonFile``
+* ``jsonP``
 
   / *Condition*: required / *Type*: str /
 
-  Path of file to be processed.
+  Path of file to be processed or a JSONP content.
+
+* ``isFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Indicates the jsonP is a path of file or a JSONP content, default value is True.
 
 **Returns:**
 
@@ -401,7 +409,6 @@ Json object.
 
   / *Type*: str /
         """
-
         pattern = rf'\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}'
         lParams = re.findall(pattern, sInput, re.UNICODE)
         for param in lParams:
@@ -1199,6 +1206,12 @@ This method is the entry point of JsonPreprocessor.
 
   Path and name of main JSON file. The path can be absolute or relative and is also allowed to contain environment variables.
 
+* ``masterFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Identifies the entry level when loading JSONP file in comparison with imported files levels. Default value is True
+
 **Returns:**
 
 * ``oJson``
@@ -1208,6 +1221,7 @@ This method is the entry point of JsonPreprocessor.
   Preprocessed JSON file(s) as Python dictionary
         """
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        self.handlingFile = jFile
         if masterFile:
             self.masterFile = jFile
         if  not(os.path.isfile(jFile)):
@@ -1217,7 +1231,7 @@ This method is the entry point of JsonPreprocessor.
         self.lImportedFiles.append(jFile)
         self.jsonPath = os.path.dirname(jFile)
         try:
-            sJsonData= self.__load_and_removeComments(jFile)
+            sJsonData= self.__loadAndRemoveComments(jFile)
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
@@ -1234,6 +1248,18 @@ This method is the entry point of JsonPreprocessor.
   / *Condition*: required / *Type*: str /
 
   The JSONP content.
+
+* ``referenceDir``
+
+  / *Condition*: required / *Type*: str /
+
+  A reference path for loading imported files.
+
+* ``firstLevel``
+
+  / *Condition*: required / *Type*: bool /
+
+  Identifies the entry level when loading JSONP content in comparison with imported files levels.
 
 **Returns:**
 
@@ -1316,9 +1342,9 @@ This function handle a last element of a list or dictionary
             if not os.path.exists(self.jsonPath):
                 self.__reset()
                 raise Exception(f"Reference directory '{referenceDir}' is not existing!")
-        if self.masterFile=='' or not firstLevel:
+        if self.masterFile is None or not firstLevel:
             try:
-                sJsonData= self.__load_and_removeComments(sJsonpContent, isFile=False)
+                sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
             except Exception as reason:
                 self.__reset()
                 raise Exception(f"Could not read JSONP content due to: '{reason}'!")
@@ -1458,9 +1484,9 @@ This function handle a last element of a list or dictionary
                 failedJsonDoc = self.__getFailedJsonDoc(error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.masterFile}'" if self.masterFile!='' else f"{error}"
+                    jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else f"{error}"
                 else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
                 self.__reset()
                 raise Exception(jsonException)
@@ -1476,9 +1502,9 @@ This function handle a last element of a list or dictionary
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.masterFile}'" if self.masterFile!='' else f"{error}"
+                jsonException = f"{error}\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else f"{error}"
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.masterFile}'" if self.masterFile!='' else \
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile}'" if self.handlingFile is not None else \
                                 f"{error}\nNearby: '{failedJsonDoc}'"
             self.__reset()
             raise Exception(jsonException)
