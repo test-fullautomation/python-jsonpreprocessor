@@ -1090,7 +1090,7 @@ Checks nested parameter format.
             raise Exception(errorMsg)
         elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
             invalidElem = re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE)[0]
-            errorMsg = f"Invalid syntax! A sub-element '{invalidElem}' in {sInput.replace(CNameMangling.STRINGCONVERT.value, '').strip()} \
+            errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {sInput.replace(CNameMangling.STRINGCONVERT.value, '').strip()} \
 has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
