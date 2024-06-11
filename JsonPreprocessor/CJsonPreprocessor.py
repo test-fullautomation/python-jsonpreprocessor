@@ -616,6 +616,7 @@ be substituted inside strings.")
                         self.__reset()
                         raise Exception(errorMsg)
             if sInputStr==sLoopCheck:
+                self.__checkNestedParam(sInputStr)
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
@@ -1085,10 +1086,12 @@ Checks nested parameter format.
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
+            self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE) and \
-            CNameMangling.STRINGCONVERT.value in sInput:
-            errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
+        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
+            invalidElem = re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE)[0]
+            errorMsg = f"Invalid syntax! A sub-element '{invalidElem}' in {sInput.replace(CNameMangling.STRINGCONVERT.value, '').strip()} \
+has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
         elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
