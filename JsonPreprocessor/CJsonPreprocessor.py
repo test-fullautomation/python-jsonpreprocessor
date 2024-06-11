@@ -1134,8 +1134,8 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
                 else:
                     return True
             else:
-                if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
-                    errorMsg = f"Invalid parameter format: {sInput.strip()}"
+                if sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+                    errorMsg = f"Invalid parameter format: {sInput.strip()} - The brackets mismatch!!!"
                 else:
                     return True
             self.__reset()
