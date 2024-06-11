@@ -581,7 +581,6 @@ only simple data types are allowed to be substituted inside."
                 sVar = __handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
                 tmpValue = __getNestedValue(sVar)
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
-                    dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                     self.__reset()
                     raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
 value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
@@ -605,7 +604,10 @@ be substituted inside strings.")
                             self.__reset()
                             raise Exception(errorMsg)
                     else:
-                        sInputStr = sInputStr.replace(var[0], str(tmpValue))
+                        if bConvertToStr or sInputStr.count("$${")>1:
+                            sInputStr = sInputStr.replace(var[0], str(tmpValue))
+                        else:
+                            return tmpValue
                     if sInputStr==sLoopCheck1:
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{sNestedParam}'.")
