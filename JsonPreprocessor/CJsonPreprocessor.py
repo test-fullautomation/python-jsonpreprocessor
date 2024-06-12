@@ -611,7 +611,7 @@ be substituted inside strings.")
                     if sInputStr==sLoopCheck1:
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{sNestedParam}'.")
-                    elif re.search(r"\[\s*\-\d+\s*\]", sInputStr):
+                    elif re.search(r"\[\s*\+*\-+\+*\d+\s*\]", sInputStr):
                         errorMsg = f"Slicing is not supported! Please update the expression '{sNestedParam}'."
                         self.__reset()
                         raise Exception(errorMsg)
@@ -990,6 +990,14 @@ only be created based on hard code names.")
                         if v == sLoopCheck:
                             self.__reset()
                             raise Exception(f"Invalid expression found: '{initValue}'.")
+                    if isinstance(v, str) and re.search(r'\[[^\]]+\]', v):
+                        sExec = 'value = ' + v
+                        try:
+                            ldict = {}
+                            exec(sExec, locals(), ldict)
+                            v = ldict['value']
+                        except:
+                            pass
             if bDuplicatedHandle:
                 if "${" not in dupKey and parentParams != "":
                     sParams = parentParams + "['" + k + "']"
