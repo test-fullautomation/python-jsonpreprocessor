@@ -967,12 +967,12 @@ Use the '<name> : <value>' syntax to create a new key.")
                     try:
                         exec(sExec)
                     except Exception as error:
-                        if 'list indices must be integers' in str(error):
-                            pass
-                        else:
+                        if isinstance(error, KeyError):
                             self.__reset()
                             raise Exception(f"Identified dynamic name of key '{keyNested}' that does not exist. But new keys can \
 only be created based on hard code names.")
+                        else:
+                            pass
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on parameters is not supported \
