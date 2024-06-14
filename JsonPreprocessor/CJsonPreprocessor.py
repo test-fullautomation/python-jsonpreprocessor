@@ -295,7 +295,11 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 if self.bDuplicatedKeys:
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
-                        pattern2 = rf'\${{\s*[^{re.escape(self.specialCharacters)}]*\.*' + k1 + r'\s*}$|\[\s*\'' + k1 + r'\'\s*\]$'
+                        dReplacements = {"[" : "\[", "]" : "\]", "(" : "\(", ")" : "\)",\
+                                         "+" : "\+", "*" : "\*", "?" : "\?", "|" : "\|",\
+                                         "\\" : "\\\\", "^" : "\^", "." : "\."}
+                        keyPattern = self.__multipleReplace(k1, dReplacements)
+                        pattern2 = rf'\${{\s*[^{re.escape(self.specialCharacters)}]*\.*' + keyPattern + r'\s*}$|\[\s*\'' + keyPattern + r'\'\s*\]$'
                         if re.search(pattern2, key, re.UNICODE):
                             bCheck = True
                             dReplacements = {"${" : "", "}" : ""}
@@ -1042,7 +1046,11 @@ only be created based on hard code names.")
                     self.dUpdatedParams.pop(item)
                 if CNameMangling.DUPLICATEDKEY_01.value not in k:
                     self.dUpdatedParams.update({k:v})
-            if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
+            dReplacements = {"[" : "\[", "]" : "\]", "(" : "\(", ")" : "\)",\
+                                "+" : "\+", "*" : "\*", "?" : "\?", "|" : "\|",\
+                                "\\" : "\\\\", "^" : "\^", "." : "\."}
+            keyPattern = self.__multipleReplace(k, dReplacements)
+            if re.match(r"^.+\['" + keyPattern + r"'\]$", parentParams, re.UNICODE):
                 parentParams = re.sub("\['" + k + "'\]", "", parentParams)
             if not recursive:
                 parentParams = ''
@@ -1088,6 +1096,19 @@ Checks nested parameter format.
         pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
         pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
+        # Checks special character in parameters
+        sTmpInput = sInput
+        bSpecialCharInParam = False
+        while sTmpInput.count("${") > 1:
+            lParams = re.findall(r'\${([^\$}]*)}', sTmpInput)
+            for param in lParams:
+                if param.strip()=='' or re.search(r'[!@#\$%\^&\*\(\)=\[\]{}|;:\s\+\'",<>?/`~]', param) or \
+                                        re.match(r'^\s*\-+.*\s*$', param) or re.match(r'^\s*[^\-]*\-+\s*$', param):
+                    bSpecialCharInParam = True
+                    break
+                sTmpInput = sTmpInput.replace('${' + param + '}', '')
+            if bSpecialCharInParam:
+                break
         if "${" not in sInput:
             return True
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
@@ -1111,7 +1132,7 @@ Reason: A pair of square brackets is empty or contains not allowed characters."
                 raise Exception(errorMsg)
             else:
                 return True
-        elif re.search(r'\${[!@#\$%\^&\*\(\)=\[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
+        elif bSpecialCharInParam:
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of curly brackets is empty or contains not allowed characters."
