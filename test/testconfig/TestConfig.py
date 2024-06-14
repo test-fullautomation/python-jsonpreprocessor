@@ -2629,7 +2629,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1050.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict.B}['${name}']' with value '2'! Reason: Key error 'B'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2643,7 +2643,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1051.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict.B.${name}}' with value '2'! Reason: Key error 'B'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2657,7 +2657,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1052.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict}['${name}']['${name}']' with value '2'! Reason: Key error 'C'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2713,7 +2713,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1056.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict.${name}}['${name}']' with value '5'! Reason: Key error 'C'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2727,7 +2727,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict}[${name}][${name}]' with value '4'! Reason: Key error 'C'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2741,7 +2741,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1058.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Could not set parameter '${testdict.${name}}['${name}']' with value '5'! Reason: Key error 'C'" # Updated based on enhancement 301
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
