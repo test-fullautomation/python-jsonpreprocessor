@@ -186,20 +186,23 @@ Constructor
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r'!@#$%^&*()+=[\]{}|;:\'",<>?/`~'
         self.lDataTypes.append(keyword.kwlist)
-        self.jsonPath = ''
-        self.lImportedFiles = []
+        self.jsonPath        = None
+        self.masterFile      = None
+        self.handlingFile    = []
+        self.lImportedFiles  = []
         self.recursive_level = 0
-        self.syntax = syntax
-        self.currentCfg = currentCfg
-        self.dUpdatedParams = {}
-        self.lNestedParams = []
+        self.syntax          = syntax
+        self.currentCfg      = currentCfg
+        self.dUpdatedParams  = {}
+        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
-        self.jsonCheck = {}
-        self.JPGlobals = {}
+        self.jsonCheck       = {}
+        self.JPGlobals       = {}
         self.pythonTypeError = ["object is not subscriptable", \
                                 "string indices must be integers", \
-                                "list indices must be integers"]
+                                "list indices must be integers", \
+                                "index out of range"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
         failedJsonDoc = None
@@ -226,15 +229,17 @@ Constructor
         """
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
-        self.jsonPath = ''
-        self.lImportedFiles = []
+        self.jsonPath        = None
+        self.masterFile      = None
+        self.handlingFile    = []
+        self.lImportedFiles  = []
         self.recursive_level = 0
-        self.dUpdatedParams = {}
-        self.lNestedParams = []
+        self.dUpdatedParams  = {}
+        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
-        self.jsonCheck = {}
-        self.JPGlobals = {}
+        self.jsonCheck       = {}
+        self.JPGlobals       = {}
 
     def __processImportFiles(self, input_data : dict) -> dict:
         """
@@ -269,9 +274,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 self.recursive_level = self.recursive_level + 1     # increase recursive level
 
                 # length of lImportedFiles should equal to recursive_level
-                self.lImportedFiles = self.lImportedFiles[:self.recursive_level]
+                self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile is not None else \
+                                        self.lImportedFiles[:self.recursive_level-1]
                 if abs_path_file in self.lImportedFiles:
-                    self.__reset()
+                    # self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                 oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
@@ -289,7 +295,11 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 if self.bDuplicatedKeys:
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
-                        pattern2 = rf'\${{\s*[^{re.escape(self.specialCharacters)}]*\.*' + k1 + r'\s*}$|\[\s*\'' + k1 + r'\'\s*\]$'
+                        dReplacements = {"[" : "\[", "]" : "\]", "(" : "\(", ")" : "\)",\
+                                         "+" : "\+", "*" : "\*", "?" : "\?", "|" : "\|",\
+                                         "\\" : "\\\\", "^" : "\^", "." : "\."}
+                        keyPattern = self.__multipleReplace(k1, dReplacements)
+                        pattern2 = rf'\${{\s*[^{re.escape(self.specialCharacters)}]*\.*' + keyPattern + r'\s*}$|\[\s*\'' + keyPattern + r'\'\s*\]$'
                         if re.search(pattern2, key, re.UNICODE):
                             bCheck = True
                             dReplacements = {"${" : "", "}" : ""}
@@ -341,17 +351,23 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             i+=1
         return out_dict
 
-    def __load_and_removeComments(self, jsonFile : str) -> str:
+    def __loadAndRemoveComments(self, jsonP : str, isFile = True) -> str:
         """
-Loads a given json file and filters all C/C++ style comments.
+Loads a given json file or json content and filters all C/C++ style comments.
 
 **Arguments:**
 
-* ``jsonFile``
+* ``jsonP``
 
   / *Condition*: required / *Type*: str /
 
-  Path of file to be processed.
+  Path of file to be processed or a JSONP content.
+
+* ``isFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Indicates the jsonP is a path of file or a JSONP content, default value is True.
 
 **Returns:**
 
@@ -368,9 +384,12 @@ Loads a given json file and filters all C/C++ style comments.
             else:
                 return s
 
-        file=open(jsonFile, mode='r', encoding='utf-8')
-        sContent=file.read()
-        file.close()
+        if isFile:
+            file=open(jsonP, mode='r', encoding='utf-8')
+            sContent=file.read()
+            file.close()
+        else:
+            sContent = jsonP
 
         pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
         sContentCleaned=re.sub(pattern, replacer, sContent)
@@ -394,7 +413,6 @@ Json object.
 
   / *Type*: str /
         """
-
         pattern = rf'\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}'
         lParams = re.findall(pattern, sInput, re.UNICODE)
         for param in lParams:
@@ -518,11 +536,15 @@ This method handles nested variables in parameter names or values. Variable synt
                     errorMsg = errorMsg + f" Reason: {error}" if ' or slices' not in str(error) else \
                                 errorMsg + f" Reason: {str(error).replace(' or slices', '')}"
                 else:
-                    errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                    if isinstance(error, KeyError) and re.search(r"\[\s*" + str(error) + "\s*\]", sNestedParam):
+                        errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'. \
+Reason: Key error {error}"
+                    else:
+                        errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
                 raise Exception(errorMsg)
             if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                 self.__reset()
-                errorMsg = f"Found expression '{sNestedParam.replace('$$', '$')}' with at least one parameter of composite data type \
+                errorMsg = f"Found parameter '{sNestedParam.replace('$$', '$')}' of composite data type \
 ('{sNestedParam.replace('$$', '$')}' is of type {type(tmpValue)}). Because of this expression is the name of a parameter, \
 only simple data types are allowed to be substituted inside."
                 raise Exception(errorMsg)
@@ -563,7 +585,6 @@ only simple data types are allowed to be substituted inside."
                 sVar = __handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
                 tmpValue = __getNestedValue(sVar)
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
-                    dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                     self.__reset()
                     raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
 value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
@@ -582,24 +603,28 @@ be substituted inside strings.")
                         else:
                             sInputStr = sInputStr.replace("$$", "$")
                             var = var[0].replace("$$", "$")
-                            errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of variable \
-'{var}' have to 'int' or 'str'."
+                            errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of parameter \
+'{var}' has to be 'int' or 'str'."
                             self.__reset()
                             raise Exception(errorMsg)
                     else:
-                        sInputStr = sInputStr.replace(var[0], str(tmpValue))
+                        if bConvertToStr or sInputStr.count("$${")>1:
+                            sInputStr = sInputStr.replace(var[0], str(tmpValue))
+                        else:
+                            return tmpValue
                     if sInputStr==sLoopCheck1:
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{sNestedParam}'.")
-                    elif re.search(r"\[\s*\-\d+\s*\]", sInputStr):
+                    elif re.search(r"\[\s*\+*\-+\+*\d+\s*\]", sInputStr):
                         errorMsg = f"Slicing is not supported! Please update the expression '{sNestedParam}'."
                         self.__reset()
                         raise Exception(errorMsg)
             if sInputStr==sLoopCheck:
+                self.__checkNestedParam(sInputStr)
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[[\s\']*[^{re.escape(self.specialCharacters)}]+[\'\s]*\])*'
             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = __handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
@@ -705,19 +730,21 @@ This method checks and creates new elements if they are not already existing.
                     sExec = sExec + f"['{element}']"
                 try:
                     exec(sExec)
-                except Exception as error: 
-                    if "list indices must be integers" in str(error):
-                        if keyNested != '':
-                            errorMsg = f"Could not set variable '{keyNested}' with value '{value}'! \
+                except Exception as error:
+                    if isinstance(error, TypeError): # If Python's type errors occur when executing an expression
+                        for eType in self.pythonTypeError:
+                            if eType in str(error):
+                                if keyNested != '':
+                                    errorMsg = f"Could not set parameter '{keyNested}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
-                        else:
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! \
+                                else:
+                                    errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
-                        self.__reset()
-                        raise Exception(errorMsg)
-                    if bCheck==True:
-                        return False   # Return 'False' when detected implicit creation of data structures based on nested parameters.
-                    else:
+                                self.__reset()
+                                raise Exception(errorMsg)
+                    if bCheck:
+                        return False
+                    else: # if bCheck flag is False, this function will create a new data structure with default value is empty dict.
                         index = sExec.index("=")
                         sExec1 = sExec[index+1:].strip() + " = {}"
                         try:
@@ -726,11 +753,12 @@ Reason: {str(error).replace(' or slices', '')}"
                             self.__reset()
                             if keyNested != '':
                                 sKey = keyNested
-                            errorMsg = f"Could not set variable '{sKey}' with value '{value}'! Reason: {error}"
+                            errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! Reason: {error}"
                             raise Exception(errorMsg)
             return True
 
-    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, parentParams : str = ''):
+    def __updateAndReplaceNestedParam(self, oJson : dict, bNested : bool = False, recursive : bool = False, \
+                                      parentParams : str = '', bDictInList : bool = False):
         """
 This method replaces all nested parameters in key and value of a JSON object .
 
@@ -782,7 +810,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                         exec(sExec)
                     except Exception as error:
                         self.__reset()
-                        errorMsg = f"Could not set variable '{keyNested}' with value '{v}'! Reason: {error}"
+                        errorMsg = f"Could not set parameter '{keyNested}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
                     if not recursive:
                         oJson[rootKey] = self.JPGlobals[rootKey]
@@ -835,8 +863,16 @@ This method replaces all nested parameters in key and value of a JSON object .
                             raise Exception(f"Invalid expression found: '{initItem}'.")
                 elif isinstance(item, list) and "${" in str(item):
                     item = __handleList(item, bNested)
-                elif isinstance(item, dict) and "${" in str(item):
-                    item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True)
+                elif isinstance(item, dict):
+                    tmpItem = copy.deepcopy(item)
+                    for key, value in tmpItem.items():
+                        if isinstance(value, list) and value[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                            item[key] = value[-1]
+                        if CNameMangling.DUPLICATEDKEY_01.value in key:
+                            item.pop(key)
+                    del tmpItem
+                    if "${" in str(item):
+                        item, bNested = self.__updateAndReplaceNestedParam(item, bNested, recursive=True, bDictInList=True)
                 tmpValue.append(item)
             return tmpValue
 
@@ -886,7 +922,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             elif re.match(r"^\s*" + pattern + r"\s*$", k, re.UNICODE):
                 bCheckDynamicKey = False
                 keyNested = k
-                if k.count("${")>1:
+                if k.count("${")>1 and re.match(r'^\s*"*\s*' + pattern + r'\s*"*\s*$', k, re.UNICODE):
                     bCheckDynamicKey = True
                 if re.search(r"\[\s*'*" + pattern + r"'*\s*\]", keyNested, re.UNICODE) or \
                     re.search(r"\." + pattern + r"[\.}]+", keyNested, re.UNICODE):
@@ -894,10 +930,27 @@ This method replaces all nested parameters in key and value of a JSON object .
                 k = re.sub("\$", "$$", k)
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
-                sExec = 'dummyData = self.JPGlobals'
+                sExec = 'dummyData = self.JPGlobals' if not bDictInList else 'dummyData = oJson'
+                # Check digits inside a square brackets indicating a key name of a dict or index of a list
+                while re.search(r'\[\d+\]', k):
+                    tmpK = re.sub(r'\[\d+\].*$', '', k)
+                    tmpK = re.sub(r'_listIndex_', '', tmpK)
+                    sTmpExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
+                                    re.sub(r'^\s*([^\[]+)', "['\\1']", tmpK)
+                    try:
+                        ldict = {}
+                        exec(sTmpExec, locals(), ldict)
+                    except:
+                        pass
+                    if len(ldict)>0 and isinstance(ldict['dummyData'], dict):
+                        k = re.sub(r'\[(\d+)\]', "['\\1']", k, count=1) # if it a key name, put inside single quotes
+                    else:
+                        k = re.sub(r'\[(\d+)\]', "[\\1_listIndex_]", k, count=1) # add temporary suffix to the index due to while condition
+                if '_listIndex_' in k:
+                    k = re.sub(r'_listIndex_', '', k)
                 dReplacements = {"[":"\[", "]":"\]", ".":"\.", "-":"\-"}
                 tmpPattern = self.__multipleReplace(parentParams, dReplacements)
-                if parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k):
+                if (parentParams != '' and not re.match(r'^'+tmpPattern+r'.+$', k)) or bDictInList:
                     tmpParam = re.sub(r'^\s*([^\[]+)', "${\\1}", parentParams) + re.sub(r'^\s*([^\[]+)', "['\\1']", k)
                     sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
                                     re.sub(r'^\s*([^\[]+)\[*.*$', "['\\1']", k)
@@ -906,25 +959,24 @@ This method replaces all nested parameters in key and value of a JSON object .
                         exec(sExec)
                     except:
                         self.__reset()
-                        raise Exception(f"Could not set the value for parameter '{keyNested}'.\nPlease set this parameter with \
-an absolute path, for example: '{tmpParam}'")
+                        raise Exception(f"A key with name '{keyNested}' does not exist at this position. \
+Use the '<name> : <value>' syntax to create a new key.")
                 elif bCheckDynamicKey:
                     sExec = sExec + re.sub(r'^\s*([^\[]+)', "['\\1']", parentParams) + \
                                     re.sub(r'^\s*([^\[]+)', "['\\1']", k)
                     try:
                         exec(sExec)
                     except Exception as error:
-                        if 'list indices must be integers' in str(error):
-                            pass
-                        else:
+                        if isinstance(error, KeyError):
                             self.__reset()
                             raise Exception(f"Identified dynamic name of key '{keyNested}' that does not exist. But new keys can \
 only be created based on hard code names.")
+                        else:
+                            pass
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
-                    raise Exception(f"The implicit creation of data structures based on parameter is not supported. \
-New parameter '{k}' could not be created by the expression '{keyNested}'")
-            
+                    raise Exception(f"The implicit creation of data structures based on parameters is not supported \
+(affected expression: '{keyNested}').")
             if isinstance(v, dict):
                 v, bNested = self.__updateAndReplaceNestedParam(v, bNested, recursive=True, parentParams=parentParams)
             elif isinstance(v, list):
@@ -939,6 +991,14 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                         if v == sLoopCheck:
                             self.__reset()
                             raise Exception(f"Invalid expression found: '{initValue}'.")
+                    if isinstance(v, str) and re.search(r'\[[^\]]+\]', v):
+                        sExec = 'value = ' + v
+                        try:
+                            ldict = {}
+                            exec(sExec, locals(), ldict)
+                            v = ldict['value']
+                        except:
+                            pass
             if bDuplicatedHandle:
                 if "${" not in dupKey and parentParams != "":
                     sParams = parentParams + "['" + k + "']"
@@ -983,7 +1043,11 @@ New parameter '{k}' could not be created by the expression '{keyNested}'")
                     self.dUpdatedParams.pop(item)
                 if CNameMangling.DUPLICATEDKEY_01.value not in k:
                     self.dUpdatedParams.update({k:v})
-            if re.match(r"^.+\['" + k + r"'\]$", parentParams, re.UNICODE):
+            dReplacements = {"[" : "\[", "]" : "\]", "(" : "\(", ")" : "\)",\
+                                "+" : "\+", "*" : "\*", "?" : "\?", "|" : "\|",\
+                                "\\" : "\\\\", "^" : "\^", "." : "\."}
+            keyPattern = self.__multipleReplace(k, dReplacements)
+            if re.match(r"^.+\['" + keyPattern + r"'\]$", parentParams, re.UNICODE):
                 parentParams = re.sub("\['" + k + "'\]", "", parentParams)
             if not recursive:
                 parentParams = ''
@@ -1029,16 +1093,31 @@ Checks nested parameter format.
         pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
         pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
+        # Checks special character in parameters
+        sTmpInput = sInput
+        bSpecialCharInParam = False
+        while sTmpInput.count("${") > 1:
+            lParams = re.findall(r'\${([^\$}]*)}', sTmpInput)
+            for param in lParams:
+                if param.strip()=='' or re.search(r'[!@#\$%\^&\*\(\)=\[\]{}|;:\s\+\'",<>?/`~]', param) or \
+                                        re.match(r'^\s*\-+.*\s*$', param) or re.match(r'^\s*[^\-]*\-+\s*$', param):
+                    bSpecialCharInParam = True
+                    break
+                sTmpInput = sTmpInput.replace('${' + param + '}', '')
+            if bSpecialCharInParam:
+                break
         if "${" not in sInput:
             return True
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
+            self.__reset()
             raise Exception(errorMsg)
-        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE) and \
-            CNameMangling.STRINGCONVERT.value in sInput:
-            errorMsg = f"Invalid syntax! A sub-element in {sInput.strip()} has to enclosed in quotes."
+        elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
+            invalidElem = re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE)[0]
+            errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {sInput.replace(CNameMangling.STRINGCONVERT.value, '').strip()} \
+has to enclosed in quotes."
             self.__reset()
             raise Exception(errorMsg)
         elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
@@ -1050,7 +1129,7 @@ Reason: A pair of square brackets is empty or contains not allowed characters."
                 raise Exception(errorMsg)
             else:
                 return True
-        elif re.search(r'\${[!@#\$%\^&\*\(\)=\[\]{}|;:\s\-\+\'",<>?/`~]*}', sInput):
+        elif bSpecialCharInParam:
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of curly brackets is empty or contains not allowed characters."
@@ -1086,8 +1165,8 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
                 else:
                     return True
             else:
-                if sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
-                    errorMsg = f"Invalid parameter format: {sInput.strip()}"
+                if sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+                    errorMsg = f"Invalid parameter format: {sInput.strip()} - The brackets mismatch!!!"
                 else:
                     return True
             self.__reset()
@@ -1162,6 +1241,12 @@ This method is the entry point of JsonPreprocessor.
 
   Path and name of main JSON file. The path can be absolute or relative and is also allowed to contain environment variables.
 
+* ``masterFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Identifies the entry level when loading JSONP file in comparison with imported files levels. Default value is True
+
 **Returns:**
 
 * ``oJson``
@@ -1169,6 +1254,55 @@ This method is the entry point of JsonPreprocessor.
   / *Type*: dict /
 
   Preprocessed JSON file(s) as Python dictionary
+        """
+        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        self.handlingFile.append(jFile)
+        if masterFile:
+            self.masterFile = jFile
+        if  not(os.path.isfile(jFile)):
+            self.__reset()
+            raise Exception(f"File '{jFile}' is not existing!")
+
+        self.lImportedFiles.append(jFile)
+        self.jsonPath = os.path.dirname(jFile)
+        try:
+            sJsonData= self.__loadAndRemoveComments(jFile)
+        except Exception as reason:
+            self.__reset()
+            raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
+        return self.jsonLoads(sJsonData, firstLevel=masterFile)
+
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = '', firstLevel : bool = True):
+        """
+``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
+
+**Arguments:**
+
+* ``sJsonpContent``
+
+  / *Condition*: required / *Type*: str /
+
+  The JSONP content.
+
+* ``referenceDir``
+
+  / *Condition*: required / *Type*: str /
+
+  A reference path for loading imported files.
+
+* ``firstLevel``
+
+  / *Condition*: required / *Type*: bool /
+
+  Identifies the entry level when loading JSONP content in comparison with imported files levels.
+
+**Returns:**
+
+* ``oJson``
+
+  / *Type*: dict /
+
+  Preprocessed JSON content as Python dictionary
         """
         def __handleDuplicatedKey(dInput : dict) -> dict:
             listKeys = list(dInput.keys())
@@ -1234,22 +1368,23 @@ This function handle a last element of a list or dictionary
                 tmpPattern = self.__multipleReplace(sParam, dReplacements)
                 sInput = re.sub(r'(' + tmpPattern + r')', '"\\1"', sInput)
             else:
-                sInput = '"' + sInput.strip() + '"'
+                sParam = re.findall(r'^[{\[\s*]*(.+)$', sInput.strip())[0]
+                sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
-        jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
-        if  not(os.path.isfile(jFile)):
-            self.__reset()
-            raise Exception(f"File '{jFile}' is not existing!")
-
-        self.lImportedFiles.append(jFile)
-        self.jsonPath = os.path.dirname(jFile)
-        try:
-            sJsonData= self.__load_and_removeComments(jFile)
-        except Exception as reason:
-            self.__reset()
-            raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
-
+        if referenceDir != '':
+            self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+            if not os.path.exists(self.jsonPath):
+                self.__reset()
+                raise Exception(f"Reference directory '{referenceDir}' is not existing!")
+        if self.masterFile is None or not firstLevel:
+            try:
+                sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
+            except Exception as reason:
+                self.__reset()
+                raise Exception(f"Could not read JSONP content due to: '{reason}'!")
+        else:
+            sJsonData = sJsonpContent
         sJsonDataUpdated = ""
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
@@ -1374,20 +1509,21 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
         # Load the temporary Json object without checking duplicated keys for 
         # verifying duplicated keys later.
-        if masterFile:
+        if firstLevel:
             self.bDuplicatedKeys = False
             try:
                 self.jsonCheck = json.loads(sJsonDataUpdated,
                                 cls=CJSONDecoder,
                                 object_pairs_hook=self.__processImportFiles)
             except Exception as error:
-                self.__reset()
                 failedJsonDoc = self.__getFailedJsonDoc(error)
                 jsonException = "not defined"
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{jFile}'"
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
                 else:
-                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
+                self.__reset()
                 raise Exception(jsonException)
             self.bDuplicatedKeys = True
 
@@ -1398,18 +1534,21 @@ This function handle a last element of a list or dictionary
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
-            self.__reset()
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{jFile}'"
+                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{jFile}'"
+                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                f"{error}\nNearby: '{failedJsonDoc}'"
+            if firstLevel:
+                self.__reset()
             raise Exception(jsonException)
+
         self.__checkDotInParamName(oJson)
         __checkKeynameFormat(oJson)
 
-        if masterFile:
+        if firstLevel:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
                 if re.match(r"^[0-9]+.*$", k) or re.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
