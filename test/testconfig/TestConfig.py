@@ -2671,7 +2671,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1053.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${somethingnotexisting}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2685,7 +2685,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1054.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid dictionary key in expression '${testdict.${testdict}}['${name}']'. The datatype of parameter '${testdict}' has to be 'str'."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2699,7 +2699,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1055.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid list index in expression '${testlist.${testlist}}['${name}']'. The datatype of parameter '${testlist}' has to be 'int'."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

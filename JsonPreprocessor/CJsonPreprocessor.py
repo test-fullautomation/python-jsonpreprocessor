@@ -542,16 +542,24 @@ Reason: Key error {error}"
                     else:
                         errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
                 raise Exception(errorMsg)
-            if bKey and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
-                self.__reset()
-                errorMsg = f"Found parameter '{sNestedParam.replace('$$', '$')}' of composite data type \
-('{sNestedParam.replace('$$', '$')}' is of type {type(tmpValue)}). Because of this expression is the name of a parameter, \
-only simple data types are allowed to be substituted inside."
-                raise Exception(errorMsg)
             return tmpValue
         
         def __handleDotInNestedParam(sNestedParam : str) -> str:
-            ddVar = re.sub(r'\$\${\s*(.*?)\s*}', '\\1', sNestedParam, re.UNICODE)
+            while sNestedParam.count('.$${') > 1:
+                sTmpParam = re.search(r'\$\${[^\$]+\.\$\${[^\.\$}]*}(\[.*\])*}(\[.*\])*', sNestedParam)
+                if sTmpParam is None or sTmpParam[0]==sNestedParam :
+                    break
+                sTmpParam = sTmpParam[0]
+                sHandleTmpParam = __handleDotInNestedParam(sTmpParam)
+                sNestedParam = sNestedParam.replace(sTmpParam, sHandleTmpParam)
+            sRootParam = ''
+            sIndex = ''
+            if re.search(r'\[.*\]\s*$', sNestedParam):
+                sRootParam = re.search(r'(^[^\[]+)', sNestedParam)[0]
+                sIndex = sNestedParam.replace(sRootParam, '')
+            if sRootParam == '':
+                sRootParam = sNestedParam
+            ddVar = re.sub(r'^\s*\$\${\s*(.*?)\s*}\s*$', '\\1', sRootParam, re.UNICODE)
             lddVar = ddVar.split(".")
             lElements = self.__handleDotdictFormat(lddVar, [])
             sVar = '$${' + lElements[0] + '}'
@@ -559,10 +567,13 @@ only simple data types are allowed to be substituted inside."
             for item in lElements:
                 if re.match(r'^\d+$', item):
                     sVar = sVar + "[" + item + "]"
-                elif re.search(r'[{}\[\]\(\)]+', item) and "${" not in item:
+                elif (re.search(r'[{}\[\]\(\)]+', item) and "${" not in item) or \
+                    re.match(r'^\s*\$\${.+}(\[.*\])*\s*$', item):
                     sVar = sVar + "[" + item + "]"
                 else:
                     sVar = sVar + "['" + item + "']"
+            if sIndex != '':
+                sVar = sVar + sIndex
             return sVar
 
         pattern = rf'\$\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}'
@@ -576,6 +587,8 @@ only simple data types are allowed to be substituted inside."
                 sInputStr = sInputStr.replace(var, sVar)
         tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
         sNestedParam = sInputStr.replace("$$", "$")
+        if "." in sInputStr and not bConvertToStr:
+            sInputStr = __handleDotInNestedParam(sInputStr)
         while re.search(tmpPattern, sInputStr, re.UNICODE) and sInputStr.count("$$")>1:
             sLoopCheck = sInputStr
             referVars = re.findall(r'(' + tmpPattern + r')[^\[]', sInputStr, re.UNICODE)
@@ -587,7 +600,7 @@ only simple data types are allowed to be substituted inside."
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
                     self.__reset()
                     raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
+value '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot \
 be substituted inside strings.")
                 while var[0] in sInputStr:
                     sLoopCheck1 = sInputStr
@@ -601,10 +614,27 @@ be substituted inside strings.")
                         elif isinstance(tmpValue, int):
                             sInputStr = re.sub(r"\[['\s]*" + varPattern + r"['\s]*\]", "[" + str(tmpValue) + "]", sInputStr)
                         else:
-                            sInputStr = sInputStr.replace("$$", "$")
                             var = var[0].replace("$$", "$")
-                            errorMsg = f"Invalid index or dictionary key in parameter '{sInputStr}'. The datatype of parameter \
-'{var}' has to be 'int' or 'str'."
+                            sParentParam = re.search(r'^\s*(.+)\[[\s\']*' + varPattern + r'.*$', sInputStr)[1]
+                            parentValue = None
+                            try:
+                                parentValue = __getNestedValue(sParentParam)
+                            except Exception as error:
+                                errorMsg = str(error) + f" Could not resolve expression '{sNestedParam}'."
+                                pass
+                            if parentValue is not None:
+                                if isinstance(parentValue, list):
+                                    errorMsg = f"Invalid list index in expression '{sNestedParam}'. The datatype of parameter \
+'{var}' has to be 'int'."
+                                elif isinstance(parentValue, dict):
+                                    errorMsg = f"Invalid dictionary key in expression '{sNestedParam}'. The datatype of parameter \
+'{var}' has to be 'str'."
+                                else:
+                                    try:
+                                        dummyValue = __getNestedValue(sInputStr)
+                                    except Exception as error:
+                                        errorMsg = str(error) + f", please check parameter '{var}'!"
+                                        pass
                             self.__reset()
                             raise Exception(errorMsg)
                     else:
@@ -661,7 +691,7 @@ be substituted inside strings.")
                 dataType = re.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
                 raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sInputStr.replace('$$', '$')}' is not supported! Composite data types like lists and dictionaries cannot \
+value '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot \
 be substituted inside strings.")
             if re.match(r"^\s*" + tmpPattern + r"\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
