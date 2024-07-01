@@ -633,7 +633,7 @@ be substituted inside strings.")
                                     try:
                                         dummyValue = __getNestedValue(sInputStr)
                                     except Exception as error:
-                                        errorMsg = str(error) + f", please check parameter '{var}'!"
+                                        errorMsg = str(error)
                                         pass
                             self.__reset()
                             raise Exception(errorMsg)
