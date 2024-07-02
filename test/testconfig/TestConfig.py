@@ -1519,7 +1519,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0353.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1533,7 +1533,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0354.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1547,7 +1547,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0355.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1561,7 +1561,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0356.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1589,7 +1589,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 6"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0358.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing" # wording to be improved (issues/109)
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression" # wording to be improved (issues/109)
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1617,7 +1617,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 8"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0360.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

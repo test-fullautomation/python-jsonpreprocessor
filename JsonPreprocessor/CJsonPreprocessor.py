@@ -1138,54 +1138,36 @@ Checks nested parameter format.
                 break
         if "${" not in sInput:
             return True
+        errorMsg = None
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
-            self.__reset()
-            raise Exception(errorMsg)
         elif re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE):
             invalidElem = re.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, re.UNICODE)[0]
             errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {sInput.replace(CNameMangling.STRINGCONVERT.value, '').strip()} \
 has to enclosed in quotes."
-            self.__reset()
-            raise Exception(errorMsg)
         elif re.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of square brackets is empty or contains not allowed characters."
-                self.__reset()
-                raise Exception(errorMsg)
             else:
                 return True
         elif bSpecialCharInParam:
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of curly brackets is empty or contains not allowed characters."
-                self.__reset()
-                raise Exception(errorMsg)
             else:
                 return True
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
             errorMsg = f"Slicing is not supported! Please update the expression '{sInput}'."
-            self.__reset()
-            raise Exception(errorMsg)
-        elif CNameMangling.STRINGCONVERT.value in sInput:
-            if sInput.count("${") > sInput.count("}"):
-                sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
-                errorMsg = f"Invalid syntax! One or more than one opened or closed curly bracket is missing in expression '{sInput.strip()}'."
-                self.__reset()
-                raise Exception(errorMsg)
-            else:
-                return True
-        elif re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput) and \
-            sInput.count("${") > sInput.count("}"):
-            errorMsg = f"Invalid parameter format: {sInput.strip()} - Closed curly bracket is missing."
-            self.__reset()
-            raise Exception(errorMsg)
+        elif sInput.count("${") > sInput.count("}") and (CNameMangling.STRINGCONVERT.value in sInput or \
+                                                         re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput)):
+            sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
+            errorMsg = f"Invalid syntax! One or more than one closed curly bracket is missing in expression '{sInput.strip()}'."
         elif CNameMangling.STRINGCONVERT.value not in sInput and \
             CNameMangling.DUPLICATEDKEY_01.value not in sInput:
             if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
@@ -1199,10 +1181,11 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
                     errorMsg = f"Invalid parameter format: {sInput.strip()} - The brackets mismatch!!!"
                 else:
                     return True
-            self.__reset()
-            raise Exception(errorMsg)
         else:
             return True
+        if errorMsg is not None:
+            self.__reset()
+            raise Exception(errorMsg)
         
     def __changeDictKey(self, dInput : dict, sOldKey : str, sNewKey : str) -> dict:
         """
