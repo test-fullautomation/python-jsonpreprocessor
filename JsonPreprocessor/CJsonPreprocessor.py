@@ -646,7 +646,7 @@ be substituted inside strings.")
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{sNestedParam}'.")
                     elif re.search(r"\[\s*\+*\-+\+*\d+\s*\]", sInputStr):
-                        errorMsg = f"Slicing is not supported! Please update the expression '{sNestedParam}'."
+                        errorMsg = f"Slicing is not supported (expression: '{sNestedParam}')."
                         self.__reset()
                         raise Exception(errorMsg)
             if sInputStr==sLoopCheck:
@@ -1163,7 +1163,7 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
-            errorMsg = f"Slicing is not supported! Please update the expression '{sInput}'."
+            errorMsg = f"Slicing is not supported (expression: '{sInput}')."
         elif sInput.count("${") > sInput.count("}") and (CNameMangling.STRINGCONVERT.value in sInput or \
                                                          re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput)):
             sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
