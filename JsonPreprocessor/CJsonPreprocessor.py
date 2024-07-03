@@ -640,9 +640,11 @@ be substituted inside strings.")
                     else:
                         if bConvertToStr or sInputStr.count("$${")>1:
                             sInputStr = sInputStr.replace(var[0], str(tmpValue))
-                        else:
+                        elif "$${" not in sInputStr:
                             return tmpValue
                     if sInputStr==sLoopCheck1:
+                        if sInputStr.count("$${")==1:
+                            break
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{sNestedParam}'.")
                     elif re.search(r"\[\s*\+*\-+\+*\d+\s*\]", sInputStr):
