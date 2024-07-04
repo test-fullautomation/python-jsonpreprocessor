@@ -1561,7 +1561,6 @@ This function handle a last element of a list or dictionary
             raise Exception(jsonException)
 
         self.__checkDotInParamName(oJson)
-        __checkKeynameFormat(oJson)
 
         if firstLevel:
             oJson = __handleDuplicatedKey(oJson)
@@ -1572,6 +1571,7 @@ This function handle a last element of a list or dictionary
                 if k in self.lDataTypes:
                     k = CNameMangling.AVOIDDATATYPE.value + k
                 self.JPGlobals.update({k:v})
+            __checkKeynameFormat(oJson)
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
             for k, v in self.dUpdatedParams.items():
