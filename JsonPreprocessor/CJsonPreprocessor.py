@@ -1141,6 +1141,7 @@ Checks nested parameter format.
         if "${" not in sInput:
             return True
         errorMsg = None
+        # Start checking nested parameter
         if re.search(rf"\${{\s*[^{re.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, re.UNICODE):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, "")
@@ -1154,14 +1155,10 @@ has to enclosed in quotes."
                 re.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of square brackets is empty or contains not allowed characters."
-            else:
-                return True
         elif bSpecialCharInParam:
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Expression '{sInput.replace(CNameMangling.STRINGCONVERT.value, '')}' cannot be evaluated. \
 Reason: A pair of curly brackets is empty or contains not allowed characters."
-            else:
-                return True
         elif re.search(pattern2, sInput) or re.search(r"\[\s*\-\s*\d+\s*\]", sInput):
             if CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
@@ -1170,24 +1167,25 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
                                                          re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput)):
             sInput = re.sub(CNameMangling.STRINGCONVERT.value, "", sInput)
             errorMsg = f"Invalid syntax! One or more than one closed curly bracket is missing in expression '{sInput.strip()}'."
-        elif CNameMangling.STRINGCONVERT.value not in sInput and \
-            CNameMangling.DUPLICATEDKEY_01.value not in sInput:
-            if not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
+        elif not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
+            if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
                 sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
                 if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
-                    errorMsg = f"Invalid parameter format: {sInput} - The double quotes are missing!!!"
-                else:
-                    return True
-            else:
-                if sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
-                    errorMsg = f"Invalid parameter format: {sInput.strip()} - The brackets mismatch!!!"
-                else:
-                    return True
-        else:
-            return True
+                    errorMsg = f"Invalid expression found: '{sInput}' - The double quotes are missing!!!"
+            elif CNameMangling.STRINGCONVERT.value in sInput:
+                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+                if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
+                    (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
+                    errorMsg = f"Invalid expression found: '{sInput.strip()}' - The brackets mismatch!!!"                
+        elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+            if CNameMangling.STRINGCONVERT.value not in sInput:
+                errorMsg = f"Invalid expression found: '{sInput.strip()}' - The brackets mismatch!!!"
+        # End checking nested parameter
         if errorMsg is not None:
             self.__reset()
             raise Exception(errorMsg)
+        else:
+            return True
         
     def __changeDictKey(self, dInput : dict, sOldKey : str, sNewKey : str) -> dict:
         """
