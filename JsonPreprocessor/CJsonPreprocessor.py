@@ -1159,7 +1159,7 @@ only be created based on hard code names.")
                     sExec = "self.JPGlobals"
                     dCheck = self.JPGlobals
                     for element in lElements:
-                        if (isinstance(dCheck, dict) or isinstance(dCheck, list)) and element not in dCheck:
+                        if (isinstance(dCheck, dict) or isinstance(dCheck, list)) and element.strip("'") not in dCheck:
                             dCheck[element.strip("'")] = {}
                         if re.match(r"^[\s\-]*\d+$", element) or \
                             re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
