@@ -184,7 +184,7 @@ Constructor
         import builtins
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r'!@#$%^&*()+=[\]{}|;:\'",<>?/`~'
+        self.specialCharacters = r'!@#$%^&()=[]{}|;:\'",?`~/'
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
@@ -508,7 +508,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 if re.match(r"^[\s\-]*\d+$", element):
                     bList = True
                     sExec = sExec + f"[{element}]"
-                elif re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                elif re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                     element = element.strip("'")
                 if not bList:
                     if isinstance(oTmpObj, dict) and element not in oTmpObj.keys():
@@ -556,7 +556,7 @@ Reason: Key error {error}"
             if "." in var:
                 sVar = self.__handleDotInNestedParam(var)
                 sInputStr = sInputStr.replace(var, sVar)
-        tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(self.specialCharacters)}]+\'\s*\])*'
+        tmpPattern = pattern + rf"(\[\s*\d+\s*\]|\[\s*'[^{re.escape(self.specialCharacters)}]+'\s*\])*"
         sNestedParam = sInputStr.replace("$$", "$")
         if "." in sInputStr and not bConvertToStr:
             sInputStr = self.__handleDotInNestedParam(sInputStr)
@@ -627,7 +627,7 @@ be substituted inside strings.")
                 self.__reset()
                 raise Exception(f"Invalid expression found: '{sNestedParam}'.")
         if sInputStr.count("$${")==1:
-            tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[[\s\']*[^{re.escape(self.specialCharacters)}]+[\'\s]*\])*'
+            tmpPattern = pattern + rf"(\[\s*\-*\d+\s*\]|\[[\s']*[^{re.escape(self.specialCharacters)}]+['\s]*\])*"
             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
                 sRootVar = self.__handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
@@ -783,8 +783,7 @@ This method checks and creates new elements if they are not already existing.
             if oJson is not None:
                 sExec2 = "dummyData = oJson"
             for element in lElements:
-                if re.match(r"^[\s\-]*\d+$", element) or \
-                    re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                     if oJson is not None:
                         if '[' in sExec2:
                             sExec2 = sExec2 + f"[{element}]"
@@ -861,8 +860,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 lElements = self.__parseDictPath(paramValue)
                 sExecValue1 = "self.JPGlobals"
                 for element in lElements:
-                    if re.match(r"^[\s\-]*\d+$", element) or \
-                        re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                         sExecValue1 = sExecValue1 + f"[{element}]"
                     else:
                         sExecValue1 = sExecValue1 + f"['{element}']"
@@ -873,8 +871,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     paramValue2 = paramValue.replace(parentParams, '')
                     lElements = self.__parseDictPath(paramValue2)
                     for element in lElements:
-                        if re.match(r"^[\s\-]*\d+$", element) or \
-                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                        if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                             sExecValue2 = sExecValue2 + f"[{element}]"
                         else:
                             sExecValue2 = sExecValue2 + f"['{element}']"
@@ -889,8 +886,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     lElements = [k]
                 sExecKey = "self.JPGlobals"
                 for element in lElements:
-                    if re.match(r"^[\s\-]*\d+$", element) or \
-                        re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                    if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                         sExecKey = sExecKey + f"[{element}]"
                     else:
                         sExecKey= sExecKey + f"['{element}']"
@@ -916,8 +912,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                     sExecKey1 = "self.JPGlobals"
                     sExecKey2 = "oJson"
                     for element in lElements:
-                        if re.match(r"^[\s\-]*\d+$", element) or \
-                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                        if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                             if '[' in sExecKey2:
                                 sExecKey2 = sExecKey2 + f"[{element}]"
                             elif element.strip("'") in list(oJson.keys()):
@@ -1148,8 +1143,7 @@ only be created based on hard code names.")
                     lElements = self.__parseDictPath(sParams)
                     sExec = "self.JPGlobals"
                     for element in lElements:
-                        if re.match(r"^[\s\-]*\d+$", element) or \
-                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                        if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                             sExec = sExec + f"[{element}]"
                         else:
                             sExec = sExec + f"['{element}']"
@@ -1161,8 +1155,7 @@ only be created based on hard code names.")
                     for element in lElements:
                         if (isinstance(dCheck, dict) or isinstance(dCheck, list)) and element.strip("'") not in dCheck:
                             dCheck[element.strip("'")] = {}
-                        if re.match(r"^[\s\-]*\d+$", element) or \
-                            re.match(rf"^'\s*[^{re.escape(self.specialCharacters)}]+\s*'$", element.strip()):
+                        if re.match(r"^[\s\-]*\d+$", element) or re.match(rf"^'\s*[^']+\s*'$", element.strip()):
                             sExec = sExec + f"[{element}]"
                         else:
                             sExec = sExec + f"['{element}']"
@@ -1520,11 +1513,6 @@ This function handle a last element of a list or dictionary
 
             if "${" in line:
                 curLine = line
-                lNestedVar = re.findall(rf"\${{\s*([^{re.escape(self.specialCharacters)}]+)\s*}}", line, re.UNICODE)
-                for nestedVar in lNestedVar:
-                    if nestedVar[0].isdigit():
-                        self.__reset()
-                        raise Exception(f"Invalid parameter format in line: {line.strip()}")
                 tmpList01 = re.findall(r"(\"[^\"]+\")", line)
                 line = re.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
                 slicingPattern = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]"
