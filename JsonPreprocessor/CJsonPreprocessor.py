@@ -1337,7 +1337,8 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
             if re.match(r'^[\s"]*[\+\-\*:@]+.*$', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character or digit."
             elif checkPattern.search(sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\""
+                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
+and have to start with a character or digit."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1356,7 +1357,8 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif checkPattern.search(param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\""
+                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
+and have to start with a character or digit."
                             break
                         else:
                             nestedParam = param[0]
