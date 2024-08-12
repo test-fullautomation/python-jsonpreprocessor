@@ -138,11 +138,11 @@
 
 * Added a naming convention check for key names within .jsonp files processed by the JsonPreprocessor
 
-  Key names have to start with a character or digit and must not contain these special characters !#$%^&()=[]{}|;',?`~
+  Key names have to start with a character, digit, or underscore and must not contain these special characters !#$%^&()=[]{}|;',?`~
 
   **Example:**
 
-  Valid key names could be \"abcParam\", \"01_Param\", \"param-1\", \"abc@jpp.com\", etc.
+  Valid key names could be \"abcParam\", \"01_Param\", \"__param+1\", \"param-1\", \"abc@jpp.com\", etc.
 
   Invalid key names could be \"+param01\", \"param$01\", \"abc#Param\", etc.
 
