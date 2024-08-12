@@ -135,6 +135,18 @@
   | ``jsonpStr = \u007b\"A\" : 1,\n \"[import]\" : \"./imported_file.jsonp\", // relative path of imported file \n \"B\" : 2\u007d``
   | ``json_preprocessor = CJsonPreprocessor()``
   | ``json_preprocessor.jsonLoads(jsonpStr, referenceDir=\"path_to_reference_dir\")``
+
+* Added a naming convention check for key names within .jsonp files processed by the JsonPreprocessor
+
+  Key names have to start with a character, digit, or underscore and must not contain these special characters !#$%^&()=[]{}|;',?`~
+
+  **Example:**
+
+  Valid key names could be \"abcParam\", \"01_Param\", \"__param+1\", \"param-1\", \"abc@jpp.com\", etc.
+
+  Invalid key names could be \"+param01\", \"param$01\", \"abc#Param\", etc.
+
+* Error handling deviation improvement.
 "
                             ]
                 }

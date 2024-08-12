@@ -1519,7 +1519,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 1"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0353.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1533,7 +1533,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0354.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1547,7 +1547,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0355.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1561,7 +1561,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0356.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1589,7 +1589,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 6"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0358.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing" # wording to be improved (issues/109)
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression" # wording to be improved (issues/109)
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1617,7 +1617,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 2 / pattern 8"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0360.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one opened or closed curly bracket is missing"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! One or more than one closed curly bracket is missing in expression"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1645,7 +1645,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 3 / pattern 2"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0362.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1659,7 +1659,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 3 / pattern 3"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0363.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1673,7 +1673,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 3 / pattern 4"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0364.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1687,7 +1687,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 3 / pattern 5"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0365.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1701,7 +1701,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Checklist rule 3 / pattern 6"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0366.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid parameter format"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2671,7 +2671,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1053.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${somethingnotexisting}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2685,7 +2685,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1054.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid dictionary key in expression '${testdict.${testdict}}['${name}']'. The datatype of parameter '${testdict}' has to be 'str'."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2699,7 +2699,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1055.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "only simple data types are allowed to be substituted inside"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid list index in expression '${testlist.${testlist}}['${name}']'. The datatype of parameter '${testlist}' has to be 'int'."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2809,7 +2809,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1350.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2823,7 +2823,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1351.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2837,7 +2837,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1352.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2851,7 +2851,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1353.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2865,7 +2865,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1354.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2879,7 +2879,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1355.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2893,7 +2893,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1356.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2907,7 +2907,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1357.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2921,7 +2921,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1358.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2935,7 +2935,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1359.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2949,7 +2949,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1360.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2963,7 +2963,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1361.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2977,7 +2977,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1362.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2991,7 +2991,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1363.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3005,7 +3005,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1364.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3019,7 +3019,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1365.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported!"
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
