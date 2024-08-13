@@ -1384,7 +1384,7 @@ This method is the entry point of JsonPreprocessor.
 
 * ``masterFile``
 
-  / *Condition*: required / *Type*: bool /
+  / *Condition*: optional / *Type*: bool /
 
   Identifies the entry level when loading JSONP file in comparison with imported files levels. Default value is True
 
@@ -1427,13 +1427,13 @@ This method is the entry point of JsonPreprocessor.
 
 * ``referenceDir``
 
-  / *Condition*: required / *Type*: str /
+  / *Condition*: optional / *Type*: str /
 
   A reference path for loading imported files.
 
 * ``firstLevel``
 
-  / *Condition*: required / *Type*: bool /
+  / *Condition*: optional / *Type*: bool /
 
   Identifies the entry level when loading JSONP content in comparison with imported files levels.
 
