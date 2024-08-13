@@ -185,7 +185,7 @@ Constructor
         import builtins
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r'!@#$%^&()=[]{}|;:\'",?`~/'
+        self.specialCharacters = r'!#$%^&()=[]{{}}|;\',?`~'
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
@@ -1225,7 +1225,7 @@ Checks nested parameter format.
         while sTmpInput.count("${") > 1:
             lParams = re.findall(r'\${([^\$}]*)}', sTmpInput)
             for param in lParams:
-                if param.strip()=='' or re.search(r'[!@#\$%\^&\*\(\)=\[\]{}|;:\s\+\'",<>?/`~]', param) or \
+                if param.strip()=='' or re.search(re.escape(self.specialCharacters), param) or \
                                         re.match(r'^\s*\-+.*\s*$', param) or re.match(r'^\s*[^\-]*\-+\s*$', param):
                     bSpecialCharInParam = True
                     break
@@ -1328,7 +1328,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
-        checkPattern = re.compile(r'[!#$%^&\(\)=\[\]{}\|;\',?`~]')
+        checkPattern = re.compile(re.escape(self.specialCharacters))
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
@@ -1337,7 +1337,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
             if re.match(r'^[\s"]*[\+\-\*:@]+.*$', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
             elif checkPattern.search(sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
+                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
 and have to start with a character, digit or underscore."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
@@ -1357,7 +1357,7 @@ and have to start with a character, digit or underscore."
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif checkPattern.search(param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
+                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
 and have to start with a character, digit or underscore."
                             break
                         else:
