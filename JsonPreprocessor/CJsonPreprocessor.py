@@ -577,6 +577,10 @@ be substituted inside strings.")
                     varPattern = re.escape(var[0])
                     if re.search(r"\[['\s]*" + varPattern + r"['\s]*\]", sInputStr):
                         if re.search(r"\[\s*'\s*" + varPattern + r"\s*'\s*\]", sInputStr):
+                            if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                                self.__reset()
+                                raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside \
+the expression '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot be substituted as strings.")
                             sInputStr = re.sub(r"\[\s*'\s*" + varPattern + r"\s*'\s*\]", "['" + str(tmpValue) + "']", sInputStr)
                         elif isinstance(tmpValue, str):
                             sInputStr = re.sub(r"\[['\s]*" + varPattern + r"['\s]*\]", "['" + tmpValue + "']", sInputStr)
