@@ -1537,9 +1537,9 @@ This function handle a last element of a list or dictionary
 
             if "${" in line:
                 curLine = line
-                while re.search(r'\${([^}]+)}', line):
+                while re.search(r'\${([^}]*)}', line):
                     tmpLine = line
-                    param = re.search(r'\${([^}\$]+)}', line)
+                    param = re.search(r'\${([^}\$]*)}', line)
                     if param is not None:
                         self.__keyNameValidation(param[0])
                         if ':' in param[1]:
