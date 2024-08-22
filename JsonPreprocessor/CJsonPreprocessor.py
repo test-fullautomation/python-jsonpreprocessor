@@ -1538,7 +1538,7 @@ This function handle a last element of a list or dictionary
                 listDummy = shlex.split(line)
             except Exception as error:
                 self.__reset()
-                raise Exception(f"\n{str(error)} in line: '{line}'")
+                raise Exception(f"{error} in line: '{line}'")
 
             if "${" in line:
                 curLine = line
