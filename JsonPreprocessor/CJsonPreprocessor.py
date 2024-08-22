@@ -1463,9 +1463,10 @@ This method is the entry point of JsonPreprocessor.
                 if CNameMangling.DUPLICATEDKEY_01.value in k:
                     origK = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", k)
                     dInput[k] = dictValues[origK].pop(1)
-                if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
-                    v = v[-1]
-                    dInput[k] = v
+                if isinstance(v, list):
+                    if len(v)>0 and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                        v = v[-1]
+                        dInput[k] = v
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
