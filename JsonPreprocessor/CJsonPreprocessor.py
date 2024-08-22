@@ -1338,7 +1338,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
             sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
             errorMsg = f"A substitution in key names is not allowed! Please update the key name {sInput}"
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if re.match(r'^[\s"]*[\+\-\*:@]+.*$', sInput):
+            if re.match(r'^[\s"]*[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
             elif checkPattern.search(sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
@@ -1354,7 +1354,7 @@ and have to start with a character, digit or underscore."
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif re.match(r'^[\+\-\*]+.*$', param[1]):
+                        elif re.match(r'^[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', param[1]):
                             errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
@@ -1530,6 +1530,7 @@ This function handle a last element of a list or dictionary
         else:
             sJsonData = sJsonpContent
         sJsonDataUpdated = ""
+        lNestedParams = []
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
                 continue
@@ -1545,7 +1546,7 @@ This function handle a last element of a list or dictionary
                     tmpLine = line
                     param = re.search(r'\${([^}\$]*)}', line)
                     if param is not None:
-                        self.__keyNameValidation(param[0])
+                        lNestedParams.append(param[0])
                         if ':' in param[1]:
                             tmpList03.append(param[1])
                             tmpPattern = re.escape(param[1])
@@ -1651,6 +1652,8 @@ This function handle a last element of a list or dictionary
         for key in lKeyName:
             keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
             self.__keyNameValidation(keyDecode)
+        for param in lNestedParams:
+            self.__keyNameValidation(param)
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
             if self.syntax == CSyntaxType.python:
