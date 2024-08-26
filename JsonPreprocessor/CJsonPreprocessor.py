@@ -281,7 +281,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     # self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
-                oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
+                oJsonImport = self.jsonLoad(abs_path_file)
                 self.jsonPath = currJsonPath
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
@@ -1372,7 +1372,7 @@ and have to start with a character, digit or underscore."
             self.__reset()
             raise Exception(errorMsg)
 
-    def jsonLoad(self, jFile : str, masterFile : bool = True):
+    def jsonLoad(self, jFile : str):
         """
 This method is the entry point of JsonPreprocessor.
 
@@ -1386,12 +1386,6 @@ This method is the entry point of JsonPreprocessor.
 
   Path and name of main JSON file. The path can be absolute or relative and is also allowed to contain environment variables.
 
-* ``masterFile``
-
-  / *Condition*: optional / *Type*: bool /
-
-  Identifies the entry level when loading JSONP file in comparison with imported files levels. Default value is True
-
 **Returns:**
 
 * ``oJson``
@@ -1400,6 +1394,8 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
+        # Identifies the entry level when loading JSONP file in comparison with imported files levels.
+        masterFile = True if self.recursive_level==0 else False
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         self.handlingFile.append(jFile)
         if masterFile:
@@ -1415,9 +1411,9 @@ This method is the entry point of JsonPreprocessor.
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
-        return self.jsonLoads(sJsonData, firstLevel=masterFile)
+        return self.jsonLoads(sJsonData)
 
-    def jsonLoads(self, sJsonpContent : str, referenceDir : str = '', firstLevel : bool = True):
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = ''):
         """
 ``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
 
@@ -1434,12 +1430,6 @@ This method is the entry point of JsonPreprocessor.
   / *Condition*: optional / *Type*: str /
 
   A reference path for loading imported files.
-
-* ``firstLevel``
-
-  / *Condition*: optional / *Type*: bool /
-
-  Identifies the entry level when loading JSONP content in comparison with imported files levels.
 
 **Returns:**
 
@@ -1517,6 +1507,8 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
+        # Identifies the entry level when loading JSONP content in comparison with imported files levels.
+        firstLevel = True if self.recursive_level==0 else False
         if referenceDir != '':
             self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
             if not os.path.exists(self.jsonPath):
