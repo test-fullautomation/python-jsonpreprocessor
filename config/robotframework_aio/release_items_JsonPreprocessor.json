@@ -105,7 +105,7 @@
 "
                             ]
                  ,
-                  "0.12.0.;0.13.0." : [
+                  "0.12.1.;0.13.0." : [
 "
 * Changed data type of return value
 
@@ -116,7 +116,7 @@
 
   In opposite to previous versions of the **JsonPreprocessor**, the creation of new keys based on parameter (dynamic key names), **is not supported an more**!
 
-  Example:
+  **Example:**
 
   | ``\u007b``
   |    ``\"param1\" : \"ABC\",``
@@ -126,27 +126,25 @@
 
   This code previously created a new parameter ``\"XYZ\"`` with value ``1``. Now an error message will be raised.
   
-* Improved error messages
+* Improved error handling and error messages
 
 * Added ``jsonLoads`` method that allows users to directly parse JSONP content from strings
 
   **Example:**
 
-  | ``jsonpStr = \u007b\"A\" : 1,\n \"[import]\" : \"./imported_file.jsonp\", // relative path of imported file \n \"B\" : 2\u007d``
+  | ``jsonpStr = \"\u007b\\\"A\\\" : 1, \\\"B\\\" : 2\u007d\"``
   | ``json_preprocessor = CJsonPreprocessor()``
-  | ``json_preprocessor.jsonLoads(jsonpStr, referenceDir=\"path_to_reference_dir\")``
+  | ``retValues = json_preprocessor.jsonLoads(jsonpStr)``
 
-* Added a naming convention check for key names within .jsonp files processed by the JsonPreprocessor
+* Added a naming convention check for key names within JSONP content processed by the **JsonPreprocessor**
 
-  Key names have to start with a character, digit, or underscore and must not contain these special characters !#$%^&()=[]{}|;',?`~
+  Key names have to start with a character, digit, or underscore and must not contain these special characters ``!#$%^&()=[]{}|;',?`~``
 
   **Example:**
 
-  Valid key names could be \"abcParam\", \"01_Param\", \"__param+1\", \"param-1\", \"abc@jpp.com\", etc.
+  Valid key names are: ``\"abcParam\"``, ``\"01_Param\"``, ``\"__param+1\"``, ``\"param-1\"``, ``\"abc@jpp.com\"``, ...
 
-  Invalid key names could be \"+param01\", \"param$01\", \"abc#Param\", etc.
-
-* Error handling deviation improvement.
+  Invalid key names are: ``\"+param01\"``, ``\"param$01\"``, ``\"abc#Param\"``, ...
 "
                             ]
                 }

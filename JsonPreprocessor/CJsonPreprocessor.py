@@ -185,7 +185,7 @@ Constructor
         import builtins
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r'!@#$%^&()=[]{}|;:\'",?`~/'
+        self.specialCharacters = r'!#$%^&()=[]{{}}|;\',?`~'
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
@@ -281,7 +281,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     # self.__reset()
                     raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
-                oJsonImport = self.jsonLoad(abs_path_file, masterFile=False)
+                oJsonImport = self.jsonLoad(abs_path_file)
                 self.jsonPath = currJsonPath
                 tmpOutdict = copy.deepcopy(out_dict)
                 for k1, v1 in tmpOutdict.items():
@@ -577,6 +577,10 @@ be substituted inside strings.")
                     varPattern = re.escape(var[0])
                     if re.search(r"\[['\s]*" + varPattern + r"['\s]*\]", sInputStr):
                         if re.search(r"\[\s*'\s*" + varPattern + r"\s*'\s*\]", sInputStr):
+                            if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
+                                self.__reset()
+                                raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside \
+the expression '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot be substituted as strings.")
                             sInputStr = re.sub(r"\[\s*'\s*" + varPattern + r"\s*'\s*\]", "['" + str(tmpValue) + "']", sInputStr)
                         elif isinstance(tmpValue, str):
                             sInputStr = re.sub(r"\[['\s]*" + varPattern + r"['\s]*\]", "['" + tmpValue + "']", sInputStr)
@@ -1225,7 +1229,7 @@ Checks nested parameter format.
         while sTmpInput.count("${") > 1:
             lParams = re.findall(r'\${([^\$}]*)}', sTmpInput)
             for param in lParams:
-                if param.strip()=='' or re.search(r'[!@#\$%\^&\*\(\)=\[\]{}|;:\s\+\'",<>?/`~]', param) or \
+                if param.strip()=='' or re.search(re.escape(self.specialCharacters), param) or \
                                         re.match(r'^\s*\-+.*\s*$', param) or re.match(r'^\s*[^\-]*\-+\s*$', param):
                     bSpecialCharInParam = True
                     break
@@ -1328,17 +1332,17 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
-        checkPattern = re.compile(r'[!#$%^&\(\)=\[\]{}\|;\',?`~]')
+        checkPattern = re.compile(re.escape(self.specialCharacters))
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
             errorMsg = f"A substitution in key names is not allowed! Please update the key name {sInput}"
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if re.match(r'^[\s"]*[\+\-\*:@]+.*$', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character or digit."
+            if re.match(r'^[\s"]*[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', sInput):
+                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
             elif checkPattern.search(sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
-and have to start with a character or digit."
+                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
+and have to start with a character, digit or underscore."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1350,15 +1354,15 @@ and have to start with a character or digit."
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif re.match(r'^[\+\-\*]+.*$', param[1]):
-                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character or digit."
+                        elif re.match(r'^[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', param[1]):
+                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif checkPattern.search(param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"!#$%^&()=[]{{}}|;',?`~\" \
-and have to start with a character or digit."
+                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
+and have to start with a character, digit or underscore."
                             break
                         else:
                             nestedParam = param[0]
@@ -1368,7 +1372,7 @@ and have to start with a character or digit."
             self.__reset()
             raise Exception(errorMsg)
 
-    def jsonLoad(self, jFile : str, masterFile : bool = True):
+    def jsonLoad(self, jFile : str):
         """
 This method is the entry point of JsonPreprocessor.
 
@@ -1382,12 +1386,6 @@ This method is the entry point of JsonPreprocessor.
 
   Path and name of main JSON file. The path can be absolute or relative and is also allowed to contain environment variables.
 
-* ``masterFile``
-
-  / *Condition*: required / *Type*: bool /
-
-  Identifies the entry level when loading JSONP file in comparison with imported files levels. Default value is True
-
 **Returns:**
 
 * ``oJson``
@@ -1396,6 +1394,8 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON file(s) as Python dictionary
         """
+        # Identifies the entry level when loading JSONP file in comparison with imported files levels.
+        masterFile = True if self.recursive_level==0 else False
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
         self.handlingFile.append(jFile)
         if masterFile:
@@ -1411,9 +1411,9 @@ This method is the entry point of JsonPreprocessor.
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
-        return self.jsonLoads(sJsonData, firstLevel=masterFile)
+        return self.jsonLoads(sJsonData)
 
-    def jsonLoads(self, sJsonpContent : str, referenceDir : str = '', firstLevel : bool = True):
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = ''):
         """
 ``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
 
@@ -1427,15 +1427,9 @@ This method is the entry point of JsonPreprocessor.
 
 * ``referenceDir``
 
-  / *Condition*: required / *Type*: str /
+  / *Condition*: optional / *Type*: str /
 
   A reference path for loading imported files.
-
-* ``firstLevel``
-
-  / *Condition*: required / *Type*: bool /
-
-  Identifies the entry level when loading JSONP content in comparison with imported files levels.
 
 **Returns:**
 
@@ -1459,9 +1453,10 @@ This method is the entry point of JsonPreprocessor.
                 if CNameMangling.DUPLICATEDKEY_01.value in k:
                     origK = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", k)
                     dInput[k] = dictValues[origK].pop(1)
-                if isinstance(v, list) and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
-                    v = v[-1]
-                    dInput[k] = v
+                if isinstance(v, list):
+                    if len(v)>0 and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                        v = v[-1]
+                        dInput[k] = v
                 if isinstance(v, dict):
                     dInput[k] = __handleDuplicatedKey(v)
             del tmpDict
@@ -1512,6 +1507,8 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
+        # Identifies the entry level when loading JSONP content in comparison with imported files levels.
+        firstLevel = True if self.recursive_level==0 else False
         if referenceDir != '':
             self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
             if not os.path.exists(self.jsonPath):
@@ -1526,6 +1523,7 @@ This function handle a last element of a list or dictionary
         else:
             sJsonData = sJsonpContent
         sJsonDataUpdated = ""
+        lNestedParams = []
         for line in sJsonData.splitlines():
             if line == '' or line.isspace():
                 continue
@@ -1533,15 +1531,15 @@ This function handle a last element of a list or dictionary
                 listDummy = shlex.split(line)
             except Exception as error:
                 self.__reset()
-                raise Exception(f"\n{str(error)} in line: '{line}'")
+                raise Exception(f"{error} in line: '{line}'")
 
             if "${" in line:
                 curLine = line
-                while re.search(r'\${([^}]+)}', line):
+                while re.search(r'\${([^}]*)}', line):
                     tmpLine = line
-                    param = re.search(r'\${([^}\$]+)}', line)
+                    param = re.search(r'\${([^}\$]*)}', line)
                     if param is not None:
-                        self.__keyNameValidation(param[0])
+                        lNestedParams.append(param[0])
                         if ':' in param[1]:
                             tmpList03.append(param[1])
                             tmpPattern = re.escape(param[1])
@@ -1647,6 +1645,8 @@ This function handle a last element of a list or dictionary
         for key in lKeyName:
             keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
             self.__keyNameValidation(keyDecode)
+        for param in lNestedParams:
+            self.__keyNameValidation(param)
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
             if self.syntax == CSyntaxType.python:
