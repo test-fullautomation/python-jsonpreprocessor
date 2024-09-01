@@ -266,6 +266,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         """
         out_dict = {}
         i=1
+        sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 currJsonPath = self.jsonPath
@@ -296,8 +297,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     specialCharacters = r'$[]{}'
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
+                        sCheckDupKey = '' # Uses to track an absolute path of overwritten parameter in case it's duplicate to others.
                         keyPattern = re.escape(k1)
                         pattern2 = rf'\${{\s*[^{re.escape(specialCharacters)}]*\.*' + keyPattern + r'\s*}$|\[\s*\'' + keyPattern + r'\'\s*\]$'
+                        bCheck = False
                         if re.search(pattern2, key, re.UNICODE):
                             bCheck = True
                             tmpKey = self.__multipleReplace(key, {"${":"", "}":""})
@@ -314,6 +317,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             sExec = "self.jsonCheck"
                             for item in items:
                                 sExec = sExec + f"['{item}']"
+                                sCheckDupKey = sCheckDupKey + f"[{item}]"
                             try:
                                 exec(f"dumpData = {sExec}")
                             except:
@@ -330,17 +334,23 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             for k in listKeys:
                                 tmpDict[k] = index if k==newKey else out_dict[k]
                             out_dict = tmpDict
-                            if isinstance(out_dict[key], list):
-                                if out_dict[key][0] != CNameMangling.DUPLICATEDKEY_01.value:
-                                    tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
+                            if sCheckDupKey!='':
+                                sCheckElement = sCheckElement + f"({sCheckDupKey})"    # Adds absolute path to the check element while
+                            elif bCheck:                                               # handling duplicate keys later
+                                sCheckElement = sCheckElement + f"(None)"    # Adds "(None)" in case no absolute path is detected in
+                            if isinstance(out_dict[key], list):              # a duplicated key.
+                                if CNameMangling.DUPLICATEDKEY_01.value not in out_dict[key][0]:
+                                    tmpValue = [sCheckElement, out_dict[key], value]
                                     del out_dict[key]
                                 else:
                                     tmpValue = out_dict[key]
                                     tmpValue.append(value)
                                     del out_dict[key]
                             else:
-                                tmpValue = [CNameMangling.DUPLICATEDKEY_01.value, out_dict[key], value]
+                                tmpValue = [sCheckElement, out_dict[key], value]
                                 del out_dict[key]
+                            if sCheckElement!=tmpValue[0]:
+                                tmpValue[0] = sCheckElement
                             value = tmpValue
                             out_dict[key] = value
                     del tmpOutdict
@@ -1003,7 +1013,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 elif isinstance(item, dict):
                     tmpItem = copy.deepcopy(item)
                     for key, value in tmpItem.items():
-                        if isinstance(value, list) and value[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                        if isinstance(value, list) and CNameMangling.DUPLICATEDKEY_01.value in str(value[0]):
                             item[key] = value[-1]
                         if CNameMangling.DUPLICATEDKEY_01.value in key:
                             item.pop(key)
@@ -1462,7 +1472,7 @@ This method is the entry point of JsonPreprocessor.
 
   Preprocessed JSON content as Python dictionary
         """
-        def __handleDuplicatedKey(dInput : dict) -> dict:
+        def __handleDuplicatedKey(dInput : dict, parentParams : str = '') -> dict:
             listKeys = list(dInput.keys())
             dictValues = {}
             for key in listKeys:
@@ -1470,18 +1480,31 @@ This method is the entry point of JsonPreprocessor.
                     origKey = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", key)
                     dictValues[origKey] = copy.deepcopy(dInput[origKey])
             for key in dictValues.keys():
-                dInput = self.__changeDictKey(dInput, key, key + CNameMangling.DUPLICATEDKEY_01.value + "00")
+                dInput = self.__changeDictKey(dInput, key, key + CNameMangling.DUPLICATEDKEY_00.value)
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
                 if CNameMangling.DUPLICATEDKEY_01.value in k:
                     origK = re.sub(CNameMangling.DUPLICATEDKEY_01.value + "\d+\s*$", "", k)
                     dInput[k] = dictValues[origK].pop(1)
                 if isinstance(v, list):
-                    if len(v)>0 and v[0]==CNameMangling.DUPLICATEDKEY_01.value:
+                    if len(v)>0 and CNameMangling.DUPLICATEDKEY_01.value in str(v[0]):
+                        # Checks the format of the overwritten parameter
+                        lOverwritten = re.findall(r'\(([^\(]+)\)', v[0])    # Gets absolute paths of duplicated keys from first element. 
+                        for item in lOverwritten:
+                            if item=='None' and parentParams!='':     # Raise exception if an absolute path is not provided.
+                                self.__reset()
+                                formatOverwritten1 = re.sub(r'^\[([^\[]+)\]', '${\\1}', parentParams)
+                                formatOverwritten1 = formatOverwritten1 + f"['{origK}']"
+                                formatOverwritten2 = self.__multipleReplace(parentParams, {"]['" : ".", "']['" : ".", "[" : "", "']" : ""})
+                                formatOverwritten2 = "${" + formatOverwritten2 + f".{origK}}}"
+                                raise Exception(f"The parameter '${{{origK}}}' at this position has to overwrite with the absolute path: \
+'{formatOverwritten1}' or '{formatOverwritten2}'.")
                         v = v[-1]
                         dInput[k] = v
+                parentParams = f"[{k}]" if parentParams=='' else parentParams + f"['{k}']"
                 if isinstance(v, dict):
-                    dInput[k] = __handleDuplicatedKey(v)
+                    dInput[k] = __handleDuplicatedKey(v, parentParams=parentParams)
+                parentParams = re.sub(rf"\['*{re.escape(k)}'*\]$", '', parentParams)
             del tmpDict
             del dictValues
             return dInput
@@ -1550,8 +1573,7 @@ This function handle a last element of a list or dictionary
         for reservedToken in lReservedTokens:
             if reservedToken in sJsonData:
                 self.__reset()
-                raise Exception(f"The JSONP content contains a reserved token '{reservedToken}'. \
-It cannot contain any of reserved tokens: {', '.join(lReservedTokens)}.")
+                raise Exception(f"The JSONP content contains a reserved token '{reservedToken}'")
         sJsonDataUpdated = ""
         lNestedParams = []
         for line in sJsonData.splitlines():
