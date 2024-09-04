@@ -180,7 +180,7 @@ Constructor
 
   / *Condition*: optional / *Type*: dict / *Default*: {} /
 
-  Internally used to aggregate imported json files.
+  Used to update parameters from jsonp file to current JSON object.
         """
         import builtins
         import keyword
