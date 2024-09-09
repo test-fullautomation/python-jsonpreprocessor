@@ -1024,10 +1024,15 @@ This method replaces all nested parameters in key and value of a JSON object .
             return tmpValue
 
         if bool(self.currentCfg) and not recursive:
-            for k, v in self.currentCfg.items():
+            tmpDict = copy.deepcopy(self.currentCfg)
+            for k, v in tmpDict.items():
                 if k in self.lDataTypes:
+                    oldKey = k
                     k = CNameMangling.AVOIDDATATYPE.value + k
+                    self.__changeDictKey(self.currentCfg, oldKey, k)
                 self.JPGlobals.update({k:v})
+            del tmpDict
+            oJson = self.currentCfg | oJson
 
         tmpJson = copy.deepcopy(oJson)
         pattern = rf"\${{\s*[^\[]+\s*}}"
