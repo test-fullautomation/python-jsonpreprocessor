@@ -1605,6 +1605,7 @@ This function handle a last element of a list or dictionary
                 line = re.sub(slicingPattern, CNameMangling.SLICEINDEX.value, line)
                 tmpList03 = []
                 indexPattern = r"\[[\s\-\+\d]*\]"
+                indexList = []
                 if re.search(indexPattern, line):
                     indexList = re.findall(indexPattern, line)
                     line = re.sub("(" + indexPattern + ")", CNameMangling.LISTINDEX.value, line)
@@ -1618,7 +1619,7 @@ This function handle a last element of a list or dictionary
                         while CNameMangling.COLONS.value in item:
                             item = item.replace(CNameMangling.COLONS.value, tmpList01.pop(0), 1)
                     if CNameMangling.LISTINDEX.value in item:
-                        while CNameMangling.LISTINDEX.value in item:
+                        while CNameMangling.LISTINDEX.value in item and len(indexList)>0:
                             item = item.replace(CNameMangling.LISTINDEX.value, indexList.pop(0), 1)
                     if CNameMangling.SLICEINDEX.value in item:
                         while CNameMangling.SLICEINDEX.value in item:
