@@ -1123,6 +1123,15 @@ Use the '<name> : <value>' syntax to create a new key.")
 But new keys can only be created based on hard code names.")
                         else:
                             pass
+                elif parentParams == '' and not re.search(r'\[[^\]]+\]', k):
+                    sExec = sExec + f"['{k}']"
+                    try:
+                        exec(sExec)
+                    except Exception as error:
+                        if isinstance(error, KeyError):
+                            raise Exception(f"Could not resolve expression '${{{k}}}'. The parameter '{k}' dose not exist!")
+                        else:
+                            raise Exception(f"Could not resolve expression '${{{k}}}'. Reason: {error}")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on parameters is not supported \
@@ -1764,29 +1773,6 @@ This function handle a last element of a list or dictionary
             __checkKeynameFormat(oJson)
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
-            for k, v in self.dUpdatedParams.items():
-                if '[' in k:
-                    rootElement = k.split('[', 1)[0]
-                    if rootElement in oJson:
-                        self.__checkAndCreateNewElement(k, v)
-                        sExec = "oJson['" + rootElement + "'] = " + rootElement
-                        try:
-                            exec(sExec)
-                        except:
-                            pass
-                    if isinstance(v, str):
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
-                    else:
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
-                else:
-                    if isinstance(v, str):
-                        sExec = "oJson['" + k + "'] = \"" + v + "\""
-                    else:
-                        sExec = "oJson['" + k + "'] = " + str(v)
-                try:
-                    exec(sExec)
-                except:
-                    pass
                 
             self.__reset()
             __removeDuplicatedKey(oJson)
