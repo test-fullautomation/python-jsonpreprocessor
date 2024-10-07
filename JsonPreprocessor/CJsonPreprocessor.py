@@ -1129,7 +1129,8 @@ But new keys can only be created based on hard code names.")
                         exec(sExec)
                     except Exception as error:
                         if isinstance(error, KeyError):
-                            raise Exception(f"Could not resolve expression '${{{k}}}'. The parameter '{k}' dose not exist!")
+                            raise Exception(f"Could not resolve expression '${{{k}}}'. The parameter '{k}' dose not exist! \
+Use the '<name> : <value>' syntax to create a new key.")
                         else:
                             raise Exception(f"Could not resolve expression '${{{k}}}'. Reason: {error}")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
