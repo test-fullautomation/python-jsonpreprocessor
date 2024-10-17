@@ -1358,7 +1358,6 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
-        checkPattern = re.compile(re.escape(self.specialCharacters))
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
@@ -1368,7 +1367,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
             if re.match(r'^[\s"]*[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
-            elif checkPattern.search(sInput):
+            elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
 and have to start with a character, digit or underscore."
         elif re.search(r'\${[^}]*}', sInput):
@@ -1388,7 +1387,7 @@ and have to start with a character, digit or underscore."
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
-                        elif checkPattern.search(param[1]):
+                        elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
                             errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
 and have to start with a character, digit or underscore."
                             break
