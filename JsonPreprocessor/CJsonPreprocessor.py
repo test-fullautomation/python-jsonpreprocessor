@@ -195,7 +195,6 @@ Constructor
         self.syntax          = syntax
         self.currentCfg      = currentCfg
         self.dUpdatedParams  = {}
-        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck       = {}
@@ -236,7 +235,6 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
-        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck       = {}
@@ -1365,11 +1363,11 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         if errorMsg!='':
             pass
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if re.match(r'^[\s"]*[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
+            if not re.match(r'^[\s"]*[a-zA-Z0-9_]+.*$', sInput):
+                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
             elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a character, digit or underscore."
+and have to start with a letter, digit or underscore."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1377,19 +1375,21 @@ and have to start with a character, digit or underscore."
                 tmpStr = sInput
                 while re.search(r'\${([^}]*)}', tmpStr):
                     param = re.search(r'\${([^}\$]*)}', tmpStr)
+                    if param is None and re.search(r'\${.*\$(?!\{).*}', tmpStr):
+                        param = re.search(r'\${([^}]*)}', tmpStr)
                     if param is not None:
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif re.match(r'^[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', param[1]):
-                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
+                        elif not re.match(r'^[a-zA-Z0-9_]+.*$', param[1].strip()):
+                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
                             errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a character, digit or underscore."
+and have to start with a letter, digit or underscore."
                             break
                         else:
                             nestedParam = param[0]
@@ -1604,6 +1604,8 @@ This function handle a last element of a list or dictionary
                 while re.search(r'\${([^}]*)}', line):
                     tmpLine = line
                     param = re.search(r'\${([^}\$]*)}', line)
+                    if param is None and re.search(r'\${.*\$(?!\{).*}', line):
+                        param = re.search(r'\${([^}]*)}', line)
                     if param is not None:
                         lNestedParams.append(param[0])
                         if ':' in param[1]:
@@ -1698,11 +1700,6 @@ This function handle a last element of a list or dictionary
                         newLine = newLine + item + " :" if item=='' else newLine + item
                     preItem = curItem
                     i+=1
-                for nestedParam in self.lNestedParams:
-                    tmpNestedParam = re.escape(nestedParam)
-                    if re.search(r"(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
-                        or re.search(r"(\s*\"" + tmpNestedParam + r"\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
-                        self.lNestedParams.remove(nestedParam)
                 if re.search(r"\[\s*\+\s*\d+\s*\]", newLine):
                     newLine = re.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", newLine)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
