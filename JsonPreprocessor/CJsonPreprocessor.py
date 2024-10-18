@@ -1567,6 +1567,9 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
+        if not isinstance(sJsonpContent, str):
+            self.__reset()
+            raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
         if referenceDir != '':
