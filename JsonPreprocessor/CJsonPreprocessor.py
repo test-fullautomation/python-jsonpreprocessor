@@ -1511,8 +1511,8 @@ This method is the entry point of JsonPreprocessor.
                                 formatOverwritten1 = formatOverwritten1 + f"['{origK}']"
                                 formatOverwritten2 = self.__multipleReplace(parentParams, {"]['" : ".", "']['" : ".", "[" : "", "']" : ""})
                                 formatOverwritten2 = "${" + formatOverwritten2 + f".{origK}}}"
-                                raise Exception(f"The parameter '${{{origK}}}' at this position has to overwrite with the absolute path: \
-'{formatOverwritten1}' or '{formatOverwritten2}'.")
+                                raise Exception(f"Missing scope for parameter '${{{origK}}}'. To change the value of this parameter, \
+an absolute path must be used: '{formatOverwritten1}' or '{formatOverwritten2}'.")
                         v = v[-1]
                         dInput[k] = v
                 parentParams = f"[{k}]" if parentParams=='' else parentParams + f"['{k}']"
