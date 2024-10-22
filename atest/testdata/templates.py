@@ -413,8 +413,7 @@ SUBDATASTRUCTURE = {
     "testcase_06a": "JsonPreprocessor",
     "testcase_06b": {
       "globalFloatParam": 97,
-      "gCheck01": 12,
-      "globalIntParam": 69
+      "gCheck01": 12
     },
     "testcase_06c": 23,
     "testcase_06d": {

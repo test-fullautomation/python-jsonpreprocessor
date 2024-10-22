@@ -195,7 +195,6 @@ Constructor
         self.syntax          = syntax
         self.currentCfg      = currentCfg
         self.dUpdatedParams  = {}
-        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck       = {}
@@ -236,7 +235,6 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
-        self.lNestedParams   = []
         self.lDotInParamName = []
         self.bDuplicatedKeys = True
         self.jsonCheck       = {}
@@ -1123,6 +1121,16 @@ Use the '<name> : <value>' syntax to create a new key.")
 But new keys can only be created based on hard code names.")
                         else:
                             pass
+                elif parentParams == '' and not re.search(r'\[[^\]]+\]', k):
+                    sExec = sExec + f"['{k}']"
+                    try:
+                        exec(sExec)
+                    except Exception as error:
+                        if isinstance(error, KeyError):
+                            raise Exception(f"Could not resolve expression '${{{k}}}'. The based parameter '{k}' is not defined yet! \
+Use the '<name> : <value>' syntax to create a new based parameter.")
+                        else:
+                            raise Exception(f"Could not resolve expression '${{{k}}}'. Reason: {error}")
                 if bImplicitCreation and not self.__checkAndCreateNewElement(k, v, bCheck=True, keyNested=keyNested):
                     self.__reset()
                     raise Exception(f"The implicit creation of data structures based on parameters is not supported \
@@ -1348,7 +1356,6 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
-        checkPattern = re.compile(re.escape(self.specialCharacters))
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
@@ -1356,11 +1363,11 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         if errorMsg!='':
             pass
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if re.match(r'^[\s"]*[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
-            elif checkPattern.search(sInput):
+            if not re.match(r'^[\s"]*[a-zA-Z0-9_]+.*$', sInput):
+                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
+            elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a character, digit or underscore."
+and have to start with a letter, digit or underscore."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1368,19 +1375,21 @@ and have to start with a character, digit or underscore."
                 tmpStr = sInput
                 while re.search(r'\${([^}]*)}', tmpStr):
                     param = re.search(r'\${([^}\$]*)}', tmpStr)
+                    if param is None and re.search(r'\${.*\$(?!\{).*}', tmpStr):
+                        param = re.search(r'\${([^}]*)}', tmpStr)
                     if param is not None:
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif re.match(r'^[\+\-\*:@' + re.escape(self.specialCharacters) + ']+.*$', param[1]):
-                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a character, digit or underscore."
+                        elif not re.match(r'^[a-zA-Z0-9_]+.*$', param[1].strip()):
+                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
-                        elif checkPattern.search(param[1]):
+                        elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
                             errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a character, digit or underscore."
+and have to start with a letter, digit or underscore."
                             break
                         else:
                             nestedParam = param[0]
@@ -1502,8 +1511,8 @@ This method is the entry point of JsonPreprocessor.
                                 formatOverwritten1 = formatOverwritten1 + f"['{origK}']"
                                 formatOverwritten2 = self.__multipleReplace(parentParams, {"]['" : ".", "']['" : ".", "[" : "", "']" : ""})
                                 formatOverwritten2 = "${" + formatOverwritten2 + f".{origK}}}"
-                                raise Exception(f"The parameter '${{{origK}}}' at this position has to overwrite with the absolute path: \
-'{formatOverwritten1}' or '{formatOverwritten2}'.")
+                                raise Exception(f"Missing scope for parameter '${{{origK}}}'. To change the value of this parameter, \
+an absolute path must be used: '{formatOverwritten1}' or '{formatOverwritten2}'.")
                         v = v[-1]
                         dInput[k] = v
                 parentParams = f"[{k}]" if parentParams=='' else parentParams + f"['{k}']"
@@ -1558,6 +1567,9 @@ This function handle a last element of a list or dictionary
                 sInput = sInput.replace(sParam, '"' + sParam + '"')
             return sInput
 
+        if not isinstance(sJsonpContent, str):
+            self.__reset()
+            raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
         if referenceDir != '':
@@ -1595,6 +1607,8 @@ This function handle a last element of a list or dictionary
                 while re.search(r'\${([^}]*)}', line):
                     tmpLine = line
                     param = re.search(r'\${([^}\$]*)}', line)
+                    if param is None and re.search(r'\${.*\$(?!\{).*}', line):
+                        param = re.search(r'\${([^}]*)}', line)
                     if param is not None:
                         lNestedParams.append(param[0])
                         if ':' in param[1]:
@@ -1689,11 +1703,6 @@ This function handle a last element of a list or dictionary
                         newLine = newLine + item + " :" if item=='' else newLine + item
                     preItem = curItem
                     i+=1
-                for nestedParam in self.lNestedParams:
-                    tmpNestedParam = re.escape(nestedParam)
-                    if re.search(r"(\s*\"str\(" + tmpNestedParam + "\)\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')) \
-                        or re.search(r"(\s*\"" + tmpNestedParam + r"\"\s*:)", newLine.replace(CNameMangling.STRINGCONVERT.value, '')):
-                        self.lNestedParams.remove(nestedParam)
                 if re.search(r"\[\s*\+\s*\d+\s*\]", newLine):
                     newLine = re.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", newLine)
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
@@ -1764,29 +1773,6 @@ This function handle a last element of a list or dictionary
             __checkKeynameFormat(oJson)
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
-            for k, v in self.dUpdatedParams.items():
-                if '[' in k:
-                    rootElement = k.split('[', 1)[0]
-                    if rootElement in oJson:
-                        self.__checkAndCreateNewElement(k, v)
-                        sExec = "oJson['" + rootElement + "'] = " + rootElement
-                        try:
-                            exec(sExec)
-                        except:
-                            pass
-                    if isinstance(v, str):
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = \"" + v + "\""
-                    else:
-                        sExec = "oJson['" + k.split('[', 1)[0] + "'][" + k.split('[', 1)[1] + " = " + str(v)
-                else:
-                    if isinstance(v, str):
-                        sExec = "oJson['" + k + "'] = \"" + v + "\""
-                    else:
-                        sExec = "oJson['" + k + "'] = " + str(v)
-                try:
-                    exec(sExec)
-                except:
-                    pass
                 
             self.__reset()
             __removeDuplicatedKey(oJson)
