@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 17.04.2024
+# 22.10.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -666,51 +666,52 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0201"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / string parameter substitution in parameter name"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / standard notation"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0201.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (21/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (21/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (21/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (21/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (21/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (21/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (21/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (21/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (21/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (21/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (21/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (21/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (21/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (21/12) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (21/13) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (21/13) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (21/13) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (21/14) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (21/15) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (21/16) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (21/16) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (21/16) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (21/17) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (21/18) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (21/19) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (21/20) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (21/21) > {milestone_2} [STR]  :  'MILESTONE_2 (new value)'
+[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
+[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
+[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
+[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
+[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
+[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
+[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
+[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
+[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
+[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
+[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
+[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
+[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
+[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
+[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
+[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
+[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
+[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
+[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
+[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
+[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
+[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
+[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
+[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
+[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
+[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
+[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0202"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter name / standard notation"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
@@ -744,16 +745,16 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
 [DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
 [DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {VAR_VARIANT_1_MS_MILESTONE_2_param} [STR]  :  'value'
+[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0203"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / standard notation"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
@@ -787,14 +788,14 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
 [DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
 [DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {VAR_VARIANT_1_MS_MILESTONE_2_param} [STR]  :  'value'
+[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0204"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / standard notation"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "GOODCASE"
@@ -836,222 +837,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0205"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
-dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0205.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
-"""
-listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0206"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter name / standard notation"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
-dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0206.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {VAR_VARIANT_1_MS_MILESTONE_2_param} [STR]  :  'value'
-"""
-listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0207"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
-dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0207.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {VAR_VARIANT_1_MS_MILESTONE_2_param} [STR]  :  'value'
-"""
-listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0208"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / standard notation"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
-dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0208.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
-"""
-listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0209"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor creates a new string with all dollar operator expressions resolved as string"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
-dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0209.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (22/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (22/3) > {list_variant_numbers} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (22/4) > {list_variant_index} [INT]  :  0
-[DOTDICT] (22/5) > {variant_number} [STR]  :  '1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/1) > {variant_1} [STR]  :  'VARIANT_1'
-[DOTDICT] (22/6) > {dict_variants} [DOTDICT] (2/2) > {variant_2} [STR]  :  'VARIANT_2'
-[DOTDICT] (22/7) > {variant_key_1} [STR]  :  'variant_1'
-[DOTDICT] (22/8) > {INNERMOST_VARIANT_VALUE} [STR]  :  'RIA'
-[DOTDICT] (22/9) > {ARIAN} [STR]  :  'ARIAN'
-[DOTDICT] (22/10) > {VARIANT} [STR]  :  'VARIANT'
-[DOTDICT] (22/11) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/12) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/13) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (22/14) > {list_milestone_numbers} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (22/15) > {list_milestone_index} [INT]  :  1
-[DOTDICT] (22/16) > {milestone_number} [STR]  :  '2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/1) > {milestone_1} [STR]  :  'MILESTONE_1'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/2) > {milestone_2} [STR]  :  'MILESTONE_2'
-[DOTDICT] (22/17) > {dict_milestones} [DOTDICT] (3/3) > {milestone_3} [STR]  :  'MILESTONE_3'
-[DOTDICT] (22/18) > {milestone_key_2} [STR]  :  'milestone_2'
-[DOTDICT] (22/19) > {innermost_milestone_name} [STR]  :  'est'
-[DOTDICT] (22/20) > {ilesto} [STR]  :  'ilesto'
-[DOTDICT] (22/21) > {milestone} [STR]  :  'milestone'
-[DOTDICT] (22/22) > {param} [STR]  :  'VAR_VARIANT_1_MS_MILESTONE_2 value'
-"""
-listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0250"
 dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -1067,49 +852,49 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0251"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0251.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "The variable '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0252"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0252.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "The variable '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0253"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0253.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "The variable '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0254"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
@@ -1123,225 +908,280 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0255"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0255.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0256"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0256.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "The variable '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0257"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (3)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0257.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "The variable '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0258"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (4)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0258.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value 'A_${testdict}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0259"
-dictUsecase['DESCRIPTION']       = "JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (5)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0259.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${IAMNOTEXISTING}' is not available!"
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_${testdict}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0260"
-dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (6)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0260.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "Found expression '${param}' with at least one parameter of composite data type ('${param}' is of type <class 'list'>). Because of this expression is the name of a parameter, only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0261"
-dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (7)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0261.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0262"
-dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (8)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0262.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "Found expression '${param}' with at least one parameter of composite data type ('${param}' is of type <class 'dict'>). Because of this expression is the name of a parameter, only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0263"
-dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)"
+dictUsecase['DESCRIPTION']       = "JSON file with substitution of blocked data types inside string values (9)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0263.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0264"
-dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0264.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"${param1}\""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0265"
-dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0265.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"A.${param1}.B\""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0266"
-dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (3)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0266.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"${testlist}\""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0267"
-dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (4)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0267.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "only simple data types are allowed to be substituted inside."
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"A.${testdict}.B\""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0268"
-dictUsecase['DESCRIPTION']       = "JSON file with dictionary parameter substitution in parameter value (composite data types not allowed in values)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (5)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0268.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO !!!
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"${param1}\""
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0269"
-dictUsecase['DESCRIPTION']       = "JSON file with list parameter substitution in parameter value (composite data types not allowed in names)"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (6)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0269.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # # !!! expectation TODO !!!
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"A.${param1}.B\""
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-# JPP_0270 does not really belong to PARAMETER_SUBSTITUTION, maybe move to another section
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0270"
-dictUsecase['DESCRIPTION']       = "JSON file containing a list; list index is defined by a parameter and wrapped in single quotes"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (7)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION" # Note: Parameter subsitution in key names is blocked (Ticket 270)
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = "List indices must be of type 'int'"
+dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0270.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed" # "expects integer as index. Got string instead in"
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"${testlist}\""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0271"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (8)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0271.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"A.${testdict}.B\""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0272"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (9)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0272.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key '${testdict}['${param}']' that does not exist. But new keys can only be created based on hard code names."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0273"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (10)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0273.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key '${testdict}[${param}]' that does not exist. But new keys can only be created based on hard code names."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0274"
+dictUsecase['DESCRIPTION']       = "JSON file with blocked dynamic key names (11)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0274.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key '${testdict.${param}}' that does not exist. But new keys can only be created based on hard code names."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2018,7 +1858,7 @@ dictUsecase['SECTION']           = "COMPOSITE_EXPRESSIONS"
 dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0504.jsonp"       # current issue: Expecting value: line 20 column 14 (char 1088)'!
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0504.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (20/1) > {param1} [DOTDICT] (1/1) > {A} [DOTDICT] (1/1) > {B} [DOTDICT] (1/1) > {C} [DOTDICT] (1/1) > {D} [FLOAT]  :  1.23
@@ -2208,30 +2048,25 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0513.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (21/1) > {intparam} [INT]  :  0
-[DOTDICT] (21/2) > {stringparam} [STR]  :  'A'
-[DOTDICT] (21/3) > {listparam} [LIST] (2/1) > [STR]  :  'C'
-[DOTDICT] (21/3) > {listparam} [LIST] (2/2) > [STR]  :  'D'
-[DOTDICT] (21/4) > {dictparam} [DOTDICT] (3/1) > {0} [INT]  :  3
-[DOTDICT] (21/4) > {dictparam} [DOTDICT] (3/2) > {A} [INT]  :  5
-[DOTDICT] (21/4) > {dictparam} [DOTDICT] (3/3) > {B} [INT]  :  6
-[DOTDICT] (21/5) > {val01} [STR]  :  'A'
-[DOTDICT] (21/6) > {val02} [STR]  :  'B'
-[DOTDICT] (21/7) > {val03} [INT]  :  0
-[DOTDICT] (21/8) > {val04} [INT]  :  1
-[DOTDICT] (21/9) > {val05} [INT]  :  1
-[DOTDICT] (21/10) > {val06} [INT]  :  1
-[DOTDICT] (21/11) > {val07} [STR]  :  'A'
-[DOTDICT] (21/12) > {val08} [STR]  :  'B'
-[DOTDICT] (21/13) > {val09} [STR]  :  '0'
-[DOTDICT] (21/14) > {val10} [STR]  :  '1'
-[DOTDICT] (21/15) > {val11} [STR]  :  '1'
-[DOTDICT] (21/16) > {val12} [STR]  :  '1'
-[DOTDICT] (21/17) > {C} [STR]  :  'E'
-[DOTDICT] (21/18) > {D} [STR]  :  'F'
-[DOTDICT] (21/19) > {3} [INT]  :  3
-[DOTDICT] (21/20) > {5} [INT]  :  5
-[DOTDICT] (21/21) > {6} [INT]  :  6"""
+[DOTDICT] (16/1) > {intparam} [INT]  :  0
+[DOTDICT] (16/2) > {stringparam} [STR]  :  'A'
+[DOTDICT] (16/3) > {listparam} [LIST] (2/1) > [STR]  :  'C'
+[DOTDICT] (16/3) > {listparam} [LIST] (2/2) > [STR]  :  'D'
+[DOTDICT] (16/4) > {dictparam} [DOTDICT] (3/1) > {0} [INT]  :  3
+[DOTDICT] (16/4) > {dictparam} [DOTDICT] (3/2) > {A} [INT]  :  5
+[DOTDICT] (16/4) > {dictparam} [DOTDICT] (3/3) > {B} [INT]  :  6
+[DOTDICT] (16/5) > {val01} [STR]  :  'A'
+[DOTDICT] (16/6) > {val02} [STR]  :  'B'
+[DOTDICT] (16/7) > {val03} [INT]  :  0
+[DOTDICT] (16/8) > {val04} [INT]  :  1
+[DOTDICT] (16/9) > {val05} [INT]  :  1
+[DOTDICT] (16/10) > {val06} [INT]  :  1
+[DOTDICT] (16/11) > {val07} [STR]  :  'A'
+[DOTDICT] (16/12) > {val08} [STR]  :  'B'
+[DOTDICT] (16/13) > {val09} [STR]  :  '0'
+[DOTDICT] (16/14) > {val10} [STR]  :  '1'
+[DOTDICT] (16/15) > {val11} [STR]  :  '1'
+[DOTDICT] (16/16) > {val12} [STR]  :  '1'"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
@@ -2611,10 +2446,10 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1004.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (4/1) > {testdict4} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  20
-[DOTDICT] (4/2) > {testdict1} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  4
-[DOTDICT] (4/3) > {testdict2} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  9
-[DOTDICT] (4/4) > {testdict3} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  10
+[DOTDICT] (4/1) > {testdict3} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  30
+[DOTDICT] (4/2) > {testdict4} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  40
+[DOTDICT] (4/3) > {testdict1} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  4
+[DOTDICT] (4/4) > {testdict2} [DOTDICT] (1/1) > {subKey1} [DOTDICT] (1/1) > {subKey2} [DOTDICT] (1/1) > {subKey3} [DOTDICT] (1/1) > {subKey4} [INT]  :  8
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2629,7 +2464,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1050.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2643,7 +2478,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1051.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2657,7 +2492,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1052.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2713,7 +2548,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1056.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2727,7 +2562,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2741,7 +2576,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1058.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key" # Update based on new requirement about dynamic key names 270
+dictUsecase['EXPECTEDEXCEPTION'] = "Identified dynamic name of key"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

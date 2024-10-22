@@ -119,7 +119,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
-   **JSON file with nested parameter / string parameter substitution in parameter name**
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation**
 
    Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
@@ -129,7 +129,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation**
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
 
    Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
@@ -139,63 +139,13 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation**
-
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-
-----
-
-* **Test JPP_0204**
-
-  [PARAMETER_SUBSTITUTION / GOODCASE]
-
-   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation**
-
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-
-----
-
-* **Test JPP_0205**
-
-  [PARAMETER_SUBSTITUTION / GOODCASE]
-
-   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation**
-
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-
-----
-
-* **Test JPP_0206**
-
-  [PARAMETER_SUBSTITUTION / GOODCASE]
-
-   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation**
-
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-
-----
-
-* **Test JPP_0207**
-
-  [PARAMETER_SUBSTITUTION / GOODCASE]
-
-   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation**
-
-   Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
-
-----
-
-* **Test JPP_0208**
-
-  [PARAMETER_SUBSTITUTION / GOODCASE]
-
    **JSON file with nested parameter / key parameter substitution in parameter value / standard notation**
 
    Expected: JsonPreprocessor creates a new string with all dollar operator expressions resolved as string
 
 ----
 
-* **Test JPP_0209**
+* **Test JPP_0204**
 
   [PARAMETER_SUBSTITUTION / GOODCASE]
 
@@ -219,7 +169,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing**
+   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -229,7 +179,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing**
+   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -239,7 +189,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing**
+   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -249,7 +199,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing**
+   **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -259,7 +209,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing**
+   **JSON file with substitution of blocked data types inside string values (1)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -269,7 +219,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing**
+   **JSON file with substitution of blocked data types inside string values (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -279,7 +229,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing**
+   **JSON file with substitution of blocked data types inside string values (3)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -289,7 +239,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing**
+   **JSON file with substitution of blocked data types inside string values (4)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -299,7 +249,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing**
+   **JSON file with substitution of blocked data types inside string values (5)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -309,7 +259,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)**
+   **JSON file with substitution of blocked data types inside string values (6)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -319,7 +269,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+   **JSON file with substitution of blocked data types inside string values (7)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -329,7 +279,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)**
+   **JSON file with substitution of blocked data types inside string values (8)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -339,7 +289,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)**
+   **JSON file with substitution of blocked data types inside string values (9)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -349,7 +299,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)**
+   **JSON file with blocked dynamic key names (1)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -359,7 +309,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)**
+   **JSON file with blocked dynamic key names (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -369,7 +319,7 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)**
+   **JSON file with blocked dynamic key names (3)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -379,7 +329,27 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)**
+   **JSON file with blocked dynamic key names (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0268**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (5)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0269**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (6)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -389,11 +359,49 @@ Test Use Cases
 
   [PARAMETER_SUBSTITUTION / BADCASE]
 
-   **JSON file containing a list; list index is defined by a parameter and wrapped in single quotes**
+   **JSON file with blocked dynamic key names (7)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
-   *Hint: List indices must be of type 'int'*
+----
+
+* **Test JPP_0271**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (8)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0272**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (9)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0273**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (10)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_0274**
+
+  [PARAMETER_SUBSTITUTION / BADCASE]
+
+   **JSON file with blocked dynamic key names (11)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -1573,5 +1581,5 @@ Test Use Cases
 
 ----
 
-Generated: 17.04.2024 - 20:03:38
+Generated: 22.10.2024 - 16:30:20
 
