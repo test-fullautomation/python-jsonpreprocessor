@@ -10,34 +10,35 @@ JPP_0101|DATA_INTEGRITY|GOODCASE|JSON file with string containing several separa
 JPP_0102|DATA_INTEGRITY|GOODCASE|JSON file with string containing more special characters, masked special characters and escape sequences
 JPP_0103|DATA_INTEGRITY|GOODCASE|JSON file with strings containing several pairs of square brackets (that must not cause syntax issues!)
 JPP_0200|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter value
-JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / string parameter substitution in parameter name
-JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation
-JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation
-JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
-JPP_0205|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
-JPP_0206|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation
-JPP_0207|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation
-JPP_0208|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation
-JPP_0209|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation
+JPP_0201|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation
+JPP_0202|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation
+JPP_0203|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation
+JPP_0204|PARAMETER_SUBSTITUTION|GOODCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation
 JPP_0250|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter value / innermost parameter not existing
-JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / string parameter substitution in parameter name / in between parameter not existing
-JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / standard notation / index parameter not existing
-JPP_0253|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter name / dotdict notation / index parameter not existing
-JPP_0254|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
-JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
-JPP_0256|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / standard notation / variant number not existing
-JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter name / dotdict notation / milestone number not existing
-JPP_0258|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
-JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
-JPP_0260|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (1)
-JPP_0261|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in parameter name (composite data types not allowed in names) / (2)
-JPP_0262|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (1)
-JPP_0263|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in parameter name (composite data types not allowed in names) / (2)
-JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (1)
-JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with list parameter substitution in key name (composite data types not allowed in names) / (2)
-JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (1)
-JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with dictionary parameter substitution in key name (composite data types not allowed in names) / (2)
-JPP_0270|PARAMETER_SUBSTITUTION|BADCASE|JSON file containing a list; list index is defined by a parameter and wrapped in single quotes
+JPP_0251|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / standard notation / index parameter not existing
+JPP_0252|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / index parameter substitution in parameter value / dotdict notation / index parameter not existing
+JPP_0253|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / standard notation / variant number not existing
+JPP_0254|PARAMETER_SUBSTITUTION|BADCASE|JSON file with nested parameter / key parameter substitution in parameter value / dotdict notation / milestone number not existing
+JPP_0255|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (1)
+JPP_0256|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (2)
+JPP_0257|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (3)
+JPP_0258|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (4)
+JPP_0259|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (5)
+JPP_0260|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (6)
+JPP_0261|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (7)
+JPP_0262|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (8)
+JPP_0263|PARAMETER_SUBSTITUTION|BADCASE|JSON file with substitution of blocked data types inside string values (9)
+JPP_0264|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (1)
+JPP_0265|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (2)
+JPP_0266|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (3)
+JPP_0267|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (4)
+JPP_0268|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (5)
+JPP_0269|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (6)
+JPP_0270|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (7)
+JPP_0271|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (8)
+JPP_0272|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (9)
+JPP_0273|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (10)
+JPP_0274|PARAMETER_SUBSTITUTION|BADCASE|JSON file with blocked dynamic key names (11)
 JPP_0300|VALUE_DETECTION|GOODCASE|JSON file with parameter of type 'list' / index (in square brackets) defined outside the curly brackets (valid syntax)
 JPP_0301|VALUE_DETECTION|GOODCASE|JSON file with expression containing more closing elements '}' than opening elements '${' (valid syntax)
 JPP_0302|VALUE_DETECTION|GOODCASE|JSON file with expression starting with '${' and ending with '}' / no further matching '${' and '}' in between (valid syntax)
