@@ -1581,5 +1581,135 @@ Test Use Cases
 
 ----
 
-Generated: 22.10.2024 - 16:30:20
+* **Test JPP_2000**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (1)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2001**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (2)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2002**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (3)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2003**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (4)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2007**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (8)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2500**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (1)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2501**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (2)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2502**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (3)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2503**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (4)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2504**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (5)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2506**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (7)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2507**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (8)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2508**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (9)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+Generated: 23.10.2024 - 19:41:03
 

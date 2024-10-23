@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 22.10.2024
+# 23.10.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3332,5 +3332,264 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2000"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (1)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2000.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2001"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (2)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2001.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2002"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (3)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2002.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
+[DOTDICT] (2/2) > {param} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2003"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (4)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2003.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
+[DOTDICT] (2/2) > {param} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2004"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (5)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2004.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2005"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (6)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2005.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2006"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (7)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2006.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2007"
+dictUsecase['DESCRIPTION']       = "JSON file with nested dictionary, in which a parameter is overwritten (8)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2007.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2500"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (1)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2500.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'Could not resolve expression '${param}'. The based parameter 'param' is not defined yet! Use the '<name> : <value>' syntax to create a new based parameter.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2501"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (2)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2501.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${param}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2502"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (3)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2502.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'Missing scope for parameter '${param}'. To change the value of this parameter, an absolute path must be used: '${params}['001']['param']' or '${params.001.param}'.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2503"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (4)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2503.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}['001']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2504"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (5)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2504.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.001}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2505"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (6)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2505.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2506"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (7)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2506.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2507"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (8)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2507.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}[1]['B'][0]['C']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2508"
+dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (9)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['SECTION']           = "PARAMETER_SCOPE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2508.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
 
