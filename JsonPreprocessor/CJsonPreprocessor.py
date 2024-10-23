@@ -1356,6 +1356,13 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
   *No return value*
         """
+        def __isAscii(sInput : str) -> bool:
+            try:
+                sInput.encode('ascii')
+                return True
+            except UnicodeEncodeError:
+                return False
+
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
@@ -1363,7 +1370,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         if errorMsg!='':
             pass
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if not re.match(r'^[\s"]*[a-zA-Z0-9_]+.*$', sInput):
+            if not re.match(r'^[\s"]*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
             elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
@@ -1381,7 +1388,7 @@ and have to start with a letter, digit or underscore."
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif not re.match(r'^[a-zA-Z0-9_]+.*$', param[1].strip()):
+                        elif not re.match(r'^[a-zA-Z0-9_]+.*$', param[1].strip()) and __isAscii(param[1].strip()):
                             errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
