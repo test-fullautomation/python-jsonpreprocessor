@@ -903,7 +903,6 @@ This method replaces all nested parameters in key and value of a JSON object .
                         sExecKey = sExecKey + f"[{element}]"
                     else:
                         sExecKey= sExecKey + f"['{element}']"
-            bKeyName = False
             if keyNested is not None:
                 if not bDuplicatedHandle and keyNested in oJson.keys():
                     del oJson[keyNested]
@@ -949,15 +948,21 @@ This method replaces all nested parameters in key and value of a JSON object .
                             raise Exception(f"Could not set root key element '{parentParams}[{jsonParam}]'! Reason: {error}")
                     if not recursive:
                         oJson[rootKey] = self.JPGlobals[rootKey]
-                else:
-                    bKeyName = True
             else:
-                bKeyName = True
-            if bKeyName:
                 if CNameMangling.AVOIDDATATYPE.value in k:
                     k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
                 if paramValue is None:
                     oJson[k] = v
+                    if parentParams == '':
+                        self.JPGlobals[k] = v
+                    else:
+                        TmpParentParams = re.sub(r'^([^\[]+)', '[\'\\1\']', parentParams)
+                        sExec = f"self.JPGlobals{TmpParentParams}['{k}'] = {v}" if not isinstance(v, str) else \
+                                f"self.JPGlobals{TmpParentParams}['{k}'] = \"{v}\""
+                        try:
+                            exec(sExec)
+                        except:
+                            pass
                 else:
                     sExec1 = f"{sExecKey} = {sExecValue1}"
                     sExec2 = f"oJson['{k}'] = {sExecValue2}"
