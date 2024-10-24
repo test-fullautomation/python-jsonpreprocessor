@@ -648,5 +648,57 @@ Test JPP_1901 / ASSIGNMENTS_BY_REFERENCE / GOODCASE
 Description: JSON file with list assignments (by reference)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 22.10.2024 - 16:30:20
+Test JPP_2000 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (1)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2001 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (2)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2002 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (3)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2003 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (4)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2007 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (8)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2500 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (1)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2501 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (2)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2502 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (3)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2503 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (4)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2504 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (5)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2506 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (7)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2507 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (8)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2508 / PARAMETER_SCOPE / BADCASE
+Description: JSON file containing a parameter with missing scope (9)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Generated: 23.10.2024 - 19:41:03
 
