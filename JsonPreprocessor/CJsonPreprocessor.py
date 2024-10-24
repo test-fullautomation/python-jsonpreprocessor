@@ -940,7 +940,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                         raise Exception(errorMsg)
                     if parentParams != '':
                         jsonParam = re.sub(rf'^{re.escape(parentParams)}(.+)$', '\\1', k)
-                        jsonParam = re.sub(r'^\[([^\[]+)\].+$', '\\1', jsonParam)
+                        jsonParam = re.sub(r'^\[([^\[]+)\].*$', '\\1', jsonParam)
                         TmpParentParams = re.sub(r'^([^\[]+)', '[\'\\1\']', parentParams)
                         sExec = f"oJson[{jsonParam}] = self.JPGlobals{TmpParentParams}[{jsonParam}]"
                         try:
