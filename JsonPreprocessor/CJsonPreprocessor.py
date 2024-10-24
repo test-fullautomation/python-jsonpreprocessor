@@ -923,33 +923,30 @@ This method replaces all nested parameters in key and value of a JSON object .
                         k = re.sub(CNameMangling.AVOIDDATATYPE.value, "", k)
                     lElements = self.__parseDictPath(k)
                     sExecKey1 = "self.JPGlobals"
-                    sExecKey2 = "oJson"
                     for element in lElements:
                         if re.match(r"^[\s\-]*\d+$", element) or re.match(r"^'[^']+'$", element.strip()):
-                            if '[' in sExecKey2:
-                                sExecKey2 = sExecKey2 + f"[{element}]"
-                            elif element.strip("'") in list(oJson.keys()):
-                                sExecKey2 = sExecKey2 + f"[{element}]"
                             sExecKey1 = sExecKey1 + f"[{element}]"
                         else:
-                            if '[' in sExecKey2:
-                                sExecKey2 = sExecKey2 + f"['{element}']"
-                            elif element.strip("'") in list(oJson.keys()):
-                                sExecKey2 = sExecKey2 + f"['{element}']"
                             sExecKey1 = sExecKey1 + f"['{element}']"
                     if paramValue is None:
                         sExec1 = sExecKey1 + f" = \"{v}\"" if isinstance(v, str) else sExecKey1 + f" = {str(v)}"
-                        sExec2 = sExecKey2 + f" = \"{v}\"" if isinstance(v, str) else sExecKey2 + f" = {str(v)}"
                     else:
                         sExec1 = sExecKey1 + ' = ' + sExecValue1
-                        sExec2 = sExecKey2 + ' = ' + sExecValue1
                     try:
                         exec(sExec1)
-                        exec(sExec2)
                     except Exception as error:
                         self.__reset()
                         errorMsg = f"Could not set parameter '{self.__removeTokenStr(keyNested)}' with value '{v}'! Reason: {error}"
                         raise Exception(errorMsg)
+                    if parentParams != '':
+                        jsonParam = re.sub(rf'^{re.escape(parentParams)}(.+)$', '\\1', k)
+                        jsonParam = re.sub(r'^\[([^\[]+)\].+$', '\\1', jsonParam)
+                        TmpParentParams = re.sub(r'^([^\[]+)', '[\'\\1\']', parentParams)
+                        sExec = f"oJson[{jsonParam}] = self.JPGlobals{TmpParentParams}[{jsonParam}]"
+                        try:
+                            exec(sExec)
+                        except Exception as error:
+                            raise Exception(f"Could not set root key element '{parentParams}[{jsonParam}]'! Reason: {error}")
                     if not recursive:
                         oJson[rootKey] = self.JPGlobals[rootKey]
                 else:
