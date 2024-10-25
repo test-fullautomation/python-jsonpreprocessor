@@ -1,0 +1,90 @@
+//  Copyright 2020-2024 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+    "A"         : 1,
+    "check01"   : ${A},
+    // Bug: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/357#issuecomment-2435677836
+    // 'The parameter '${0}' is not available!'!
+    // "0"         : 2,
+    // "check02"   : ${0},
+    "_"         : 3,
+    "check03"   : ${_},
+    //
+    "Ax"        : 4,
+    "check04"   : ${Ax},
+    "0x"        : 5,
+    "check05"   : ${0x},
+    "_x"        : 6,
+    "check06"   : ${_x},
+    //
+    "param+1"   : 7,
+    "check07"   : ${param+1},
+    "param-2"   : 8,
+    "check08"   : ${param-2},
+    "param*3"   : 9,
+    "check09"   : ${param*3},
+    "param/4"   : 10,
+    // bug: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/356#issuecomment-2435708593
+    // Expecting ',' delimiter
+    // "check10"   : ${param/4},
+    //
+    "p01" : {"A"  : 7},
+    "check11"   : ${p01}['A'],
+    "p02" : {"0"  : 8},
+    "check12"   : ${p02}['0'],
+    "p03" : {"_"  : 9},
+    "check13"   : ${p03}['_'],
+    //
+    "p04" : {"Ax" : 10},
+    "check14"   : ${p04}['Ax'],
+    "p05" : {"0x" : 11},
+    "check15"   : ${p05}['0x'],
+    "p06" : {"_x" : 12},
+    "check16"   : ${p06}['_x'],
+    //
+    "p07" : {"param+1"  : 13},
+    "check17"   : ${p07}['param+1'],
+    "p08" : {"param-2"  : 14},
+    "check18"   : ${p08}['param-2'],
+    "p09" : {"param*3"  : 15},
+    "check19"   : ${p09}['param*3'],
+    "p10" : {"param/4"  : 16},
+    // Expecting ',' delimiter
+    // "check20"   : ${p10}['param/4'],
+    //
+    "p11" : [1, {"A"  : 17}, 2],
+    "check21"   : ${p11}[1]['A'],
+    "p12" : [1, {"0"  : 18}, 2],
+    "check22"   : ${p12}[1]['0'],
+    "p13" : [1, {"_"  : 19}, 2],
+    "check23"   : ${p13}[1]['_'],
+    //
+    "p14" : [1, {"Ax" : 20}, 2],
+    "check24"   : ${p14}[1]['Ax'],
+    "p15" : [1, {"0x" : 21}, 2],
+    "check25"   : ${p15}[1]['0x'],
+    "p16" : [1, {"_x" : 22}, 2],
+    "check26"   : ${p16}[1]['_x'],
+    // //
+    "p17" : [1, {"param+1"  : 23}, 2],
+    "check27"   : ${p17}[1]['param+1'],
+    "p18" : [1, {"param-2"  : 24}, 2],
+    "check28"   : ${p18}[1]['param-2'],
+    "p19" : [1, {"param*3"  : 25}, 2],
+    "check29"   : ${p19}[1]['param*3'],
+    "p20" : [1, {"param/4"  : 26}, 2]
+    // Expecting ',' delimiter
+    // "check30"   : ${p20}[1]['param/4']
+}

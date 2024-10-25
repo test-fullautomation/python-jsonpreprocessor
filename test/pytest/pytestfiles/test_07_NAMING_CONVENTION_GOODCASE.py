@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_17_STRING_INDICES_GOODCASE.py
+# test_07_NAMING_CONVENTION_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 17.04.2024 - 17:34:52
+# 25.10.2024 - 20:21:51
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_STRING_INDICES_GOODCASE:
+class Test_NAMING_CONVENTION_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations with indices (standard notation)",]
+      "Description", ["JSON file with several parameter names w.r.t. the naming convention",]
    )
-   def test_JPP_1500(self, Description):
-      nReturn = CExecute.Execute("JPP_1500")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
-   )
-   def test_JPP_1501(self, Description):
-      nReturn = CExecute.Execute("JPP_1501")
+   def test_JPP_0400(self, Description):
+      nReturn = CExecute.Execute("JPP_0400")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

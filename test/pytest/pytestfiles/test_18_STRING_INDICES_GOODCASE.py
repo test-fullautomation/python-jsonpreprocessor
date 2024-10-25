@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_19_LINE_BREAKS_GOODCASE.py
+# test_18_STRING_INDICES_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 17.04.2024 - 17:34:52
+# 25.10.2024 - 20:21:51
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_LINE_BREAKS_GOODCASE:
+class Test_STRING_INDICES_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with and without line breaks inside expressions",]
+      "Description", ["JSON file with several combinations with indices (standard notation)",]
    )
-   def test_JPP_1700(self, Description):
-      nReturn = CExecute.Execute("JPP_1700")
+   def test_JPP_1500(self, Description):
+      nReturn = CExecute.Execute("JPP_1500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
+   )
+   def test_JPP_1501(self, Description):
+      nReturn = CExecute.Execute("JPP_1501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_09_CODE_COMMENTS_GOODCASE.py
+# test_20_LINE_BREAKS_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 18.10.2023 - 17:37:45
+# 25.10.2024 - 20:21:51
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_CODE_COMMENTS_GOODCASE:
+class Test_LINE_BREAKS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations of code comments",]
+      "Description", ["JSON file with and without line breaks inside expressions",]
    )
-   def test_JPP_0600(self, Description):
-      nReturn = CExecute.Execute("JPP_0600")
+   def test_JPP_1700(self, Description):
+      nReturn = CExecute.Execute("JPP_1700")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

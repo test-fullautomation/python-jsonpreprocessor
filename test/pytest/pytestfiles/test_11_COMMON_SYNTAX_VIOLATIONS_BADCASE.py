@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_11_IMPLICIT_CREATION_GOODCASE.py
+# test_11_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 17.04.2024 - 20:03:38
+# 25.10.2024 - 20:21:51
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_IMPLICIT_CREATION_GOODCASE:
+class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary keys to be created implicitly",]
+      "Description", ["JSON file with syntax error (1)",]
    )
-   def test_JPP_1000(self, Description):
-      nReturn = CExecute.Execute("JPP_1000")
+   def test_JPP_0950(self, Description):
+      nReturn = CExecute.Execute("JPP_0950")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary keys to be created implicitly (same key names at all levels)",]
+      "Description", ["JSON file with syntax error (2)",]
    )
-   def test_JPP_1001(self, Description):
-      nReturn = CExecute.Execute("JPP_1001")
+   def test_JPP_0951(self, Description):
+      nReturn = CExecute.Execute("JPP_0951")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of implicit and explicit creation / with and without initialization",]
+      "Description", ["JSON file with syntax error (3)",]
    )
-   def test_JPP_1002(self, Description):
-      nReturn = CExecute.Execute("JPP_1002")
+   def test_JPP_0952(self, Description):
+      nReturn = CExecute.Execute("JPP_0952")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference",]
+      "Description", ["JSON file with syntax error (4): file is completely empty",]
    )
-   def test_JPP_1003(self, Description):
-      nReturn = CExecute.Execute("JPP_1003")
+   def test_JPP_0953(self, Description):
+      nReturn = CExecute.Execute("JPP_0953")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of ascending and descending dotdict syntax",]
+      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
    )
-   def test_JPP_1004(self, Description):
-      nReturn = CExecute.Execute("JPP_1004")
+   def test_JPP_0954(self, Description):
+      nReturn = CExecute.Execute("JPP_0954")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

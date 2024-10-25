@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_22_PARAMETER_SCOPE_GOODCASE.py
+# test_12_IMPLICIT_CREATION_GOODCASE.py
 #
 # XC-CT/ECA3-Queckenstedt
 #
-# 23.10.2024 - 19:41:03
+# 25.10.2024 - 20:21:51
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PARAMETER_SCOPE_GOODCASE:
+class Test_IMPLICIT_CREATION_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (1)",]
+      "Description", ["JSON file with dictionary keys to be created implicitly",]
    )
-   def test_JPP_2000(self, Description):
-      nReturn = CExecute.Execute("JPP_2000")
+   def test_JPP_1000(self, Description):
+      nReturn = CExecute.Execute("JPP_1000")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (2)",]
+      "Description", ["JSON file with dictionary keys to be created implicitly (same key names at all levels)",]
    )
-   def test_JPP_2001(self, Description):
-      nReturn = CExecute.Execute("JPP_2001")
+   def test_JPP_1001(self, Description):
+      nReturn = CExecute.Execute("JPP_1001")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (3)",]
+      "Description", ["JSON file with combinations of implicit and explicit creation / with and without initialization",]
    )
-   def test_JPP_2002(self, Description):
-      nReturn = CExecute.Execute("JPP_2002")
+   def test_JPP_1002(self, Description):
+      nReturn = CExecute.Execute("JPP_1002")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (4)",]
+      "Description", ["JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference",]
    )
-   def test_JPP_2003(self, Description):
-      nReturn = CExecute.Execute("JPP_2003")
+   def test_JPP_1003(self, Description):
+      nReturn = CExecute.Execute("JPP_1003")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (8)",]
+      "Description", ["JSON file with combinations of ascending and descending dotdict syntax",]
    )
-   def test_JPP_2007(self, Description):
-      nReturn = CExecute.Execute("JPP_2007")
+   def test_JPP_1004(self, Description):
+      nReturn = CExecute.Execute("JPP_1004")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

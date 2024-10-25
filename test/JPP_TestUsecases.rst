@@ -729,6 +729,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0400**
+
+  [NAMING_CONVENTION / GOODCASE]
+
+   **JSON file with several parameter names w.r.t. the naming convention**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
 * **Test JPP_0500**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -1711,5 +1721,5 @@ Test Use Cases
 
 ----
 
-Generated: 23.10.2024 - 19:41:03
+Generated: 25.10.2024 - 20:21:51
 
