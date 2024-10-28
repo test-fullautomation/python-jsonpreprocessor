@@ -1,0 +1,54 @@
+//  Copyright 2020-2024 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+    // -- blank, backslash, 4Byte character
+    "  param  " : 1,
+    "p21"       : ${param},
+    //
+    "B"   : {"  param  " : 1},
+    "p22" : ${B}['param'],
+    //
+    "C"   : [1, {"  param  " : 1}, 2],
+    "p23" : ${C}[1]['param'],
+    //
+    "par\\am" : 1,
+    "p24"     : ${par\\am},
+    //
+    "D"   : {"par\\am" : 1},
+    "p25" : ${D}['par\\am'],
+    //
+    "E"   : [1, {"par\\am" : 1}, 2],
+    "p26" : ${E}[1]['par\\am'],
+    //
+    "path\\to\\file" : "C:\\Users\\Example\\file.txt"
+    //
+    "par𠼭am" : 1,
+    "p27"     : ${par𠼭am},
+    //
+    "F"   : {"par𠼭am" : 1},
+    "p28" : ${F}['par𠼭am'],
+    //
+    "G"   : [1, {"par𠼭am" : 1}, 2],
+    "p29" : ${G}[1]['par𠼭am'],
+    //
+    "𠼭param" : 1,
+    "p30"     : ${𠼭param},
+    //
+    "H"   : {"𠼭param" : 1},
+    "p31" : ${H}['𠼭param'],
+    //
+    "K"   : [1, {"𠼭param" : 1}, 2],
+    "p32" : ${K}[1]['𠼭param'],
+}

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_21_SELF_ASSIGNMENTS_GOODCASE.py
+# test_18_NESTED_LISTS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_SELF_ASSIGNMENTS_GOODCASE:
+class Test_NESTED_LISTS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with self assignments of strings, lists and dictionaries",]
+      "Description", ["JSON file with several nested lists",]
    )
-   def test_JPP_1800(self, Description):
-      nReturn = CExecute.Execute("JPP_1800")
+   def test_JPP_1400(self, Description):
+      nReturn = CExecute.Execute("JPP_1400")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

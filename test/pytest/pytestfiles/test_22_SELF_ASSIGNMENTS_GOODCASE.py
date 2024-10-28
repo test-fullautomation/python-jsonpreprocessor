@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_20_LINE_BREAKS_GOODCASE.py
+# test_22_SELF_ASSIGNMENTS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_LINE_BREAKS_GOODCASE:
+class Test_SELF_ASSIGNMENTS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with and without line breaks inside expressions",]
+      "Description", ["JSON file with self assignments of strings, lists and dictionaries",]
    )
-   def test_JPP_1700(self, Description):
-      nReturn = CExecute.Execute("JPP_1700")
+   def test_JPP_1800(self, Description):
+      nReturn = CExecute.Execute("JPP_1800")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
