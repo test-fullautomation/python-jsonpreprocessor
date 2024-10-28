@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_16_NESTED_LISTS_GOODCASE.py
+# test_15_PATH_FORMATS_GOODCASE.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
-# 17.04.2024 - 17:34:52
+# 25.10.2024 - 20:31:28
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_NESTED_LISTS_GOODCASE:
+class Test_PATH_FORMATS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several nested lists",]
+      "Description", ["Relative path to JSON file",]
    )
-   def test_JPP_1400(self, Description):
-      nReturn = CExecute.Execute("JPP_1400")
+   def test_JPP_1200(self, Description):
+      nReturn = CExecute.Execute("JPP_1200")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

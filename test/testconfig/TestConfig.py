@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 23.10.2024
+# 25.10.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1618,130 +1618,99 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0450"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing not allowed special characters"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['TESTID']            = "JPP_0400"
+dictUsecase['DESCRIPTION']       = "JSON file with several parameter names w.r.t. the naming convention"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0400.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (55/1) > {A} [INT]  :  1
+[DOTDICT] (55/2) > {check01} [INT]  :  1
+[DOTDICT] (55/3) > {_} [INT]  :  3
+[DOTDICT] (55/4) > {check03} [INT]  :  3
+[DOTDICT] (55/5) > {Ax} [INT]  :  4
+[DOTDICT] (55/6) > {check04} [INT]  :  4
+[DOTDICT] (55/7) > {0x} [INT]  :  5
+[DOTDICT] (55/8) > {check05} [INT]  :  5
+[DOTDICT] (55/9) > {_x} [INT]  :  6
+[DOTDICT] (55/10) > {check06} [INT]  :  6
+[DOTDICT] (55/11) > {param+1} [INT]  :  7
+[DOTDICT] (55/12) > {check07} [INT]  :  7
+[DOTDICT] (55/13) > {param-2} [INT]  :  8
+[DOTDICT] (55/14) > {check08} [INT]  :  8
+[DOTDICT] (55/15) > {param*3} [INT]  :  9
+[DOTDICT] (55/16) > {check09} [INT]  :  9
+[DOTDICT] (55/17) > {param/4} [INT]  :  10
+[DOTDICT] (55/18) > {p01} [DOTDICT] (1/1) > {A} [INT]  :  7
+[DOTDICT] (55/19) > {check11} [INT]  :  7
+[DOTDICT] (55/20) > {p02} [DOTDICT] (1/1) > {0} [INT]  :  8
+[DOTDICT] (55/21) > {check12} [INT]  :  8
+[DOTDICT] (55/22) > {p03} [DOTDICT] (1/1) > {_} [INT]  :  9
+[DOTDICT] (55/23) > {check13} [INT]  :  9
+[DOTDICT] (55/24) > {p04} [DOTDICT] (1/1) > {Ax} [INT]  :  10
+[DOTDICT] (55/25) > {check14} [INT]  :  10
+[DOTDICT] (55/26) > {p05} [DOTDICT] (1/1) > {0x} [INT]  :  11
+[DOTDICT] (55/27) > {check15} [INT]  :  11
+[DOTDICT] (55/28) > {p06} [DOTDICT] (1/1) > {_x} [INT]  :  12
+[DOTDICT] (55/29) > {check16} [INT]  :  12
+[DOTDICT] (55/30) > {p07} [DOTDICT] (1/1) > {param+1} [INT]  :  13
+[DOTDICT] (55/31) > {check17} [INT]  :  13
+[DOTDICT] (55/32) > {p08} [DOTDICT] (1/1) > {param-2} [INT]  :  14
+[DOTDICT] (55/33) > {check18} [INT]  :  14
+[DOTDICT] (55/34) > {p09} [DOTDICT] (1/1) > {param*3} [INT]  :  15
+[DOTDICT] (55/35) > {check19} [INT]  :  15
+[DOTDICT] (55/36) > {p10} [DOTDICT] (1/1) > {param/4} [INT]  :  16
+[DOTDICT] (55/37) > {p11} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/37) > {p11} [LIST] (3/2) > [DOTDICT] (1/1) > {A} [INT]  :  17
+[DOTDICT] (55/37) > {p11} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/38) > {check21} [INT]  :  17
+[DOTDICT] (55/39) > {p12} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/39) > {p12} [LIST] (3/2) > [DOTDICT] (1/1) > {0} [INT]  :  18
+[DOTDICT] (55/39) > {p12} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/40) > {check22} [INT]  :  18
+[DOTDICT] (55/41) > {p13} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/41) > {p13} [LIST] (3/2) > [DOTDICT] (1/1) > {_} [INT]  :  19
+[DOTDICT] (55/41) > {p13} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/42) > {check23} [INT]  :  19
+[DOTDICT] (55/43) > {p14} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/43) > {p14} [LIST] (3/2) > [DOTDICT] (1/1) > {Ax} [INT]  :  20
+[DOTDICT] (55/43) > {p14} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/44) > {check24} [INT]  :  20
+[DOTDICT] (55/45) > {p15} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/45) > {p15} [LIST] (3/2) > [DOTDICT] (1/1) > {0x} [INT]  :  21
+[DOTDICT] (55/45) > {p15} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/46) > {check25} [INT]  :  21
+[DOTDICT] (55/47) > {p16} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/47) > {p16} [LIST] (3/2) > [DOTDICT] (1/1) > {_x} [INT]  :  22
+[DOTDICT] (55/47) > {p16} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/48) > {check26} [INT]  :  22
+[DOTDICT] (55/49) > {p17} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/49) > {p17} [LIST] (3/2) > [DOTDICT] (1/1) > {param+1} [INT]  :  23
+[DOTDICT] (55/49) > {p17} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/50) > {check27} [INT]  :  23
+[DOTDICT] (55/51) > {p18} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/51) > {p18} [LIST] (3/2) > [DOTDICT] (1/1) > {param-2} [INT]  :  24
+[DOTDICT] (55/51) > {p18} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/52) > {check28} [INT]  :  24
+[DOTDICT] (55/53) > {p19} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/53) > {p19} [LIST] (3/2) > [DOTDICT] (1/1) > {param*3} [INT]  :  25
+[DOTDICT] (55/53) > {p19} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (55/54) > {check29} [INT]  :  25
+[DOTDICT] (55/55) > {p20} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (55/55) > {p20} [LIST] (3/2) > [DOTDICT] (1/1) > {param/4} [INT]  :  26
+[DOTDICT] (55/55) > {p20} [LIST] (3/3) > [INT]  :  2
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0451"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (1)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0451.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0452"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (2)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0452.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0453"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (3)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0453.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0454"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (4)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0454.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0455"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (5)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0455.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0456"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (6)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0456.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0457"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (7)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0457.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_0458"
-dictUsecase['DESCRIPTION']       = "JSON file with parameter name containing single not allowed special character (8)"
-dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
-dictUsecase['SECTION']           = "NAMING_CONVENTION"
-dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = None
-dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0458.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None  # # !!! expectation TODO / something like: "naming convention violation; allowed characters are ... only"!!!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
-del dictUsecase
+
+
+
+
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

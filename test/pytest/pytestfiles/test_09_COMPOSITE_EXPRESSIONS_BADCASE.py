@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_12_IMPLICIT_CREATION_BADCASE.py
+# test_09_COMPOSITE_EXPRESSIONS_BADCASE.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
-# 10.01.2024 - 12:25:22
+# 25.10.2024 - 20:31:28
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,78 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_IMPLICIT_CREATION_BADCASE:
+class Test_COMPOSITE_EXPRESSIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (1)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)",]
    )
-   def test_JPP_1050(self, Description):
-      nReturn = CExecute.Execute("JPP_1050")
+   def test_JPP_0550(self, Description):
+      nReturn = CExecute.Execute("JPP_0550")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (2)",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter and wrapped in single quotes",]
    )
-   def test_JPP_1051(self, Description):
-      nReturn = CExecute.Execute("JPP_1051")
+   def test_JPP_0551(self, Description):
+      nReturn = CExecute.Execute("JPP_0551")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (3)",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_1052(self, Description):
-      nReturn = CExecute.Execute("JPP_1052")
+   def test_JPP_0552(self, Description):
+      nReturn = CExecute.Execute("JPP_0552")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (4)",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_1053(self, Description):
-      nReturn = CExecute.Execute("JPP_1053")
+   def test_JPP_0553(self, Description):
+      nReturn = CExecute.Execute("JPP_0553")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (5)",]
+      "Description", ["JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_1054(self, Description):
-      nReturn = CExecute.Execute("JPP_1054")
+   def test_JPP_0554(self, Description):
+      nReturn = CExecute.Execute("JPP_0554")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (5)",]
+      "Description", ["JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_1055(self, Description):
-      nReturn = CExecute.Execute("JPP_1055")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (6)",]
-   )
-   def test_JPP_1056(self, Description):
-      nReturn = CExecute.Execute("JPP_1056")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (7)",]
-   )
-   def test_JPP_1057(self, Description):
-      nReturn = CExecute.Execute("JPP_1057")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with implicit creation of data structures based on parameters (8)",]
-   )
-   def test_JPP_1058(self, Description):
-      nReturn = CExecute.Execute("JPP_1058")
+   def test_JPP_0555(self, Description):
+      nReturn = CExecute.Execute("JPP_0555")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

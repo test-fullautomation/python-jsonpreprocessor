@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_14_PATH_FORMATS_GOODCASE.py
+# test_18_STRING_INDICES_GOODCASE.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
-# 09.01.2024 - 11:50:58
+# 25.10.2024 - 20:31:28
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PATH_FORMATS_GOODCASE:
+class Test_STRING_INDICES_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["Relative path to JSON file",]
+      "Description", ["JSON file with several combinations with indices (standard notation)",]
    )
-   def test_JPP_1200(self, Description):
-      nReturn = CExecute.Execute("JPP_1200")
+   def test_JPP_1500(self, Description):
+      nReturn = CExecute.Execute("JPP_1500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
+   )
+   def test_JPP_1501(self, Description):
+      nReturn = CExecute.Execute("JPP_1501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

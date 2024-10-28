@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_11_IMPLICIT_CREATION_GOODCASE.py
+# test_23_PARAMETER_SCOPE_GOODCASE.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
-# 17.04.2024 - 20:03:38
+# 25.10.2024 - 20:31:28
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_IMPLICIT_CREATION_GOODCASE:
+class Test_PARAMETER_SCOPE_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary keys to be created implicitly",]
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (1)",]
    )
-   def test_JPP_1000(self, Description):
-      nReturn = CExecute.Execute("JPP_1000")
+   def test_JPP_2000(self, Description):
+      nReturn = CExecute.Execute("JPP_2000")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary keys to be created implicitly (same key names at all levels)",]
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (2)",]
    )
-   def test_JPP_1001(self, Description):
-      nReturn = CExecute.Execute("JPP_1001")
+   def test_JPP_2001(self, Description):
+      nReturn = CExecute.Execute("JPP_2001")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of implicit and explicit creation / with and without initialization",]
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (3)",]
    )
-   def test_JPP_1002(self, Description):
-      nReturn = CExecute.Execute("JPP_1002")
+   def test_JPP_2002(self, Description):
+      nReturn = CExecute.Execute("JPP_2002")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference",]
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (4)",]
    )
-   def test_JPP_1003(self, Description):
-      nReturn = CExecute.Execute("JPP_1003")
+   def test_JPP_2003(self, Description):
+      nReturn = CExecute.Execute("JPP_2003")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns values
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with combinations of ascending and descending dotdict syntax",]
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (8)",]
    )
-   def test_JPP_1004(self, Description):
-      nReturn = CExecute.Execute("JPP_1004")
+   def test_JPP_2007(self, Description):
+      nReturn = CExecute.Execute("JPP_2007")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

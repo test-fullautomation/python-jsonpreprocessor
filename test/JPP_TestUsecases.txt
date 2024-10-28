@@ -306,6 +306,10 @@ Description: JSON file with expression starting with '${' and ending with '}', f
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Hint.......: Checklist rule 6 / pattern 5
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0400 / NAMING_CONVENTION / GOODCASE
+Description: JSON file with several parameter names w.r.t. the naming convention
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0500 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite data structure (nested lists and dictionaries 1)
 Expectation: JsonPreprocessor returns expected value
@@ -700,5 +704,5 @@ Test JPP_2508 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 23.10.2024 - 19:41:03
+Generated: 25.10.2024 - 20:21:51
 

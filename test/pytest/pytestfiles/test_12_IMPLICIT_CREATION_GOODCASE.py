@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_10_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
+# test_12_IMPLICIT_CREATION_GOODCASE.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
-# 10.10.2023 - 13:31:11
+# 25.10.2024 - 20:31:28
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,46 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
+class Test_IMPLICIT_CREATION_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (1)",]
+      "Description", ["JSON file with dictionary keys to be created implicitly",]
    )
-   def test_JPP_0950(self, Description):
-      nReturn = CExecute.Execute("JPP_0950")
+   def test_JPP_1000(self, Description):
+      nReturn = CExecute.Execute("JPP_1000")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (2)",]
+      "Description", ["JSON file with dictionary keys to be created implicitly (same key names at all levels)",]
    )
-   def test_JPP_0951(self, Description):
-      nReturn = CExecute.Execute("JPP_0951")
+   def test_JPP_1001(self, Description):
+      nReturn = CExecute.Execute("JPP_1001")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (3)",]
+      "Description", ["JSON file with combinations of implicit and explicit creation / with and without initialization",]
    )
-   def test_JPP_0952(self, Description):
-      nReturn = CExecute.Execute("JPP_0952")
+   def test_JPP_1002(self, Description):
+      nReturn = CExecute.Execute("JPP_1002")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (4): file is completely empty",]
+      "Description", ["JSON file with combinations of implicit and explicit creation / access to implicitly created keys by parameters / dict assignment by reference",]
    )
-   def test_JPP_0953(self, Description):
-      nReturn = CExecute.Execute("JPP_0953")
+   def test_JPP_1003(self, Description):
+      nReturn = CExecute.Execute("JPP_1003")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
+      "Description", ["JSON file with combinations of ascending and descending dotdict syntax",]
    )
-   def test_JPP_0954(self, Description):
-      nReturn = CExecute.Execute("JPP_0954")
+   def test_JPP_1004(self, Description):
+      nReturn = CExecute.Execute("JPP_1004")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
