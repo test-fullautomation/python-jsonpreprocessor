@@ -13,6 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "listParam" : ["A", "B"],
-   "param"     : "${listParam}"
+    "param1" : "A",
+    "param1" : {"A" : 1, "A.${param1}.B" : 2}
 }

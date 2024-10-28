@@ -81,7 +81,7 @@ class CCodePatterns():
 #
 # ####PYTESTFILENAME####
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
 # ####DATEOFCREATION####
 #

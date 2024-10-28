@@ -15,20 +15,18 @@
 
 {
    // implicit creation in ascending dotdict syntax:
-   ${testdict1} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 0}}}},
    ${testdict1.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 1}}},
    ${testdict1.subKey1.subKey2} : {"subKey3" : {"subKey4" : 2}},
    ${testdict1.subKey1.subKey2.subKey3} : {"subKey4" : 3},
    ${testdict1.subKey1.subKey2.subKey3.subKey4} : 4,
    //
-   // values overwritten in descending dotdict syntax:
+   // implicit creation in descending dotdict syntax:
    ${testdict2.subKey1.subKey2.subKey3.subKey4} : 5,
    ${testdict2.subKey1.subKey2.subKey3} : {"subKey4" : 6},
    ${testdict2.subKey1.subKey2} : {"subKey3" : {"subKey4" : 7}},
    ${testdict2.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 8}}},
-   ${testdict2} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 9}}}},
    //
    // cross check:
-   ${testdict3} : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 10}}}},
-   "testdict4" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 20}}}}
+   "testdict3" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 30}}}},
+   "testdict4" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 40}}}}
 }

@@ -13,8 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   // taking over the already defined basic data types
-   "[import]" : "./jpp-test_config_testdata_1.jsonp",
-   //
-   "VAR_${dict_variants}['${variant_key_${IAMNOTEXISTING}}']_MS_${dict_milestones}['${milestone_key_${milestone_number}}']_param" : "value"
+    "testlist" : [1,2,3],
+    "param"    : "A_${testlist}_B"
 }

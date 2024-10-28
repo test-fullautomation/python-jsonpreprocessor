@@ -13,7 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "param1" : "prefix",
-   "param2" : [1,2,3],
-   "${param1}_${param2}_suffix" : "value"
+    "testlist" : [1,2,3],
+    "param"    : {"A" : 1, "B" : "${testlist}"}
 }
