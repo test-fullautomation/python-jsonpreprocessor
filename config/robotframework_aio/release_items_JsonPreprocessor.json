@@ -105,7 +105,7 @@
 "
                             ]
                  ,
-                  "0.12.1.;0.13.0." : [
+                  "0.12.1.;0.13.0.;0.13.1." : [
 "
 * Changed data type of return value
 
@@ -145,11 +145,7 @@
   Valid key names are: ``\"abcParam\"``, ``\"01_Param\"``, ``\"__param+1\"``, ``\"param-1\"``, ``\"abc@jpp.com\"``, ...
 
   Invalid key names are: ``\"+param01\"``, ``\"param$01\"``, ``\"abc#Param\"``, ...
-"
-                            ]
-                            ,
-                            "0.13.0.;0.13.1." : [
-          "
+
 * Checked absolute path when overwriting parameter
 
   When overwriting a parameter, the absolute path of the parameter must be provided
@@ -163,8 +159,8 @@
   |                            ``\u007d``
   |                    ``\u007d``
   |          ``\u007d``
-  |``\u007d``  
-          "
-                                      ]
+  |``\u007d``
+"
+                            ]
                 }
 }
