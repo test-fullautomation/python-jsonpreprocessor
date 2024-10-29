@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_10_CODE_COMMENTS_GOODCASE.py
+# test_19_STRING_INDICES_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_CODE_COMMENTS_GOODCASE:
+class Test_STRING_INDICES_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations of code comments",]
+      "Description", ["JSON file with several combinations with indices (standard notation)",]
    )
-   def test_JPP_0600(self, Description):
-      nReturn = CExecute.Execute("JPP_0600")
+   def test_JPP_1500(self, Description):
+      nReturn = CExecute.Execute("JPP_1500")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
+   )
+   def test_JPP_1501(self, Description):
+      nReturn = CExecute.Execute("JPP_1501")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

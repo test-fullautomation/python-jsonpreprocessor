@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_24_PARAMETER_SCOPE_BADCASE.py
+# test_08_NAMING_CONVENTION_BADCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,70 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PARAMETER_SCOPE_BADCASE:
+class Test_NAMING_CONVENTION_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (1)",]
+      "Description", ["JSON file with several invalid parameter names (1)",]
    )
-   def test_JPP_2500(self, Description):
-      nReturn = CExecute.Execute("JPP_2500")
+   def test_JPP_0450(self, Description):
+      nReturn = CExecute.Execute("JPP_0450")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (2)",]
+      "Description", ["JSON file with several invalid parameter names (2)",]
    )
-   def test_JPP_2501(self, Description):
-      nReturn = CExecute.Execute("JPP_2501")
+   def test_JPP_0451(self, Description):
+      nReturn = CExecute.Execute("JPP_0451")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (3)",]
+      "Description", ["JSON file with several invalid parameter names (3)",]
    )
-   def test_JPP_2502(self, Description):
-      nReturn = CExecute.Execute("JPP_2502")
+   def test_JPP_0452(self, Description):
+      nReturn = CExecute.Execute("JPP_0452")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (4)",]
+      "Description", ["JSON file with several invalid parameter names (4)",]
    )
-   def test_JPP_2503(self, Description):
-      nReturn = CExecute.Execute("JPP_2503")
+   def test_JPP_0453(self, Description):
+      nReturn = CExecute.Execute("JPP_0453")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (5)",]
+      "Description", ["JSON file with several invalid parameter names (5)",]
    )
-   def test_JPP_2504(self, Description):
-      nReturn = CExecute.Execute("JPP_2504")
+   def test_JPP_0454(self, Description):
+      nReturn = CExecute.Execute("JPP_0454")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: All names are accepted (in definition and in reference)
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (7)",]
+      "Description", ["JSON file with several invalid parameter names (6)",]
    )
-   def test_JPP_2506(self, Description):
-      nReturn = CExecute.Execute("JPP_2506")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
-   @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (8)",]
-   )
-   def test_JPP_2507(self, Description):
-      nReturn = CExecute.Execute("JPP_2507")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
-   @pytest.mark.parametrize(
-      "Description", ["JSON file containing a parameter with missing scope (9)",]
-   )
-   def test_JPP_2508(self, Description):
-      nReturn = CExecute.Execute("JPP_2508")
+   def test_JPP_0455(self, Description):
+      nReturn = CExecute.Execute("JPP_0455")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_11_COMMON_SYNTAX_VIOLATIONS_BADCASE.py
+# test_10_COMPOSITE_EXPRESSIONS_BADCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_COMMON_SYNTAX_VIOLATIONS_BADCASE:
+class Test_COMPOSITE_EXPRESSIONS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (1)",]
+      "Description", ["JSON file with composite data structure (nested lists and dictionaries / some key names with dots inside)",]
    )
-   def test_JPP_0950(self, Description):
-      nReturn = CExecute.Execute("JPP_0950")
+   def test_JPP_0550(self, Description):
+      nReturn = CExecute.Execute("JPP_0550")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (2)",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter and wrapped in single quotes",]
    )
-   def test_JPP_0951(self, Description):
-      nReturn = CExecute.Execute("JPP_0951")
+   def test_JPP_0551(self, Description):
+      nReturn = CExecute.Execute("JPP_0551")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (3)",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_0952(self, Description):
-      nReturn = CExecute.Execute("JPP_0952")
+   def test_JPP_0552(self, Description):
+      nReturn = CExecute.Execute("JPP_0552")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (4): file is completely empty",]
+      "Description", ["JSON file containing a list; list index is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_0953(self, Description):
-      nReturn = CExecute.Execute("JPP_0953")
+   def test_JPP_0553(self, Description):
+      nReturn = CExecute.Execute("JPP_0553")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with syntax error (5): file is empty (multiple pairs of brackets only)",]
+      "Description", ["JSON file containing a dictionary; the dictionary key is defined by a parameter and placed inside the curly brackets (invalid syntax)",]
    )
-   def test_JPP_0954(self, Description):
-      nReturn = CExecute.Execute("JPP_0954")
+   def test_JPP_0554(self, Description):
+      nReturn = CExecute.Execute("JPP_0554")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a dictionary; the dictionary key is defined by a parameter, wrapped in single quotes and placed inside the curly brackets (invalid syntax)",]
+   )
+   def test_JPP_0555(self, Description):
+      nReturn = CExecute.Execute("JPP_0555")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

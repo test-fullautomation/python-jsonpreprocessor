@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_14_CYCLIC_IMPORTS_BADCASE.py
+# test_23_ASSIGNMENTS_BY_REFERENCE_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_CYCLIC_IMPORTS_BADCASE:
+class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with cyclic imports (JSON file imports itself)",]
+      "Description", ["JSON file with dictionary assignments (by reference)",]
    )
-   def test_JPP_1150(self, Description):
-      nReturn = CExecute.Execute("JPP_1150")
+   def test_JPP_1900(self, Description):
+      nReturn = CExecute.Execute("JPP_1900")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with cyclic imports (JSON file imports another file, that is already imported)",]
+      "Description", ["JSON file with list assignments (by reference)",]
    )
-   def test_JPP_1151(self, Description):
-      nReturn = CExecute.Execute("JPP_1151")
+   def test_JPP_1901(self, Description):
+      nReturn = CExecute.Execute("JPP_1901")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

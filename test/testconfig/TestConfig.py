@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 25.10.2024
+# 28.10.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1705,6 +1705,260 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (55/55) > {p20} [LIST] (3/3) > [INT]  :  2
 """
 listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0401"
+dictUsecase['DESCRIPTION']       = "JSON file with several parameter names containing: blank, backslash, 4Byte character"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0401.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+# # # listofdictUsecases.append(dictUsecase) # several issues
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0450"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (1)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0451"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (2)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0451.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0452"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (3)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0452.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0453"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (4)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0453.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0454"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (5)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0454.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0455"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (6)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0455.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0456"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (7)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0456.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0457"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (8)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0457.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0458"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (9)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0458.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0459"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (10)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0459.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0460"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (11)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0460.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0461"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (12)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0461.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0462"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (13)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0462.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0463"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (14)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0463.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0464"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (15)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0464.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0465"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (16)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0465.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # invalid name accepted and usage causes: 'local variable 'tmpList03' referenced before assignment'!
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0466"
+dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (17)"
+dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0466.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase) # invalid name accepted and usage causes: 'local variable 'tmpList03' referenced before assignment'!
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 

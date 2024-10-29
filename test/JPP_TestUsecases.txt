@@ -310,6 +310,30 @@ Test JPP_0400 / NAMING_CONVENTION / GOODCASE
 Description: JSON file with several parameter names w.r.t. the naming convention
 Expectation: All names are accepted (in definition and in reference)
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_0450 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (1)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0451 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (2)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0452 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (3)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0453 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (4)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0454 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (5)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_0455 / NAMING_CONVENTION / BADCASE
+Description: JSON file with several invalid parameter names (6)
+Expectation: All names are accepted (in definition and in reference)
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_0500 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite data structure (nested lists and dictionaries 1)
 Expectation: JsonPreprocessor returns expected value
@@ -704,5 +728,5 @@ Test JPP_2508 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 25.10.2024 - 20:21:51
+Generated: 28.10.2024 - 20:15:13
 

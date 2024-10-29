@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_17_NESTED_LISTS_GOODCASE.py
+# test_15_CYCLIC_IMPORTS_BADCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_NESTED_LISTS_GOODCASE:
+class Test_CYCLIC_IMPORTS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several nested lists",]
+      "Description", ["JSON file with cyclic imports (JSON file imports itself)",]
    )
-   def test_JPP_1400(self, Description):
-      nReturn = CExecute.Execute("JPP_1400")
+   def test_JPP_1150(self, Description):
+      nReturn = CExecute.Execute("JPP_1150")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (JSON file imports another file, that is already imported)",]
+   )
+   def test_JPP_1151(self, Description):
+      nReturn = CExecute.Execute("JPP_1151")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

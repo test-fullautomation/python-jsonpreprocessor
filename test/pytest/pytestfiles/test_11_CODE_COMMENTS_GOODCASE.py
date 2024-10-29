@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_15_PATH_FORMATS_GOODCASE.py
+# test_11_CODE_COMMENTS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 28.10.2024 - 20:15:13
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PATH_FORMATS_GOODCASE:
+class Test_CODE_COMMENTS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
+   # Expected: JsonPreprocessor returns remaining content of JSON file (valid parameters)
    @pytest.mark.parametrize(
-      "Description", ["Relative path to JSON file",]
+      "Description", ["JSON file with several combinations of code comments",]
    )
-   def test_JPP_1200(self, Description):
-      nReturn = CExecute.Execute("JPP_1200")
+   def test_JPP_0600(self, Description):
+      nReturn = CExecute.Execute("JPP_0600")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

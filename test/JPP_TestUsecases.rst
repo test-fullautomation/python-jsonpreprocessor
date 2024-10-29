@@ -739,6 +739,66 @@ Test Use Cases
 
 ----
 
+* **Test JPP_0450**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (1)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0451**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (2)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0452**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (3)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0453**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (4)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0454**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (5)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0455**
+
+  [NAMING_CONVENTION / BADCASE]
+
+   **JSON file with several invalid parameter names (6)**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
 * **Test JPP_0500**
 
   [COMPOSITE_EXPRESSIONS / GOODCASE]
@@ -1721,5 +1781,5 @@ Test Use Cases
 
 ----
 
-Generated: 25.10.2024 - 20:21:51
+Generated: 28.10.2024 - 20:15:13
 
