@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.30.0"
-VERSION_DATE = "28.10.2024"
+VERSION      = "0.31.0"
+VERSION_DATE = "29.10.2024"
 #
 # **************************************************************************************************************
 
@@ -1802,7 +1802,7 @@ class CSnippets():
    "param01"      : ${stringParam}[${index}],
    "param02"      : "${stringParam}[${index}]",
    //
-   "param03"      : ${indexList}[${indexList}[${index}]],         // returns STR instead of INT
+   "param03"      : ${indexList}[${indexList}[${index}]],
    "param04"      : "${indexList}[${indexList}[${index}]]",
    //
    "param05"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
@@ -2462,8 +2462,15 @@ class CSnippets():
 """)
 
       listCodeSnippets.append("""{
-    "dictparam"  : {"A" : 1, "B" : 2},
+    "dictparam" : {"A" : 1, "B" : 2},
     "newparam"  : ${dictparam}['AB']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "strParam" : "ABC",
+    "param1"   : [1, {"001" : "${strParam}"}, 2],
+    "param2"   : ${param1}[1]['001']
 }
 """)
 
@@ -3204,6 +3211,12 @@ class CSnippets():
 }
 """)
 
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+${index}]
+}
+""")
 
       # listCodeSnippets.append("""{
 # }
@@ -3981,62 +3994,69 @@ class CSnippets():
    # --------------------------------------------------------------------------------------------------------------
 
    def GetBlockedSubstitutions(self):
-      """Several snippets containing blocked dollar operator substitutions
+      """Several snippets containing blocked dollar operator substitutions (because of data type or dynamic key names)"
       """
 
-      sHeadline = "Several snippets containing blocked dollar operator substitutions"
+      sHeadline = "Several snippets containing blocked dollar operator substitutions (because of data type or dynamic key names)"
+
+      # data structure 1
+      sDataStructure1 = """    "*01*"   : "*02*",
+    "param1" : {"*03*" : 5, "009" : "M_*04*_N", "011" : "OP"},
+    "param2" : ["Q_*05*_R", {"*06*" : 6, "010" : "*07*_*07*", "012" : "ST"}, "*08*_*08*"],
+    "param3" : ${param1}['*09*'],
+    "param4" : ${param2}[1]['*10*'],
+    "param5" : ${param1.*11*},
+    "param6" : ${param2.1.*12*}"""
+
+      sDefinitions = """    "strParam"   : "ABC",
+    "intParam"   : 11,
+    "floatParam" : 22.22,
+    "dictParam"  : {"A" : 3, "B" : 4},
+    "listParam"  : ["C", "D"],
+"""
+
+      sCodeSnippetPattern = """{
+####DEFINITIONS####
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["${strParam}", "${intParam}" , "${floatParam}" , "${dictParam}" , "${listParam}"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*", "*11*", "*12*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["001","002","003","004","005","006","007","008","009","010","011","012"] # as much elements as in listPlaceholders
+
+      # put all things together
 
       listCodeSnippets = []
 
-      listCodeSnippets.append("""{
-   "dictParam"  : {"A" : 0, "B" : 1},
-   "param"      : "${dictParam}"
-}
-""")
+      # sDataStructure1
 
-      listCodeSnippets.append("""{
-   "listParam"  : ["A", "B"],
-   "param"      : "${listParam}"
-}
-""")
-
-      listCodeSnippets.append("""{
-   "floatParam" : 1.2,
-   "param"      : "${floatParam}"
-}
-""")
-
-      listCodeSnippets.append("""{
-   "dictParam"    : {"A" : 0, "B" : 1},
-   "${dictParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "listParam"    : ["A", "B"],
-   "${listParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "floatParam"    : 1.2,
-   "${floatParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "keyA"      : "keyA",
-   "dictParam" : {"${keyA}" : 1}
-}
-""")
-
-      listCodeSnippets.append("""{
-   "keyA"      : "keyA",
-   "keyB"      : "keyB",
-   "dictParam" : {"keyA" : {}},
-   ${dictParam.keyA}['${keyB}_2'] : 2
-}
-""")
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
 
       return sHeadline, listCodeSnippets
 
