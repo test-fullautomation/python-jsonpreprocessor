@@ -160,6 +160,17 @@
   |                    ``\u007d``
   |          ``\u007d``
   |``\u007d``
+
+* Allowed dynamic path of imported files
+
+  **Example:**
+  
+  |``\u007b``
+  |   ``\"fileName\" : \u007b``
+  |      ``\"file_01\" : \"imported_01\"``
+  |   ``\u007d``,
+  |   ``\"[import]\" : \"./$\u007bfileName.file_01\u007d.json\"``
+  |``\u007d``
 "
                             ]
                 }
