@@ -138,7 +138,11 @@
 
 * Added a naming convention check for key names within JSONP content processed by the **JsonPreprocessor**
 
-  Key names have to start with a character, digit, or underscore and must not contain these special characters ``!#$%^&()=[]{}|;',?`~``
+  Naming convention:
+
+  * Key names can only consist of letters, digits and the following special characters: ``_ + - * / \\`` (backslashes are allowed but must be masked).
+  * Key names must start with a letter, a digit or an underscore.
+  * Key names must not be empty strings. But leading and trailing blanks will be removed (and therefore do not cause errors).
 
   **Example:**
 
@@ -146,31 +150,30 @@
 
   Invalid key names are: ``\"+param01\"``, ``\"param$01\"``, ``\"abc#Param\"``, ...
 
-* Checked absolute path when overwriting parameter
+* Reworked handling of parameter scope
 
-  When overwriting a parameter, the absolute path of the parameter must be provided
+  To change the value of an existing parameter, an absolute path must be used always.
 
   **Example:**
 
-  |``\u007b``
-  |   ``\"params\" : \u007b\"001\" : \u007b\"002\" : \u007b``
-  |                              ``\"param\" : 1,``
-  |                              ``$\u007bparams.001.002.param\u007d : 2``
-  |                            ``\u007d``
-  |                    ``\u007d``
-  |          ``\u007d``
-  |``\u007d``
+|            ``{``
+|            ``\u00a0\u00a0\u00a0\"params\"\u00a0:\u00a0{\"001\"\u00a0:\u00a0{\"002\"\u00a0:\u00a0{``
+|            ``\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"param\"\u00a0:\u00a01,``
+|            ``\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0${params.001.002.param}\u00a0:\u00a02``
+|            ``\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0}``
+|            ``\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0}``
+|            ``\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0}``
+|            ``}``
 
-* Allowed dynamic path of imported files
+* Enabled dynamic paths for imported JSON files (based on dollar operator expressions)
 
   **Example:**
   
-  |``\u007b``
-  |   ``\"fileName\" : \u007b``
-  |      ``\"file_01\" : \"imported_01\"``
-  |   ``\u007d``,
-  |   ``\"[import]\" : \"./$\u007bfileName.file_01\u007d.json\"``
-  |``\u007d``
+|            ``{``
+|            ``\u00a0\u00a0\u00a0\"root_folder\" : \"imports\",``
+|            ``\u00a0\u00a0\u00a0\"json_file\"\u00a0\u00a0\u00a0: \"configuration.jsonp\",``
+|            ``\u00a0\u00a0\u00a0\"[import]\"\u00a0\u00a0\u00a0\u00a0: \"./${root_folder}/${json_file}\" ``
+|            ``}``
 "
                             ]
                 }
