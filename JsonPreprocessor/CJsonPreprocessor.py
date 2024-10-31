@@ -1476,18 +1476,23 @@ Checks and handle dynamic path of imported file.
                                 f"{error}\nNearby: '{failedJsonDoc}'"
             self.__reset()
             raise Exception(jsonException)
+        importPattern = r'([\'|"]\s*\[\s*import\s*\]\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = ''
-        while re.search(r"'\s*\[\s*import\s*\]\s*'", str(self.jsonCheck)):
-            self.__checkDotInParamName(self.jsonCheck)
-            oJson, bNested = self.__updateAndReplaceNestedParam(self.jsonCheck)
-            sJson = json.dumps(oJson)
-            checkDynamicImport = re.search(r'("\s*\[\s*import\s*\]\s*"\s*:\s*"[^"]+")', sJson)
-            if checkDynamicImport is None or '${' in checkDynamicImport[0]:
-                raise Exception('TBD')
+        while self.bDynamicImport:
+            if sJson=='':
+                sJson = str(self.jsonCheck)
+            lImport = re.findall(importPattern, sJson)
+            if len(lImport)==0:
+                self.bDynamicImport = False
             else:
-                sJson = re.sub(r'"\s*\[\s*import\s*\]\s*":\s*"[${]+[^"]+"', checkDynamicImport[0], sJson)
-            self.__preCheckJsonFile(sJson, CJSONDecoder)
-        self.bDynamicImport = False
+                self.__checkDotInParamName(self.jsonCheck)
+                oJson, bNested = self.__updateAndReplaceNestedParam(self.jsonCheck)
+                sJson = json.dumps(oJson)
+                lImport = re.findall(importPattern, sJson)
+                if any('${' in item for item in lImport):
+                    self.__preCheckJsonFile(sJson, CJSONDecoder)
+                else:
+                    self.bDynamicImport = False
         return sJson if sJson!='' else sInput
 
     def jsonLoad(self, jFile : str):
