@@ -14,6 +14,5 @@
 //**************************************************************************
 {
    "level"    : "AA",
-   "[import]" : "./BB/imported.BB.R.F.jsonp",
-   "[import]" : "./BB/CC/DD/imported.DD.AA.jsonp"
+   "[import]" : "./BB/imported.BB.M.jsonp"
 }

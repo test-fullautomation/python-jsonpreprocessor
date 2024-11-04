@@ -14,5 +14,6 @@
 //**************************************************************************
 {
    "level"    : "CC",
-   "[import]" : "./DD/imported.DD.jsonp"
+   "[import]" : "./DD/imported.DD.1.jsonp",
+   "[import]" : "./DD/imported.DD.CC.jsonp"
 }
