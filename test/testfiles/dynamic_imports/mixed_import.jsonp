@@ -13,5 +13,9 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "level" : "DD"
+    "AA" : "AA",
+    "BB" : "BB",
+    "CC" : "CC",
+    "DD" : "DD",
+   "[import]" : "./${AA}/imported.${AA}.M.jsonp"
 }

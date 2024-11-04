@@ -13,7 +13,5 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "level"    : "AA",
-   "[import]" : "./BB/imported.BB.R.F.jsonp",
-   "[import]" : "./BB/CC/DD/imported.DD.AA.jsonp"
+   "origin" : "DD.CC"
 }
