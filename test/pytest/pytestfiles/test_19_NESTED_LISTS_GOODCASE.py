@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_19_STRING_INDICES_GOODCASE.py
+# test_19_NESTED_LISTS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 06.11.2024 - 18:29:18
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_STRING_INDICES_GOODCASE:
+class Test_NESTED_LISTS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations with indices (standard notation)",]
+      "Description", ["JSON file with several nested lists",]
    )
-   def test_JPP_1500(self, Description):
-      nReturn = CExecute.Execute("JPP_1500")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with several combinations with indices (dotdict notation)",]
-   )
-   def test_JPP_1501(self, Description):
-      nReturn = CExecute.Execute("JPP_1501")
+   def test_JPP_1400(self, Description):
+      nReturn = CExecute.Execute("JPP_1400")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -116,8 +116,16 @@ JPP_1055|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data stru
 JPP_1056|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (6)
 JPP_1057|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (7)
 JPP_1058|IMPLICIT_CREATION|BADCASE|JSON file with implicit creation of data structures based on parameters (8)
-JPP_1150|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself)
-JPP_1151|CYCLIC_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported)
+JPP_1100|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (1))
+JPP_1101|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (2))
+JPP_1102|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (3))
+JPP_1103|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (4))
+JPP_1150|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, fix path)
+JPP_1151|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)
+JPP_1155|FILE_IMPORTS|BADCASE|JSON file with not existing import file
+JPP_1158|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (1)
+JPP_1159|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (2)
+JPP_1160|FILE_IMPORTS|BADCASE|JSON file with error in imported file
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
 JPP_1350|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
 JPP_1351|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)

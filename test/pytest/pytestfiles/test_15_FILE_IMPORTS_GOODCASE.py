@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_23_ASSIGNMENTS_BY_REFERENCE_GOODCASE.py
+# test_15_FILE_IMPORTS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 06.11.2024 - 18:29:18
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,38 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
+class Test_FILE_IMPORTS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with dictionary assignments (by reference)",]
+      "Description", ["JSON file import based on parameters (dynamic import (1))",]
    )
-   def test_JPP_1900(self, Description):
-      nReturn = CExecute.Execute("JPP_1900")
+   def test_JPP_1100(self, Description):
+      nReturn = CExecute.Execute("JPP_1100")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: JsonPreprocessor returns values
    @pytest.mark.parametrize(
-      "Description", ["JSON file with list assignments (by reference)",]
+      "Description", ["JSON file import based on parameters (dynamic import (2))",]
    )
-   def test_JPP_1901(self, Description):
-      nReturn = CExecute.Execute("JPP_1901")
+   def test_JPP_1101(self, Description):
+      nReturn = CExecute.Execute("JPP_1101")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file import based on parameters (dynamic import (3))",]
+   )
+   def test_JPP_1102(self, Description):
+      nReturn = CExecute.Execute("JPP_1102")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file import based on parameters (dynamic import (4))",]
+   )
+   def test_JPP_1103(self, Description):
+      nReturn = CExecute.Execute("JPP_1103")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
