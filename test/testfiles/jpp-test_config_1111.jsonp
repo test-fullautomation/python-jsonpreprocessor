@@ -15,7 +15,6 @@
 {
     "dynamic_imports" : "dynamic_imports",
     "global_defs"     : "global_defs",
-    "level_up"        : "../../../../",
-    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_1.jsonp",
-    "[import]"        : "./${dynamic_imports}/${AA}/${BB}/${CC}/${DD}/${level_up}${AA}/${BB}/${CC}/${DD}/imported.DD.1.jsonp"
+    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_2.jsonp",
+    "[import]"        : "./${imports_dir}/${dictDirs.AA}/${listDirs.1}/imported.BB.jsonp"
 }
