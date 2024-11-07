@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_15_CYCLIC_IMPORTS_BADCASE.py
+# test_17_PATH_FORMATS_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 06.11.2024 - 18:29:18
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,22 +27,14 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_CYCLIC_IMPORTS_BADCASE:
+class Test_PATH_FORMATS_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   # Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
    @pytest.mark.parametrize(
-      "Description", ["JSON file with cyclic imports (JSON file imports itself)",]
+      "Description", ["Relative path to JSON file",]
    )
-   def test_JPP_1150(self, Description):
-      nReturn = CExecute.Execute("JPP_1150")
-      assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   @pytest.mark.parametrize(
-      "Description", ["JSON file with cyclic imports (JSON file imports another file, that is already imported)",]
-   )
-   def test_JPP_1151(self, Description):
-      nReturn = CExecute.Execute("JPP_1151")
+   def test_JPP_1200(self, Description):
+      nReturn = CExecute.Execute("JPP_1200")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

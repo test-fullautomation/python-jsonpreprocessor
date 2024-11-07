@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_24_PARAMETER_SCOPE_GOODCASE.py
+# test_16_FILE_IMPORTS_BADCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 06.11.2024 - 18:29:18
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,46 +27,54 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PARAMETER_SCOPE_GOODCASE:
+class Test_FILE_IMPORTS_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (1)",]
+      "Description", ["JSON file with cyclic imports (JSON file imports itself, fix path)",]
    )
-   def test_JPP_2000(self, Description):
-      nReturn = CExecute.Execute("JPP_2000")
+   def test_JPP_1150(self, Description):
+      nReturn = CExecute.Execute("JPP_1150")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (2)",]
+      "Description", ["JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)",]
    )
-   def test_JPP_2001(self, Description):
-      nReturn = CExecute.Execute("JPP_2001")
+   def test_JPP_1151(self, Description):
+      nReturn = CExecute.Execute("JPP_1151")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (3)",]
+      "Description", ["JSON file with not existing import file",]
    )
-   def test_JPP_2002(self, Description):
-      nReturn = CExecute.Execute("JPP_2002")
+   def test_JPP_1155(self, Description):
+      nReturn = CExecute.Execute("JPP_1155")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (4)",]
+      "Description", ["JSON file with error in [import] key (1)",]
    )
-   def test_JPP_2003(self, Description):
-      nReturn = CExecute.Execute("JPP_2003")
+   def test_JPP_1158(self, Description):
+      nReturn = CExecute.Execute("JPP_1158")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
-      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (8)",]
+      "Description", ["JSON file with error in [import] key (2)",]
    )
-   def test_JPP_2007(self, Description):
-      nReturn = CExecute.Execute("JPP_2007")
+   def test_JPP_1159(self, Description):
+      nReturn = CExecute.Execute("JPP_1159")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with error in imported file",]
+   )
+   def test_JPP_1160(self, Description):
+      nReturn = CExecute.Execute("JPP_1160")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

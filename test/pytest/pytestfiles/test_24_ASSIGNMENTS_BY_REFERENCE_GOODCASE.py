@@ -14,11 +14,11 @@
 #  limitations under the License.
 # --------------------------------------------------------------------------------------------------------------
 #
-# test_16_PATH_FORMATS_GOODCASE.py
+# test_24_ASSIGNMENTS_BY_REFERENCE_GOODCASE.py
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 06.11.2024 - 18:29:18
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -27,14 +27,22 @@ from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
 
-class Test_PATH_FORMATS_GOODCASE:
+class Test_ASSIGNMENTS_BY_REFERENCE_GOODCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor resolves the relative path and returns values from JSON file
+   # Expected: JsonPreprocessor returns expected value
    @pytest.mark.parametrize(
-      "Description", ["Relative path to JSON file",]
+      "Description", ["JSON file with dictionary assignments (by reference)",]
    )
-   def test_JPP_1200(self, Description):
-      nReturn = CExecute.Execute("JPP_1200")
+   def test_JPP_1900(self, Description):
+      nReturn = CExecute.Execute("JPP_1900")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with list assignments (by reference)",]
+   )
+   def test_JPP_1901(self, Description):
+      nReturn = CExecute.Execute("JPP_1901")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

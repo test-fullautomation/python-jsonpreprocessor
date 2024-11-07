@@ -511,12 +511,46 @@ Test JPP_1058 / IMPLICIT_CREATION / BADCASE
 Description: JSON file with implicit creation of data structures based on parameters (8)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_1150 / CYCLIC_IMPORTS / BADCASE
-Description: JSON file with cyclic imports (JSON file imports itself)
+Test JPP_1100 / FILE_IMPORTS / GOODCASE
+Description: JSON file import based on parameters (dynamic import (1))
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1101 / FILE_IMPORTS / GOODCASE
+Description: JSON file import based on parameters (dynamic import (2))
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1102 / FILE_IMPORTS / GOODCASE
+Description: JSON file import based on parameters (dynamic import (3))
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1103 / FILE_IMPORTS / GOODCASE
+Description: JSON file import based on parameters (dynamic import (4))
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1150 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports itself, fix path)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1151 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1155 / FILE_IMPORTS / BADCASE
+Description: JSON file with not existing import file
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Test JPP_1151 / CYCLIC_IMPORTS / BADCASE
-Description: JSON file with cyclic imports (JSON file imports another file, that is already imported)
+Test JPP_1158 / FILE_IMPORTS / BADCASE
+Description: JSON file with error in [import] key (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1159 / FILE_IMPORTS / BADCASE
+Description: JSON file with error in [import] key (2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1160 / FILE_IMPORTS / BADCASE
+Description: JSON file with error in imported file
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1200 / PATH_FORMATS / GOODCASE
@@ -728,5 +762,5 @@ Test JPP_2508 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 28.10.2024 - 20:15:13
+Generated: 06.11.2024 - 18:29:18
 

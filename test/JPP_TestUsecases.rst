@@ -1239,21 +1239,105 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1100**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (1))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1101**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (2))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1102**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (3))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1103**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (4))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
-  [CYCLIC_IMPORTS / BADCASE]
+  [FILE_IMPORTS / BADCASE]
 
-   **JSON file with cyclic imports (JSON file imports itself)**
+   **JSON file with cyclic imports (JSON file imports itself, fix path)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
 
 ----
 
 * **Test JPP_1151**
 
-  [CYCLIC_IMPORTS / BADCASE]
+  [FILE_IMPORTS / BADCASE]
 
-   **JSON file with cyclic imports (JSON file imports another file, that is already imported)**
+   **JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1155**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with not existing import file**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1158**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with error in [import] key (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1159**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with error in [import] key (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1160**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with error in imported file**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1781,5 +1865,5 @@ Test Use Cases
 
 ----
 
-Generated: 28.10.2024 - 20:15:13
+Generated: 06.11.2024 - 18:29:18
 
