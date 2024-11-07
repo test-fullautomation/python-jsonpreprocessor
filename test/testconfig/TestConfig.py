@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 06.11.2024
+# 07.11.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2865,7 +2865,7 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_1103"
+dictUsecase['TESTID']            = "JPP_1103" # similar to JPP_1111, but with simple data types
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import (4))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
 dictUsecase['SECTION']           = "FILE_IMPORTS"
@@ -2875,12 +2875,14 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1103.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (6/1) > {AA} [STR]  :  'AA'
-[DOTDICT] (6/2) > {BB} [STR]  :  'BB'
-[DOTDICT] (6/3) > {CC} [STR]  :  'CC'
-[DOTDICT] (6/4) > {DD} [STR]  :  'DD'
-[DOTDICT] (6/5) > {level_up} [STR]  :  '../../../../'
-[DOTDICT] (6/6) > {level} [STR]  :  'DD.1'
+[DOTDICT] (8/1) > {dynamic_imports} [STR]  :  'dynamic_imports'
+[DOTDICT] (8/2) > {global_defs} [STR]  :  'global_defs'
+[DOTDICT] (8/3) > {level_up} [STR]  :  '../../../../'
+[DOTDICT] (8/4) > {AA} [STR]  :  'AA'
+[DOTDICT] (8/5) > {BB} [STR]  :  'BB'
+[DOTDICT] (8/6) > {CC} [STR]  :  'CC'
+[DOTDICT] (8/7) > {DD} [STR]  :  'DD'
+[DOTDICT] (8/8) > {level} [STR]  :  'DD.1'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -2986,6 +2988,20 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1110.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None # currently: File '%import_files%[1]__ConvertParameterToString__' is not existing!
+dictUsecase['EXPECTEDRETURN']    = None
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1111" # similar to JPP_1103, but with composite data types
+dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import (7))"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1111.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None # currently: 'maximum recursion depth exceeded while calling a Python object
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase

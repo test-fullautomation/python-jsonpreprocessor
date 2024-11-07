@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.31.0"
-VERSION_DATE = "29.10.2024"
+VERSION      = "0.32.0"
+VERSION_DATE = "07.11.2024"
 #
 # **************************************************************************************************************
 
@@ -105,7 +105,7 @@ class CConfig():
       THISAPP                             = CString.NormalizePath(sCalledBy)
       self.__dictConfig['THISAPP']        = THISAPP
       self.__dictConfig['THISAPPNAME']    = os.path.basename(THISAPP)
-      REFERENCEPATH                       = os.path.dirname(THISAPP) # position of main() app is reference for all relative paths
+      REFERENCEPATH                       = os.path.dirname(THISAPP) # position of main() app is reference for all relative paths in this script
       self.__dictConfig['REFERENCEPATH']  = REFERENCEPATH
       self.__dictConfig['TMPFILESPATH']   = f"{REFERENCEPATH}/tmp_files"
       self.__dictConfig['OUTPUTPATH']     = f"{REFERENCEPATH}" # /output
@@ -120,6 +120,21 @@ class CConfig():
       self.__dictConfig['PYTHONPATH']     = os.path.dirname(PYTHON)
       self.__dictConfig['PYTHONVERSION']  = sys.version
       self.__dictConfig['NOW']            = time.strftime('%d.%m.%Y - %H:%M:%S')
+
+      # JSONP snippets may contain the '[import]' key. For relative import paths we need to define a reference folder.
+      # We predefine three possible positions for reference folders that will be checked for existence. The first hit will be used.
+      JSONSNIPPET_REFERENCEPATH = None
+      listImportRootPaths       = [REFERENCEPATH, f"{REFERENCEPATH}/..", f"{REFERENCEPATH}/../testfiles"]
+      importFolder = "dynamic_imports" # the subfolder containing all imported JSONP files
+      for sImportRootPath in listImportRootPaths:
+         sImportRootPath = CString.NormalizePath(sImportRootPath)
+         sImportPath     = f"{sImportRootPath}/{importFolder}"
+         # print(f"checking additional import file path '{sImportFolder}'")
+         if os.path.isdir(sImportPath):
+            JSONSNIPPET_REFERENCEPATH = sImportRootPath
+            break
+      if JSONSNIPPET_REFERENCEPATH is not None:
+         self.__dictConfig['JSONSNIPPET_REFERENCEPATH'] = JSONSNIPPET_REFERENCEPATH
 
    # --------------------------------------------------------------------------------------------------------------
    #TM***
@@ -438,7 +453,7 @@ class CExecutor():
          # dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPFile(JPPJSONFILE)
          #
          # === (alternative 2) execute temporary JSON string
-         dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPString(sCodeSnippet)
+         dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPString(sCodeSnippet, self.__oConfig.Get('JSONSNIPPET_REFERENCEPATH'))
          # --------------------------------------------------------------------------------------------------------------
 
          # PrettyPrint(bSuccess, sPrefix="(bSuccess)")
@@ -516,7 +531,7 @@ class CExecutor():
 
    # eof def __ExecuteJPPFile(self, sJSONFile=None):
 
-   def __ExecuteJPPString(self, sJSONString=None):
+   def __ExecuteJPPString(self, sJSONString=None, referenceDir=""):
 
       sMethod = "__ExecuteJPPString"
 
@@ -540,7 +555,7 @@ class CExecutor():
       dictReturned = None
       sException   = None
       try:
-         dictReturned = oJsonPreprocessor.jsonLoads(sJSONString)
+         dictReturned = oJsonPreprocessor.jsonLoads(sJSONString, referenceDir)
       except Exception as reason:
          sException = f"'{reason}'"
 
@@ -3191,7 +3206,6 @@ class CSnippets():
 }
 """)
 
-
       listCodeSnippets.append("""{
     "A" : [1,  2],
     "A" : [3,  4]
@@ -3215,6 +3229,187 @@ class CSnippets():
    "index"      : 1,
    "listvalues" : [1, 2, 3],
    "param"      : ${listvalues}[+${index}]
+}
+""")
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   # -- dynamic imports
+
+      listCodeSnippets.append("""{
+    "import_folder" : "dynamic_imports",
+    "file_name"     : "imported.AA.jsonp",
+    "[import]"      : "./${import_folder}/AA/${file_name}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dictDirs" : {"AA" : "AA", "BB" : "BB", "CC" : "CC", "DD" : "DD"},
+    "listDirs" : ["AA", "BB", "CC", "DD"],
+    "[import]" : "./dynamic_imports/${dictDirs}['AA']/${listDirs}[1]/${dictDirs.CC}/${listDirs.3}/imported.${listDirs.3}.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${${${AA}}}/imported.${${${AA}}}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/global_defs/global_defs_1.jsonp",
+    "level_up" : "../../../../",
+    "[import]" : "./dynamic_imports/${AA}/${BB}/${CC}/${DD}/${level_up}${AA}/${BB}/${CC}/${DD}/imported.DD.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dynamic_imports" : "dynamic_imports",
+    "global_defs"     : "global_defs",
+    "level_up"        : "../../../../",
+    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_1.jsonp",
+    "[import]"        : "./${dynamic_imports}/${AA}/${BB}/${CC}/${DD}/${level_up}${AA}/${BB}/${CC}/${DD}/imported.DD.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "cwd"        : ".",
+    "path_sep_1" : "/",
+    "path_sep_2" : "\\",
+    "[import]"   : "${cwd}${path_sep_1}dynamic_imports${path_sep_2}AA${path_sep_1}imported.AA.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "P1"       : "./dynamic",
+    "P2"       : "_import",
+    "P3"       : "s/AA/imp",
+    "P4"       : "orted.A",
+    "P5"       : "A.jsonp",
+    "[import]" : "${P1}${P2}${P3}${P4}${P5}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/dynamic_import.R.D.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/mixed_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/parallel_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "import_files" : {
+                        "fileAA" : "./dynamic_imports/AA/imported.AA.jsonp",
+                        "fileBB" : "./dynamic_imports/AA/BB/imported.BB.jsonp"
+                     },
+    "[import]" : ${import_files}['fileAA'],
+    "[import]" : "${import_files}['fileBB']"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "import_files" : [
+                        "./dynamic_imports/AA/imported.AA.jsonp",
+                        "./dynamic_imports/AA/BB/imported.BB.jsonp"
+                     ],
+    "[import]" : ${import_files}[0],
+    "[import]" : "${import_files}[1]"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dynamic_imports" : "dynamic_imports",
+    "global_defs"     : "global_defs",
+    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_2.jsonp",
+    "[import]"        : "./${imports_dir}/${dictDirs.AA}/${listDirs.1}/imported.BB.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/cyclic_import_itself.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/cyclic_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./${I_AM_NOT_EXISTING}/imported.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./I_AM_NOT_EXISTING/I_AM_NOT_EXISTING.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${AA/imported.AA.jsonp"
+}
+""")
+
+# !!! FREEZE !!!
+      # listCodeSnippets.append("""{
+    # "AA"       : "AA",
+    # "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
+# }
+# """)
+
+      listCodeSnippets.append("""{
+    "AA"         : "AA",
+    "[import]__" : "./dynamic_imports/${AA}/imported.${AA}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"         : "AA",
+    "__[import]" : "./dynamic_imports/${AA}/imported.${AA}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/import_err_1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : 123
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : [1,2,3]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : {"A" : 1, "B" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "values"   : {"A" : 1, "B" : 2},
+    "[import]" : ${values}['A']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "values"   : ["A", "B"],
+    "[import]" : ${values}[0]
 }
 """)
 
