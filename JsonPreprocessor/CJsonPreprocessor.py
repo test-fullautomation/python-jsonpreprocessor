@@ -190,7 +190,7 @@ Constructor
         self.jsonPath        = None
         self.masterFile      = None
         self.handlingFile    = []
-        self.bDynamicImport  = False
+        self.iDynamicImport  = 0
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.syntax          = syntax
@@ -233,7 +233,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.jsonPath        = None
         self.masterFile      = None
         self.handlingFile    = []
-        self.bDynamicImport  = False
+        self.iDynamicImport  = 0
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
@@ -270,9 +270,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if '${' in value:
-                    self.bDynamicImport = True
+                    self.iDynamicImport +=1
                     value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
-                    out_dict[key] = value
+                    out_dict[key + f"_{self.iDynamicImport}"] = value
                 else:
                     currJsonPath = self.jsonPath
                     abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
@@ -542,7 +542,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 exec(sExec, locals(), ldict)
                 tmpValue = ldict['value']
             except Exception as error:
-                if self.bDynamicImport:
+                if self.iDynamicImport > 0:
                     sNestedParam = self.__removeTokenStr(sNestedParam)
                     tmpValue = sNestedParam.replace('$$', '$')
                     pass
@@ -572,12 +572,12 @@ Reason: Key error {error}"
         for var in referVars:
             if var not in sInputStr:
                 continue
-            if "." in var:
+            if re.search(r'\${.+\..+}', var):
                 sVar = self.__handleDotInNestedParam(var)
                 sInputStr = sInputStr.replace(var, sVar)
         tmpPattern = pattern + rf'(\[\s*\d+\s*\]|\[\s*\'[^{re.escape(specialCharacters)}]+\'\s*\])*'
         sNestedParam = self.__removeTokenStr(sInputStr.replace("$$", "$"))
-        if "." in sInputStr and not bConvertToStr:
+        if re.search(r'\${.+\..+}', sInputStr) and not bConvertToStr:
             sInputStr = self.__handleDotInNestedParam(sInputStr)
         while re.search(tmpPattern, sInputStr, re.UNICODE) and sInputStr.count("$$")>1:
             sLoopCheck = sInputStr
@@ -585,8 +585,11 @@ Reason: Key error {error}"
             if len(referVars)==0:
                 referVars = re.findall(r'(' + tmpPattern + r')$', sInputStr, re.UNICODE)
             for var in referVars:
-                sVar = self.__handleDotInNestedParam(var[0]) if "." in var[0] else var[0]
+                sVar = self.__handleDotInNestedParam(var[0]) if re.search(r'\${.+\..+}', var[0]) else var[0]
                 tmpValue = __getNestedValue(sVar)
+                if self.iDynamicImport > 0:
+                    if "${" in tmpValue and bConvertToStr:
+                        tmpValue = tmpValue + CNameMangling.STRINGCONVERT.value
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
@@ -655,12 +658,12 @@ the expression '{sNestedParam}' is not supported! Composite data types like list
             tmpPattern = pattern + rf'(\[\s*\-*\d+\s*\]|\[[\s\']*[^{re.escape(specialCharacters)}]+[\'\s]*\])*'
             if re.match("^" + tmpPattern + "$", sInputStr.strip(), re.UNICODE) and bKey and not bConvertToStr:
                 rootVar = re.search(pattern, sInputStr, re.UNICODE)[0]
-                sRootVar = self.__handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+                sRootVar = self.__handleDotInNestedParam(rootVar) if re.search(r'\${.+\..+}', rootVar) else rootVar
                 sInputStr = sInputStr.replace(rootVar, sRootVar)
                 return self.__multipleReplace(sInputStr, {"$${":"", "}":""})
             var = re.search(tmpPattern, sInputStr, re.UNICODE)
             if var==None:
-                sVar = self.__handleDotInNestedParam(sInputStr) if "." in sInputStr else sInputStr
+                sVar = self.__handleDotInNestedParam(sInputStr) if re.search(r'\${.+\..+}', sInputStr) else sInputStr
                 sVar = re.sub(r'^\s*\$\${\s*([^}]+)}', "['\\1']", sVar)
                 sExec = "value = self.JPGlobals" + sVar
                 try:
@@ -668,7 +671,7 @@ the expression '{sNestedParam}' is not supported! Composite data types like list
                     exec(sExec, locals(), ldict)
                     tmpValue = ldict['value']
                 except Exception as error:
-                    if self.bDynamicImport:
+                    if self.iDynamicImport > 0:
                         sNestedParam = self.__removeTokenStr(sNestedParam)
                         tmpValue = sNestedParam.replace('$$', '$')
                         pass
@@ -686,7 +689,7 @@ the expression '{sNestedParam}' is not supported! Composite data types like list
                 return tmpValue
             else:
                 rootVar = re.search(pattern, var[0], re.UNICODE)[0]
-                sRootVar = self.__handleDotInNestedParam(rootVar) if "." in rootVar else rootVar
+                sRootVar = self.__handleDotInNestedParam(rootVar) if re.search(r'\${.+\..+}', rootVar) else rootVar
                 sVar = var[0].replace(rootVar, sRootVar)
             tmpValue = __getNestedValue(sVar)
             if bConvertToStr and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
@@ -1166,13 +1169,16 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                     while isinstance(v, str) and "${" in v:
                         sLoopCheck = v
                         if v.count('${')==1 and CNameMangling.STRINGCONVERT.value not in v:
-                            if '.' in v:
+                            if re.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
                                 paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
                         v = __loadNestedValue(initValue, v)
                         if v == sLoopCheck:
-                            self.__reset()
-                            raise Exception(f"Invalid expression found: '{self.__removeTokenStr(initValue)}'.")
+                            if self.iDynamicImport == 0:
+                                self.__reset()
+                                raise Exception(f"Invalid expression found: '{self.__removeTokenStr(initValue)}'.")
+                            else:
+                                break
                     if isinstance(v, str) and re.search(r'\[[^\]]+\]', v):
                         sExec = 'value = ' + v
                         try:
@@ -1309,15 +1315,16 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
             errorMsg = f"Invalid syntax! One or more than one closed curly bracket is missing in \
 expression '{self.__removeTokenStr(sInput.strip())}'."
         elif not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
-            if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
-                sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
-                if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
-                    errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
-            elif CNameMangling.STRINGCONVERT.value in sInput:
-                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
-                if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
-                    (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
-                    errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
+            if self.iDynamicImport==0:
+                if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
+                    sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                    if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                        errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
+                elif CNameMangling.STRINGCONVERT.value in sInput:
+                    sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+                    if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
+                        (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
+                        errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
         elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"
@@ -1476,24 +1483,29 @@ Checks and handle dynamic path of imported file.
                                 f"{error}\nNearby: '{failedJsonDoc}'"
             self.__reset()
             raise Exception(jsonException)
-        importPattern = r'([\'|"]\s*\[\s*import\s*\]\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
+        self.JPGlobals = self.jsonCheck
+        importPattern = r'([\'|"]\s*\[\s*import\s*\]_*\d*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = ''
-        while self.bDynamicImport:
+        while self.iDynamicImport > 0:
             if sJson=='':
                 sJson = str(self.jsonCheck)
             lImport = re.findall(importPattern, sJson)
             if len(lImport)==0:
-                self.bDynamicImport = False
+                self.iDynamicImport = 0
             else:
                 self.__checkDotInParamName(self.jsonCheck)
                 oJson, bNested = self.__updateAndReplaceNestedParam(self.jsonCheck)
                 sJson = json.dumps(oJson)
                 lImport = re.findall(importPattern, sJson)
+                if re.search(r"\[\s*import\s*\]_\d+", sJson):
+                    sJson = re.sub(r"(\[\s*import\s*\])_\d+", r"\1", sJson)
                 if any('${' in item for item in lImport):
-                    self.__preCheckJsonFile(sJson, CJSONDecoder)
+                    sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
                 else:
-                    self.bDynamicImport = False
-        return sJson if sJson!='' else sInput
+                    self.iDynamicImport = 0
+        if sJson!='':
+            sInput = sJson
+        return sInput
 
     def jsonLoad(self, jFile : str):
         """
