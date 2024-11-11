@@ -200,9 +200,9 @@ Constructor
         self.bDuplicatedKeys = True
         self.jsonCheck       = {}
         self.JPGlobals       = {}
-        self.pythonTypeError = ["object is not subscriptable", \
-                                "string indices must be integers", \
-                                "list indices must be integers", \
+        self.pythonTypeError = ["object is not subscriptable",
+                                "string indices must be integers",
+                                "list indices must be integers",
                                 "index out of range"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
@@ -271,7 +271,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if '${' in value:
                     self.iDynamicImport +=1
-                    value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
+                    if not re.match(r'^\${.+$', value.strip()):
+                        value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
+                    else:
+                        value = f"{self.jsonPath}/{value.strip()}"
                     out_dict[key + f"_{self.iDynamicImport}"] = value
                 else:
                     currJsonPath = self.jsonPath
