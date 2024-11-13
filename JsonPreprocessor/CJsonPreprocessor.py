@@ -191,6 +191,7 @@ Constructor
         self.masterFile      = None
         self.handlingFile    = []
         self.iDynamicImport  = 0
+        self.lDynamicImports = []
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.syntax          = syntax
@@ -234,6 +235,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.masterFile      = None
         self.handlingFile    = []
         self.iDynamicImport  = 0
+        self.lDynamicImports = []
         self.lImportedFiles  = []
         self.recursive_level = 0
         self.dUpdatedParams  = {}
@@ -270,13 +272,23 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if '${' in value:
-                    self.iDynamicImport +=1
-                    if not re.match(r'^\${.+$', value.strip()):
-                        value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
+                    if self.bDuplicatedKeys:
+                        value = self.lDynamicImports.pop(0)
                     else:
-                        value = f"{self.jsonPath}/{value.strip()}"
-                    out_dict[key + f"_{self.iDynamicImport}"] = value
-                else:
+                        if not re.match(r'^\${.+$', value.strip()):
+                            value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
+                        else:
+                            value = f"{self.jsonPath}/{value.strip()}"
+                        if re.match(r'^\[\s*import\s*\]$', key.strip()):
+                            self.iDynamicImport +=1
+                            out_dict[f"{key.strip()}_{self.iDynamicImport}"] = value
+                            self.lDynamicImports.append(value)
+                        else:
+                            out_dict[key] = value
+                if '${' not in value:
+                    if re.match(r'^\[\s*import\s*\]_\d+$', key):
+                        dynamicIpmportIndex = re.search(r'_(\d+)$', key)[1]
+                        self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
                     currJsonPath = self.jsonPath
                     abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
 
@@ -1005,7 +1017,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             dictPattern = r"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${\s*[^\[]*\s*}.*\]+)*|" + indexPattern
             pattern = r"\${\s*[^\[}\$]*(\.*\${\s*[\[]*\s*})*" + dictPattern
             bValueConvertString = False
-            if CNameMangling.STRINGCONVERT.value in sInputStr:
+            if CNameMangling.STRINGCONVERT.value in sInputStr or re.match(r'^\[\s*import\s*\]_\d+$', key):
                 bValueConvertString = True
                 sInputStr = sInputStr.replace(CNameMangling.STRINGCONVERT.value, '')
                 sInputStr = re.sub("\$", "$$", sInputStr)
@@ -1175,7 +1187,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             if re.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
                                 paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
-                        v = __loadNestedValue(initValue, v)
+                        v = __loadNestedValue(initValue, v, key=k)
                         if v == sLoopCheck:
                             if self.iDynamicImport == 0:
                                 self.__reset()
@@ -1488,27 +1500,22 @@ Checks and handle dynamic path of imported file.
             raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
         importPattern = r'([\'|"]\s*\[\s*import\s*\]_*\d*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
-        sJson = ''
-        while self.iDynamicImport > 0:
-            if sJson=='':
-                sJson = str(self.jsonCheck)
-            lImport = re.findall(importPattern, sJson)
-            if len(lImport)==0:
-                self.iDynamicImport = 0
-            else:
+        sJson = json.dumps(self.jsonCheck)
+        lImport = re.findall(importPattern, sJson)
+        if len(lImport)==0:
+            sInput = sJson
+            return sInput
+        else:
+            while re.search(importPattern, sJson):
+                tmpJson = sJson
                 self.__checkDotInParamName(self.jsonCheck)
                 oJson, bNested = self.__updateAndReplaceNestedParam(self.jsonCheck)
                 sJson = json.dumps(oJson)
-                lImport = re.findall(importPattern, sJson)
-                if re.search(r"\[\s*import\s*\]_\d+", sJson):
-                    sJson = re.sub(r"(\[\s*import\s*\])_\d+", r"\1", sJson)
-                if any('${' in item for item in lImport):
-                    sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
-                else:
-                    self.iDynamicImport = 0
-        if sJson!='':
+                sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
+                if sJson==tmpJson:
+                    break
             sInput = sJson
-        return sInput
+            return sInput
 
     def jsonLoad(self, jFile : str):
         """
@@ -1816,7 +1823,8 @@ This function handle a last element of a list or dictionary
         # verifying duplicated keys later.
         if firstLevel:
             self.bDuplicatedKeys = False
-            sJsonDataUpdated = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            self.iDynamicImport = 0
             self.bDuplicatedKeys = True
 
         # Load Json object with checking duplicated keys feature is enabled.
