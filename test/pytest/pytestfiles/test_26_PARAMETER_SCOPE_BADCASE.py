@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 06.11.2024 - 18:29:18
+# 14.11.2024 - 15:38:04
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -30,67 +30,67 @@ from pytestlibs.CExecute import CExecute
 class Test_PARAMETER_SCOPE_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (1)",]
    )
-   def test_JPP_2500(self, Description):
-      nReturn = CExecute.Execute("JPP_2500")
+   def test_JPP_2050(self, Description):
+      nReturn = CExecute.Execute("JPP_2050")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (2)",]
    )
-   def test_JPP_2501(self, Description):
-      nReturn = CExecute.Execute("JPP_2501")
+   def test_JPP_2051(self, Description):
+      nReturn = CExecute.Execute("JPP_2051")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (3)",]
    )
-   def test_JPP_2502(self, Description):
-      nReturn = CExecute.Execute("JPP_2502")
+   def test_JPP_2052(self, Description):
+      nReturn = CExecute.Execute("JPP_2052")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (4)",]
    )
-   def test_JPP_2503(self, Description):
-      nReturn = CExecute.Execute("JPP_2503")
+   def test_JPP_2053(self, Description):
+      nReturn = CExecute.Execute("JPP_2053")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (5)",]
    )
-   def test_JPP_2504(self, Description):
-      nReturn = CExecute.Execute("JPP_2504")
+   def test_JPP_2054(self, Description):
+      nReturn = CExecute.Execute("JPP_2054")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (7)",]
    )
-   def test_JPP_2506(self, Description):
-      nReturn = CExecute.Execute("JPP_2506")
+   def test_JPP_2056(self, Description):
+      nReturn = CExecute.Execute("JPP_2056")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (8)",]
    )
-   def test_JPP_2507(self, Description):
-      nReturn = CExecute.Execute("JPP_2507")
+   def test_JPP_2057(self, Description):
+      nReturn = CExecute.Execute("JPP_2057")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: JsonPreprocessor returns expected value
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file containing a parameter with missing scope (9)",]
    )
-   def test_JPP_2508(self, Description):
-      nReturn = CExecute.Execute("JPP_2508")
+   def test_JPP_2058(self, Description):
+      nReturn = CExecute.Execute("JPP_2058")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

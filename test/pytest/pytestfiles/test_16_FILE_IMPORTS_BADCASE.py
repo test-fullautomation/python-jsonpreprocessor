@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 06.11.2024 - 18:29:18
+# 14.11.2024 - 15:38:04
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -44,6 +44,14 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1151(self, Description):
       nReturn = CExecute.Execute("JPP_1151")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with not existing parameter within dynamic import path",]
+   )
+   def test_JPP_1154(self, Description):
+      nReturn = CExecute.Execute("JPP_1154")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception

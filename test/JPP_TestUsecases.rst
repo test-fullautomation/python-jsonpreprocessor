@@ -1279,6 +1279,90 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1104**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (5))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1105**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (6))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1106**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import, recursive (7))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1107**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import, alternate (8))**
+
+   Expected: JsonPreprocessor returns values
+
+   *Comment: The recursive import occurs alternately in a dynamic or fixed manner*
+
+----
+
+* **Test JPP_1108**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import, parallel (9))**
+
+   Expected: JsonPreprocessor returns values
+
+   *Comment: The recursive import occurs in two import trees running in parallel with alternately in a dynamic or fixed manner*
+
+----
+
+* **Test JPP_1109**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on dictionary key values**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1110**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on list elemens**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1111**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file import based on parameters (dynamic import (7))**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
   [FILE_IMPORTS / BADCASE]
@@ -1300,6 +1384,16 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1154**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with not existing parameter within dynamic import path**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -1785,85 +1879,85 @@ Test Use Cases
 
 ----
 
-* **Test JPP_2500**
+* **Test JPP_2050**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (1)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2501**
+* **Test JPP_2051**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (2)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2502**
+* **Test JPP_2052**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (3)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2503**
+* **Test JPP_2053**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (4)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2504**
+* **Test JPP_2054**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (5)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2506**
+* **Test JPP_2056**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (7)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2507**
+* **Test JPP_2057**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (8)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_2508**
+* **Test JPP_2058**
 
   [PARAMETER_SCOPE / BADCASE]
 
    **JSON file containing a parameter with missing scope (9)**
 
-   Expected: JsonPreprocessor returns expected value
+   Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-Generated: 06.11.2024 - 18:29:18
+Generated: 14.11.2024 - 15:38:04
 
