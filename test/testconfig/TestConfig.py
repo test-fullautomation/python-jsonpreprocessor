@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 07.11.2024
+# 14.11.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -2888,7 +2888,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/372
 dictUsecase['TESTID']            = "JPP_1104"
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import (5))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2897,13 +2896,17 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1104.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # 'File '%cwd%/dynamic_imports/AA/imported.AA.jsonp' is not existing!'!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN'] = """
+[DOTDICT] (4/1) > {cwd} [STR]  :  '.'
+[DOTDICT] (4/2) > {path_sep_1} [STR]  :  '/'
+[DOTDICT] (4/3) > {path_sep_2} [STR]  :  '\\'
+[DOTDICT] (4/4) > {level} [STR]  :  'AA'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/372
 dictUsecase['TESTID']            = "JPP_1105"
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import (6))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2912,13 +2915,19 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1105.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # 'File '%P1%_imports/AA/imported.AA.jsonp' is not existing!'!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (6/1) > {P1} [STR]  :  './dynamic'
+[DOTDICT] (6/2) > {P2} [STR]  :  '_import'
+[DOTDICT] (6/3) > {P3} [STR]  :  's/AA/imp'
+[DOTDICT] (6/4) > {P4} [STR]  :  'orted.A'
+[DOTDICT] (6/5) > {P5} [STR]  :  'A.jsonp'
+[DOTDICT] (6/6) > {level} [STR]  :  'AA'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/pull/378
 dictUsecase['TESTID']            = "JPP_1106"
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import, recursive (7))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2928,12 +2937,18 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1106.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # computation stops at level 'AA', and import of level 'BB' is not resolved
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (6/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (6/2) > {BB} [STR]  :  'BB'
+[DOTDICT] (6/3) > {CC} [STR]  :  'CC'
+[DOTDICT] (6/4) > {DD} [STR]  :  'DD'
+[DOTDICT] (6/5) > {level} [STR]  :  'DD.2'
+[DOTDICT] (6/6) > {origin} [STR]  :  'DD.AA'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/pull/378
 dictUsecase['TESTID']            = "JPP_1107"
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import, alternate (8))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2943,12 +2958,17 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "The recursive import occurs alternately in a dynamic or fixed manner"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1107.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None  # computation stops at level 'BB', and import of level 'CC' is not resolved
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (5/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (5/2) > {BB} [STR]  :  'BB'
+[DOTDICT] (5/3) > {CC} [STR]  :  'CC'
+[DOTDICT] (5/4) > {DD} [STR]  :  'DD'
+[DOTDICT] (5/5) > {level} [STR]  :  'DD.3'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/pull/378
 dictUsecase['TESTID']            = "JPP_1108"
 dictUsecase['DESCRIPTION']       = "JSON file import based on parameters (dynamic import, parallel (9))"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2958,12 +2978,17 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "The recursive import occurs in two import trees running in parallel with alternately in a dynamic or fixed manner"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1108.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None # expected 'DD.P.2.2.2' instead of 'DD.P.2.1.2'; reason: import not resolved
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (5/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (5/2) > {BB} [STR]  :  'BB'
+[DOTDICT] (5/3) > {CC} [STR]  :  'CC'
+[DOTDICT] (5/4) > {DD} [STR]  :  'DD'
+[DOTDICT] (5/5) > {level} [STR]  :  'DD.P.2.2.2'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/382
 dictUsecase['TESTID']            = "JPP_1109"
 dictUsecase['DESCRIPTION']       = "JSON file import based on dictionary key values"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2972,13 +2997,16 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1109.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently: 'File '%import_files%['fileBB']__ConvertParameterToString__' is not existing!'!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {import_files} [DOTDICT] (2/1) > {fileAA} [STR]  :  './dynamic_imports/AA/imported.AA.jsonp'
+[DOTDICT] (2/1) > {import_files} [DOTDICT] (2/2) > {fileBB} [STR]  :  './dynamic_imports/AA/BB/imported.BB.jsonp'
+[DOTDICT] (2/2) > {level} [STR]  :  'BB'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/382
 dictUsecase['TESTID']            = "JPP_1110"
 dictUsecase['DESCRIPTION']       = "JSON file import based on list elemens"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
@@ -2987,9 +3015,12 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1110.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently: File '%import_files%[1]__ConvertParameterToString__' is not existing!
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {import_files} [LIST] (2/1) > [STR]  :  './dynamic_imports/AA/imported.AA.jsonp'
+[DOTDICT] (2/1) > {import_files} [LIST] (2/2) > [STR]  :  './dynamic_imports/AA/BB/imported.BB.jsonp'
+[DOTDICT] (2/2) > {level} [STR]  :  'BB'"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3001,9 +3032,21 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1111.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently: 'maximum recursion depth exceeded while calling a Python object
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (5/1) > {dynamic_imports} [STR]  :  'dynamic_imports'
+[DOTDICT] (5/2) > {global_defs} [STR]  :  'global_defs'
+[DOTDICT] (5/3) > {dictDirs} [DOTDICT] (4/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (5/3) > {dictDirs} [DOTDICT] (4/2) > {BB} [STR]  :  'BB'
+[DOTDICT] (5/3) > {dictDirs} [DOTDICT] (4/3) > {CC} [STR]  :  'CC'
+[DOTDICT] (5/3) > {dictDirs} [DOTDICT] (4/4) > {DD} [STR]  :  'DD'
+[DOTDICT] (5/4) > {listDirs} [LIST] (4/1) > [STR]  :  'AA'
+[DOTDICT] (5/4) > {listDirs} [LIST] (4/2) > [STR]  :  'BB'
+[DOTDICT] (5/4) > {listDirs} [LIST] (4/3) > [STR]  :  'CC'
+[DOTDICT] (5/4) > {listDirs} [LIST] (4/4) > [STR]  :  'DD'
+[DOTDICT] (5/5) > {level} [STR]  :  'BB'
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -3044,7 +3087,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1152.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # import not resolved; cyclic import not detected
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # maximum recursion depth exceeded while calling a Python object
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3058,13 +3101,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1153.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # import not resolved; cyclic import not detected
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # 'maximum recursion depth exceeded in __instancecheck__
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/370
 dictUsecase['TESTID']            = "JPP_1154"
 dictUsecase['DESCRIPTION']       = "JSON file with not existing parameter within dynamic import path"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -3073,9 +3115,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1154.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The parameter '${I_AM_NOT_EXISTING}' is not available!" # currently: Invalid expression found
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not load the import file './${I_AM_NOT_EXISTING}/imported.jsonp'. The parameter '${I_AM_NOT_EXISTING} ' is not available!'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3102,7 +3144,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1156.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently:  The double quotes are missing; expected: bracket mismatch
+dictUsecase['EXPECTEDEXCEPTION'] = None # currently: Could not load the import file './dynamic_imports/${AA/imported.AA.jsonp'. The parameter '' is not available!
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3244,11 +3286,6 @@ dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = "[DOTDICT] (1/1) > {teststring} [STR]  :  'relative path teststring value'"
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
-# --------------------------------------------------------------------------------------------------------------
-# --------------------------------------------------------------------------------------------------------------
-# slicing shall be blocked
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/104
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/205
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1350"
@@ -4080,127 +4117,128 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2500"
+dictUsecase['TESTID']            = "JPP_2050"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (1)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2500.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2050.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'Could not resolve expression '${param}'. The based parameter 'param' is not defined yet! Use the '<name> : <value>' syntax to create a new based parameter.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2501"
+dictUsecase['TESTID']            = "JPP_2051"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (2)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2501.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2051.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${param}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2502"
+dictUsecase['TESTID']            = "JPP_2052"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (3)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2502.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2052.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'Missing scope for parameter '${param}'. To change the value of this parameter, an absolute path must be used: '${params}['001']['param']' or '${params.001.param}'.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2503"
+dictUsecase['TESTID']            = "JPP_2053"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (4)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2503.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2053.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}['001']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2504"
+dictUsecase['TESTID']            = "JPP_2054"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (5)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2504.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2054.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.001}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2505"
+dictUsecase['TESTID']            = "JPP_2055"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (6)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2505.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2055.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2506"
+dictUsecase['TESTID']            = "JPP_2056"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (7)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2506.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2056.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2507"
+dictUsecase['TESTID']            = "JPP_2057"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (8)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2507.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2057.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}[1]['B'][0]['C']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-dictUsecase['TESTID']            = "JPP_2508"
+dictUsecase['TESTID']            = "JPP_2058"
 dictUsecase['DESCRIPTION']       = "JSON file containing a parameter with missing scope (9)"
-dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "PARAMETER_SCOPE"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
-dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2508.jsonp"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2058.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
