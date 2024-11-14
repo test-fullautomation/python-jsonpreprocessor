@@ -275,6 +275,16 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 if '${' in value:
                     if self.bDuplicatedKeys: # self.bDuplicatedKeys is set False when handling pre-check JSON files by __preCheckJsonFile()
                         value = self.lDynamicImports.pop(0)
+                        if '${' in value:
+                            dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', value)
+                            value = self.__removeTokenStr(dynamicImported[2])
+                            nestedParams = re.findall(rf'(\${{[^{re.escape(self.specialCharacters)}]+}}(\[.*\])*)', value)
+                            sParams = ''
+                            for item in nestedParams:
+                                sParams += f"{item[0]} "
+                            errorMsg = f"Could not load the import file '{value}'. The parameter '{sParams}' is not available!"
+                            self.__reset()
+                            raise Exception(errorMsg)
                     else:
                         if re.match(r'^\[\s*import\s*\]$', key.strip()):
                             self.iDynamicImport +=1
@@ -1517,9 +1527,9 @@ Checks and handle dynamic path of imported file.
                 self.__checkDotInParamName(self.jsonCheck)
                 oJson, bNested = self.__updateAndReplaceNestedParam(self.jsonCheck)
                 sJson = json.dumps(oJson)
-                sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
                 if sJson==tmpJson:
                     break
+                sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
             sInput = sJson
             return sInput
 
