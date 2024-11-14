@@ -71,6 +71,7 @@ class CNameMangling(Enum):
     LISTINDEX        = "__IndexOfList__"
     SLICEINDEX       = "__SlicingIndex__"
     STRINGVALUE      = "__StringValueMake-up__"
+    DYNAMICIMPORTED  = "__DynamicImportedHandling__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -272,15 +273,12 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if '${' in value:
-                    if self.bDuplicatedKeys:
+                    if self.bDuplicatedKeys: # self.bDuplicatedKeys is set False when handling pre-check JSON files by __preCheckJsonFile()
                         value = self.lDynamicImports.pop(0)
                     else:
-                        if not re.match(r'^\${.+$', value.strip()):
-                            value = CString.NormalizePath(value, sReferencePathAbs = self.jsonPath)
-                        else:
-                            value = f"{self.jsonPath}/{value.strip()}"
                         if re.match(r'^\[\s*import\s*\]$', key.strip()):
                             self.iDynamicImport +=1
+                            value = self.jsonPath + CNameMangling.DYNAMICIMPORTED.value + value
                             out_dict[f"{key.strip()}_{self.iDynamicImport}"] = value
                             self.lDynamicImports.append(value)
                         else:
@@ -1188,6 +1186,14 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 paramInValue = self.__handleDotInNestedParam(v)
                                 paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
                         v = __loadNestedValue(initValue, v, key=k)
+                        # Handle dynamic import value
+                        if re.match(r'^\[\s*import\s*\]_\d+$', k):
+                            if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
+                                dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
+                                if re.match(r'^[/|\\].+$', dynamicImported[2]):
+                                    v = dynamicImported[2]
+                                else:
+                                    v = CString.NormalizePath(dynamicImported[2], sReferencePathAbs = dynamicImported[1])
                         if v == sLoopCheck:
                             if self.iDynamicImport == 0:
                                 self.__reset()
@@ -1820,7 +1826,8 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
         # Load the temporary Json object without checking duplicated keys for 
-        # verifying duplicated keys later.
+        # verifying duplicated keys later. The pre-check method also checks dynamic 
+        # imported files in JSON files.
         if firstLevel:
             self.bDuplicatedKeys = False
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
