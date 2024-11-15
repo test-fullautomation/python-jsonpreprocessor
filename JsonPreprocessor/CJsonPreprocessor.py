@@ -272,6 +272,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
+                if not isinstance(value, str):
+                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{value}'"
+                    self.__reset()
+                    raise Exception(errorMsg)
                 if '${' in value:
                     if self.bDuplicatedKeys: # self.bDuplicatedKeys is set False when handling pre-check JSON files by __preCheckJsonFile()
                         value = self.lDynamicImports.pop(0)
@@ -1200,6 +1204,11 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                         if re.match(r'^\[\s*import\s*\]_\d+$', k):
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
                                 dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
+                                if re.match(r'^[\d\.]+$', dynamicImported[2]) or \
+                                    re.search(r'(\[[^\[]+\])|(\([^\(]+\))|({[^{]+})'):
+                                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{dynamicImported[2]}'"
+                                    self.__reset()
+                                    raise Exception(errorMsg)
                                 if re.match(r'^[/|\\].+$', dynamicImported[2]):
                                     v = dynamicImported[2]
                                 else:
