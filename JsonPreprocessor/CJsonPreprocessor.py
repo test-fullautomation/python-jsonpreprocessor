@@ -1205,7 +1205,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
                                 dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
                                 if re.match(r'^[\d\.]+$', dynamicImported[2]) or \
-                                    re.search(r'(\[[^\[]+\])|(\([^\(]+\))|({[^{]+})'):
+                                    re.search(r'(\[[^\[]+\])|(\([^\(]+\))|({[^{]+})', dynamicImported[2]):
                                     errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{dynamicImported[2]}'"
                                     self.__reset()
                                     raise Exception(errorMsg)
