@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 14.11.2024
+# 15.11.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3049,6 +3049,36 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/390
+dictUsecase['TESTID']            = "JPP_1112"
+dictUsecase['DESCRIPTION']       = "JSON file containing an import of the same file in different levels (within the same file)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1112.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # currently: Cyclic imported json file
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/390
+dictUsecase['TESTID']            = "JPP_1113"
+dictUsecase['DESCRIPTION']       = "JSON file containing an import of the same file in different levels (within imported files)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1113.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # currently: Cyclic imported json file
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1150"
@@ -3087,9 +3117,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1152.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # maximum recursion depth exceeded while calling a Python object
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3101,9 +3131,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1153.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # 'maximum recursion depth exceeded in __instancecheck__
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3135,7 +3165,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/377
 dictUsecase['TESTID']            = "JPP_1156"
 dictUsecase['DESCRIPTION']       = "JSON file with syntax error in import path (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -3144,13 +3173,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1156.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently: Could not load the import file './dynamic_imports/${AA/imported.AA.jsonp'. The parameter '' is not available!
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found: './dynamic_imports/${AA/imported.AA.jsonp' - The brackets mismatch"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/381
 dictUsecase['TESTID']            = "JPP_1157"
 dictUsecase['DESCRIPTION']       = "JSON file with syntax error in import path (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -3159,9 +3187,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1157.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # currently:  FREEZE; expected: bracket mismatch
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found: './dynamic_imports/${${AA/imported.AA.jsonp' - The brackets mismatch"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

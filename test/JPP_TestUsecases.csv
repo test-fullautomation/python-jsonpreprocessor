@@ -130,8 +130,12 @@ JPP_1110|FILE_IMPORTS|GOODCASE|JSON file import based on list elemens
 JPP_1111|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (7))
 JPP_1150|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, fix path)
 JPP_1151|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)
+JPP_1152|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, dynamic path)
+JPP_1153|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported, dynamic path)
 JPP_1154|FILE_IMPORTS|BADCASE|JSON file with not existing parameter within dynamic import path
 JPP_1155|FILE_IMPORTS|BADCASE|JSON file with not existing import file
+JPP_1156|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (1)
+JPP_1157|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (2)
 JPP_1158|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (1)
 JPP_1159|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (2)
 JPP_1160|FILE_IMPORTS|BADCASE|JSON file with error in imported file
