@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.28.0"
-VERSION_DATE = "18.04.2024"
+VERSION      = "0.32.0"
+VERSION_DATE = "07.11.2024"
 #
 # **************************************************************************************************************
 
@@ -105,7 +105,7 @@ class CConfig():
       THISAPP                             = CString.NormalizePath(sCalledBy)
       self.__dictConfig['THISAPP']        = THISAPP
       self.__dictConfig['THISAPPNAME']    = os.path.basename(THISAPP)
-      REFERENCEPATH                       = os.path.dirname(THISAPP) # position of main() app is reference for all relative paths
+      REFERENCEPATH                       = os.path.dirname(THISAPP) # position of main() app is reference for all relative paths in this script
       self.__dictConfig['REFERENCEPATH']  = REFERENCEPATH
       self.__dictConfig['TMPFILESPATH']   = f"{REFERENCEPATH}/tmp_files"
       self.__dictConfig['OUTPUTPATH']     = f"{REFERENCEPATH}" # /output
@@ -120,6 +120,21 @@ class CConfig():
       self.__dictConfig['PYTHONPATH']     = os.path.dirname(PYTHON)
       self.__dictConfig['PYTHONVERSION']  = sys.version
       self.__dictConfig['NOW']            = time.strftime('%d.%m.%Y - %H:%M:%S')
+
+      # JSONP snippets may contain the '[import]' key. For relative import paths we need to define a reference folder.
+      # We predefine three possible positions for reference folders that will be checked for existence. The first hit will be used.
+      JSONSNIPPET_REFERENCEPATH = None
+      listImportRootPaths       = [REFERENCEPATH, f"{REFERENCEPATH}/..", f"{REFERENCEPATH}/../testfiles"]
+      importFolder = "dynamic_imports" # the subfolder containing all imported JSONP files
+      for sImportRootPath in listImportRootPaths:
+         sImportRootPath = CString.NormalizePath(sImportRootPath)
+         sImportPath     = f"{sImportRootPath}/{importFolder}"
+         # print(f"checking additional import file path '{sImportFolder}'")
+         if os.path.isdir(sImportPath):
+            JSONSNIPPET_REFERENCEPATH = sImportRootPath
+            break
+      if JSONSNIPPET_REFERENCEPATH is not None:
+         self.__dictConfig['JSONSNIPPET_REFERENCEPATH'] = JSONSNIPPET_REFERENCEPATH
 
    # --------------------------------------------------------------------------------------------------------------
    #TM***
@@ -432,8 +447,15 @@ class CExecutor():
          oJPPJSONFILE.Write(f"// created at {NOW}")
          oJPPJSONFILE.Write(sCodeSnippet)
          del oJPPJSONFILE
-         # execute temporary JSON file
-         dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPFile(JPPJSONFILE)
+
+         # --------------------------------------------------------------------------------------------------------------
+         # === (alternative 1) execute temporary JSON file
+         # dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPFile(JPPJSONFILE)
+         #
+         # === (alternative 2) execute temporary JSON string
+         dictReturned, sException, bSuccess, sResult = self.__ExecuteJPPString(sCodeSnippet, self.__oConfig.Get('JSONSNIPPET_REFERENCEPATH'))
+         # --------------------------------------------------------------------------------------------------------------
+
          # PrettyPrint(bSuccess, sPrefix="(bSuccess)")
          # PrettyPrint(sResult, sPrefix="(sResult)")
          # PrettyPrint(dictReturned, sPrefix="(dictReturned)")
@@ -508,6 +530,42 @@ class CExecutor():
       return dictReturned, sException, bSuccess, sResult
 
    # eof def __ExecuteJPPFile(self, sJSONFile=None):
+
+   def __ExecuteJPPString(self, sJSONString=None, referenceDir=""):
+
+      sMethod = "__ExecuteJPPString"
+
+      bSuccess     = None
+      sResult      = "UNKNOWN"
+      dictReturned = None
+      sException   = None
+
+      if sJSONString is None:
+         sResult = CString.FormatResult(sMethod, None, "sJSONString is None")
+         return dictReturned, sException, bSuccess, sResult
+
+      # use either own or common JsonPreprocessor object
+      oJsonPreprocessor = None
+      if self.__oJsonPreprocessor is None:
+         oJsonPreprocessor = CJsonPreprocessor()
+      else:
+         oJsonPreprocessor = self.__oJsonPreprocessor
+
+      # execute JsonPreprocessor
+      dictReturned = None
+      sException   = None
+      try:
+         dictReturned = oJsonPreprocessor.jsonLoads(sJSONString, referenceDir)
+      except Exception as reason:
+         sException = f"'{reason}'"
+
+      del oJsonPreprocessor
+
+      bSuccess = True
+      sResult  = "done"
+      return dictReturned, sException, bSuccess, sResult
+
+   # eof def __ExecuteJPPString(self, sJSONFile=None):
 
    # --------------------------------------------------------------------------------------------------------------
 
@@ -1759,7 +1817,7 @@ class CSnippets():
    "param01"      : ${stringParam}[${index}],
    "param02"      : "${stringParam}[${index}]",
    //
-   "param03"      : ${indexList}[${indexList}[${index}]],         // returns STR instead of INT
+   "param03"      : ${indexList}[${indexList}[${index}]],
    "param04"      : "${indexList}[${indexList}[${index}]]",
    //
    "param05"      : ${stringParam}[${indexList}[${indexList}[${index}]]],
@@ -2348,6 +2406,1012 @@ class CSnippets():
 }
 """)
 
+# --------------------------------------------------------------------------------------------------------------
+# 28.10.2024
+# code snippets taken from latest issues
+
+      listCodeSnippets.append("""{
+   "keyP"   : "A",
+   "newparam" : ${keyP}[${keyP}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "dictP"  : {"A" : 1, "B" : 2},
+   "newparam" : ${dictP}['${dictP}']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dictP1"  : {"A" : 1  , "B" : 2},
+    "dictP2"  : {"1" : "C", "2" : "D"},
+    "newparam" : ${dictP2}['${dictP1}['A']']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "newparam" : ${listP}['${listP}']
+}
+""")
+
+      listCodeSnippets.append("""{
+   "indexP" : 0,
+   "newparam" : ${indexP}[${indexP}]
+}
+""")
+
+      listCodeSnippets.append("""{
+   "listparam" : ["A","B","C"],
+   ${{listparam}[0] : "value"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "listparam1" : ["A", "B"],
+    "listparam2" : [1, 2],
+    ${listparam1}[${listparam2}] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "listparam1" : ["A", "B"],
+    "listparam2" : [1, 2],
+    "param"      : ${listparam1}[${listparam2}]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "params" : {"A" : []}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "params" : {"A" : ["B", []]}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "listparam" : ["A", "B"],
+    "newparam"  : ${listparam}[20]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dictparam" : {"A" : 1, "B" : 2},
+    "newparam"  : ${dictparam}['AB']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "strParam" : "ABC",
+    "param1"   : [1, {"001" : "${strParam}"}, 2],
+    "param2"   : ${param1}[1]['001']
+}
+""")
+
+# --------------------------------------------------------------------------------------------------------------
+
+# -- NAMING_CONVENTION
+
+      # 0400
+      listCodeSnippets.append("""{
+    "A"         : 1,
+    "check01"   : ${A},
+    // Bug: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/357#issuecomment-2435677836
+    // 'The parameter '${0}' is not available!'!
+    "0"         : 2,
+    "check02"   : ${0},
+    "_"         : 3,
+    "check03"   : ${_},
+    //
+    "Ax"        : 4,
+    "check04"   : ${Ax},
+    "0x"        : 5,
+    "check05"   : ${0x},
+    "_x"        : 6,
+    "check06"   : ${_x},
+    //
+    "param+1"   : 7,
+    "check07"   : ${param+1},
+    "param-2"   : 8,
+    "check08"   : ${param-2},
+    "param*3"   : 9,
+    "check09"   : ${param*3},
+    "param/4"   : 10,
+    // bug: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/356#issuecomment-2435708593
+    // Expecting ',' delimiter
+    "check10"   : ${param/4},
+    //
+    "p01" : {"A"  : 7},
+    "check11"   : ${p01}['A'],
+    "p02" : {"0"  : 8},
+    "check12"   : ${p02}['0'],
+    "p03" : {"_"  : 9},
+    "check13"   : ${p03}['_'],
+    //
+    "p04" : {"Ax" : 10},
+    "check14"   : ${p04}['Ax'],
+    "p05" : {"0x" : 11},
+    "check15"   : ${p05}['0x'],
+    "p06" : {"_x" : 12},
+    "check16"   : ${p06}['_x'],
+    //
+    "p07" : {"param+1"  : 13},
+    "check17"   : ${p07}['param+1'],
+    "p08" : {"param-2"  : 14},
+    "check18"   : ${p08}['param-2'],
+    "p09" : {"param*3"  : 15},
+    "check19"   : ${p09}['param*3'],
+    "p10" : {"param/4"  : 16},
+    // Expecting ',' delimiter
+    "check20"   : ${p10}['param/4'],
+    //
+    "p11" : [1, {"A"  : 17}, 2],
+    "check21"   : ${p11}[1]['A'],
+    "p12" : [1, {"0"  : 18}, 2],
+    "check22"   : ${p12}[1]['0'],
+    "p13" : [1, {"_"  : 19}, 2],
+    "check23"   : ${p13}[1]['_'],
+    //
+    "p14" : [1, {"Ax" : 20}, 2],
+    "check24"   : ${p14}[1]['Ax'],
+    "p15" : [1, {"0x" : 21}, 2],
+    "check25"   : ${p15}[1]['0x'],
+    "p16" : [1, {"_x" : 22}, 2],
+    "check26"   : ${p16}[1]['_x'],
+    //
+    "p17" : [1, {"param+1"  : 23}, 2],
+    "check27"   : ${p17}[1]['param+1'],
+    "p18" : [1, {"param-2"  : 24}, 2],
+    "check28"   : ${p18}[1]['param-2'],
+    "p19" : [1, {"param*3"  : 25}, 2],
+    "check29"   : ${p19}[1]['param*3'],
+    "p20" : [1, {"param/4"  : 26}, 2]
+    // Expecting ',' delimiter
+    "check30"   : ${p20}[1]['param/4']
+}
+""")
+
+    # -- blank, backslash, chinese character
+
+      listCodeSnippets.append("""{
+    "  param  " : 1,
+    "p21"       : ${param}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "B"   : {"  param  " : 1},
+    "p22" : ${B}['param']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"   : [1, {"  param  " : 1}, 2],
+    "p23" : ${C}[1]['param']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "par\\am" : 1,
+    "p24"     : ${par\\am}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "D"   : {"par\\am" : 1},
+    "p25" : ${D}['par\\am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "E"   : [1, {"par\\am" : 1}, 2],
+    "p26" : ${E}[1]['par\\am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "path_to_file" : "C:\\Users\\Example\\file.txt"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "path\\to\\file" : "root_path"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "path\\to\\file" : "C:\\Users\\Example\\file.txt"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "par𠼭am" : 1,
+    "p27"     : ${par𠼭am}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "F"   : {"par𠼭am" : 1},
+    "p28" : ${F}['par𠼭am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "G"   : [1, {"par𠼭am" : 1}, 2],
+    "p29" : ${G}[1]['par𠼭am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "𠼭param" : 1,
+    "p30"     : ${𠼭param}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "H"   : {"𠼭param" : 1},
+    "p31" : ${H}['𠼭param']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "K"   : [1, {"𠼭param" : 1}, 2],
+    "p32" : ${K}[1]['𠼭param']
+}
+""")
+
+
+      listCodeSnippets.append("""{
+    "%A"  : 1,
+    "p01" : ${%A}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "B"   : {"%A" : 1},
+    "p02" : ${B}['%A']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"   : [1, {"%A" : 1}, 2],
+    "p03" : ${C}[1]['%A']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "par%am" : 1,
+    "p04"    : ${par%am}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "D"   : {"par%am" : 1},
+    "p05" : ${D}['par%am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "E"   : [1, {"par%am" : 1}, 2],
+    "p06" : ${E}[1]['par%am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "par  am" : 1,
+    "p04"     : ${par  am}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "F"   : {"par  am" : 1},
+    "p05" : ${F}['par  am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "G"   : [1, {"par  am" : 1}, 2],
+    "p06" : ${G}[1]['par  am']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    "B" : {"" : 1}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C" : [1, {"" : 1}, 2]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "    " : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    "B" : {"    " : 1}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C" : [1, {"    " : 1}, 2]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "$A:" : 1,
+    "p01" : ${$A:}
+}
+""")
+
+      listCodeSnippets.append("""{
+    ":::" : 1,
+    "p01" : ${:::}
+}
+""")
+
+
+      # listCodeSnippets.append("""{
+# }
+# """)
+
+# --------------------------------------------------------------------------------------------------------------
+
+# - parameter scope
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          "param" : 2,
+                          ${params}['001']['param'] : 3
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          "param" : 2,
+                          ${params.001.param} : 3
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          "param" : 2
+                        }
+               },
+    ${params}['001']['param'] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          "param" : 2
+                        }
+               },
+    ${params.001.param} : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               "C" : 4,
+                               ${params}[1]['B'][0]['C'] : 10,
+                               "D" : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+    // 'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'!
+
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               "C" : 4,
+                               ${params.1.B.0.C} : 10,
+                               "D" : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+    // {C} [INT]  :  10
+
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               "C" : 4,
+                               "D" : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ],
+    ${params}[1]['B'][0]['C'] : 10
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               "C" : 4,
+                               "D" : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ],
+    ${params.1.B.0.C} : 10
+}
+""")
+
+      listCodeSnippets.append("""{
+    ${param} : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          ${param} : 2
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"  : 1,
+    "params" : {"001" : {
+                          "param"  : 2,
+                          ${param} : 3
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    "params" : {"001" : {
+                          ${params}['001'] : 1
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    "params" : {"001" : {
+                          ${params.001} : 1
+                        }
+               }
+}
+""")
+
+      listCodeSnippets.append("""{
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+    // invalid output
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               "C"  : 4,
+                               ${C} : 10,
+                               "D"  : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               ${C} : 10,
+                               "D"  : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               ${params}[1]['B'][0]['C'] : 10,
+                               "D"  : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C"  : 1,
+    "params" : [
+                  2,
+                  {"A" : 3,
+                   "B" : [
+                            {
+                               ${params.1.B.0.C} : 10,
+                               "D"  : 5
+                            },
+                            6
+                         ]
+                  },
+                  7
+               ]
+}
+""")
+
+# --------------------------------------------------------------------------------------------------------------
+
+# -- BLOCKED_DATA_TYPES
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "param"    : "${testlist}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "param"    : "A_${testlist}_B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2},
+    "param"    : "${testdict}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2},
+    "param"    : "A_${testdict}_B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "testdict" : {"A" : 1, "B" : 2},
+    "param"    : "A_${testlist}_${testdict}_B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2},
+    "param"    : [1,"${testdict}",3]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "param"    : {"A" : 1, "B" : "${testlist}"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "param"    : {"A" : [{"A" : 1, "B" : 2}, {"C" : 3, "D" : [1,2,"${testlist}",3]}], "E" : 5}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2},
+    "param"    : {"A" : [{"A" : 1, "B" : 2}, {"C" : 3, "D" : [1,2,"${testdict}",3]}], "E" : 5}
+}
+""")
+
+    # -- blocked dynamic key names
+
+      listCodeSnippets.append("""{
+    "param1"    : "A",
+    "${param1}" : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param1"        : "A",
+    "A.${param1}.B" : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist"     : [1,2,3],
+    "${testlist}"  : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict"         : {"A" : 1, "B" : 2},
+    "A.${testdict}.B"  : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param1" : "A",
+    "param1" : {"A" : 1, "${param1}" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param1" : "A",
+    "param1" : {"A" : 1, "A.${param1}.B" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testlist" : [1,2,3],
+    "param1"   : {"A" : 1, "${testlist}" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2},
+    "param1"   : {"A" : 1, "A.${testdict}.B" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"    : "X",
+    "testdict" : {"A" : 1, "B" : 2},
+    ${testdict}['${param}'] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2, "X" : 3},
+    "param"    : "X",
+    ${testdict}['${param}'] : 4
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"    : "X",
+    "testdict" : {"A" : 1, "B" : 2},
+    ${testdict}[${param}] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2, "X" : 3},
+    "param"    : "X",
+    ${testdict}[${param}] : 4
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param"    : "X",
+    "testdict" : {"A" : 1, "B" : 2},
+    ${testdict.${param}} : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "testdict" : {"A" : 1, "B" : 2, "X" : 3},
+    "param"    : "X",
+    ${testdict.${param}} : 4
+}
+""")
+
+# --------------------------------------------------------------------------------------------------------------
+
+      listCodeSnippets.append("""{
+   // implicit creation in ascending dotdict syntax:
+   ${testdict1.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 1}}},
+   ${testdict1.subKey1.subKey2} : {"subKey3" : {"subKey4" : 2}},
+   ${testdict1.subKey1.subKey2.subKey3} : {"subKey4" : 3},
+   ${testdict1.subKey1.subKey2.subKey3.subKey4} : 4,
+   //
+   // implicit creation in descending dotdict syntax:
+   ${testdict2.subKey1.subKey2.subKey3.subKey4} : 5,
+   ${testdict2.subKey1.subKey2.subKey3} : {"subKey4" : 6},
+   ${testdict2.subKey1.subKey2} : {"subKey3" : {"subKey4" : 7}},
+   ${testdict2.subKey1} : {"subKey2" : {"subKey3" : {"subKey4" : 8}}},
+   //
+   // cross check:
+   "testdict3" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 30}}}},
+   "testdict4" : {"subKey1" : {"subKey2" : {"subKey3" : {"subKey4" : 40}}}}
+}
+""")
+
+# --------------------------------------------------------------------------------------------------------------
+
+    # -- some special cases
+
+      listCodeSnippets.append("""{
+    "params" : {"001" : {"param" : 1}},
+    ${params.001.param} : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+    ${params}['001']['param1'] : 1,
+    ${params.1.param2} : 2,
+    ${params.a001.param3} : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    ${params.001.param} : 2
+}
+""")
+
+      listCodeSnippets.append("""{
+    "param1"   : "A",
+    "testdict" : {"A" : 1, "B" : 2},
+    ${testdict}["${param1}"] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A" : [1,  2],
+    "A" : [3,  4]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "B" : {"param1" : 1},
+    "B" : {"param2" : 1}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // within key names slicing doesn't make sense
+    "A"   : {"$B:" : 1},
+    "p02" : ${A}['$B:']
+}
+""")
+
+      listCodeSnippets.append("""{
+   "index"      : 1,
+   "listvalues" : [1, 2, 3],
+   "param"      : ${listvalues}[+${index}]
+}
+""")
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   # -- dynamic imports
+
+      listCodeSnippets.append("""{
+    "import_folder" : "dynamic_imports",
+    "file_name"     : "imported.AA.jsonp",
+    "[import]"      : "./${import_folder}/AA/${file_name}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dictDirs" : {"AA" : "AA", "BB" : "BB", "CC" : "CC", "DD" : "DD"},
+    "listDirs" : ["AA", "BB", "CC", "DD"],
+    "[import]" : "./dynamic_imports/${dictDirs}['AA']/${listDirs}[1]/${dictDirs.CC}/${listDirs.3}/imported.${listDirs.3}.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${${${AA}}}/imported.${${${AA}}}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/global_defs/global_defs_1.jsonp",
+    "level_up" : "../../../../",
+    "[import]" : "./dynamic_imports/${AA}/${BB}/${CC}/${DD}/${level_up}${AA}/${BB}/${CC}/${DD}/imported.DD.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dynamic_imports" : "dynamic_imports",
+    "global_defs"     : "global_defs",
+    "level_up"        : "../../../../",
+    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_1.jsonp",
+    "[import]"        : "./${dynamic_imports}/${AA}/${BB}/${CC}/${DD}/${level_up}${AA}/${BB}/${CC}/${DD}/imported.DD.1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "cwd"        : ".",
+    "path_sep_1" : "/",
+    "path_sep_2" : "\\",
+    "[import]"   : "${cwd}${path_sep_1}dynamic_imports${path_sep_2}AA${path_sep_1}imported.AA.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "P1"       : "./dynamic",
+    "P2"       : "_import",
+    "P3"       : "s/AA/imp",
+    "P4"       : "orted.A",
+    "P5"       : "A.jsonp",
+    "[import]" : "${P1}${P2}${P3}${P4}${P5}"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/dynamic_import.R.D.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/mixed_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/parallel_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "import_files" : {
+                        "fileAA" : "./dynamic_imports/AA/imported.AA.jsonp",
+                        "fileBB" : "./dynamic_imports/AA/BB/imported.BB.jsonp"
+                     },
+    "[import]" : ${import_files}['fileAA'],
+    "[import]" : "${import_files}['fileBB']"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "import_files" : [
+                        "./dynamic_imports/AA/imported.AA.jsonp",
+                        "./dynamic_imports/AA/BB/imported.BB.jsonp"
+                     ],
+    "[import]" : ${import_files}[0],
+    "[import]" : "${import_files}[1]"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dynamic_imports" : "dynamic_imports",
+    "global_defs"     : "global_defs",
+    "[import]"        : "./${dynamic_imports}/${global_defs}/${global_defs}_2.jsonp",
+    "[import]"        : "./${imports_dir}/${dictDirs.AA}/${listDirs.1}/imported.BB.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/cyclic_import_itself.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/cyclic_import.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./${I_AM_NOT_EXISTING}/imported.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./I_AM_NOT_EXISTING/I_AM_NOT_EXISTING.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${AA/imported.AA.jsonp"
+}
+""")
+
+# !!! FREEZE !!!
+      # listCodeSnippets.append("""{
+    # "AA"       : "AA",
+    # "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
+# }
+# """)
+
+      listCodeSnippets.append("""{
+    "AA"         : "AA",
+    "[import]__" : "./dynamic_imports/${AA}/imported.${AA}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"         : "AA",
+    "__[import]" : "./dynamic_imports/${AA}/imported.${AA}.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/import_err_1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : 123
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : [1,2,3]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : {"A" : 1, "B" : 2}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "values"   : {"A" : 1, "B" : 2},
+    "[import]" : ${values}['A']
+}
+""")
+
+      listCodeSnippets.append("""{
+    "values"   : ["A", "B"],
+    "[import]" : ${values}[0]
+}
+""")
 
       # listCodeSnippets.append("""{
 # }
@@ -3074,8 +4138,8 @@ class CSnippets():
 
       sDataStructure1 = """   "param*01*1"   : "value",
    "param2"    : "val*02*ue",
-   "${param2}" : 1,
-   "dictParam" : {"key*03*A" : 2, "keyB" : {"key*04*C" : 3}}"""
+   "dictParam" : {"key*03*A" : 2, "keyB" : {"key*04*C" : 3}},
+   "listParam" : [1, {"key*05*D" : 4, "keyE" : {"key*06*F" : 5}}, 2]"""
 
       sCodeSnippetPattern = """{
 ####DATASTRUCTURE####
@@ -3087,9 +4151,9 @@ class CSnippets():
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
-      listExpressions = ["-", "+", "*", "|", "/", "$", "%", "#", "\\", "\\\\"]
+      listExpressions = ["+", "-", "*", "/" , "|", "$", "%", "#", "\\", "\\\\", "𠼭", "€", "ß", "{", "}", "[", "]", "'"]
 
-      listPlaceholders = ["*01*", "*02*", "*03*", "*04*"]
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*"]
 
       listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
 
@@ -3125,62 +4189,69 @@ class CSnippets():
    # --------------------------------------------------------------------------------------------------------------
 
    def GetBlockedSubstitutions(self):
-      """Several snippets containing blocked dollar operator substitutions
+      """Several snippets containing blocked dollar operator substitutions (because of data type or dynamic key names)"
       """
 
-      sHeadline = "Several snippets containing blocked dollar operator substitutions"
+      sHeadline = "Several snippets containing blocked dollar operator substitutions (because of data type or dynamic key names)"
+
+      # data structure 1
+      sDataStructure1 = """    "*01*"   : "*02*",
+    "param1" : {"*03*" : 5, "009" : "M_*04*_N", "011" : "OP"},
+    "param2" : ["Q_*05*_R", {"*06*" : 6, "010" : "*07*_*07*", "012" : "ST"}, "*08*_*08*"],
+    "param3" : ${param1}['*09*'],
+    "param4" : ${param2}[1]['*10*'],
+    "param5" : ${param1.*11*},
+    "param6" : ${param2.1.*12*}"""
+
+      sDefinitions = """    "strParam"   : "ABC",
+    "intParam"   : 11,
+    "floatParam" : 22.22,
+    "dictParam"  : {"A" : 3, "B" : 4},
+    "listParam"  : ["C", "D"],
+"""
+
+      sCodeSnippetPattern = """{
+####DEFINITIONS####
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["${strParam}", "${intParam}" , "${floatParam}" , "${dictParam}" , "${listParam}"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*", "*11*", "*12*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["001","002","003","004","005","006","007","008","009","010","011","012"] # as much elements as in listPlaceholders
+
+      # put all things together
 
       listCodeSnippets = []
 
-      listCodeSnippets.append("""{
-   "dictParam"  : {"A" : 0, "B" : 1},
-   "param"      : "${dictParam}"
-}
-""")
+      # sDataStructure1
 
-      listCodeSnippets.append("""{
-   "listParam"  : ["A", "B"],
-   "param"      : "${listParam}"
-}
-""")
-
-      listCodeSnippets.append("""{
-   "floatParam" : 1.2,
-   "param"      : "${floatParam}"
-}
-""")
-
-      listCodeSnippets.append("""{
-   "dictParam"    : {"A" : 0, "B" : 1},
-   "${dictParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "listParam"    : ["A", "B"],
-   "${listParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "floatParam"    : 1.2,
-   "${floatParam}" : 1
-}
-""")
-
-      listCodeSnippets.append("""{
-   "keyA"      : "keyA",
-   "dictParam" : {"${keyA}" : 1}
-}
-""")
-
-      listCodeSnippets.append("""{
-   "keyA"      : "keyA",
-   "keyB"      : "keyB",
-   "dictParam" : {"keyA" : {}},
-   ${dictParam.keyA}['${keyB}_2'] : 2
-}
-""")
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
 
       return sHeadline, listCodeSnippets
 

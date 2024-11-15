@@ -18,6 +18,6 @@
 #
 # Version and date of JsonPreprocessor
 #
-VERSION      = "0.8.1"
-VERSION_DATE = "28.10.2024"
+VERSION      = "0.8.2"
+VERSION_DATE = "30.10.2024"
 
