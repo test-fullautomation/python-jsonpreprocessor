@@ -299,6 +299,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             out_dict[key] = value
                 if '${' not in value:
                     if re.match(r'^\[\s*import\s*\]_\d+$', key):
+                        if value in self.lDynamicImports:
+                            raise Exception(f"Cyclic imported json file '{value}'!")
                         dynamicIpmportIndex = re.search(r'_(\d+)$', key)[1]
                         self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
                     currJsonPath = self.jsonPath
