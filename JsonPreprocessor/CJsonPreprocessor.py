@@ -199,7 +199,7 @@ Constructor
         self.currentCfg      = currentCfg
         self.dUpdatedParams  = {}
         self.lDotInParamName = []
-        self.bDuplicatedKeys = True
+        self.bJSONPreCheck   = False
         self.jsonCheck       = {}
         self.JPGlobals       = {}
         self.pythonTypeError = ["object is not subscriptable",
@@ -241,7 +241,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.recursive_level = 0
         self.dUpdatedParams  = {}
         self.lDotInParamName = []
-        self.bDuplicatedKeys = True
+        self.bJSONPreCheck   = False
         self.jsonCheck       = {}
         self.JPGlobals       = {}
 
@@ -277,7 +277,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     self.__reset()
                     raise Exception(errorMsg)
                 if '${' in value:
-                    if self.bDuplicatedKeys: # self.bDuplicatedKeys is set False when handling pre-check JSON files by __preCheckJsonFile()
+                    if not self.bJSONPreCheck: # self.bJSONPreCheck is set True when handling pre-check JSON files by __preCheckJsonFile()
                         value = self.lDynamicImports.pop(0)
                         if '${' in value:
                             dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', value)
@@ -325,7 +325,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
 
                     self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
-                if self.bDuplicatedKeys:
+                if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}'
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
@@ -569,7 +569,7 @@ This method handles nested variables in parameter names or values. Variable synt
                 exec(sExec, locals(), ldict)
                 tmpValue = ldict['value']
             except Exception as error:
-                if self.iDynamicImport > 0:
+                if self.bJSONPreCheck:
                     sNestedParam = self.__removeTokenStr(sNestedParam)
                     tmpValue = sNestedParam.replace('$$', '$')
                     pass
@@ -614,7 +614,7 @@ Reason: Key error {error}"
             for var in referVars:
                 sVar = self.__handleDotInNestedParam(var[0]) if re.search(r'\${.+\..+}', var[0]) else var[0]
                 tmpValue = __getNestedValue(sVar)
-                if self.iDynamicImport > 0:
+                if self.bJSONPreCheck:
                     if "${" in tmpValue and bConvertToStr:
                         tmpValue = tmpValue + CNameMangling.STRINGCONVERT.value
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
@@ -698,7 +698,7 @@ the expression '{sNestedParam}' is not supported! Composite data types like list
                     exec(sExec, locals(), ldict)
                     tmpValue = ldict['value']
                 except Exception as error:
-                    if self.iDynamicImport > 0:
+                    if self.bJSONPreCheck:
                         sNestedParam = self.__removeTokenStr(sNestedParam)
                         tmpValue = sNestedParam.replace('$$', '$')
                         pass
@@ -1214,7 +1214,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 else:
                                     v = CString.NormalizePath(dynamicImported[2], sReferencePathAbs = dynamicImported[1])
                         if v == sLoopCheck:
-                            if self.iDynamicImport == 0:
+                            if not self.bJSONPreCheck:
                                 self.__reset()
                                 raise Exception(f"Invalid expression found: '{self.__removeTokenStr(initValue)}'.")
                             else:
@@ -1315,9 +1315,13 @@ Checks nested parameter format.
         pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
         pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
+        if CNameMangling.DYNAMICIMPORTED.value in sInput:
+            dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
+            sInput = dynamicImported[2]
         # Checks special character in parameters
         sTmpInput = sInput
         bSpecialCharInParam = False
+        sCheckInput = sTmpInput
         while sTmpInput.count("${") > 1:
             lParams = re.findall(r'\${([^\$}]*)}', sTmpInput)
             for param in lParams:
@@ -1326,8 +1330,9 @@ Checks nested parameter format.
                     bSpecialCharInParam = True
                     break
                 sTmpInput = sTmpInput.replace('${' + param + '}', '')
-            if bSpecialCharInParam:
+            if bSpecialCharInParam or sCheckInput==sTmpInput:
                 break
+            sCheckInput = sTmpInput
         if "${" not in sInput:
             return True
         errorMsg = None
@@ -1354,17 +1359,17 @@ Reason: A pair of curly brackets is empty or contains not allowed characters."
                                                          re.match(r"^[\s\"]*\${[^!@#%\^&\*\(\)=|;,<>?/`~]+[\s\"]*$", sInput)):
             errorMsg = f"Invalid syntax! One or more than one closed curly bracket is missing in \
 expression '{self.__removeTokenStr(sInput.strip())}'."
-        elif not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey):
-            if self.iDynamicImport==0:
-                if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
-                    sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
-                    if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
-                        errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
-                elif CNameMangling.STRINGCONVERT.value in sInput:
-                    sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
-                    if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
-                        (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
-                        errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
+        elif (not re.match(r"^\${.+[}\]]+$", sInput) or (re.search(pattern1, sInput) and not bKey)) \
+            and not self.bJSONPreCheck:
+            if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
+                sTmpInput = re.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                if not re.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                    errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
+            elif CNameMangling.STRINGCONVERT.value in sInput:
+                sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
+                if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
+                    (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
+                    errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
         elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"
@@ -1848,10 +1853,10 @@ This function handle a last element of a list or dictionary
         # verifying duplicated keys later. The pre-check method also checks dynamic 
         # imported files in JSON files.
         if firstLevel:
-            self.bDuplicatedKeys = False
+            self.bJSONPreCheck = True
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             self.iDynamicImport = 0
-            self.bDuplicatedKeys = True
+            self.bJSONPreCheck = False
 
         # Load Json object with checking duplicated keys feature is enabled.
         # The duplicated keys feature uses the self.jsonCheck object to check duplicated keys. 
