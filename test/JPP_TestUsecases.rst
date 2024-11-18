@@ -1387,6 +1387,30 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1152**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports itself, dynamic path)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1153**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports another file, that is already imported, dynamic path)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
 * **Test JPP_1154**
 
   [FILE_IMPORTS / BADCASE]
@@ -1402,6 +1426,26 @@ Test Use Cases
   [FILE_IMPORTS / BADCASE]
 
    **JSON file with not existing import file**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1156**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with syntax error in import path (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1157**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with syntax error in import path (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1959,5 +2003,5 @@ Test Use Cases
 
 ----
 
-Generated: 14.11.2024 - 15:38:04
+Generated: 15.11.2024 - 19:28:03
 

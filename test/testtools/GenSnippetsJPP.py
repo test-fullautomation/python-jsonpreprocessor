@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.32.0"
-VERSION_DATE = "07.11.2024"
+VERSION      = "0.33.0"
+VERSION_DATE = "15.11.2024"
 #
 # **************************************************************************************************************
 
@@ -3361,12 +3361,11 @@ class CSnippets():
 }
 """)
 
-# !!! FREEZE !!!
-      # listCodeSnippets.append("""{
-    # "AA"       : "AA",
-    # "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
-# }
-# """)
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
+}
+""")
 
       listCodeSnippets.append("""{
     "AA"         : "AA",
@@ -3410,6 +3409,20 @@ class CSnippets():
       listCodeSnippets.append("""{
     "values"   : ["A", "B"],
     "[import]" : ${values}[0]
+}
+""")
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   # -- multiple imports
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/csl_import_1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/csl_import_2.jsonp"
 }
 """)
 

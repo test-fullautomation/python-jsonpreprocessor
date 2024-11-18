@@ -571,12 +571,30 @@ Description: JSON file with cyclic imports (JSON file imports another file, that
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 Comment....: Cyclic import
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1152 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports itself, dynamic path)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1153 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (JSON file imports another file, that is already imported, dynamic path)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1154 / FILE_IMPORTS / BADCASE
 Description: JSON file with not existing parameter within dynamic import path
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1155 / FILE_IMPORTS / BADCASE
 Description: JSON file with not existing import file
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1156 / FILE_IMPORTS / BADCASE
+Description: JSON file with syntax error in import path (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1157 / FILE_IMPORTS / BADCASE
+Description: JSON file with syntax error in import path (2)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1158 / FILE_IMPORTS / BADCASE
@@ -800,5 +818,5 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 14.11.2024 - 15:38:04
+Generated: 15.11.2024 - 19:28:03
 
