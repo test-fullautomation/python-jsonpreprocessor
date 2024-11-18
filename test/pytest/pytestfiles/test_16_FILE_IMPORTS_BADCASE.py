@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 15.11.2024 - 19:28:03
+# 18.11.2024 - 15:10:55
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -116,5 +116,21 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1160(self, Description):
       nReturn = CExecute.Execute("JPP_1160")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (sawtooth, stopped)",]
+   )
+   def test_JPP_1165(self, Description):
+      nReturn = CExecute.Execute("JPP_1165")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (sawtooth, endless)",]
+   )
+   def test_JPP_1166(self, Description):
+      nReturn = CExecute.Execute("JPP_1166")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

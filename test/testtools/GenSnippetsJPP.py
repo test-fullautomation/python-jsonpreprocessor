@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.33.0"
-VERSION_DATE = "15.11.2024"
+VERSION      = "0.34.0"
+VERSION_DATE = "18.11.2024"
 #
 # **************************************************************************************************************
 
@@ -3333,15 +3333,31 @@ class CSnippets():
 }
 """)
 
+      # cyclic import
       listCodeSnippets.append("""{
     "imports_dir" : "dynamic_imports",
     "[import]"    : "./${imports_dir}/cyclic_import_itself.jsonp"
 }
 """)
 
+      # cyclic import
       listCodeSnippets.append("""{
     "imports_dir" : "dynamic_imports",
     "[import]"    : "./${imports_dir}/cyclic_import.jsonp"
+}
+""")
+
+      # cyclic import (sawtooth, stopped)
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/sawtooth_import.1.jsonp"
+}
+""")
+
+      # cyclic import (sawtooth, endless)
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/sawtooth_import.2.jsonp"
 }
 """)
 
