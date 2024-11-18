@@ -139,6 +139,8 @@ JPP_1157|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (2)
 JPP_1158|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (1)
 JPP_1159|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (2)
 JPP_1160|FILE_IMPORTS|BADCASE|JSON file with error in imported file
+JPP_1165|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, stopped)
+JPP_1166|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, endless)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
 JPP_1350|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
 JPP_1351|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)

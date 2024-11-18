@@ -1481,6 +1481,30 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1165**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (sawtooth, stopped)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1166**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (sawtooth, endless)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
 * **Test JPP_1200**
 
   [PATH_FORMATS / GOODCASE]
@@ -2003,5 +2027,5 @@ Test Use Cases
 
 ----
 
-Generated: 15.11.2024 - 19:28:03
+Generated: 18.11.2024 - 15:10:55
 

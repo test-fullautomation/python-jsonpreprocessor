@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 15.11.2024
+# 18.11.2024
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3293,6 +3293,39 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1164.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None # currently: File '%values%['A']' is not existing!
 dictUsecase['EXPECTEDRETURN']    = None
 # # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# Cyclic import is detected, but file list in exception should be checked.
+# Similar to: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# Here: 'imported.ST03.1.jsonp' is not expected to be part of file list in exception.
+dictUsecase['TESTID']            = "JPP_1165"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (sawtooth, stopped)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Cyclic import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1165.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # file list to be fixed
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+# Cyclic import is detected, but file list in exception is not correct.
+# Similar to: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+dictUsecase['TESTID']            = "JPP_1166"
+dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (sawtooth, endless)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Cyclic import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1166.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # file list to be fixed
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

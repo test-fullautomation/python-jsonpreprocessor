@@ -609,6 +609,16 @@ Test JPP_1160 / FILE_IMPORTS / BADCASE
 Description: JSON file with error in imported file
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1165 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (sawtooth, stopped)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1166 / FILE_IMPORTS / BADCASE
+Description: JSON file with cyclic imports (sawtooth, endless)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Comment....: Cyclic import
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1200 / PATH_FORMATS / GOODCASE
 Description: Relative path to JSON file
 Expectation: JsonPreprocessor resolves the relative path and returns values from JSON file
@@ -818,5 +828,5 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 15.11.2024 - 19:28:03
+Generated: 18.11.2024 - 15:10:55
 
