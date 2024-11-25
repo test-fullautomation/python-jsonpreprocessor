@@ -299,8 +299,6 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             out_dict[key] = value
                 if '${' not in value:
                     if re.match(r'^\[\s*import\s*\]_\d+$', key):
-                        if value in self.lDynamicImports:
-                            raise Exception(f"Cyclic imported json file '{value}'!")
                         dynamicIpmportIndex = re.search(r'_(\d+)$', key)[1]
                         self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
                     currJsonPath = self.jsonPath
@@ -316,6 +314,11 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                         raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                     oJsonImport = self.jsonLoad(abs_path_file)
+                    bDynamicImportCheck = False
+                    for k, v in oJsonImport.items():
+                        if re.match('^\s*\[\s*import\s*\]\s*', k) and '${' in v:
+                            bDynamicImportCheck = True
+                            break
                     self.jsonPath = currJsonPath
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
@@ -324,8 +327,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 del out_dict[k1]
                     del tmpOutdict
                     out_dict.update(oJsonImport)
-
-                    self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                    if not bDynamicImportCheck:
+                        self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
                 if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}'
@@ -1858,6 +1861,7 @@ This function handle a last element of a list or dictionary
             self.bJSONPreCheck = True
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             self.iDynamicImport = 0
+            self.lImportedFiles = [] if self.masterFile is None else [self.masterFile]
             self.bJSONPreCheck = False
 
         # Load Json object with checking duplicated keys feature is enabled.
