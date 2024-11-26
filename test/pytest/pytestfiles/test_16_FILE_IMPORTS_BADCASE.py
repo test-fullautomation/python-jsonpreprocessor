@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 18.11.2024 - 15:10:55
+# 26.11.2024 - 12:36:07
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -116,6 +116,38 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1160(self, Description):
       nReturn = CExecute.Execute("JPP_1160")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (1)",]
+   )
+   def test_JPP_1161(self, Description):
+      nReturn = CExecute.Execute("JPP_1161")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (2)",]
+   )
+   def test_JPP_1162(self, Description):
+      nReturn = CExecute.Execute("JPP_1162")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (3)",]
+   )
+   def test_JPP_1163(self, Description):
+      nReturn = CExecute.Execute("JPP_1163")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (4)",]
+   )
+   def test_JPP_1164(self, Description):
+      nReturn = CExecute.Execute("JPP_1164")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception

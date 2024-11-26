@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 14.11.2024 - 15:38:04
+# 26.11.2024 - 12:36:07
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -124,5 +124,21 @@ class Test_FILE_IMPORTS_GOODCASE:
    )
    def test_JPP_1111(self, Description):
       nReturn = CExecute.Execute("JPP_1111")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing an import of the same file in different levels (within the same file)",]
+   )
+   def test_JPP_1112(self, Description):
+      nReturn = CExecute.Execute("JPP_1112")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing an import of the same file in different levels (within imported files)",]
+   )
+   def test_JPP_1113(self, Description):
+      nReturn = CExecute.Execute("JPP_1113")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

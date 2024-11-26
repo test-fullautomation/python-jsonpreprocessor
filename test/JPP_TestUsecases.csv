@@ -128,6 +128,8 @@ JPP_1108|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic imp
 JPP_1109|FILE_IMPORTS|GOODCASE|JSON file import based on dictionary key values
 JPP_1110|FILE_IMPORTS|GOODCASE|JSON file import based on list elemens
 JPP_1111|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (7))
+JPP_1112|FILE_IMPORTS|GOODCASE|JSON file containing an import of the same file in different levels (within the same file)
+JPP_1113|FILE_IMPORTS|GOODCASE|JSON file containing an import of the same file in different levels (within imported files)
 JPP_1150|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, fix path)
 JPP_1151|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)
 JPP_1152|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, dynamic path)
@@ -139,6 +141,10 @@ JPP_1157|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (2)
 JPP_1158|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (1)
 JPP_1159|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (2)
 JPP_1160|FILE_IMPORTS|BADCASE|JSON file with error in imported file
+JPP_1161|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (1)
+JPP_1162|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (2)
+JPP_1163|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (3)
+JPP_1164|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (4)
 JPP_1165|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, stopped)
 JPP_1166|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, endless)
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
