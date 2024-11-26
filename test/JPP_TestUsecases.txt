@@ -561,6 +561,14 @@ Test JPP_1111 / FILE_IMPORTS / GOODCASE
 Description: JSON file import based on parameters (dynamic import (7))
 Expectation: JsonPreprocessor returns values
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_1112 / FILE_IMPORTS / GOODCASE
+Description: JSON file containing an import of the same file in different levels (within the same file)
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1113 / FILE_IMPORTS / GOODCASE
+Description: JSON file containing an import of the same file in different levels (within imported files)
+Expectation: JsonPreprocessor returns values
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_1150 / FILE_IMPORTS / BADCASE
 Description: JSON file with cyclic imports (JSON file imports itself, fix path)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
@@ -608,6 +616,26 @@ Expectation: No values are returned, and JsonPreprocessor throws an exception
 Test JPP_1160 / FILE_IMPORTS / BADCASE
 Description: JSON file with error in imported file
 Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1161 / FILE_IMPORTS / BADCASE
+Description: JSON file with invalid data type of [import] key (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: 'int' instead of 'str'
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1162 / FILE_IMPORTS / BADCASE
+Description: JSON file with invalid data type of [import] key (2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: 'list' instead of 'str'
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1163 / FILE_IMPORTS / BADCASE
+Description: JSON file with invalid data type of [import] key (3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: 'dict' instead of 'str'
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_1164 / FILE_IMPORTS / BADCASE
+Description: JSON file with invalid data type of [import] key (4)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+Hint.......: 'int' instead of 'str' (from 'dict')
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_1165 / FILE_IMPORTS / BADCASE
 Description: JSON file with cyclic imports (sawtooth, stopped)
@@ -828,5 +856,5 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 18.11.2024 - 15:10:55
+Generated: 26.11.2024 - 12:36:07
 

@@ -1363,6 +1363,26 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1112**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file containing an import of the same file in different levels (within the same file)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1113**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file containing an import of the same file in different levels (within imported files)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
   [FILE_IMPORTS / BADCASE]
@@ -1478,6 +1498,54 @@ Test Use Cases
    **JSON file with error in imported file**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1161**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'int' instead of 'str'*
+
+----
+
+* **Test JPP_1162**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'list' instead of 'str'*
+
+----
+
+* **Test JPP_1163**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'dict' instead of 'str'*
+
+----
+
+* **Test JPP_1164**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'int' instead of 'str' (from 'dict')*
 
 ----
 
@@ -2027,5 +2095,5 @@ Test Use Cases
 
 ----
 
-Generated: 18.11.2024 - 15:10:55
+Generated: 26.11.2024 - 12:36:07
 
