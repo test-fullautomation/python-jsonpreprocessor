@@ -1861,6 +1861,7 @@ This function handle a last element of a list or dictionary
             self.bJSONPreCheck = True
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             self.iDynamicImport = 0
+            self.recursive_level = 0
             self.lImportedFiles = [] if self.masterFile is None else [self.masterFile]
             self.bJSONPreCheck = False
 
