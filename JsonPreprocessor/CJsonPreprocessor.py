@@ -273,7 +273,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if not isinstance(value, str):
-                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{value}'"
+                    typeValue = re.search(r"^<class\s*('.+')>$", str(type(value)))
+                    typeValue = typeValue[1] if typeValue is not None else type(value)
+                    errorMsg = f"The [import] key requires a value of type 'str', but the type is {typeValue}"
                     self.__reset()
                     raise Exception(errorMsg)
                 if '${' in value:
@@ -1204,16 +1206,22 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             if re.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
                                 paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
+                        # Check datatype of [import] value 
+                        if re.match(r'^\[\s*import\s*\]_\d+$', k):
+                            dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
+                            importValue = dynamicImported[2]
+                            importValue = __loadNestedValue(importValue, importValue)
+                            if not isinstance(importValue, str):
+                                typeValue = re.search(r"^<class\s*('.+')>$", str(type(importValue)))
+                                typeValue = typeValue[1] if typeValue is not None else type(importValue)
+                                errorMsg = f"The [import] key requires a value of type 'str', but the type is {typeValue}"
+                                self.__reset()
+                                raise Exception(errorMsg)
                         v = __loadNestedValue(initValue, v, key=k)
                         # Handle dynamic import value
                         if re.match(r'^\[\s*import\s*\]_\d+$', k):
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
                                 dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
-                                if re.match(r'^[\d\.]+$', dynamicImported[2]) or \
-                                    re.search(r'(\[[^\[]+\])|(\([^\(]+\))|({[^{]+})', dynamicImported[2]):
-                                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{dynamicImported[2]}'"
-                                    self.__reset()
-                                    raise Exception(errorMsg)
                                 if re.match(r'^[/|\\].+$', dynamicImported[2]):
                                     v = dynamicImported[2]
                                 else:
