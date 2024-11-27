@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 14.11.2024 - 15:38:04
+# 26.11.2024 - 12:36:07
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -48,6 +48,22 @@ class Test_FILE_IMPORTS_BADCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (JSON file imports itself, dynamic path)",]
+   )
+   def test_JPP_1152(self, Description):
+      nReturn = CExecute.Execute("JPP_1152")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (JSON file imports another file, that is already imported, dynamic path)",]
+   )
+   def test_JPP_1153(self, Description):
+      nReturn = CExecute.Execute("JPP_1153")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
       "Description", ["JSON file with not existing parameter within dynamic import path",]
    )
    def test_JPP_1154(self, Description):
@@ -60,6 +76,22 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1155(self, Description):
       nReturn = CExecute.Execute("JPP_1155")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with syntax error in import path (1)",]
+   )
+   def test_JPP_1156(self, Description):
+      nReturn = CExecute.Execute("JPP_1156")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with syntax error in import path (2)",]
+   )
+   def test_JPP_1157(self, Description):
+      nReturn = CExecute.Execute("JPP_1157")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
@@ -84,5 +116,53 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1160(self, Description):
       nReturn = CExecute.Execute("JPP_1160")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (1)",]
+   )
+   def test_JPP_1161(self, Description):
+      nReturn = CExecute.Execute("JPP_1161")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (2)",]
+   )
+   def test_JPP_1162(self, Description):
+      nReturn = CExecute.Execute("JPP_1162")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (3)",]
+   )
+   def test_JPP_1163(self, Description):
+      nReturn = CExecute.Execute("JPP_1163")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import] key (4)",]
+   )
+   def test_JPP_1164(self, Description):
+      nReturn = CExecute.Execute("JPP_1164")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (sawtooth, stopped)",]
+   )
+   def test_JPP_1165(self, Description):
+      nReturn = CExecute.Execute("JPP_1165")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with cyclic imports (sawtooth, endless)",]
+   )
+   def test_JPP_1166(self, Description):
+      nReturn = CExecute.Execute("JPP_1166")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

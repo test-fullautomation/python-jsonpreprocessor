@@ -273,7 +273,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         for key, value in input_data:
             if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
                 if not isinstance(value, str):
-                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{value}'"
+                    typeValue = re.search(r"^<class\s*('.+')>$", str(type(value)))
+                    typeValue = typeValue[1] if typeValue is not None else type(value)
+                    errorMsg = f"The [import] key requires a value of type 'str', but the type is {typeValue}"
                     self.__reset()
                     raise Exception(errorMsg)
                 if '${' in value:
@@ -299,8 +301,6 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             out_dict[key] = value
                 if '${' not in value:
                     if re.match(r'^\[\s*import\s*\]_\d+$', key):
-                        if value in self.lDynamicImports:
-                            raise Exception(f"Cyclic imported json file '{value}'!")
                         dynamicIpmportIndex = re.search(r'_(\d+)$', key)[1]
                         self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
                     currJsonPath = self.jsonPath
@@ -316,6 +316,11 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                         raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
 
                     oJsonImport = self.jsonLoad(abs_path_file)
+                    bDynamicImportCheck = False
+                    for k, v in oJsonImport.items():
+                        if re.match('^\s*\[\s*import\s*\]\s*', k) and '${' in v:
+                            bDynamicImportCheck = True
+                            break
                     self.jsonPath = currJsonPath
                     tmpOutdict = copy.deepcopy(out_dict)
                     for k1, v1 in tmpOutdict.items():
@@ -324,8 +329,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 del out_dict[k1]
                     del tmpOutdict
                     out_dict.update(oJsonImport)
-
-                    self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                    if not bDynamicImportCheck:
+                        self.recursive_level = self.recursive_level - 1     # descrease recursive level
             else:
                 if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}'
@@ -1201,16 +1206,22 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             if re.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
                                 paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
+                        # Check datatype of [import] value 
+                        if re.match(r'^\[\s*import\s*\]_\d+$', k):
+                            dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
+                            importValue = dynamicImported[2]
+                            importValue = __loadNestedValue(importValue, importValue)
+                            if not isinstance(importValue, str):
+                                typeValue = re.search(r"^<class\s*('.+')>$", str(type(importValue)))
+                                typeValue = typeValue[1] if typeValue is not None else type(importValue)
+                                errorMsg = f"The [import] key requires a value of type 'str', but the type is {typeValue}"
+                                self.__reset()
+                                raise Exception(errorMsg)
                         v = __loadNestedValue(initValue, v, key=k)
                         # Handle dynamic import value
                         if re.match(r'^\[\s*import\s*\]_\d+$', k):
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
                                 dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
-                                if re.match(r'^[\d\.]+$', dynamicImported[2]) or \
-                                    re.search(r'(\[[^\[]+\])|(\([^\(]+\))|({[^{]+})', dynamicImported[2]):
-                                    errorMsg = f"The value of [import] parameter must be 'str' but receiving the value '{dynamicImported[2]}'"
-                                    self.__reset()
-                                    raise Exception(errorMsg)
                                 if re.match(r'^[/|\\].+$', dynamicImported[2]):
                                     v = dynamicImported[2]
                                 else:
@@ -1858,6 +1869,8 @@ This function handle a last element of a list or dictionary
             self.bJSONPreCheck = True
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             self.iDynamicImport = 0
+            self.recursive_level = 0
+            self.lImportedFiles = [] if self.masterFile is None else [self.masterFile]
             self.bJSONPreCheck = False
 
         # Load Json object with checking duplicated keys feature is enabled.

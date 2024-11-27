@@ -1363,6 +1363,26 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1112**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file containing an import of the same file in different levels (within the same file)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
+* **Test JPP_1113**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file containing an import of the same file in different levels (within imported files)**
+
+   Expected: JsonPreprocessor returns values
+
+----
+
 * **Test JPP_1150**
 
   [FILE_IMPORTS / BADCASE]
@@ -1387,6 +1407,30 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1152**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports itself, dynamic path)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1153**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (JSON file imports another file, that is already imported, dynamic path)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
 * **Test JPP_1154**
 
   [FILE_IMPORTS / BADCASE]
@@ -1402,6 +1446,26 @@ Test Use Cases
   [FILE_IMPORTS / BADCASE]
 
    **JSON file with not existing import file**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1156**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with syntax error in import path (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1157**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with syntax error in import path (2)**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1434,6 +1498,78 @@ Test Use Cases
    **JSON file with error in imported file**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_1161**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'int' instead of 'str'*
+
+----
+
+* **Test JPP_1162**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'list' instead of 'str'*
+
+----
+
+* **Test JPP_1163**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'dict' instead of 'str'*
+
+----
+
+* **Test JPP_1164**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import] key (4)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Hint: 'int' instead of 'str' (from 'dict')*
+
+----
+
+* **Test JPP_1165**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (sawtooth, stopped)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1166**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with cyclic imports (sawtooth, endless)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Cyclic import*
 
 ----
 
@@ -1959,5 +2095,5 @@ Test Use Cases
 
 ----
 
-Generated: 14.11.2024 - 15:38:04
+Generated: 26.11.2024 - 12:36:07
 

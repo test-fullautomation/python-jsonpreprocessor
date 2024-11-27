@@ -1,0 +1,25 @@
+//  Copyright 2020-2024 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+   "root"        : "../",
+   "values_AA_1" : {"AA_1_a"   : 1,
+                    "[import]" : "${root}global_defs/imported.common.sublevel.jsonp",
+                    "AA_1_b"   : 2
+                   },
+   "values_AA_2" : {"AA_2_a"   : 1,
+                    "[import]" : "${root}global_defs/imported.common.sublevel.jsonp",
+                    "AA_2_b"   : 2
+                   }
+}

@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.32.0"
-VERSION_DATE = "07.11.2024"
+VERSION      = "0.34.0"
+VERSION_DATE = "18.11.2024"
 #
 # **************************************************************************************************************
 
@@ -3333,15 +3333,31 @@ class CSnippets():
 }
 """)
 
+      # cyclic import
       listCodeSnippets.append("""{
     "imports_dir" : "dynamic_imports",
     "[import]"    : "./${imports_dir}/cyclic_import_itself.jsonp"
 }
 """)
 
+      # cyclic import
       listCodeSnippets.append("""{
     "imports_dir" : "dynamic_imports",
     "[import]"    : "./${imports_dir}/cyclic_import.jsonp"
+}
+""")
+
+      # cyclic import (sawtooth, stopped)
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/sawtooth_import.1.jsonp"
+}
+""")
+
+      # cyclic import (sawtooth, endless)
+      listCodeSnippets.append("""{
+    "imports_dir" : "dynamic_imports",
+    "[import]"    : "./${imports_dir}/sawtooth_import.2.jsonp"
 }
 """)
 
@@ -3361,12 +3377,11 @@ class CSnippets():
 }
 """)
 
-# !!! FREEZE !!!
-      # listCodeSnippets.append("""{
-    # "AA"       : "AA",
-    # "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
-# }
-# """)
+      listCodeSnippets.append("""{
+    "AA"       : "AA",
+    "[import]" : "./dynamic_imports/${${AA/imported.AA.jsonp"
+}
+""")
 
       listCodeSnippets.append("""{
     "AA"         : "AA",
@@ -3410,6 +3425,20 @@ class CSnippets():
       listCodeSnippets.append("""{
     "values"   : ["A", "B"],
     "[import]" : ${values}[0]
+}
+""")
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   # -- multiple imports
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/csl_import_1.jsonp"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "[import]" : "./dynamic_imports/csl_import_2.jsonp"
 }
 """)
 
