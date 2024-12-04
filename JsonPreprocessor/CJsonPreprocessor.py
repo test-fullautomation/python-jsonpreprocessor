@@ -830,7 +830,7 @@ This method handles the dot format in the parameter, then returns the traditiona
             if re.match(r'^\d+$', item):
                 sVar = sVar + "[" + item + "]"
             elif (re.search(r'[{}\[\]\(\)]+', item) and "${" not in item) or \
-                re.match(r'^\s*\$\${.+}(\[.*\])*\s*$', item):
+                re.match(r'^\s*\$\${.+}(\[[^\[]*\])*\s*$', item):
                 sVar = sVar + "[" + item + "]"
             else:
                 sVar = sVar + "['" + item + "']"
@@ -1326,7 +1326,7 @@ Checks nested parameter format.
   *raise exception if nested parameter format invalid*
         """
         pattern = rf"^\${{\s*[^{re.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
-        pattern1 = rf"\${{.+}}(\[.+\])*[^\[]*\${{"
+        pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
         pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = re.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
@@ -1380,7 +1380,7 @@ expression '{self.__removeTokenStr(sInput.strip())}'."
                     errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
             elif CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
-                if re.match(r'^\${[^}]+}+(\[+[^\]]+\]+)*$', sInput) and \
+                if re.match(r'^\${[^}]+}+(\[[^\]]+\])*$', sInput) and \
                     (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
                     errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
         elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
