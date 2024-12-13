@@ -1449,7 +1449,16 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
 
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
-            errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
+            if re.search(r'\[\s*"\s*\${[^"]+"\s*\]', sInput):
+                sInput = self.__removeTokenStr(sInput.strip('"'))
+                sInputSuggestion1 = re.sub(r'(\[\s*")', '[\'', sInput)
+                sInputSuggestion1 = re.sub(r'("\s*\])', '\']', sInputSuggestion1)
+                sInputSuggestion2 = re.sub(r'(\[\s*")', '[', sInput)
+                sInputSuggestion2 = re.sub(r'("\s*\])', ']', sInputSuggestion2)
+                errorMsg = f"Invalid key name {sInput}. Please use the syntax {sInputSuggestion1} or {sInputSuggestion2} \
+to overwrite the value of this parameter."
+            else:
+                errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
         sInput = self.__removeTokenStr(sInput)
         if errorMsg!='':
             pass
@@ -1849,8 +1858,10 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = sJsonDataUpdated + newLine + "\n"
             else:
                 sJsonDataUpdated = sJsonDataUpdated + line + "\n"
-        lKeyName = re.findall(r'("[^:"]+")\s*:\s*', sJsonDataUpdated)
+        lKeyName = re.findall(r'[,\s{]*("[^:,\n]+")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
+            if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
+                continue
             keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
             self.__keyNameValidation(keyDecode)
         for param in lNestedParams:
