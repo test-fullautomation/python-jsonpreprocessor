@@ -4116,8 +4116,8 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2002.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
-[DOTDICT] (2/2) > {param} [INT]  :  3
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4133,8 +4133,8 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
-[DOTDICT] (2/2) > {param} [INT]  :  3
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
