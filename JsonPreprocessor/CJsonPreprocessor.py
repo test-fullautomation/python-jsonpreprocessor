@@ -1747,6 +1747,8 @@ This function checks key names in JSON configuration files.
             for k, v in oJson.items():
                 if "${" in k:
                     self.__checkNestedParam(k, bKey=True)
+                else:
+                    self.__keyNameValidation(k)
                 if isinstance(v, list):
                     for item in v:
                         if isinstance(item, str) and "${" in item:
@@ -1813,6 +1815,7 @@ This function handle a last element of a list or dictionary
 
             if "${" in line:
                 curLine = line
+                tmpList03 = []
                 while re.search(r'\${([^}]*)}', line):
                     tmpLine = line
                     param = re.search(r'\${([^}\$]*)}', line)
@@ -1831,7 +1834,6 @@ This function handle a last element of a list or dictionary
                 slicingPattern = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]"
                 tmpList02 = re.findall(slicingPattern, line)
                 line = re.sub(slicingPattern, CNameMangling.SLICEINDEX.value, line)
-                tmpList03 = []
                 indexPattern = r"\[[\s\-\+\d]*\]"
                 indexList = []
                 if re.search(indexPattern, line):
