@@ -1917,7 +1917,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{newLine}\n"
             else:
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
-        lKeyName = re.findall(r'[,\s{]*("[^:,\n]+")\s*:\s*', sJsonDataUpdated)
+        lKeyName = re.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
