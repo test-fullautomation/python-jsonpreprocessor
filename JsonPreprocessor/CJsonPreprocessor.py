@@ -1498,7 +1498,7 @@ to overwrite the value of this parameter."
         if errorMsg!='':
             pass
         elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if not re.match(r'^[\s"]*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
+            if not re.match(r'^\s*"*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
             elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
