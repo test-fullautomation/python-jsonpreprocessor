@@ -1507,8 +1507,7 @@ to overwrite the value of this parameter."
             if not re.match(r'^\s*"*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
             elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a letter, digit or underscore."
+                errorMsg = f"Invalid key name: {sInput}. Key names are limited to letters, digits and the following characters: _ + - * /"
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1529,8 +1528,7 @@ and have to start with a letter, digit or underscore."
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names must not contain these special characters \"{self.specialCharacters}\" \
-and have to start with a letter, digit or underscore."
+                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names are limited to letters, digits and the following characters: _ + - * /"
                             break
                         else:
                             nestedParam = param[0]
