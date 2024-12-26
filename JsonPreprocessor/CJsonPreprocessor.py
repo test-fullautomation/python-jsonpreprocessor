@@ -567,7 +567,13 @@ This method handles nested variables in parameter names or values. Variable synt
                 bList = False
                 if re.match(r"^[\s\-]*\d+$", element):
                     bList = True
-                    sExec = f"{sExec}[{element}]"
+                    tmpExec = sExec
+                    sExec = f"{tmpExec}[{element}]"
+                    try:
+                        exec(sExec)
+                    except:
+                        sExec = f"{tmpExec}['{element}']"
+                        pass
                 elif re.match(r"^'[^']+'$", element.strip()):
                     element = element.strip("'")
                 if not bList:
