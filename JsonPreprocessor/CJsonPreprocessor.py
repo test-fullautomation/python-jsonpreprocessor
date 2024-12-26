@@ -186,7 +186,7 @@ Constructor
         import builtins
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r'!#$%^&()=[]{{}}|;\',?`~'
+        self.specialCharacters = r'!#$%^&()=[]{}|;\',?`~'
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
