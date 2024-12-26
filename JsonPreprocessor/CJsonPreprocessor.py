@@ -392,7 +392,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                             elif bCheck:                                               # handling duplicate keys later
                                 sCheckElement = f"{sCheckElement}(None)"    # Adds "(None)" in case no absolute path is detected in
                             if isinstance(out_dict[key], list):              # a duplicated key.
-                                if CNameMangling.DUPLICATEDKEY_01.value not in out_dict[key][0]:
+                                if CNameMangling.DUPLICATEDKEY_01.value not in str(out_dict[key][0]):
                                     tmpValue = [sCheckElement, out_dict[key], value]
                                     del out_dict[key]
                                 else:
