@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.34.0"
-VERSION_DATE = "18.11.2024"
+VERSION      = "0.35.0"
+VERSION_DATE = "03.01.2025"
 #
 # **************************************************************************************************************
 
@@ -2497,8 +2497,6 @@ class CSnippets():
       listCodeSnippets.append("""{
     "A"         : 1,
     "check01"   : ${A},
-    // Bug: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/357#issuecomment-2435677836
-    // 'The parameter '${0}' is not available!'!
     "0"         : 2,
     "check02"   : ${0},
     "_"         : 3,
@@ -4018,6 +4016,82 @@ class CSnippets():
 
    # --------------------------------------------------------------------------------------------------------------
 
+   def GetAdditionalBrackets(self):
+      """Additional brackets at several positions within a complex data structure
+      """
+
+      sHeadline = "Additional brackets at several positions within a complex data structure"
+
+      # data structure
+      sDataStructure1 = """    "C"  : *01*1,
+    "params" : *02*[
+                  *03*2,
+                  *04*{"A" : 3,
+                   *05*"B" : *06*[
+                            *07*{
+                               *08*"C" : 4,
+                               *09*${params.1.B.0.C*10*} : 10,
+                               *11*"D" : 5,
+                               *12*${params*13*}*14*[1]*15*['B']*16*[0]*17*['D'*18*] : 11,
+                               "E" : *19*["020", *20*{"021" : "022"*21*}*22*],
+                               "F" : *23*{"023" : *24*["024", "025"*25*]*26*}
+                            *27*},
+                            6
+                         *28*]
+                  *29*},
+                  7
+               *30*]
+"""
+
+      sCodeSnippetPattern = """{
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+
+      listExpressions = ["{", "}", "[", "]", "$"]
+
+      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*",
+                          "*11*", "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*",
+                          "*21*", "*22*", "*23*", "*24*", "*25*", "*26*", "*27*", "*28*", "*29*", "*30*"]
+
+      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+
+      listFiller = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""] # as much elements as in listPlaceholders
+
+      # put all things together
+
+      listCodeSnippets = []
+
+      # sDataStructure1
+
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
+            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetAdditionalBrackets(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
    def GetSpecialCharacters(self):
       """Special characters at several positions within a complex data structure
       """
@@ -4586,6 +4660,9 @@ sHeadline, listCodeSnippets = oSnippets.GetKeywords()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetAdditionalBrackets()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetSpecialCharacters()

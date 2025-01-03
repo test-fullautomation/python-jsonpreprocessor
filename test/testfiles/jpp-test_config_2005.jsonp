@@ -13,9 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
-    // 'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'!
-
     "C"  : 1,
     "params" : [
                   2,
