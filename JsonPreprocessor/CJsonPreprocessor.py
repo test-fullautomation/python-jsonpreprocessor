@@ -186,7 +186,7 @@ Constructor
         import builtins
         import keyword
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r'!#$%^&()=[]{}|;\',?`~'
+        self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.masterFile      = None
@@ -1507,7 +1507,11 @@ to overwrite the value of this parameter."
             if not re.match(r'^\s*"*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
                 errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
             elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names are limited to letters, digits and the following characters: _ + - * /"
+                errorMsg = f"Invalid key name: {sInput}. Key names are limited to letters, digits and the following characters: _ + - * / \\ @"
+            elif re.search(r'\s+', sInput.strip()):
+                sInput = sInput.strip('"')
+                if re.search(r'\s+', sInput.strip()):
+                    errorMsg = f"Invalid key name: '{sInput}'. Key names must not contain blanks."
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1528,7 +1532,7 @@ to overwrite the value of this parameter."
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
                             break
                         elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names are limited to letters, digits and the following characters: _ + - * /"
+                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names are limited to letters, digits and the following characters: _ + - * / \\ @"
                             break
                         else:
                             nestedParam = param[0]
@@ -1871,7 +1875,10 @@ This function handle a last element of a list or dictionary
                             tmpList = re.findall(r'"[^"]+"', item)
                             item = re.sub(r'"[^"]+"', CNameMangling.STRINGVALUE.value, item)
                         if re.search(r'[\(\)\!#%\^\&\/\\\=`~\?]+', item):
-                            item = re.sub(r'^\s*(.+)\s*,*', '"\\1"', item)
+                            if re.match(r'^.+,\s*$', item):
+                                item = re.sub(r'^\s*(.+),\s*$', '"\\1",', item)
+                            else:
+                                item = re.sub(r'^\s*(.+)\s*$', '"\\1"', item)
                             bHandle = True
                         if "," in item and not bHandle:
                             if item.count(',')>1 and not re.match(r'^\[|{.+$', item.strip()):
@@ -1925,6 +1932,10 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
         lKeyName = re.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
+            if re.match(r'^"\s+.+"$|^".+\s+"$', key):
+                newKey = '"' + key.strip('"').strip() + '"'
+                sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
+                key = newKey
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
             keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
