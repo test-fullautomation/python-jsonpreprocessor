@@ -312,27 +312,27 @@ Expectation: All names are accepted (in definition and in reference)
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0450 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (1)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0451 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (2)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0452 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (3)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0453 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (4)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0454 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (5)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0455 / NAMING_CONVENTION / BADCASE
 Description: JSON file with several invalid parameter names (6)
-Expectation: All names are accepted (in definition and in reference)
+Expectation: Expected: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
 Test JPP_0500 / COMPOSITE_EXPRESSIONS / GOODCASE
 Description: JSON file with composite data structure (nested lists and dictionaries 1)
@@ -868,5 +868,5 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 03.01.2025 - 16:19:20
+Generated: 09.01.2025 - 18:56:30
 

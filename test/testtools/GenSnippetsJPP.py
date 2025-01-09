@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.35.0"
-VERSION_DATE = "03.01.2025"
+VERSION      = "0.37.0"
+VERSION_DATE = "09.01.2025"
 #
 # **************************************************************************************************************
 
@@ -4040,8 +4040,7 @@ class CSnippets():
                          *28*]
                   *29*},
                   7
-               *30*]
-"""
+               *30*]"""
 
       sCodeSnippetPattern = """{
 ####DATASTRUCTURE####
@@ -4053,7 +4052,7 @@ class CSnippets():
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
-      listExpressions = ["{", "}", "[", "]", "$"]
+      listExpressions = ["{", "}", "[", "]", "(", ")", ":", ",", "$", "&", "@", " "]
 
       listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*",
                           "*11*", "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*",
@@ -4254,7 +4253,7 @@ class CSnippets():
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
-      listExpressions = ["+", "-", "*", "/" , "|", "$", "%", "#", "\\", "\\\\", "𠼭", "€", "ß", "{", "}", "[", "]", "'"]
+      listExpressions = ["+", "-", "*", "/" , "|", "$", "%", "#", "\\", "\\\\", "𠼭", "€", "ß", "{", "}", "[", "]", "'", "@", ":", " "]
 
       listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*"]
 
