@@ -1938,7 +1938,7 @@ This function handle a last element of a list or dictionary
                 key = newKey
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
-            keyDecode = bytes(key, 'utf-8').decode('unicode_escape')
+            keyDecode = bytes(key, 'utf-8').decode('utf-8')
             self.__keyNameValidation(keyDecode)
         for param in lNestedParams:
             self.__keyNameValidation(param)
