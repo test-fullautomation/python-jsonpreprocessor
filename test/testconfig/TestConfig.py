@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 26.11.2024
+# 03.01.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -4149,8 +4149,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2004.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4163,8 +4171,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2005.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4177,8 +4193,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2006.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

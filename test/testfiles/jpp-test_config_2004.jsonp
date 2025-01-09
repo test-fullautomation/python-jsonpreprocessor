@@ -13,7 +13,6 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
     "C"  : 1,
     "params" : [
                   2,

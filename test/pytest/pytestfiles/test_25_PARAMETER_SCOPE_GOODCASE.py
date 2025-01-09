@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 06.11.2024 - 18:29:18
+# 03.01.2025 - 16:19:20
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -60,6 +60,30 @@ class Test_PARAMETER_SCOPE_GOODCASE:
    )
    def test_JPP_2003(self, Description):
       nReturn = CExecute.Execute("JPP_2003")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (5)",]
+   )
+   def test_JPP_2004(self, Description):
+      nReturn = CExecute.Execute("JPP_2004")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (6)",]
+   )
+   def test_JPP_2005(self, Description):
+      nReturn = CExecute.Execute("JPP_2005")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected value
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested dictionary, in which a parameter is overwritten (7)",]
+   )
+   def test_JPP_2006(self, Description):
+      nReturn = CExecute.Execute("JPP_2006")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected value

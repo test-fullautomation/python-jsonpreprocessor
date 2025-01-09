@@ -820,6 +820,18 @@ Test JPP_2003 / PARAMETER_SCOPE / GOODCASE
 Description: JSON file with nested dictionary, in which a parameter is overwritten (4)
 Expectation: JsonPreprocessor returns expected value
 ------------------------------------------------------------------------------------------------------------------------
+Test JPP_2004 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (5)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2005 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (6)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2006 / PARAMETER_SCOPE / GOODCASE
+Description: JSON file with nested dictionary, in which a parameter is overwritten (7)
+Expectation: JsonPreprocessor returns expected value
+------------------------------------------------------------------------------------------------------------------------
 Test JPP_2007 / PARAMETER_SCOPE / GOODCASE
 Description: JSON file with nested dictionary, in which a parameter is overwritten (8)
 Expectation: JsonPreprocessor returns expected value
@@ -856,5 +868,5 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 26.11.2024 - 12:36:07
+Generated: 03.01.2025 - 16:19:20
 
