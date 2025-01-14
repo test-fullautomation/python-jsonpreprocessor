@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.35.0"
-VERSION_DATE = "03.01.2025"
+VERSION      = "0.38.0"
+VERSION_DATE = "10.01.2025"
 #
 # **************************************************************************************************************
 
@@ -4022,58 +4022,76 @@ class CSnippets():
 
       sHeadline = "Additional brackets at several positions within a complex data structure"
 
-      # data structure
-      sDataStructure1 = """    "C"  : *01*1,
-    "params" : *02*[
-                  *03*2,
-                  *04*{"A" : 3,
-                   *05*"B" : *06*[
-                            *07*{
-                               *08*"C" : 4,
-                               *09*${params.1.B.0.C*10*} : 10,
-                               *11*"D" : 5,
-                               *12*${params*13*}*14*[1]*15*['B']*16*[0]*17*['D'*18*] : 11,
-                               "E" : *19*["020", *20*{"021" : "022"*21*}*22*],
-                               "F" : *23*{"023" : *24*["024", "025"*25*]*26*}
-                            *27*},
-                            6
-                         *28*]
-                  *29*},
-                  7
-               *30*]
-"""
+      # data structure with placeholders
+      sDataStructurePattern = """    "A" : 1, "B" : 2, "C" : 3, "D" : 4, "E" : 5, "F" : 6, "G" : 7, "H" : 8, "I" : 9, "J" : 10,
+    "params" : #01#[#02#
+                  #03#11#04#,
+                  #05#{#06#"A" : 12,
+                   "B" : #07#[#08#
+                            #09#{#10#
+                               "C" : 13,
+                               #11#$#12#{params}#13#[#14#1#15#]#16#[#17#'B'#18#]#19#[#20#0#21#]#22#[#23#'C'#24#]#25# : 130,
+                               "D" : 14,
+                               #26#$#27#{params.1.B.0.D}#28# : 140,
+                               "E" : 15,
+                               "F" : 16,
+                               "G" : #29#["017", #30#{#31#"018" : "019"#32#}#33#]#34#,
+                               "H" : #35#[#36#{#37#"020" : "021"#38#}#39#, "022"#40#]#41#,
+                               "I" : #42#{#43#"023" : #44#[#45#"024", "025"#46#]#47#}#48#,
+                               "J" : #49#{#50#"026" : #51#[#52#"027", #53#{#54#"028" : #55#[#56#"029", "030"#57#]#58#}#59#]#60#}#61#
+                            },
+                            31
+                         ]
+                  },
+                  32
+               ],
+    ${params}[1]['B'][0]['E'] : 150,
+    ${params.1.B.0.F} : 160,
+    #62#$#63#{params}#64#[#65#1#66#]#67#[#68#'B'#69#]#70#[#71#0#72#]#73#[#74#'J'#75#]#76#[#77#'026'#78#]#79#[#80#1#81#]#82#[#83#'028'#84#]#85#[#86#0#87#]#88# : "0290",
+    ${params.1.B.0.J.026.1.028.1} : "0300" """
 
       sCodeSnippetPattern = """{
 ####DATASTRUCTURE####
 }
 """
 
-      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructurePattern.
       # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
-      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+      # from a list of filler expressions (empty strings here => placeholders are removed) that are only used to complete
+      # the code snippet, but are not in focus.
 
-      listExpressions = ["{", "}", "[", "]", "$"]
+      listExpressions = ["{", "}", "[", "]", "(", ")", "[]", "{}"]
 
-      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*",
-                          "*11*", "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*",
-                          "*21*", "*22*", "*23*", "*24*", "*25*", "*26*", "*27*", "*28*", "*29*", "*30*"]
+      nNrOfPlaceholders = 88
 
-      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+      listPlaceholders = []
+      listFillers      = []
+      for number in range(1, nNrOfPlaceholders+1):
+          value = str(number).rjust(2, "0")
+          listPlaceholders.append(f"#{value}#")
+          listFillers.append("")
 
-      listFiller = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""] # as much elements as in listPlaceholders
+      listPositions = listPlaceholders[:] # to support a nested iterations of the same list (better readibility of code because of different names)
 
       # put all things together
 
       listCodeSnippets = []
 
-      # sDataStructure1
+      # first snippets is without additions (all placeholders removed)
+      sDataStructure = sDataStructurePattern # init a new data structure from pattern sDataStructurePattern
+      sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+      for sPlaceholder in listPlaceholders:
+          sDataStructure = sDataStructure.replace(sPlaceholder, "")
+      sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+      listCodeSnippets.append(sCodeSnippet)
 
+      # following snippets with additions
       for sExpression in listExpressions:
          for sPosition in listPositions:
-            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
-            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
-            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            sDataStructure = sDataStructurePattern # init a new data structure from pattern sDataStructurePattern
+            sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFillers)   # init a new filler object (= content for remaining placeholders)
             for sPlaceholder in listPlaceholders:
                sFiller = oFiller.GetElement()
                if sPosition == sPlaceholder:
@@ -4092,69 +4110,89 @@ class CSnippets():
 
    # --------------------------------------------------------------------------------------------------------------
 
-   def GetSpecialCharacters(self):
-      """Special characters at several positions within a complex data structure
+   def GetAdditionalCharacters(self):
+      """Additional characters at several positions within a complex data structure
       """
 
-      sHeadline = "Special characters at several positions within a complex data structure"
+      sHeadline = "Additional characters at several positions within a complex data structure"
 
-      # data structure 1
-      sDataStructure1 = """   "params" : {*01* : *02*,
-               *03* : [*04*, {*05* : *06*,
-                              *07* : [*08*, [*09*, *10*]],
-                              *11* : [*12*, {*13* : *14*}],
-                              *15* : {*16* : [*17*, *18*]},
-                              *19* : {*20* : {*21* : *22*}}
-                             }
-                       ]
-              }"""
-
-      sDefinitions = """   "indexP" : 0,
-   "keyP"   : "A",
-   "dictP"  : {"A" : 0, "B" : 1},
-   "listP"  : ["A", "B"],
-"""
+      # data structure with placeholders
+      sDataStructurePattern = """    "A" : 1, "B" : 2, "C" : 3, "D" : 4, "E" : 5, "F" : 6, "G" : 7, "H" : 8, "I" : 9, "J" : 10,
+    "params" : #01#[#02#
+                  #03#11#04#,
+                  #05#{#06#"A" #07#: #08#12,
+                   "B" : #09#[#10#
+                            #11#{#12#
+                               "C" : 13,
+                               #13#$#14#{params}#15#[#16#1#17#]#18#[#19#'B'#20#]#21#[#22#0#23#]#24#[#25#'C'#26#]#27# : 130,
+                               "D" : 14,
+                               #28#$#29#{params.1.B.0.D}#30# : #31#140,
+                               "E" : 15,
+                               "F" : 16,
+                               "G" : ["017", {"018" : "019"}],
+                               "H" : [{"020" : "021"}, "022"],
+                               "I" : {"023" : ["024", "025"]},
+                               #32#"J"#33# : #34#{#35#"026" #36#:#37# [#38#"027", #39#{#40#"028" : #41#[#42#"029", #43# "030"#44#]#45#}#46#]#47#}#48#
+                            #49#}#50#,#51#
+                            31
+                         #52#]#53#
+                  },
+                  32
+               ],
+    ${params}[1]['B'][0]['E'] : 150,
+    ${params.1.B.0.F} : 160,
+    #54#${params}#55#[#56#1#57#]#58#[#59#'B'#60#]#61#[#62#0#63#]#64#[#65#'J'#66#]#67#[#68#'026'#69#]#70#[#71#1#72#]#73#[#74#'028'#75#]#76#[#77#0#78#]#79# : "0290",#80#
+    ${params.1.B.0.J.026.1.028.1} : "0300" """
 
       sCodeSnippetPattern = """{
-####DEFINITIONS####
 ####DATASTRUCTURE####
 }
 """
 
-      # We have a list of expressions and we have a list of placeholders like used in sDataStructure1.
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructurePattern.
       # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
-      # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
+      # from a list of filler expressions (empty strings here => placeholders are removed) that are only used to complete
+      # the code snippet, but are not in focus.
 
-      listExpressions = [".", "..", "[]", "[..]", "[.  .]", "{}", "{..}", "{.  .}", "/", "\\", "|", "*", "+", "-", "$", "\"", "'", "#", "\"#\"", ":"]
+      listExpressions = ["+", "-", "*", "/", "_", ".", "..", "$", "'", "\"", "|", ":", "$", "&", "@", "%", "#"]
 
-      listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*", "*07*", "*08*", "*09*", "*10*", "*11*",
-                          "*12*", "*13*", "*14*", "*15*", "*16*", "*17*", "*18*", "*19*", "*20*", "*21*", "*22*"]
+      nNrOfPlaceholders = 80
 
-      listPositions = listPlaceholders[:] # to support a nested iteration of the same list; better readibility of code because of different names
+      listPlaceholders = []
+      listFillers      = []
+      for number in range(1, nNrOfPlaceholders+1):
+          value = str(number).rjust(2, "0")
+          listPlaceholders.append(f"#{value}#")
+          listFillers.append("")
 
-      listFiller = ["001","002","003","004","005","006","007","008","009","010",
-                    "011","012","013","014","015","016","017","018","019","020","021","022"] # as much elements as in listPlaceholders
+      listPositions = listPlaceholders[:] # to support a nested iterations of the same list (better readibility of code because of different names)
 
       # put all things together
 
       listCodeSnippets = []
 
-      # sDataStructure1
+      # first snippets is without additions (all placeholders removed)
+      sDataStructure = sDataStructurePattern # init a new data structure from pattern sDataStructurePattern
+      sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+      for sPlaceholder in listPlaceholders:
+          sDataStructure = sDataStructure.replace(sPlaceholder, "")
+      sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+      listCodeSnippets.append(sCodeSnippet)
 
+      # following snippets with additions
       for sExpression in listExpressions:
          for sPosition in listPositions:
-            sDataStructure = sDataStructure1      # init a new data structure from pattern sDataStructure1
-            sCodeSnippet   = sCodeSnippetPattern  # init a new code snippet from code snippet pattern
-            oFiller = CListElements(listFiller)   # init a new filler object (= content for remaining placeholders)
+            sDataStructure = sDataStructurePattern # init a new data structure from pattern sDataStructurePattern
+            sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFillers)   # init a new filler object (= content for remaining placeholders)
             for sPlaceholder in listPlaceholders:
                sFiller = oFiller.GetElement()
                if sPosition == sPlaceholder:
                   sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
                else:
-                  sDataStructure = sDataStructure.replace(sPlaceholder, f"\"{sFiller}\"")
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
             # eof for sPlaceholder in listPlaceholders:
-            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
             sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
             listCodeSnippets.append(sCodeSnippet)
          # eof for sPosition in listPositions:
@@ -4162,7 +4200,7 @@ class CSnippets():
 
       return sHeadline, listCodeSnippets
 
-   # eof def GetSpecialCharacters(self):
+   # eof def GetAdditionalCharacters(self):
 
    # --------------------------------------------------------------------------------------------------------------
 
@@ -4254,7 +4292,7 @@ class CSnippets():
       # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
-      listExpressions = ["+", "-", "*", "/" , "|", "$", "%", "#", "\\", "\\\\", "𠼭", "€", "ß", "{", "}", "[", "]", "'"]
+      listExpressions = ["+", "-", "*", "/" , "|", "$", "%", "#", "\\", "\\\\", "𠼭", "€", "ß", "{", "}", "[", "]", "'", "@", ":", " "]
 
       listPlaceholders = ["*01*", "*02*", "*03*", "*04*", "*05*", "*06*"]
 
@@ -4665,7 +4703,7 @@ bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 sHeadline, listCodeSnippets = oSnippets.GetAdditionalBrackets()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
-sHeadline, listCodeSnippets = oSnippets.GetSpecialCharacters()
+sHeadline, listCodeSnippets = oSnippets.GetAdditionalCharacters()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetSlicing()

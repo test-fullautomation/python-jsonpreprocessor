@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 09.01.2025 - 18:56:30
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ from pytestlibs.CExecute import CExecute
 class Test_NAMING_CONVENTION_BADCASE:
 
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (1)",]
    )
@@ -38,7 +38,7 @@ class Test_NAMING_CONVENTION_BADCASE:
       nReturn = CExecute.Execute("JPP_0450")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (2)",]
    )
@@ -46,7 +46,7 @@ class Test_NAMING_CONVENTION_BADCASE:
       nReturn = CExecute.Execute("JPP_0451")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (3)",]
    )
@@ -54,7 +54,7 @@ class Test_NAMING_CONVENTION_BADCASE:
       nReturn = CExecute.Execute("JPP_0452")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (4)",]
    )
@@ -62,7 +62,7 @@ class Test_NAMING_CONVENTION_BADCASE:
       nReturn = CExecute.Execute("JPP_0453")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (5)",]
    )
@@ -70,7 +70,7 @@ class Test_NAMING_CONVENTION_BADCASE:
       nReturn = CExecute.Execute("JPP_0454")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
-   # Expected: All names are accepted (in definition and in reference)
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(
       "Description", ["JSON file with several invalid parameter names (6)",]
    )
