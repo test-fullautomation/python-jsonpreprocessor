@@ -13,8 +13,8 @@
 //  limitations under the License.
 
 {
-    ${utf8}['Tiếng Đức']: "This is German",
-    ${utf8}['Tiếng Việt']: 84,
+    ${utf8}['Tiếng_Đức']: "This is German",
+    ${utf8}['Tiếng_Việt']: 84,
     ${utf8}['日本']: 1.987,
     ${utf8}['हिंदी']: "${utf8}['แบบไทย']",
     ${utf8}['한국인']: "${version}['patchversion']"

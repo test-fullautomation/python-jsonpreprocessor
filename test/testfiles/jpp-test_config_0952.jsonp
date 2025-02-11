@@ -13,7 +13,7 @@
 //  limitations under the License.
 //**************************************************************************
 {
-   "I am" : "syntax error"
-   "I am" : "syntax error"
-   "I am" : "syntax error"
+   "line_1" : "missing comma at end of line 1"
+   "line_2" : "missing comma at end of line 2"
+   "line_3" : "line 3"
 }

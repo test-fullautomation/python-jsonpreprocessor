@@ -16,8 +16,8 @@
 {
     "Project": "JsonPreprocessor",
     "utf8": {
-        "Tiếng Đức": "Dies ist der UTF-8 SälfTest",
-        "Tiếng Việt": "Đây là bản tự kiểm tra UTF-8",
+        "Tiếng_Đức": "Dies ist der UTF-8 SälfTest",
+        "Tiếng_Việt": "Đây là bản tự kiểm tra UTF-8",
         "日本": "これは UTF-8 セルフテストです",
         "हिंदी": "यह UTF-8 सेल्फ़टेस्ट है",
         "แบบไทย": "นี่คือการทดสอบตัวเอง UTF-8",

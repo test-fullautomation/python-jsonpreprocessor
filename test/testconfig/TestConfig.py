@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 26.11.2024
+# 09.01.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1618,6 +1618,9 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/406
+# 'invalid group reference 5 at position 9'!
+# partially commented out
 dictUsecase['TESTID']            = "JPP_0400"
 dictUsecase['DESCRIPTION']       = "JSON file with several parameter names w.r.t. the naming convention"
 dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
@@ -1628,81 +1631,116 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0400.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (55/1) > {A} [INT]  :  1
-[DOTDICT] (55/2) > {check01} [INT]  :  1
-[DOTDICT] (55/3) > {_} [INT]  :  3
-[DOTDICT] (55/4) > {check03} [INT]  :  3
-[DOTDICT] (55/5) > {Ax} [INT]  :  4
-[DOTDICT] (55/6) > {check04} [INT]  :  4
-[DOTDICT] (55/7) > {0x} [INT]  :  5
-[DOTDICT] (55/8) > {check05} [INT]  :  5
-[DOTDICT] (55/9) > {_x} [INT]  :  6
-[DOTDICT] (55/10) > {check06} [INT]  :  6
-[DOTDICT] (55/11) > {param+1} [INT]  :  7
-[DOTDICT] (55/12) > {check07} [INT]  :  7
-[DOTDICT] (55/13) > {param-2} [INT]  :  8
-[DOTDICT] (55/14) > {check08} [INT]  :  8
-[DOTDICT] (55/15) > {param*3} [INT]  :  9
-[DOTDICT] (55/16) > {check09} [INT]  :  9
-[DOTDICT] (55/17) > {param/4} [INT]  :  10
-[DOTDICT] (55/18) > {p01} [DOTDICT] (1/1) > {A} [INT]  :  7
-[DOTDICT] (55/19) > {check11} [INT]  :  7
-[DOTDICT] (55/20) > {p02} [DOTDICT] (1/1) > {0} [INT]  :  8
-[DOTDICT] (55/21) > {check12} [INT]  :  8
-[DOTDICT] (55/22) > {p03} [DOTDICT] (1/1) > {_} [INT]  :  9
-[DOTDICT] (55/23) > {check13} [INT]  :  9
-[DOTDICT] (55/24) > {p04} [DOTDICT] (1/1) > {Ax} [INT]  :  10
-[DOTDICT] (55/25) > {check14} [INT]  :  10
-[DOTDICT] (55/26) > {p05} [DOTDICT] (1/1) > {0x} [INT]  :  11
-[DOTDICT] (55/27) > {check15} [INT]  :  11
-[DOTDICT] (55/28) > {p06} [DOTDICT] (1/1) > {_x} [INT]  :  12
-[DOTDICT] (55/29) > {check16} [INT]  :  12
-[DOTDICT] (55/30) > {p07} [DOTDICT] (1/1) > {param+1} [INT]  :  13
-[DOTDICT] (55/31) > {check17} [INT]  :  13
-[DOTDICT] (55/32) > {p08} [DOTDICT] (1/1) > {param-2} [INT]  :  14
-[DOTDICT] (55/33) > {check18} [INT]  :  14
-[DOTDICT] (55/34) > {p09} [DOTDICT] (1/1) > {param*3} [INT]  :  15
-[DOTDICT] (55/35) > {check19} [INT]  :  15
-[DOTDICT] (55/36) > {p10} [DOTDICT] (1/1) > {param/4} [INT]  :  16
-[DOTDICT] (55/37) > {p11} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/37) > {p11} [LIST] (3/2) > [DOTDICT] (1/1) > {A} [INT]  :  17
-[DOTDICT] (55/37) > {p11} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/38) > {check21} [INT]  :  17
-[DOTDICT] (55/39) > {p12} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/39) > {p12} [LIST] (3/2) > [DOTDICT] (1/1) > {0} [INT]  :  18
-[DOTDICT] (55/39) > {p12} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/40) > {check22} [INT]  :  18
-[DOTDICT] (55/41) > {p13} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/41) > {p13} [LIST] (3/2) > [DOTDICT] (1/1) > {_} [INT]  :  19
-[DOTDICT] (55/41) > {p13} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/42) > {check23} [INT]  :  19
-[DOTDICT] (55/43) > {p14} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/43) > {p14} [LIST] (3/2) > [DOTDICT] (1/1) > {Ax} [INT]  :  20
-[DOTDICT] (55/43) > {p14} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/44) > {check24} [INT]  :  20
-[DOTDICT] (55/45) > {p15} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/45) > {p15} [LIST] (3/2) > [DOTDICT] (1/1) > {0x} [INT]  :  21
-[DOTDICT] (55/45) > {p15} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/46) > {check25} [INT]  :  21
-[DOTDICT] (55/47) > {p16} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/47) > {p16} [LIST] (3/2) > [DOTDICT] (1/1) > {_x} [INT]  :  22
-[DOTDICT] (55/47) > {p16} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/48) > {check26} [INT]  :  22
-[DOTDICT] (55/49) > {p17} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/49) > {p17} [LIST] (3/2) > [DOTDICT] (1/1) > {param+1} [INT]  :  23
-[DOTDICT] (55/49) > {p17} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/50) > {check27} [INT]  :  23
-[DOTDICT] (55/51) > {p18} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/51) > {p18} [LIST] (3/2) > [DOTDICT] (1/1) > {param-2} [INT]  :  24
-[DOTDICT] (55/51) > {p18} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/52) > {check28} [INT]  :  24
-[DOTDICT] (55/53) > {p19} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/53) > {p19} [LIST] (3/2) > [DOTDICT] (1/1) > {param*3} [INT]  :  25
-[DOTDICT] (55/53) > {p19} [LIST] (3/3) > [INT]  :  2
-[DOTDICT] (55/54) > {check29} [INT]  :  25
-[DOTDICT] (55/55) > {p20} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (55/55) > {p20} [LIST] (3/2) > [DOTDICT] (1/1) > {param/4} [INT]  :  26
-[DOTDICT] (55/55) > {p20} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/1) > {A} [INT]  :  1
+[DOTDICT] (86/2) > {check01} [INT]  :  1
+[DOTDICT] (86/3) > {0} [INT]  :  2
+[DOTDICT] (86/4) > {check02} [INT]  :  2
+[DOTDICT] (86/5) > {_} [INT]  :  3
+[DOTDICT] (86/6) > {check03} [INT]  :  3
+[DOTDICT] (86/7) > {Ax} [INT]  :  4
+[DOTDICT] (86/8) > {check04} [INT]  :  4
+[DOTDICT] (86/9) > {0x} [INT]  :  5
+[DOTDICT] (86/10) > {check05} [INT]  :  5
+[DOTDICT] (86/11) > {_x} [INT]  :  6
+[DOTDICT] (86/12) > {check06} [INT]  :  6
+[DOTDICT] (86/13) > {param+1} [INT]  :  7
+[DOTDICT] (86/14) > {check07} [INT]  :  7
+[DOTDICT] (86/15) > {param-2} [INT]  :  8
+[DOTDICT] (86/16) > {check08} [INT]  :  8
+[DOTDICT] (86/17) > {param*3} [INT]  :  9
+[DOTDICT] (86/18) > {check09} [INT]  :  9
+[DOTDICT] (86/19) > {param/4} [INT]  :  10
+[DOTDICT] (86/20) > {check10} [INT]  :  10
+[DOTDICT] (86/21) > {p01} [DOTDICT] (1/1) > {A} [INT]  :  7
+[DOTDICT] (86/22) > {check11} [INT]  :  7
+[DOTDICT] (86/23) > {check12} [INT]  :  7
+[DOTDICT] (86/24) > {p02} [DOTDICT] (1/1) > {0} [INT]  :  8
+[DOTDICT] (86/25) > {check13} [INT]  :  8
+[DOTDICT] (86/26) > {check14} [INT]  :  8
+[DOTDICT] (86/27) > {p03} [DOTDICT] (1/1) > {_} [INT]  :  9
+[DOTDICT] (86/28) > {check15} [INT]  :  9
+[DOTDICT] (86/29) > {check16} [INT]  :  9
+[DOTDICT] (86/30) > {p04} [DOTDICT] (1/1) > {Ax} [INT]  :  10
+[DOTDICT] (86/31) > {check17} [INT]  :  10
+[DOTDICT] (86/32) > {check18} [INT]  :  10
+[DOTDICT] (86/33) > {p05} [DOTDICT] (1/1) > {0x} [INT]  :  11
+[DOTDICT] (86/34) > {check19} [INT]  :  11
+[DOTDICT] (86/35) > {check20} [INT]  :  11
+[DOTDICT] (86/36) > {p06} [DOTDICT] (1/1) > {_x} [INT]  :  12
+[DOTDICT] (86/37) > {check21} [INT]  :  12
+[DOTDICT] (86/38) > {check22} [INT]  :  12
+[DOTDICT] (86/39) > {p07} [DOTDICT] (1/1) > {param+1} [INT]  :  13
+[DOTDICT] (86/40) > {check23} [INT]  :  13
+[DOTDICT] (86/41) > {check24} [INT]  :  13
+[DOTDICT] (86/42) > {p08} [DOTDICT] (1/1) > {param-2} [INT]  :  14
+[DOTDICT] (86/43) > {check25} [INT]  :  14
+[DOTDICT] (86/44) > {check26} [INT]  :  14
+[DOTDICT] (86/45) > {p09} [DOTDICT] (1/1) > {param*3} [INT]  :  15
+[DOTDICT] (86/46) > {check27} [INT]  :  15
+[DOTDICT] (86/47) > {check28} [INT]  :  15
+[DOTDICT] (86/48) > {p10} [DOTDICT] (1/1) > {param/4} [INT]  :  16
+[DOTDICT] (86/49) > {check29} [INT]  :  16
+[DOTDICT] (86/50) > {check30} [INT]  :  16
+[DOTDICT] (86/51) > {p11} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/51) > {p11} [LIST] (3/2) > [DOTDICT] (1/1) > {A} [INT]  :  17
+[DOTDICT] (86/51) > {p11} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/52) > {check31} [INT]  :  17
+[DOTDICT] (86/53) > {check32} [INT]  :  17
+[DOTDICT] (86/54) > {p12} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/54) > {p12} [LIST] (3/2) > [DOTDICT] (1/1) > {0} [INT]  :  18
+[DOTDICT] (86/54) > {p12} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/55) > {check33} [INT]  :  18
+[DOTDICT] (86/56) > {check34} [INT]  :  18
+[DOTDICT] (86/57) > {p13} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/57) > {p13} [LIST] (3/2) > [DOTDICT] (1/1) > {_} [INT]  :  19
+[DOTDICT] (86/57) > {p13} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/58) > {check35} [INT]  :  19
+[DOTDICT] (86/59) > {check36} [INT]  :  19
+[DOTDICT] (86/60) > {p14} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/60) > {p14} [LIST] (3/2) > [DOTDICT] (1/1) > {Ax} [INT]  :  20
+[DOTDICT] (86/60) > {p14} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/61) > {check37} [INT]  :  20
+[DOTDICT] (86/62) > {check38} [INT]  :  20
+[DOTDICT] (86/63) > {p15} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/63) > {p15} [LIST] (3/2) > [DOTDICT] (1/1) > {0x} [INT]  :  21
+[DOTDICT] (86/63) > {p15} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/64) > {check39} [INT]  :  21
+[DOTDICT] (86/65) > {check40} [INT]  :  21
+[DOTDICT] (86/66) > {p16} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/66) > {p16} [LIST] (3/2) > [DOTDICT] (1/1) > {_x} [INT]  :  22
+[DOTDICT] (86/66) > {p16} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/67) > {check41} [INT]  :  22
+[DOTDICT] (86/68) > {check42} [INT]  :  22
+[DOTDICT] (86/69) > {p+17} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/69) > {p+17} [LIST] (3/2) > [DOTDICT] (1/1) > {param+1} [INT]  :  23
+[DOTDICT] (86/69) > {p+17} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/70) > {check43} [INT]  :  23
+[DOTDICT] (86/71) > {check44} [INT]  :  23
+[DOTDICT] (86/72) > {p-18} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/72) > {p-18} [LIST] (3/2) > [DOTDICT] (1/1) > {param-2} [INT]  :  24
+[DOTDICT] (86/72) > {p-18} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/73) > {check45} [INT]  :  24
+[DOTDICT] (86/74) > {check46} [INT]  :  24
+[DOTDICT] (86/75) > {p*19} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/75) > {p*19} [LIST] (3/2) > [DOTDICT] (1/1) > {param*3} [INT]  :  25
+[DOTDICT] (86/75) > {p*19} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/76) > {check47} [INT]  :  25
+[DOTDICT] (86/77) > {check48} [INT]  :  25
+[DOTDICT] (86/78) > {p/20} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/78) > {p/20} [LIST] (3/2) > [DOTDICT] (1/1) > {param/4} [INT]  :  26
+[DOTDICT] (86/78) > {p/20} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/79) > {check49} [INT]  :  26
+[DOTDICT] (86/80) > {check50} [INT]  :  26
+[DOTDICT] (86/81) > {p@22} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/81) > {p@22} [LIST] (3/2) > [DOTDICT] (1/1) > {param@6} [INT]  :  28
+[DOTDICT] (86/81) > {p@22} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/82) > {check53} [INT]  :  28
+[DOTDICT] (86/83) > {check54} [INT]  :  28
+[DOTDICT] (86/84) > {p23} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (86/84) > {p23} [LIST] (3/2) > [DOTDICT] (1/1) > {param7} [INT]  :  28
+[DOTDICT] (86/84) > {p23} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (86/85) > {check55} [INT]  :  28
+[DOTDICT] (86/86) > {check56} [INT]  :  28
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1726,7 +1764,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0450"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (1)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1740,7 +1778,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0451"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (2)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1754,7 +1792,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0452"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (3)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1768,7 +1806,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0453"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (4)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1782,7 +1820,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0454"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (5)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1796,7 +1834,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0455"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (6)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1810,7 +1848,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0456"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (7)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1824,7 +1862,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0457"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (8)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1838,7 +1876,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0458"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (9)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1852,7 +1890,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0459"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (10)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1866,7 +1904,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0460"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (11)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1880,7 +1918,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0461"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (12)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1894,7 +1932,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0462"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (13)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1908,7 +1946,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0463"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (14)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1922,7 +1960,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0464"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (15)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1936,7 +1974,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0465"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (16)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -1950,7 +1988,7 @@ del dictUsecase
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0466"
 dictUsecase['DESCRIPTION']       = "JSON file with several invalid parameter names (17)"
-dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
+dictUsecase['EXPECTATION']       = "Expected: No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
@@ -4116,8 +4154,8 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2002.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
-[DOTDICT] (2/2) > {param} [INT]  :  3
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4133,8 +4171,8 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2003.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (2/1) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  2
-[DOTDICT] (2/2) > {param} [INT]  :  3
+[DOTDICT] (2/1) > {param} [INT]  :  1
+[DOTDICT] (2/2) > {params} [DOTDICT] (1/1) > {001} [DOTDICT] (1/1) > {param} [INT]  :  3
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4149,8 +4187,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2004.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4163,8 +4209,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2005.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4177,8 +4231,16 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2006.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {C} [INT]  :  1
+[DOTDICT] (2/2) > {params} [LIST] (3/1) > [INT]  :  2
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/1) > {A} [INT]  :  3
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/1) > {C} [INT]  :  10
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/1) > [DOTDICT] (2/2) > {D} [INT]  :  5
+[DOTDICT] (2/2) > {params} [LIST] (3/2) > [DOTDICT] (2/2) > {B} [LIST] (2/2) > [INT]  :  6
+[DOTDICT] (2/2) > {params} [LIST] (3/3) > [INT]  :  7
+"""
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

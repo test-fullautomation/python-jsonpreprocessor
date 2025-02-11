@@ -745,7 +745,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (1)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -755,7 +755,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (2)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -765,7 +765,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (3)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -775,7 +775,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (4)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -785,7 +785,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (5)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -795,7 +795,7 @@ Test Use Cases
 
    **JSON file with several invalid parameter names (6)**
 
-   Expected: All names are accepted (in definition and in reference)
+   Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
@@ -2005,6 +2005,36 @@ Test Use Cases
 
 ----
 
+* **Test JPP_2004**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (5)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2005**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (6)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
+* **Test JPP_2006**
+
+  [PARAMETER_SCOPE / GOODCASE]
+
+   **JSON file with nested dictionary, in which a parameter is overwritten (7)**
+
+   Expected: JsonPreprocessor returns expected value
+
+----
+
 * **Test JPP_2007**
 
   [PARAMETER_SCOPE / GOODCASE]
@@ -2095,5 +2125,5 @@ Test Use Cases
 
 ----
 
-Generated: 26.11.2024 - 12:36:07
+Generated: 09.01.2025 - 18:56:30
 
