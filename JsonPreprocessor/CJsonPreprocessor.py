@@ -143,6 +143,21 @@ Extends the JSON syntax by the Python keywords ``True``, ``False`` and ``None``.
         finally:
             self.memo.clear()
 
+class CKeyChecker():
+    """
+CkeyChecker checks key names format based on a rule defined by user.
+    """
+    def __init__(self, keyPattern):
+        self.keyPattern = keyPattern
+        self.errorMsg   = ''
+
+    def keyNameChecker(self, sKeyName: str):
+        if re.match(self.keyPattern, sKeyName):
+            return True
+        else:
+            self.errorMsg = f"Error: Key name '{sKeyName}' is invalid. Expected format: '{self.keyPattern}'"
+            return False
+
 class CJsonPreprocessor():
     """
 CJsonPreprocessor extends the JSON syntax by the following features:
@@ -165,7 +180,7 @@ Returns the version date of JsonPreprocessor as string.
         """
         return VERSION_DATE
 
-    def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}) -> None:
+    def __init__(self, syntax: CSyntaxType = CSyntaxType.python , currentCfg : dict = {}, keyPattern = r'.+') -> None:
         """
 Constructor
 
@@ -185,6 +200,7 @@ Constructor
         """
         import builtins
         import keyword
+        self.keyPattern = keyPattern
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
         self.lDataTypes.append(keyword.kwlist)
@@ -278,7 +294,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                 keyInDotFormat = key
                 key = self.__handleDotInNestedParam(keyInDotFormat)
                 self.dKeyDDictCoverted.update({key : keyInDotFormat})
-            if re.match('^\s*\[\s*import\s*\]\s*', key.lower()):
+            if re.match(r'^\s*\[\s*import\s*\](\s|_\d+)*$', key.lower()):
                 if not isinstance(value, str):
                     typeValue = re.search(r"^<class\s*('.+')>$", str(type(value)))
                     typeValue = typeValue[1] if typeValue is not None else type(value)
@@ -1144,6 +1160,8 @@ This method replaces all nested parameters in key and value of a JSON object .
                     del oJson[k]
                     k = re.sub(rf"{CNameMangling.DUPLICATEDKEY_01.value}\d+$", "", k)
             if CNameMangling.STRINGCONVERT.value in k:
+                if '\\' in k:
+                    k = repr(k).strip("'")
                 bStrConvert = True
                 del oJson[k]
                 keyNested = k.replace(CNameMangling.STRINGCONVERT.value, '')
@@ -1156,6 +1174,8 @@ This method replaces all nested parameters in key and value of a JSON object .
                         self.__reset()
                         raise Exception(f"Invalid expression found: '{self.__removeTokenStr(keyNested)}'.")
             elif re.match(rf"^\s*{pattern}\s*$", k, re.UNICODE):
+                if '\\' in k:
+                    k = repr(k).strip("'")
                 bCheckDynamicKey = False
                 keyNested = k
                 if k.count("${")>1 and re.match(rf'^\s*"*\s*{pattern}\s*"*\s*$', k, re.UNICODE):
@@ -1239,6 +1259,8 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                 v = __handleList(v, bNested, parentParams)
             elif isinstance(v, str) and self.__checkNestedParam(v):
                 if re.search(pattern, v, re.UNICODE):
+                    if '\\' in v:
+                        v = repr(v).strip("'")
                     bNested = True
                     initValue = v
                     while isinstance(v, str) and "${" in v:
@@ -1487,7 +1509,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                 return True
             except UnicodeEncodeError:
                 return False
-
+        oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
         if CNameMangling.STRINGCONVERT.value in sInput:
             if re.search(r'\[\s*"\s*\${[^"]+"\s*\]', sInput):
@@ -1499,19 +1521,13 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                 errorMsg = f"Invalid key name {sInput}. Please use the syntax {sInputSuggestion1} or {sInputSuggestion2} \
 to overwrite the value of this parameter."
             else:
-                errorMsg = f"A substitution in key names is not allowed! Please update the key name {self.__removeTokenStr(sInput)}"
+                errorMsg = f"A substitution in key names is not allowed! Please update the key name \"{self.__removeTokenStr(sInput)}\""
         sInput = self.__removeTokenStr(sInput)
         if errorMsg!='':
             pass
-        elif '${' not in sInput and not re.match(r'^\s*"\[\s*import\s*\]"\s*$', sInput.lower()):
-            if not re.match(r'^\s*"*[a-zA-Z0-9_]+.*$', sInput) and __isAscii(sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
-            elif re.search(rf'[{re.escape(self.specialCharacters)}]', sInput):
-                errorMsg = f"Invalid key name: {sInput}. Key names are limited to letters, digits and the following characters: _ + - * / \\ @"
-            elif re.search(r'\s+', sInput.strip()):
-                sInput = sInput.strip('"')
-                if re.search(r'\s+', sInput.strip()):
-                    errorMsg = f"Invalid key name: '{sInput}'. Key names must not contain blanks."
+        elif '${' not in sInput and not re.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()):
+            if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
+                errorMsg = oKeyChecker.errorMsg
         elif re.search(r'\${[^}]*}', sInput):
             if re.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1525,14 +1541,11 @@ to overwrite the value of this parameter."
                         if param[1].strip() == '':
                             errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
                             break
-                        elif not re.match(r'^[a-zA-Z0-9_]+.*$', param[1].strip()) and __isAscii(param[1].strip()):
-                            errorMsg = f"Invalid key name: {sInput}. Key names have to start with a letter, digit or underscore."
+                        elif not oKeyChecker.keyNameChecker(param[1].strip()) and __isAscii(param[1].strip()):
+                            errorMsg = oKeyChecker.errorMsg
                             break
                         elif re.search(r'^.+\[.+\]$', param[1].strip()):
                             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
-                            break
-                        elif re.search(rf'[{re.escape(self.specialCharacters)}]', param[1]):
-                            errorMsg = f"Invalid key name: '{param[1]}' in {sInput}. Key names are limited to letters, digits and the following characters: _ + - * / \\ @"
                             break
                         else:
                             nestedParam = param[0]
@@ -1594,7 +1607,7 @@ Checks and handle dynamic path of imported file.
             self.__reset()
             raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
-        importPattern = r'([\'|"]\s*\[\s*import\s*\]_*\d*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
+        importPattern = rf'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = json.dumps(self.jsonCheck)
         lImport = re.findall(importPattern, sJson)
         if len(lImport)==0:
@@ -1939,7 +1952,7 @@ This function handle a last element of a list or dictionary
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
             keyDecode = bytes(key, 'utf-8').decode('utf-8')
-            self.__keyNameValidation(keyDecode)
+            self.__keyNameValidation(keyDecode.strip('"'))
         for param in lNestedParams:
             self.__keyNameValidation(param)
         CJSONDecoder = None
