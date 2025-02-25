@@ -581,7 +581,7 @@ This method handles nested variables in parameter names or values. Variable synt
             oTmpObj = self.JPGlobals
             for element in lElements:
                 bList = False
-                if re.match(r"^[\s\-]*\d+$", element):
+                if re.match(r"^[\s\-\+]*\d+$", element):
                     bList = True
                     tmpExec = sExec
                     sExec = f"{tmpExec}[{element}]"
