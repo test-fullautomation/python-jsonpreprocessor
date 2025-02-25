@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 09.01.2025
+# 25.02.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -915,7 +915,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0255.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -929,7 +929,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0256.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_B' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -943,7 +943,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0257.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -957,7 +957,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0258.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value 'A_${testdict}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value 'A_${testdict}_B' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -971,7 +971,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0259.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_${testdict}_B' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value 'A_${testlist}_${testdict}_B' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -985,7 +985,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0260.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -999,7 +999,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0261.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1013,7 +1013,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0262.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testlist}' inside the string value '${testlist}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1027,7 +1027,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0263.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not supported! Composite data types like lists and dictionaries cannot be substituted inside strings."
+dictUsecase['EXPECTEDEXCEPTION'] = "The substitution of parameter '${testdict}' inside the string value '${testdict}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -1772,7 +1772,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1786,7 +1786,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0451.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1800,7 +1800,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0452.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1814,7 +1814,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0453.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1828,7 +1828,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0454.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1842,7 +1842,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0455.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3266,7 +3266,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1158.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid key name: \"[import]__\". Key names have to start with a letter, digit or underscore."
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -3281,7 +3281,7 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1159.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Invalid key name: \"__[import]\"" # remaining parts of the error message needs to be reworked and added here
 dictUsecase['EXPECTEDRETURN']    = None
-listofdictUsecases.append(dictUsecase)
+# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4393,4 +4393,3 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-
