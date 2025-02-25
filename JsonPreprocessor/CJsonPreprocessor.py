@@ -668,8 +668,7 @@ Reason: Key error {error}"
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
                     raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot \
-be substituted inside strings.")
+value '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings.")
                 while var[0] in sInputStr:
                     sLoopCheck1 = sInputStr
                     varPattern = re.escape(var[0])
@@ -679,7 +678,7 @@ be substituted inside strings.")
                                 self.__reset()
                                 sVar = self.__removeTokenStr(sVar)
                                 raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside \
-the expression '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot be substituted as strings.")
+the expression '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted as strings.")
                             sInputStr = re.sub(rf"\[\s*'\s*{varPattern}\s*'\s*\]", f"['{tmpValue}']", sInputStr)
                         elif isinstance(tmpValue, str):
                             sInputStr = re.sub(rf"\[['\s]*{varPattern}['\s]*\]", f"['{tmpValue}']", sInputStr)
@@ -771,8 +770,7 @@ the expression '{sNestedParam}' is not supported! Composite data types like list
                 self.__reset()
                 sVar = self.__removeTokenStr(sVar)
                 raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
-value '{sNestedParam}' is not supported! Composite data types like lists and dictionaries cannot \
-be substituted inside strings.")
+value '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings.")
             if re.match(rf"^\s*{tmpPattern}\s*$", sInputStr, re.UNICODE) and not bKey:
                 return tmpValue
             else:
