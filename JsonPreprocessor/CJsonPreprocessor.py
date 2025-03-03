@@ -203,8 +203,10 @@ Constructor
         if not isinstance(keyPattern, str):
             keyPatternType = re.search(r"('.+')>\s*$", str(type(keyPattern)))[1]
             raise Exception(f"The key pattern must be 'str' but received {keyPatternType}!")
-        elif re.match(r'^\s+$', keyPattern) or keyPattern=='' or keyPattern=='.*':
+        elif keyPattern=='' or keyPattern=='.*':
             raise Exception(f"The key pattern '{keyPattern}' allows key names that are empty or contains only whitespace!")
+        elif re.match(r'^\s+$', keyPattern):
+            raise Exception(f"The key pattern '{keyPattern}' just allows a key name that contains only whitespace!")
         else:
             self.keyPattern = keyPattern
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
