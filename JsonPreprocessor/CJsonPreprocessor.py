@@ -1900,12 +1900,14 @@ This function handle a last element of a list or dictionary
                                 item = re.sub(r'^\s*(.+)\s*$', '"\\1"', item)
                             bHandle = True
                         if "," in item and not bHandle:
-                            if item.count(',')>1 and not re.match(r'^\[|{.+$', item.strip()):
-                                tmpPattern1 = re.escape(preItem)
-                                tmpPattern2 = re.escape(curItem)
-                                if re.search(rf'{tmpPattern1}\s*:\s*{tmpPattern2}', curLine):
-                                    item = re.sub(r'^\s*(.+)\s*', '"\\1"', item)
-                                    bHandle = True
+                            if item.count(',')>1:
+                                if not (re.match(r'^\[|{.+$', item.strip()) or \
+                                        item.count('${')!=item.count('}') or item.count('[')!=item.count(']')):
+                                    tmpPattern1 = re.escape(preItem)
+                                    tmpPattern2 = re.escape(curItem)
+                                    if re.search(rf'{tmpPattern1}\s*:\s*{tmpPattern2}', curLine):
+                                        item = re.sub(r'^\s*(.+)\s*', '"\\1"', item)
+                                        bHandle = True
                             if not bHandle:
                                 subItems = item.split(',')
                                 iSubItems = len(subItems) -1 if subItems[-1]=='' else len(subItems)
