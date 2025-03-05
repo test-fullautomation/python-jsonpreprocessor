@@ -297,6 +297,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         i=1
         sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
         for key, value in input_data:
+            if '${' in key:
+                self.__checkNestedParam(key)
             # Check and convert dotdict in key name
             if re.match(r'^\s*\${[^\.}]+\.[^\.]+.+$', key) and not self.bJSONPreCheck:
                 keyInDotFormat = key
@@ -1780,6 +1782,8 @@ This function checks key names in JSON configuration files.
                     for item in v:
                         if isinstance(item, str) and "${" in item:
                             self.__checkNestedParam(item)
+                        elif isinstance(item, dict):
+                            __checkKeynameFormat(item)
                 elif isinstance(v, dict):
                     __checkKeynameFormat(v)
         
