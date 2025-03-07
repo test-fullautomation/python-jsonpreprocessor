@@ -298,7 +298,7 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
         for key, value in input_data:
             if '${' in key:
-                self.__checkNestedParam(key)
+                self.__checkNestedParam(key, bKey=True)
             # Check and convert dotdict in key name
             if re.match(r'^\s*\${[^\.}]+\.[^\.]+.+$', key) and not self.bJSONPreCheck:
                 keyInDotFormat = key
@@ -1457,6 +1457,19 @@ expression '{self.__removeTokenStr(sInput.strip())}'."
         elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
             if CNameMangling.STRINGCONVERT.value not in sInput:
                 errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"
+        elif re.search(r'\[[^\[]+\]', sInput) and bKey:
+            invalidFormat = []
+            for item in re.findall(r"\[[^\[]+'[^'\[]+'\s*\]", sInput):
+                invalidFormat.append(item)
+            for item in re.findall(r"\[\s*'[^'\[]+'[^\]]+\]", sInput):
+                invalidFormat.append(item)
+            for item in re.findall(r'\[[^\[]+\][^\[]+\[[^\[]+\]', sInput):
+                invalidFormat.append(item)
+            if len(invalidFormat) > 0:
+                errorMsg = 'Invalid syntax! Please check the sub-element syntax of'
+                for item in invalidFormat:
+                    errorMsg = f"{errorMsg} {item},"
+                errorMsg = f"{errorMsg.strip(',')} in the key {sInput}."
         # End checking nested parameter
         if errorMsg is not None:
             self.__reset()
