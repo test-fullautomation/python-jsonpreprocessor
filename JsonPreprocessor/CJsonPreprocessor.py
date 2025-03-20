@@ -152,6 +152,9 @@ CkeyChecker checks key names format based on a rule defined by user.
         self.errorMsg   = ''
 
     def keyNameChecker(self, sKeyName: str):
+        if sKeyName=='' or regex.match(r'^\s+$', sKeyName):
+            self.errorMsg = f"Empty key name detected. Please enter a valid name."
+            return False
         if regex.match(self.keyPattern, sKeyName):
             return True
         else:
@@ -1970,7 +1973,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
         lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
-            if regex.match(r'^"\s+.+"$|^".+\s+"$', key):
+            if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
