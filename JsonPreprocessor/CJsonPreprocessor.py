@@ -1687,7 +1687,7 @@ This method is the entry point of JsonPreprocessor.
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
         return self.jsonLoads(sJsonData)
 
-    def jsonLoads(self, sJsonpContent : str, referenceDir : str = ''):
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = None):
         """
 ``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
 
@@ -1701,7 +1701,7 @@ This method is the entry point of JsonPreprocessor.
 
 * ``referenceDir``
 
-  / *Condition*: optional / *Type*: str /
+  / *Condition*: optional / *Type*: str / *Default*: None /
 
   A reference path for loading imported files.
 
@@ -1827,7 +1827,7 @@ This function handle a last element of a list or dictionary
             raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
-        if referenceDir != '':
+        if referenceDir is not None:
             self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
             if not os.path.exists(self.jsonPath):
                 self.__reset()
