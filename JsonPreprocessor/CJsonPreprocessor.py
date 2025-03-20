@@ -592,6 +592,7 @@ This method handles nested variables in parameter names or values. Variable synt
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
             oTmpObj = self.JPGlobals
+            i=0
             for element in lElements:
                 bList = False
                 if regex.match(r"^[\s\-\+]*\d+$", element):
@@ -601,7 +602,8 @@ This method handles nested variables in parameter names or values. Variable synt
                     try:
                         exec(sExec)
                     except:
-                        sExec = f"{tmpExec}['{element}']"
+                        if i==0: # Handle cases one digit key name
+                            sExec = f"{tmpExec}['{element}']"
                         pass
                 elif regex.match(r"^'[^']+'$", element.strip()):
                     element = element.strip("'")
@@ -620,6 +622,7 @@ This method handles nested variables in parameter names or values. Variable synt
                     if int(element)<len(oTmpObj) and (isinstance(oTmpObj[int(element)], dict) or \
                                                       isinstance(oTmpObj[int(element)], list)):
                         oTmpObj = oTmpObj[int(element)]
+                i+=1
             try:
                 ldict = {}
                 exec(sExec, locals(), ldict)
