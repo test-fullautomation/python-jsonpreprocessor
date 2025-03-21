@@ -934,11 +934,18 @@ This method checks and creates new elements if they are not already existing.
                     if oJson is not None:
                         exec(sExec2)
                 except Exception as error:
+                    if keyNested is not None:
+                        tmpNestedKey = None
+                        for key in self.dKeyDDictCoverted.keys():
+                            if key == self.__removeTokenStr(keyNested):
+                                tmpNestedKey = self.dKeyDDictCoverted[key]
+                        if tmpNestedKey == None:
+                            tmpNestedKey = self.__removeTokenStr(keyNested)
                     if isinstance(error, TypeError): # If Python's type errors occur when executing an expression
                         for eType in self.pythonTypeError:
                             if eType in str(error):
                                 if keyNested is not None:
-                                    errorMsg = f"Could not set parameter '{self.__removeTokenStr(keyNested)}' with value '{value}'! \
+                                    errorMsg = f"Could not set parameter '{tmpNestedKey}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
                                 else:
                                     errorMsg = f"Could not set parameter '{self.__removeTokenStr(sKey)}' with value '{value}'! \
@@ -960,7 +967,7 @@ Reason: {str(error).replace(' or slices', '')}"
                         except Exception as error:
                             self.__reset()
                             if keyNested is not None:
-                                sKey = self.__removeTokenStr(keyNested)
+                                sKey = tmpNestedKey if tmpNestedKey is not None else self.__removeTokenStr(keyNested)
                             errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! Reason: {error}"
                             raise Exception(errorMsg)
             return True
