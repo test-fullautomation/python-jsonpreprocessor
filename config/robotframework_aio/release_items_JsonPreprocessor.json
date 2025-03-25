@@ -188,9 +188,9 @@
 
   The ``keyPattern`` is not set when initialized ``CJsonPreprocessor``, the naming convention check is not acitve.
 
-  | ``json_preprocessor = CJsonPreprocessor(keyPattern=r'^[\\p{L}][\\p{L}0-9]*$')``
+  | ``json_preprocessor = CJsonPreprocessor(keyPattern=r'<defined_pattern>')``
 
-  The ``keyPattern`` is set ``'^[\\p{L}][\\p{L}0-9]*$'`` means key names in the JONP file have to start with characters and following by characters or numbers.
+  The ``keyPattern`` is set ``'<defined_pattern>'`` means key names in the JONP file have to follow the ``'<defined_pattern>'``.
 
 * Replaced ``re`` package by ``regex`` package to handle regular expression.
 
