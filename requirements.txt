@@ -3,3 +3,4 @@ pypandoc
 GenPackageDoc
 PythonExtensionsCollection
 pydotdict
+regex
