@@ -178,25 +178,29 @@
                             ],
                 "0.14.1.;0.15.0." : [
 "
-* Allowed users define a naming convention rule key names within JSONP content processed by the **JsonPreprocessor**
+**Updated naming convention check**
 
-  The input parameter ``keyPattern`` is used to define the key name pattern and the ``keyPattern`` is set by users
+  The **JsonPreprocessor** supports a user-defined convention for key names. This is enforced using a regex pattern
+  passed to the constructor of the **JsonPreprocessor** class.
 
-  **Example:**
+  *Example*
 
-  | ``json_preprocessor = CJsonPreprocessor()``
-
-  The ``keyPattern`` is not set when initialized ``CJsonPreprocessor``, the naming convention check is not acitve.
+  Assuming key names may only contain letters and digits but must start with a letter, then the **JsonPreprocessor**
+  has to be initialized in this way:
 
   | ``json_preprocessor = CJsonPreprocessor(keyPattern=r'^[\\p{L}][\\p{L}0-9]*$')``
 
-  The ``keyPattern`` is set ``'^[\\p{L}][\\p{L}0-9]*$'`` means key names in the JONP file have to start with characters and following by characters or numbers.
+  This feature is an option. If the user does not define the parameter ``keyPattern``, key names can contain any characters (but cannot be empty).
 
-* Replaced ``re`` package by ``regex`` package to handle regular expression.
+  *Example*
 
+  | ``json_preprocessor = CJsonPreprocessor()``
+
+**Maintenance**
+
+* Replaced ``re`` package by ``regex`` package to handle extended regular expressions
 * Improved and aligned error messages
-
-* Added and updated the Selftest according to the changes
+* Added and updated the self test according to the changed features
 "
                 ]            
                 }
