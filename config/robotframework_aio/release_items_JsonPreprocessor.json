@@ -188,7 +188,7 @@
   Assuming key names may only contain letters, digits and underscores, but must start with a letter, then the **JsonPreprocessor**
   has to be initialized in this way:
 
-  | ``json_preprocessor = CJsonPreprocessor(keyPattern=r'^[\\p{L}][\\p{L}0-9_]*$')``
+  | ``json_preprocessor = CJsonPreprocessor(keyPattern=r'^\\p{L}[\\p{L}\\p{Nd}_]*$')``
 
   This feature is an option. If the user does not define the parameter ``keyPattern``, key names can contain any characters (but cannot be empty).
 
