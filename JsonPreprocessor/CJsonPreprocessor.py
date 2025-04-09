@@ -51,6 +51,7 @@ import regex
 import sys
 import copy
 import shlex
+import hashlib
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -71,6 +72,7 @@ class CNameMangling(Enum):
     LISTINDEX        = "__IndexOfList__"
     SLICEINDEX       = "__SlicingIndex__"
     STRINGVALUE      = "__StringValueMake-up__"
+    HANDLEIMPORTED   = "__CheckImportedHandling__"
     DYNAMICIMPORTED  = "__DynamicImportedHandling__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
@@ -161,6 +163,56 @@ CkeyChecker checks key names format based on a rule defined by user.
             self.errorMsg = f"Error: Key name '{sKeyName}' is invalid. Expected format: '{self.keyPattern}'"
             return False
 
+class CTreeNode():
+    """
+The CTreeNode class is a custom tree data structure that allows to create and manage hierarchical data.
+    """
+
+    def __init__(self, value, parent=None):
+        self.value    = value
+        self.parent   = parent
+        self.children = {}    # Dictionary to store children
+
+    def addChild(self, value):
+        """
+Add a child node to the current node.
+
+**Arguments:**
+
+* ``value``
+
+  / *Condition*: required / *Type*: str /
+
+  The value for the new child node.
+
+**Returns:**
+
+  The new or existing child node.
+        """
+        if value in self.children:
+            return self.children[value]
+        childNode = CTreeNode(value, parent=self)
+        self.children[value] = childNode
+        return childNode
+
+    def getPathToRoot(self):
+        """
+Retrieve the path from this node to the root.
+        """
+        path = []
+        current = self
+        while current:
+            path.append(current.value)
+            current = current.parent
+        return path[::-1]
+
+    # def display(self, level=0):
+    #     if self is None:
+    #         pass
+    #     print("  " * level + str(self.value))
+    #     for child in self.children.values():
+    #         child.display(level + 1)
+
 class CJsonPreprocessor():
     """
 CJsonPreprocessor extends the JSON syntax by the following features:
@@ -216,12 +268,14 @@ Constructor
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
+        self.importTree      = None
+        self.currentNode     = None
         self.masterFile      = None
         self.handlingFile    = []
+        self.importCheck     = []
+        self.recursive_level = 0
         self.iDynamicImport  = 0
         self.lDynamicImports = []
-        self.lImportedFiles  = []
-        self.recursive_level = 0
         self.syntax          = syntax
         self.currentCfg      = currentCfg
         self.dUpdatedParams  = {}
@@ -261,12 +315,14 @@ Constructor
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
         self.jsonPath        = None
+        self.importTree      = None
+        self.currentNode     = None
         self.masterFile      = None
         self.handlingFile    = []
+        self.importCheck     = []
+        self.recursive_level = 0
         self.iDynamicImport  = 0
         self.lDynamicImports = []
-        self.lImportedFiles  = []
-        self.recursive_level = 0
         self.dUpdatedParams  = {}
         self.lDotInParamName = []
         self.bJSONPreCheck   = False
@@ -316,7 +372,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     raise Exception(errorMsg)
                 if '${' in value:
                     if not self.bJSONPreCheck: # self.bJSONPreCheck is set True when handling pre-check JSON files by __preCheckJsonFile()
-                        value = self.lDynamicImports.pop(0)
+                        for item in self.lDynamicImports:
+                            if value == next(iter(item)):
+                                value = item[value]
+                                break
                         if '${' in value:
                             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', value)
                             value = self.__removeTokenStr(dynamicImported[2])
@@ -330,28 +389,26 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     else:
                         if regex.match(r'^\[\s*import\s*\]$', key.strip()):
                             self.iDynamicImport +=1
+                            tmpValue = value
                             value = self.jsonPath + CNameMangling.DYNAMICIMPORTED.value + value
                             out_dict[f"{key.strip()}_{self.iDynamicImport}"] = value
-                            self.lDynamicImports.append(value)
+                            self.lDynamicImports.append({tmpValue:value})
                         else:
                             out_dict[key] = value
                 if '${' not in value:
                     if regex.match(r'^\[\s*import\s*\]_\d+$', key):
                         dynamicIpmportIndex = regex.search(r'_(\d+)$', key)[1]
-                        self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
+                        tmpValue = next(iter(self.lDynamicImports[int(dynamicIpmportIndex)-1]))
+                        self.lDynamicImports[int(dynamicIpmportIndex)-1][tmpValue] = value
                     currJsonPath = self.jsonPath
                     abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
-
-                    # Use recursive_level and lImportedFiles to avoid cyclic import
                     self.recursive_level = self.recursive_level + 1     # increase recursive level
-
-                    # length of lImportedFiles should equal to recursive_level
-                    self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile is not None else \
-                                            self.lImportedFiles[:self.recursive_level-1]
-                    if abs_path_file in self.lImportedFiles:
-                        raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
-
+                    importPath = self.currentNode.getPathToRoot() # Get the import path from importTree to check Cyclic import
+                    if abs_path_file in importPath:
+                        raise Exception(f"Cyclic import detection while handling the file '{abs_path_file}'!")
                     oJsonImport = self.jsonLoad(abs_path_file)
+                    if self.currentNode.parent is not None:
+                        self.currentNode = self.currentNode.parent
                     bDynamicImportCheck = False
                     for k, v in oJsonImport.items():
                         if regex.match(r'^\s*\[\s*import\s*\]\s*', k) and '${' in v:
@@ -367,6 +424,8 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     out_dict.update(oJsonImport)
                     if not bDynamicImportCheck:
                         self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                        if len(self.handlingFile) > 1:
+                            self.handlingFile.pop(-1)
             else:
                 if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}\''
@@ -1628,25 +1687,38 @@ Checks and handle dynamic path of imported file.
 
   / *Type*: str /
         '''
+        def hashContent(sInput : str) -> str:
+            return hashlib.sha256(sInput.encode('utf-8')).hexdigest()
+
         try:
             self.jsonCheck = json.loads(sInput, cls=CJSONDecoder, object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
-            if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+            if "Cyclic import detection" in str(error):
+                jsonException = str(error)
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
-                                f"{error}\nNearby: '{failedJsonDoc}'"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
             self.__reset()
             raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
         importPattern = rf'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = json.dumps(self.jsonCheck)
+        # Check cyclic import by comparing the content of the whole JSONP configuration object.
+        if len(self.importCheck)>1:
+            for item in self.importCheck:
+                if item == hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)):
+                    errorMsg = f"Cyclic import detection while handling the file '{self.handlingFile[-1]}'!"
+                    self.__reset()
+                    raise Exception(errorMsg)
+        self.importCheck.append(hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)))
         lImport = regex.findall(importPattern, sJson)
         if len(lImport)==0:
             sInput = sJson
-            return sInput
         else:
             while regex.search(importPattern, sJson):
                 tmpJson = sJson
@@ -1657,7 +1729,7 @@ Checks and handle dynamic path of imported file.
                     break
                 sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
             sInput = sJson
-            return sInput
+        return sInput
 
     def jsonLoad(self, jFile : str):
         """
@@ -1684,6 +1756,12 @@ This method is the entry point of JsonPreprocessor.
         # Identifies the entry level when loading JSONP file in comparison with imported files levels.
         masterFile = True if self.recursive_level==0 else False
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        if self.importTree is None:
+            self.importTree = CTreeNode(jFile)
+            self.currentNode = self.importTree
+        else:
+            self.currentNode.addChild(jFile)
+            self.currentNode = self.currentNode.children[jFile]
         self.handlingFile.append(jFile)
         if masterFile:
             self.masterFile = jFile
@@ -1691,7 +1769,6 @@ This method is the entry point of JsonPreprocessor.
             self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
 
-        self.lImportedFiles.append(jFile)
         self.jsonPath = os.path.dirname(jFile)
         try:
             sJsonData= self.__loadAndRemoveComments(jFile)
@@ -1838,6 +1915,8 @@ This function handle a last element of a list or dictionary
         if not isinstance(sJsonpContent, str):
             self.__reset()
             raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
+        if self.importTree is None:
+            self.importTree = CTreeNode('Root')
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
         if referenceDir is not None:
@@ -2008,7 +2087,9 @@ This function handle a last element of a list or dictionary
             sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             self.iDynamicImport = 0
             self.recursive_level = 0
-            self.lImportedFiles = [] if self.masterFile is None else [self.masterFile]
+            self.handlingFile = [] if self.masterFile is None else [self.masterFile]
+            self.importTree.children = {}
+            self.currentNode = self.importTree
             self.bJSONPreCheck = False
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -2020,15 +2101,17 @@ This function handle a last element of a list or dictionary
         except Exception as error:
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
-            if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+            if "Cyclic import detection" in str(error):
+                jsonException = str(error)
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
-                                f"{error}\nNearby: '{failedJsonDoc}'"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
             if firstLevel:
                 self.__reset()
             raise Exception(jsonException)
-
         self.__checkDotInParamName(oJson)
 
         if firstLevel:
@@ -2043,7 +2126,6 @@ This function handle a last element of a list or dictionary
             __checkKeynameFormat(oJson)
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
-                
             self.__reset()
             __removeDuplicatedKey(oJson)
             oJson = DotDict(oJson)
