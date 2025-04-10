@@ -1917,6 +1917,7 @@ This function handle a last element of a list or dictionary
             raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
         if self.importTree is None:
             self.importTree = CTreeNode('Root')
+            self.currentNode = self.importTree
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
         if referenceDir is not None:
