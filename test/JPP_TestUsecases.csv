@@ -67,12 +67,13 @@ JPP_0369|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' an
 JPP_0370|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 4)
 JPP_0371|VALUE_DETECTION|BADCASE|JSON file with expression starting with '${' and ending with '}', further matching '${' and '}' in between (not all nested) (invalid syntax 5)
 JPP_0400|NAMING_CONVENTION|GOODCASE|JSON file with several parameter names w.r.t. the naming convention
-JPP_0450|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (1)
-JPP_0451|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (2)
-JPP_0452|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (3)
-JPP_0453|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (4)
-JPP_0454|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (5)
-JPP_0455|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (6)
+JPP_0401|NAMING_CONVENTION|GOODCASE|JSON file with several parameter names containing: blank, backslash, Unicode letters and decimal digits
+JPP_0459|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (10)
+JPP_0460|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (11)
+JPP_0461|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (12)
+JPP_0462|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (13)
+JPP_0463|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (14)
+JPP_0464|NAMING_CONVENTION|BADCASE|JSON file with several invalid parameter names (15)
 JPP_0500|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 1)
 JPP_0501|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 2)
 JPP_0502|COMPOSITE_EXPRESSIONS|GOODCASE|JSON file with composite data structure (nested lists and dictionaries 3 / some key names with dots inside)
@@ -138,8 +139,6 @@ JPP_1154|FILE_IMPORTS|BADCASE|JSON file with not existing parameter within dynam
 JPP_1155|FILE_IMPORTS|BADCASE|JSON file with not existing import file
 JPP_1156|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (1)
 JPP_1157|FILE_IMPORTS|BADCASE|JSON file with syntax error in import path (2)
-JPP_1158|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (1)
-JPP_1159|FILE_IMPORTS|BADCASE|JSON file with error in [import] key (2)
 JPP_1160|FILE_IMPORTS|BADCASE|JSON file with error in imported file
 JPP_1161|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (1)
 JPP_1162|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (2)
@@ -199,6 +198,7 @@ JPP_2051|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing s
 JPP_2052|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (3)
 JPP_2053|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (4)
 JPP_2054|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (5)
+JPP_2055|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (6)
 JPP_2056|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (7)
 JPP_2057|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (8)
 JPP_2058|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (9)

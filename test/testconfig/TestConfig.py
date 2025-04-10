@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 25.02.2025
+# 10.04.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1746,8 +1746,10 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
+# parts of jpp-test_config_0401.jsonp commented out because of
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/440
 dictUsecase['TESTID']            = "JPP_0401"
-dictUsecase['DESCRIPTION']       = "JSON file with several parameter names containing: blank, backslash, 4Byte character"
+dictUsecase['DESCRIPTION']       = "JSON file with several parameter names containing: blank, backslash, Unicode letters and decimal digits"
 dictUsecase['EXPECTATION']       = "All names are accepted (in definition and in reference)"
 dictUsecase['SECTION']           = "NAMING_CONVENTION"
 dictUsecase['SUBSECTION']        = "GOODCASE"
@@ -1756,8 +1758,43 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0401.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (27/1) > {param} [INT]  :  1
+[DOTDICT] (27/2) > {p21} [INT]  :  1
+[DOTDICT] (27/3) > {B} [DOTDICT] (1/1) > {param} [INT]  :  1
+[DOTDICT] (27/4) > {p22} [INT]  :  1
+[DOTDICT] (27/5) > {C} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (27/5) > {C} [LIST] (3/2) > [DOTDICT] (1/1) > {param} [INT]  :  1
+[DOTDICT] (27/5) > {C} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (27/6) > {p23} [INT]  :  1
+[DOTDICT] (27/7) > {par\\am} [INT]  :  1
+[DOTDICT] (27/8) > {p24} [INT]  :  1
+[DOTDICT] (27/9) > {path\\to\\file} [STR]  :  'C:\\Users\\Example\\file.txt'
+[DOTDICT] (27/10) > {par𠼭am} [INT]  :  1
+[DOTDICT] (27/11) > {p27} [INT]  :  1
+[DOTDICT] (27/12) > {F} [DOTDICT] (1/1) > {par𠼭am} [INT]  :  1
+[DOTDICT] (27/13) > {p28} [INT]  :  1
+[DOTDICT] (27/14) > {G} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (27/14) > {G} [LIST] (3/2) > [DOTDICT] (1/1) > {par𠼭am} [INT]  :  1
+[DOTDICT] (27/14) > {G} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (27/15) > {p29} [INT]  :  1
+[DOTDICT] (27/16) > {𠼭param} [INT]  :  1
+[DOTDICT] (27/17) > {p30} [INT]  :  1
+[DOTDICT] (27/18) > {H} [DOTDICT] (1/1) > {𠼭param} [INT]  :  1
+[DOTDICT] (27/19) > {p31} [INT]  :  1
+[DOTDICT] (27/20) > {K} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (27/20) > {K} [LIST] (3/2) > [DOTDICT] (1/1) > {𠼭param} [INT]  :  1
+[DOTDICT] (27/20) > {K} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (27/21) > {p32} [INT]  :  1
+[DOTDICT] (27/22) > {param൯} [INT]  :  1
+[DOTDICT] (27/23) > {p33} [INT]  :  1
+[DOTDICT] (27/24) > {L} [DOTDICT] (1/1) > {param൯} [INT]  :  1
+[DOTDICT] (27/25) > {p34} [INT]  :  1
+[DOTDICT] (27/26) > {M} [LIST] (3/1) > [INT]  :  1
+[DOTDICT] (27/26) > {M} [LIST] (3/2) > [DOTDICT] (1/1) > {param൯} [INT]  :  1
+[DOTDICT] (27/26) > {M} [LIST] (3/3) > [INT]  :  2
+[DOTDICT] (27/27) > {p35} [INT]  :  1
 """
-# # # listofdictUsecases.append(dictUsecase) # several issues
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -1770,9 +1807,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0450.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1784,9 +1821,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0451.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1798,9 +1835,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0452.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "%A". Key names have to start with a letter, digit or underscore."""
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1812,9 +1849,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0453.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1826,9 +1863,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0454.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1840,9 +1877,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0455.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """Invalid key name: "par%am"."""  # error message to be extended
-dictUsecase['EXPECTEDRETURN']    = None
-# listofdictUsecases.append(dictUsecase) # temporarily deactivated because of rework of naming conventions
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1854,9 +1891,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0456.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now (blanks allowed); TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1868,9 +1905,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0457.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now (blanks allowed); TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1882,9 +1919,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0458.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # blanks inside name not allowed but currently accepted
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now (blanks allowed); TODO: move this test to GOODCASE section (JPP_0401)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1896,9 +1933,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0459.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1910,9 +1947,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0460.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1924,9 +1961,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0461.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # empty name not allowed but currently accepted
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1938,9 +1975,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0462.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1952,9 +1989,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0463.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1966,9 +2003,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0464.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
+dictUsecase['EXPECTEDEXCEPTION'] = "Empty key name detected. Please enter a valid name."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # name contains blanks only, waiting for final error message
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1980,9 +2017,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0465.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # invalid name accepted and usage causes: 'local variable 'tmpList03' referenced before assignment'!
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -1994,9 +2031,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0466.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None # TODO
-dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # invalid name accepted and usage causes: 'local variable 'tmpList03' referenced before assignment'!
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # TODO
+# # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 
@@ -3152,7 +3189,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1150.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3166,7 +3206,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1151.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3180,7 +3223,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1152.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3194,7 +3240,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1153.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file"
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3370,7 +3419,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1165.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # file list to be fixed
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3386,7 +3438,10 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1166.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic imported json file" # file list to be fixed
+# temporary adaption
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4275,7 +4330,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2050.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'Could not resolve expression '${param}'. The based parameter 'param' is not defined yet! Use the '<name> : <value>' syntax to create a new based parameter.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'Could not resolve expression '${param}'. The based parameter 'param' is not defined yet! Use the '<name> : <value>' syntax to create a new based parameter.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4289,7 +4344,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2051.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${param}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${param}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4303,7 +4358,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2052.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'Missing scope for parameter '${param}'. To change the value of this parameter, an absolute path must be used: '${params}['001']['param']' or '${params.001.param}'.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'Missing scope for parameter '${param}'. To change the value of this parameter, an absolute path must be used: '${params}['001']['param']' or '${params.001.param}'.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4317,7 +4372,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2053.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}['001']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${params}['001']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4331,7 +4386,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2054.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.001}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${params.001}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4345,9 +4400,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2055.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Missing scope for parameter '${C}'. To change the value of this parameter, an absolute path must be used: '${params}[1]['B'][0]['C']' or '${params.1.B.0.C}'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase) # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/349
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4359,7 +4414,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2056.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4373,7 +4428,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2057.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params}[1]['B'][0]['C']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${params}[1]['B'][0]['C']' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -4387,7 +4442,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2058.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = """'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"""
+dictUsecase['EXPECTEDEXCEPTION'] = "'A key with name '${params.1.B.0.C}' does not exist at this position. Use the '<name> : <value>' syntax to create a new key.'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
