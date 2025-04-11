@@ -274,6 +274,7 @@ Constructor
         self.handlingFile    = []
         self.importCheck     = []
         self.recursive_level = 0
+        self.bDynamicImport  = False
         self.iDynamicImport  = 0
         self.lDynamicImports = []
         self.syntax          = syntax
@@ -321,6 +322,7 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.handlingFile    = []
         self.importCheck     = []
         self.recursive_level = 0
+        self.bDynamicImport  = False
         self.iDynamicImport  = 0
         self.lDynamicImports = []
         self.dUpdatedParams  = {}
@@ -403,16 +405,16 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     currJsonPath = self.jsonPath
                     abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
                     self.recursive_level = self.recursive_level + 1     # increase recursive level
-                    importPath = self.currentNode.getPathToRoot() # Get the import path from importTree to check Cyclic import
-                    if abs_path_file in importPath:
-                        raise Exception(f"Cyclic import detection while handling the file '{abs_path_file}'!")
+                    if not self.bDynamicImport or not self.bJSONPreCheck or self.currentNode.value==abs_path_file:
+                        importPath = self.currentNode.getPathToRoot() # Get the import path from importTree to check Cyclic import
+                        if abs_path_file in importPath:
+                            raise Exception(f"Cyclic import detection while handling the file '{abs_path_file}'!")
                     oJsonImport = self.jsonLoad(abs_path_file)
-                    if self.currentNode.parent is not None:
+                    if not self.bJSONPreCheck and self.currentNode.parent is not None:
                         self.currentNode = self.currentNode.parent
-                    bDynamicImportCheck = False
                     for k, v in oJsonImport.items():
                         if regex.match(r'^\s*\[\s*import\s*\]\s*', k) and '${' in v:
-                            bDynamicImportCheck = True
+                            self.bDynamicImport = True
                             break
                     self.jsonPath = currJsonPath
                     tmpOutdict = copy.deepcopy(out_dict)
@@ -422,10 +424,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 del out_dict[k1]
                     del tmpOutdict
                     out_dict.update(oJsonImport)
-                    if not bDynamicImportCheck:
-                        self.recursive_level = self.recursive_level - 1     # descrease recursive level
-                        if len(self.handlingFile) > 1:
-                            self.handlingFile.pop(-1)
+                    self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                    if len(self.handlingFile) > 1:
+                        self.handlingFile.pop(-1)
             else:
                 if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}\''
@@ -1703,8 +1704,8 @@ Checks and handle dynamic path of imported file.
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
-            self.__reset()
-            raise Exception(jsonException)
+                self.__reset()
+                raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
         importPattern = rf'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = json.dumps(self.jsonCheck)
@@ -1712,9 +1713,7 @@ Checks and handle dynamic path of imported file.
         if len(self.importCheck)>1:
             for item in self.importCheck:
                 if item == hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)):
-                    errorMsg = f"Cyclic import detection while handling the file '{self.handlingFile[-1]}'!"
-                    self.__reset()
-                    raise Exception(errorMsg)
+                    raise Exception("Cyclic import detection!!!")
         self.importCheck.append(hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)))
         lImport = regex.findall(importPattern, sJson)
         if len(lImport)==0:
@@ -2085,9 +2084,17 @@ This function handle a last element of a list or dictionary
         # imported files in JSON files.
         if firstLevel:
             self.bJSONPreCheck = True
-            sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            try:
+                sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            except Exception as error:
+                if "Cyclic import detection" in str(error):
+                    pass
+                else:
+                    self.__reset()
+                    raise Exception(error)
             self.iDynamicImport = 0
             self.recursive_level = 0
+            self.bDynamicImport  = False
             self.handlingFile = [] if self.masterFile is None else [self.masterFile]
             self.importTree.children = {}
             self.currentNode = self.importTree
