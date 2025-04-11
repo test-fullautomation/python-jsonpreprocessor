@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 14.11.2024 - 15:38:04
+# 10.04.2025 - 17:21:06
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -68,6 +68,14 @@ class Test_PARAMETER_SCOPE_BADCASE:
    )
    def test_JPP_2054(self, Description):
       nReturn = CExecute.Execute("JPP_2054")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing a parameter with missing scope (6)",]
+   )
+   def test_JPP_2055(self, Description):
+      nReturn = CExecute.Execute("JPP_2055")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception

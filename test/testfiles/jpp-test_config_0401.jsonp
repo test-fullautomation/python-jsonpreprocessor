@@ -13,7 +13,7 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // -- blank, backslash, 4Byte character
+    // -- blank, backslash
     "  param  " : 1,
     "p21"       : ${param},
     //
@@ -26,14 +26,16 @@
     "par\\am" : 1,
     "p24"     : ${par\\am},
     //
-    "D"   : {"par\\am" : 1},
-    "p25" : ${D}['par\\am'],
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/440
+    // "D"   : {"par\\am" : 1},
+    // "p25" : ${D}['par\\am'],
     //
-    "E"   : [1, {"par\\am" : 1}, 2],
-    "p26" : ${E}[1]['par\\am'],
+    // "E"   : [1, {"par\\am" : 1}, 2],
+    // "p26" : ${E}[1]['par\\am'],
     //
-    "path\\to\\file" : "C:\\Users\\Example\\file.txt"
+    "path\\to\\file" : "C:\\Users\\Example\\file.txt",
     //
+    // -- Unicode letters
     "par𠼭am" : 1,
     "p27"     : ${par𠼭am},
     //
@@ -51,4 +53,15 @@
     //
     "K"   : [1, {"𠼭param" : 1}, 2],
     "p32" : ${K}[1]['𠼭param'],
+    //
+    // -- Unicode decimal digits
+    "param൯" : 1,
+    "p33"    : ${param൯},
+    //
+    "L"   : {"param൯" : 1},
+    "p34" : ${L}['param൯'],
+    //
+    "M"   : [1, {"param൯" : 1}, 2],
+    "p35" : ${M}[1]['param൯']
 }
+

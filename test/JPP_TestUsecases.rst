@@ -739,61 +739,71 @@ Test Use Cases
 
 ----
 
-* **Test JPP_0450**
+* **Test JPP_0401**
+
+  [NAMING_CONVENTION / GOODCASE]
+
+   **JSON file with several parameter names containing: blank, backslash, Unicode letters and decimal digits**
+
+   Expected: All names are accepted (in definition and in reference)
+
+----
+
+* **Test JPP_0459**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (1)**
+   **JSON file with several invalid parameter names (10)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_0451**
+* **Test JPP_0460**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (2)**
+   **JSON file with several invalid parameter names (11)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_0452**
+* **Test JPP_0461**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (3)**
+   **JSON file with several invalid parameter names (12)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_0453**
+* **Test JPP_0462**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (4)**
+   **JSON file with several invalid parameter names (13)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_0454**
+* **Test JPP_0463**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (5)**
+   **JSON file with several invalid parameter names (14)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
 ----
 
-* **Test JPP_0455**
+* **Test JPP_0464**
 
   [NAMING_CONVENTION / BADCASE]
 
-   **JSON file with several invalid parameter names (6)**
+   **JSON file with several invalid parameter names (15)**
 
    Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -1471,26 +1481,6 @@ Test Use Cases
 
 ----
 
-* **Test JPP_1158**
-
-  [FILE_IMPORTS / BADCASE]
-
-   **JSON file with error in [import] key (1)**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-----
-
-* **Test JPP_1159**
-
-  [FILE_IMPORTS / BADCASE]
-
-   **JSON file with error in [import] key (2)**
-
-   Expected: No values are returned, and JsonPreprocessor throws an exception
-
-----
-
 * **Test JPP_1160**
 
   [FILE_IMPORTS / BADCASE]
@@ -2095,6 +2085,16 @@ Test Use Cases
 
 ----
 
+* **Test JPP_2055**
+
+  [PARAMETER_SCOPE / BADCASE]
+
+   **JSON file containing a parameter with missing scope (6)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_2056**
 
   [PARAMETER_SCOPE / BADCASE]
@@ -2125,5 +2125,5 @@ Test Use Cases
 
 ----
 
-Generated: 09.01.2025 - 18:56:30
+Generated: 10.04.2025 - 17:21:06
 
