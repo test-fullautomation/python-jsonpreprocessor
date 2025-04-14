@@ -408,7 +408,17 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     if not self.bDynamicImport or not self.bJSONPreCheck or self.currentNode.value==abs_path_file:
                         importPath = self.currentNode.getPathToRoot() # Get the import path from importTree to check Cyclic import
                         if abs_path_file in importPath:
-                            raise Exception(f"Cyclic import detection while handling the file '{abs_path_file}'!")
+                            previousImport1 = importPath[0]
+                            previousImport2 = importPath[-1]
+                            for path in importPath:
+                                if path == abs_path_file:
+                                    break
+                                previousImport1 = path
+                            if previousImport1 == abs_path_file or previousImport2 == abs_path_file:
+                                errorMsg = f"Cyclic import detection: The file '{abs_path_file}' imports itself."
+                            else:
+                                errorMsg = f"Cyclic import detection: The file '{abs_path_file}' is imported by '{previousImport1}' and by file '{previousImport2}'."
+                            raise Exception(errorMsg)
                     oJsonImport = self.jsonLoad(abs_path_file)
                     if not self.bJSONPreCheck and self.currentNode.parent is not None:
                         self.currentNode = self.currentNode.parent
@@ -1914,9 +1924,6 @@ This function handle a last element of a list or dictionary
         if not isinstance(sJsonpContent, str):
             self.__reset()
             raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
-        if self.importTree is None:
-            self.importTree = CTreeNode('Root')
-            self.currentNode = self.importTree
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
         if referenceDir is not None:
@@ -1924,6 +1931,9 @@ This function handle a last element of a list or dictionary
             if not os.path.exists(self.jsonPath):
                 self.__reset()
                 raise Exception(f"Reference directory '{referenceDir}' is not existing!")
+        if self.importTree is None:
+            self.importTree = CTreeNode(f'Root:{self.jsonPath}')
+            self.currentNode = self.importTree
         if self.masterFile is None or not firstLevel:
             try:
                 sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
@@ -2096,6 +2106,10 @@ This function handle a last element of a list or dictionary
             self.recursive_level = 0
             self.bDynamicImport  = False
             self.handlingFile = [] if self.masterFile is None else [self.masterFile]
+            if not regex.match(f'^Root:.+$', self.importTree.value):
+                self.jsonPath = os.path.dirname(self.importTree.value)
+            else:
+                self.jsonPath = regex.sub(r'(^Root:)', '', self.importTree.value)
             self.importTree.children = {}
             self.currentNode = self.importTree
             self.bJSONPreCheck = False
