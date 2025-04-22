@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 25.10.2024 - 20:31:28
+# 10.04.2025 - 17:21:06
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -36,5 +36,13 @@ class Test_NAMING_CONVENTION_GOODCASE:
    )
    def test_JPP_0400(self, Description):
       nReturn = CExecute.Execute("JPP_0400")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: All names are accepted (in definition and in reference)
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several parameter names containing: blank, backslash, Unicode letters and decimal digits",]
+   )
+   def test_JPP_0401(self, Description):
+      nReturn = CExecute.Execute("JPP_0401")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

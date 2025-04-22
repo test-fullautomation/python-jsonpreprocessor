@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 26.11.2024 - 12:36:07
+# 10.04.2025 - 17:21:06
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -93,24 +93,6 @@ class Test_FILE_IMPORTS_BADCASE:
    def test_JPP_1157(self, Description):
       nReturn = CExecute.Execute("JPP_1157")
       assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   # mas2hc: Commented out this test case due to the comment out in TestConfig.py is not effective
-   # @pytest.mark.parametrize(
-   #    "Description", ["JSON file with error in [import] key (1)",]
-   # )
-   # def test_JPP_1158(self, Description):
-   #    nReturn = CExecute.Execute("JPP_1158")
-   #    assert nReturn == 0
-# --------------------------------------------------------------------------------------------------------------
-   # Expected: No values are returned, and JsonPreprocessor throws an exception
-   # mas2hc: Commented out this test case due to the comment out in TestConfig.py is not effective
-   # @pytest.mark.parametrize(
-   #    "Description", ["JSON file with error in [import] key (2)",]
-   # )
-   # def test_JPP_1159(self, Description):
-   #    nReturn = CExecute.Execute("JPP_1159")
-   #    assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: No values are returned, and JsonPreprocessor throws an exception
    @pytest.mark.parametrize(

@@ -51,6 +51,7 @@ import regex
 import sys
 import copy
 import shlex
+import hashlib
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -71,6 +72,7 @@ class CNameMangling(Enum):
     LISTINDEX        = "__IndexOfList__"
     SLICEINDEX       = "__SlicingIndex__"
     STRINGVALUE      = "__StringValueMake-up__"
+    HANDLEIMPORTED   = "__CheckImportedHandling__"
     DYNAMICIMPORTED  = "__DynamicImportedHandling__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
@@ -152,11 +154,64 @@ CkeyChecker checks key names format based on a rule defined by user.
         self.errorMsg   = ''
 
     def keyNameChecker(self, sKeyName: str):
+        if sKeyName=='' or regex.match(r'^\s+$', sKeyName):
+            self.errorMsg = f"Empty key name detected. Please enter a valid name."
+            return False
         if regex.match(self.keyPattern, sKeyName):
             return True
         else:
             self.errorMsg = f"Error: Key name '{sKeyName}' is invalid. Expected format: '{self.keyPattern}'"
             return False
+
+class CTreeNode():
+    """
+The CTreeNode class is a custom tree data structure that allows to create and manage hierarchical data.
+    """
+
+    def __init__(self, value, parent=None):
+        self.value    = value
+        self.parent   = parent
+        self.children = {}    # Dictionary to store children
+
+    def addChild(self, value):
+        """
+Add a child node to the current node.
+
+**Arguments:**
+
+* ``value``
+
+  / *Condition*: required / *Type*: str /
+
+  The value for the new child node.
+
+**Returns:**
+
+  The new or existing child node.
+        """
+        if value in self.children:
+            return self.children[value]
+        childNode = CTreeNode(value, parent=self)
+        self.children[value] = childNode
+        return childNode
+
+    def getPathToRoot(self):
+        """
+Retrieve the path from this node to the root.
+        """
+        path = []
+        current = self
+        while current:
+            path.append(current.value)
+            current = current.parent
+        return path[::-1]
+
+    # def display(self, level=0):
+    #     if self is None:
+    #         pass
+    #     print("  " * level + str(self.value))
+    #     for child in self.children.values():
+    #         child.display(level + 1)
 
 class CJsonPreprocessor():
     """
@@ -213,12 +268,15 @@ Constructor
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
+        self.importTree      = None
+        self.currentNode     = None
         self.masterFile      = None
         self.handlingFile    = []
+        self.importCheck     = []
+        self.recursive_level = 0
+        self.bDynamicImport  = False
         self.iDynamicImport  = 0
         self.lDynamicImports = []
-        self.lImportedFiles  = []
-        self.recursive_level = 0
         self.syntax          = syntax
         self.currentCfg      = currentCfg
         self.dUpdatedParams  = {}
@@ -258,12 +316,15 @@ Constructor
 Reset initial variables which are set in constructor method after master JSON file is loaded.
         """
         self.jsonPath        = None
+        self.importTree      = None
+        self.currentNode     = None
         self.masterFile      = None
         self.handlingFile    = []
+        self.importCheck     = []
+        self.recursive_level = 0
+        self.bDynamicImport  = False
         self.iDynamicImport  = 0
         self.lDynamicImports = []
-        self.lImportedFiles  = []
-        self.recursive_level = 0
         self.dUpdatedParams  = {}
         self.lDotInParamName = []
         self.bJSONPreCheck   = False
@@ -313,7 +374,10 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     raise Exception(errorMsg)
                 if '${' in value:
                     if not self.bJSONPreCheck: # self.bJSONPreCheck is set True when handling pre-check JSON files by __preCheckJsonFile()
-                        value = self.lDynamicImports.pop(0)
+                        for item in self.lDynamicImports:
+                            if value == next(iter(item)):
+                                value = item[value]
+                                break
                         if '${' in value:
                             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', value)
                             value = self.__removeTokenStr(dynamicImported[2])
@@ -327,32 +391,40 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                     else:
                         if regex.match(r'^\[\s*import\s*\]$', key.strip()):
                             self.iDynamicImport +=1
+                            tmpValue = value
                             value = self.jsonPath + CNameMangling.DYNAMICIMPORTED.value + value
                             out_dict[f"{key.strip()}_{self.iDynamicImport}"] = value
-                            self.lDynamicImports.append(value)
+                            self.lDynamicImports.append({tmpValue:value})
                         else:
                             out_dict[key] = value
                 if '${' not in value:
                     if regex.match(r'^\[\s*import\s*\]_\d+$', key):
                         dynamicIpmportIndex = regex.search(r'_(\d+)$', key)[1]
-                        self.lDynamicImports[int(dynamicIpmportIndex)-1] = value 
+                        tmpValue = next(iter(self.lDynamicImports[int(dynamicIpmportIndex)-1]))
+                        self.lDynamicImports[int(dynamicIpmportIndex)-1][tmpValue] = value
                     currJsonPath = self.jsonPath
                     abs_path_file = CString.NormalizePath(value, sReferencePathAbs = currJsonPath)
-
-                    # Use recursive_level and lImportedFiles to avoid cyclic import
                     self.recursive_level = self.recursive_level + 1     # increase recursive level
-
-                    # length of lImportedFiles should equal to recursive_level
-                    self.lImportedFiles = self.lImportedFiles[:self.recursive_level] if self.masterFile is not None else \
-                                            self.lImportedFiles[:self.recursive_level-1]
-                    if abs_path_file in self.lImportedFiles:
-                        raise Exception(f"Cyclic imported json file '{abs_path_file}'!")
-
+                    if not self.bDynamicImport or not self.bJSONPreCheck or self.currentNode.value==abs_path_file:
+                        importPath = self.currentNode.getPathToRoot() # Get the import path from importTree to check Cyclic import
+                        if abs_path_file in importPath:
+                            previousImport1 = importPath[0]
+                            previousImport2 = importPath[-1]
+                            for path in importPath:
+                                if path == abs_path_file:
+                                    break
+                                previousImport1 = path
+                            if previousImport1 == abs_path_file or previousImport2 == abs_path_file:
+                                errorMsg = f"Cyclic import detection: The file '{abs_path_file}' imports itself."
+                            else:
+                                errorMsg = f"Cyclic import detection: The file '{abs_path_file}' is imported by '{previousImport1}' and by file '{previousImport2}'."
+                            raise Exception(errorMsg)
                     oJsonImport = self.jsonLoad(abs_path_file)
-                    bDynamicImportCheck = False
+                    if not self.bJSONPreCheck and self.currentNode.parent is not None:
+                        self.currentNode = self.currentNode.parent
                     for k, v in oJsonImport.items():
-                        if regex.match('^\s*\[\s*import\s*\]\s*', k) and '${' in v:
-                            bDynamicImportCheck = True
+                        if regex.match(r'^\s*\[\s*import\s*\]\s*', k) and '${' in v:
+                            self.bDynamicImport = True
                             break
                     self.jsonPath = currJsonPath
                     tmpOutdict = copy.deepcopy(out_dict)
@@ -362,8 +434,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 del out_dict[k1]
                     del tmpOutdict
                     out_dict.update(oJsonImport)
-                    if not bDynamicImportCheck:
-                        self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                    self.recursive_level = self.recursive_level - 1     # descrease recursive level
+                    if len(self.handlingFile) > 1:
+                        self.handlingFile.pop(-1)
             else:
                 if not self.bJSONPreCheck:
                     specialCharacters = r'$[]{}\''
@@ -556,7 +629,7 @@ Parse a dictionary path string into a list of its components.
         elif regex.match(r"^\[[^\[]+\]$", sInput):
             lOutput.append(regex.sub(r"^\[\s*([^\[]+)\s*\]", "\\1", sInput))
         else:
-            if not regex.match('^\s*\[.+$', sInput):
+            if not regex.match(r'^\s*\[.+$', sInput):
                 index = sInput.index("[")
                 lOutput.append(sInput[:index])
             elements = regex.findall(rf"\[\s*('*[^{regex.escape(specialCharacters)}]+'*)\s*\]", sInput)
@@ -589,6 +662,7 @@ This method handles nested variables in parameter names or values. Variable synt
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
             oTmpObj = self.JPGlobals
+            i=0
             for element in lElements:
                 bList = False
                 if regex.match(r"^[\s\-\+]*\d+$", element):
@@ -598,7 +672,8 @@ This method handles nested variables in parameter names or values. Variable synt
                     try:
                         exec(sExec)
                     except:
-                        sExec = f"{tmpExec}['{element}']"
+                        if i==0: # Handle cases one digit key name
+                            sExec = f"{tmpExec}['{element}']"
                         pass
                 elif regex.match(r"^'[^']+'$", element.strip()):
                     element = element.strip("'")
@@ -617,6 +692,7 @@ This method handles nested variables in parameter names or values. Variable synt
                     if int(element)<len(oTmpObj) and (isinstance(oTmpObj[int(element)], dict) or \
                                                       isinstance(oTmpObj[int(element)], list)):
                         oTmpObj = oTmpObj[int(element)]
+                i+=1
             try:
                 ldict = {}
                 exec(sExec, locals(), ldict)
@@ -624,7 +700,7 @@ This method handles nested variables in parameter names or values. Variable synt
             except Exception as error:
                 if self.bJSONPreCheck:
                     sNestedParam = self.__removeTokenStr(sNestedParam)
-                    tmpValue = sNestedParam.replace('$$', '$')
+                    tmpValue = sNestedParam.replace('$${', '${')
                     pass
                 else:
                     self.__reset()
@@ -632,16 +708,16 @@ This method handles nested variables in parameter names or values. Variable synt
                     errorMsg = ''
                     for errorType in self.pythonTypeError:
                         if errorType in str(error):
-                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
+                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$${', '${')}'."
                     if errorMsg != '':
                         errorMsg = f"{errorMsg} Reason: {error}" if ' or slices' not in str(error) else \
                                     f"{errorMsg} Reason: {str(error).replace(' or slices', '')}"
                     else:
                         if isinstance(error, KeyError) and regex.search(r"\[\s*" + str(error) + "\s*\]", sNestedParam):
-                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'. \
+                            errorMsg = f"Could not resolve expression '{sNestedParam.replace('$${', '${')}'. \
 Reason: Key error {error}"
                         else:
-                            errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                            errorMsg = f"The parameter '{sNestedParam.replace('$${', '${')}' is not available!"
                     raise Exception(errorMsg)
             return tmpValue
         
@@ -656,14 +732,14 @@ Reason: Key error {error}"
                 sVar = self.__handleDotInNestedParam(var)
                 sInputStr = sInputStr.replace(var, sVar)
         tmpPattern = rf'{pattern}(\[\s*\d+\s*\]|\[\s*\'[^{regex.escape(specialCharacters)}]+\'\s*\])*'
-        sNestedParam = self.__removeTokenStr(sInputStr.replace("$$", "$"))
+        sNestedParam = self.__removeTokenStr(sInputStr.replace("$${", "${"))
         for key in self.dKeyDDictCoverted.keys():
             if sNestedParam == key:
                 sNestedParam = self.dKeyDDictCoverted[key]
                 break
         if regex.search(r'\${.+\..+}', sInputStr) and not bConvertToStr:
             sInputStr = self.__handleDotInNestedParam(sInputStr)
-        while regex.search(tmpPattern, sInputStr, regex.UNICODE) and sInputStr.count("$$")>1:
+        while regex.search(tmpPattern, sInputStr, regex.UNICODE) and sInputStr.count("$${")>1:
             sLoopCheck = sInputStr
             referVars = regex.findall(rf'({tmpPattern})[^\[]', sInputStr, regex.UNICODE)
             if len(referVars)==0:
@@ -677,7 +753,7 @@ Reason: Key error {error}"
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
-                    raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
+                    raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
 value '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings.")
                 while var[0] in sInputStr:
                     sLoopCheck1 = sInputStr
@@ -687,7 +763,7 @@ value '{sNestedParam}' is not allowed! Composite data types like lists and dicti
                             if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
                                 self.__reset()
                                 sVar = self.__removeTokenStr(sVar)
-                                raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside \
+                                raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside \
 the expression '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted as strings.")
                             sInputStr = regex.sub(rf"\[\s*'\s*{varPattern}\s*'\s*\]", f"['{tmpValue}']", sInputStr)
                         elif isinstance(tmpValue, str):
@@ -695,7 +771,7 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                         elif isinstance(tmpValue, int):
                             sInputStr = regex.sub(rf"\[['\s]*{varPattern}['\s]*\]", f"[{tmpValue}]", sInputStr)
                         else:
-                            var = var[0].replace("$$", "$")
+                            var = var[0].replace("$${", "${")
                             sParentParam = regex.search(rf'^\s*(.+)\[[\s\']*{varPattern}.*$', sInputStr)[1]
                             parentValue = None
                             var = self.__removeTokenStr(var)
@@ -756,18 +832,18 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 except Exception as error:
                     if self.bJSONPreCheck:
                         sNestedParam = self.__removeTokenStr(sNestedParam)
-                        tmpValue = sNestedParam.replace('$$', '$')
+                        tmpValue = sNestedParam.replace('$${', '${')
                         pass
                     else:
                         self.__reset()
                         errorMsg = ''
                         for errorType in self.pythonTypeError:
                             if errorType in str(error):
-                                errorMsg = f"Could not resolve expression '{sNestedParam.replace('$$', '$')}'."
+                                errorMsg = f"Could not resolve expression '{sNestedParam.replace('$${', '${')}'."
                         if errorMsg != '':
                             errorMsg = f"{errorMsg} Reason: {error}"
                         else:
-                            errorMsg = f"The parameter '{sNestedParam.replace('$$', '$')}' is not available!"
+                            errorMsg = f"The parameter '{sNestedParam.replace('$${', '${')}' is not available!"
                         raise Exception(errorMsg)
                 return tmpValue
             else:
@@ -779,13 +855,13 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 dataType = regex.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
                 sVar = self.__removeTokenStr(sVar)
-                raise Exception(f"The substitution of parameter '{sVar.replace('$$', '$')}' inside the string \
+                raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
 value '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings.")
             if regex.match(rf"^\s*{tmpPattern}\s*$", sInputStr, regex.UNICODE) and not bKey:
                 return tmpValue
             else:
                 sInputStr = sInputStr.replace(var[0], str(tmpValue))
-        return sInputStr.replace("$$", "$") if "$$" in sInputStr else sInputStr
+        return sInputStr.replace("$${", "${") if "$${" in sInputStr else sInputStr
 
     def __handleDotdictFormat(self, lInputListParams : list, lParams: list = []) -> list:
         """
@@ -928,11 +1004,18 @@ This method checks and creates new elements if they are not already existing.
                     if oJson is not None:
                         exec(sExec2)
                 except Exception as error:
+                    if keyNested is not None:
+                        tmpNestedKey = None
+                        for key in self.dKeyDDictCoverted.keys():
+                            if key == self.__removeTokenStr(keyNested):
+                                tmpNestedKey = self.dKeyDDictCoverted[key]
+                        if tmpNestedKey == None:
+                            tmpNestedKey = self.__removeTokenStr(keyNested)
                     if isinstance(error, TypeError): # If Python's type errors occur when executing an expression
                         for eType in self.pythonTypeError:
                             if eType in str(error):
                                 if keyNested is not None:
-                                    errorMsg = f"Could not set parameter '{self.__removeTokenStr(keyNested)}' with value '{value}'! \
+                                    errorMsg = f"Could not set parameter '{tmpNestedKey}' with value '{value}'! \
 Reason: {str(error).replace(' or slices', '')}"
                                 else:
                                     errorMsg = f"Could not set parameter '{self.__removeTokenStr(sKey)}' with value '{value}'! \
@@ -954,7 +1037,7 @@ Reason: {str(error).replace(' or slices', '')}"
                         except Exception as error:
                             self.__reset()
                             if keyNested is not None:
-                                sKey = self.__removeTokenStr(keyNested)
+                                sKey = tmpNestedKey if tmpNestedKey is not None else self.__removeTokenStr(keyNested)
                             errorMsg = f"Could not set parameter '{sKey}' with value '{value}'! Reason: {error}"
                             raise Exception(errorMsg)
             return True
@@ -1098,10 +1181,10 @@ This method replaces all nested parameters in key and value of a JSON object .
             if CNameMangling.STRINGCONVERT.value in sInputStr or regex.match(r'^\[\s*import\s*\]_\d+$', key):
                 bValueConvertString = True
                 sInputStr = sInputStr.replace(CNameMangling.STRINGCONVERT.value, '')
-                sInputStr = regex.sub("\$", "$$", sInputStr)
+                sInputStr = sInputStr.replace('${', '$${')
                 initValue = initValue.replace(CNameMangling.STRINGCONVERT.value, '')
             elif regex.match(rf"^\s*{pattern}\s*$", sInputStr, regex.UNICODE):
-                sInputStr = regex.sub("\$", "$$", sInputStr)
+                sInputStr = sInputStr.replace('${', '$${')
             sInputStr = self.__checkParamName(sInputStr)
             handledValue = self.__nestedParamHandler(sInputStr) if not bValueConvertString else \
                                     self.__nestedParamHandler(sInputStr, bKey=bKey, bConvertToStr=bValueConvertString)
@@ -1191,7 +1274,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 if regex.search(rf"\[\s*'*{pattern}'*\s*\]", keyNested, regex.UNICODE) or \
                     regex.search(rf"\.{pattern}[\.}}]+", keyNested, regex.UNICODE):
                     bImplicitCreation = True
-                k = regex.sub("\$", "$$", k)
+                k = k.replace('${', '$${')
                 k = self.__checkParamName(k)
                 k = self.__nestedParamHandler(k, bKey=True)
                 sExec = 'dummyData = self.JPGlobals'
@@ -1343,7 +1426,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                     continue
             keyPattern = regex.escape(k)
             if regex.match(rf"^.+\['{keyPattern}'\]$", parentParams, regex.UNICODE):
-                parentParams = regex.sub(f"\['{k}'\]", "", parentParams)
+                parentParams = regex.sub(rf"\['{k}'\]", "", parentParams)
             elif not recursive:
                 parentParams = ''
             __jsonUpdated(k, v, oJson, parentParams, keyNested, paramInValue, bDuplicatedHandle, recursive)
@@ -1615,25 +1698,36 @@ Checks and handle dynamic path of imported file.
 
   / *Type*: str /
         '''
+        def hashContent(sInput : str) -> str:
+            return hashlib.sha256(sInput.encode('utf-8')).hexdigest()
+
         try:
             self.jsonCheck = json.loads(sInput, cls=CJSONDecoder, object_pairs_hook=self.__processImportFiles)
         except Exception as error:
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
-            if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+            if "Cyclic import detection" in str(error):
+                jsonException = str(error)
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
-                                f"{error}\nNearby: '{failedJsonDoc}'"
-            self.__reset()
-            raise Exception(jsonException)
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
+                self.__reset()
+                raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
         importPattern = rf'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = json.dumps(self.jsonCheck)
+        # Check cyclic import by comparing the content of the whole JSONP configuration object.
+        if len(self.importCheck)>1:
+            for item in self.importCheck:
+                if item == hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)):
+                    raise Exception("Cyclic import detection!!!")
+        self.importCheck.append(hashContent(regex.sub(r'"(\[import\])_\d+"', '"\\1"', sJson)))
         lImport = regex.findall(importPattern, sJson)
         if len(lImport)==0:
             sInput = sJson
-            return sInput
         else:
             while regex.search(importPattern, sJson):
                 tmpJson = sJson
@@ -1644,7 +1738,7 @@ Checks and handle dynamic path of imported file.
                     break
                 sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
             sInput = sJson
-            return sInput
+        return sInput
 
     def jsonLoad(self, jFile : str):
         """
@@ -1671,6 +1765,12 @@ This method is the entry point of JsonPreprocessor.
         # Identifies the entry level when loading JSONP file in comparison with imported files levels.
         masterFile = True if self.recursive_level==0 else False
         jFile = CString.NormalizePath(jFile, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
+        if self.importTree is None:
+            self.importTree = CTreeNode(jFile)
+            self.currentNode = self.importTree
+        else:
+            self.currentNode.addChild(jFile)
+            self.currentNode = self.currentNode.children[jFile]
         self.handlingFile.append(jFile)
         if masterFile:
             self.masterFile = jFile
@@ -1678,7 +1778,6 @@ This method is the entry point of JsonPreprocessor.
             self.__reset()
             raise Exception(f"File '{jFile}' is not existing!")
 
-        self.lImportedFiles.append(jFile)
         self.jsonPath = os.path.dirname(jFile)
         try:
             sJsonData= self.__loadAndRemoveComments(jFile)
@@ -1687,7 +1786,7 @@ This method is the entry point of JsonPreprocessor.
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
         return self.jsonLoads(sJsonData)
 
-    def jsonLoads(self, sJsonpContent : str, referenceDir : str = ''):
+    def jsonLoads(self, sJsonpContent : str, referenceDir : str = None):
         """
 ``jsonLoads`` loads the JSONP content, preprocesses it and returns the preprocessed result as Python dictionary.
 
@@ -1701,7 +1800,7 @@ This method is the entry point of JsonPreprocessor.
 
 * ``referenceDir``
 
-  / *Condition*: optional / *Type*: str /
+  / *Condition*: optional / *Type*: str / *Default*: None /
 
   A reference path for loading imported files.
 
@@ -1754,13 +1853,13 @@ This function handles duplicated keys in a dictionary.
             dictValues = {}
             for key in listKeys:
                 if CNameMangling.DUPLICATEDKEY_01.value in key:
-                    origKey = regex.sub(f"{CNameMangling.DUPLICATEDKEY_01.value}\d+\s*$", "", key)
+                    origKey = regex.sub(rf"{CNameMangling.DUPLICATEDKEY_01.value}\d+\s*$", "", key)
                     dictValues[origKey] = copy.deepcopy(dInput[origKey])
             for key in dictValues.keys():
                 dInput = self.__changeDictKey(dInput, key, key + CNameMangling.DUPLICATEDKEY_00.value)
             tmpDict = copy.deepcopy(dInput)
             for k, v in tmpDict.items():
-                origK = regex.sub(f"{CNameMangling.DUPLICATEDKEY_01.value}\d+\s*$", "", k)
+                origK = regex.sub(rf"{CNameMangling.DUPLICATEDKEY_01.value}\d+\s*$", "", k)
                 if CNameMangling.DUPLICATEDKEY_01.value in k:
                     dInput[k] = dictValues[origK].pop(1)
                 parentParams = f"[{k}]" if parentParams=='' else f"{parentParams}['{k}']"
@@ -1827,11 +1926,14 @@ This function handle a last element of a list or dictionary
             raise Exception(f'Expected a string, but got a value of type {type(sJsonpContent)}')
         # Identifies the entry level when loading JSONP content in comparison with imported files levels.
         firstLevel = True if self.recursive_level==0 else False
-        if referenceDir != '':
+        if referenceDir is not None:
             self.jsonPath = CString.NormalizePath(referenceDir, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
             if not os.path.exists(self.jsonPath):
                 self.__reset()
                 raise Exception(f"Reference directory '{referenceDir}' is not existing!")
+        if self.importTree is None:
+            self.importTree = CTreeNode(f'Root:{self.jsonPath}')
+            self.currentNode = self.importTree
         if self.masterFile is None or not firstLevel:
             try:
                 sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
@@ -1867,9 +1969,9 @@ This function handle a last element of a list or dictionary
                         param = regex.search(r'\${([^}]*)}', line)
                     if param is not None:
                         lNestedParams.append(param[0])
-                        if ':' in param[1]:
-                            tmpList03.append(param[1])
-                            tmpPattern = regex.escape(param[1])
+                        if ':' in param[0]:
+                            tmpList03.append(param[0])
+                            tmpPattern = regex.escape(param[0])
                             line = regex.sub(tmpPattern, CNameMangling.NESTEDPARAM.value, line)
                     if line == tmpLine:
                         break
@@ -1883,7 +1985,7 @@ This function handle a last element of a list or dictionary
                 if regex.search(indexPattern, line):
                     indexList = regex.findall(indexPattern, line)
                     line = regex.sub(f"({indexPattern})", CNameMangling.LISTINDEX.value, line)
-                items = regex.split("\s*:\s*", line)
+                items = regex.split(r"\s*:\s*", line)
                 iItems = len(items)-1 if items[-1]=='' else len(items) 
                 newLine = ''
                 preItem = ''
@@ -1970,7 +2072,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
         lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
-            if regex.match(r'^"\s+.+"$|^".+\s+"$', key):
+            if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
@@ -1992,10 +2094,24 @@ This function handle a last element of a list or dictionary
         # imported files in JSON files.
         if firstLevel:
             self.bJSONPreCheck = True
-            sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            try:
+                sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
+            except Exception as error:
+                if "Cyclic import detection" in str(error):
+                    pass
+                else:
+                    self.__reset()
+                    raise Exception(error)
             self.iDynamicImport = 0
             self.recursive_level = 0
-            self.lImportedFiles = [] if self.masterFile is None else [self.masterFile]
+            self.bDynamicImport  = False
+            self.handlingFile = [] if self.masterFile is None else [self.masterFile]
+            if not regex.match(f'^Root:.+$', self.importTree.value):
+                self.jsonPath = os.path.dirname(self.importTree.value)
+            else:
+                self.jsonPath = regex.sub(r'(^Root:)', '', self.importTree.value)
+            self.importTree.children = {}
+            self.currentNode = self.importTree
             self.bJSONPreCheck = False
 
         # Load Json object with checking duplicated keys feature is enabled.
@@ -2007,15 +2123,17 @@ This function handle a last element of a list or dictionary
         except Exception as error:
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
-            if failedJsonDoc is None:
-                jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+            if "Cyclic import detection" in str(error):
+                jsonException = str(error)
             else:
-                jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
-                                f"{error}\nNearby: '{failedJsonDoc}'"
+                if failedJsonDoc is None:
+                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                else:
+                    jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
+                                    f"{error}\nNearby: '{failedJsonDoc}'"
             if firstLevel:
                 self.__reset()
             raise Exception(jsonException)
-
         self.__checkDotInParamName(oJson)
 
         if firstLevel:
@@ -2030,7 +2148,6 @@ This function handle a last element of a list or dictionary
             __checkKeynameFormat(oJson)
             oJson, bNested = self.__updateAndReplaceNestedParam(oJson)
             self.jsonCheck = {}
-                
             self.__reset()
             __removeDuplicatedKey(oJson)
             oJson = DotDict(oJson)

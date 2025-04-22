@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 09.01.2025 - 18:56:30
+# 10.04.2025 - 17:21:06
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -26,55 +26,55 @@ import pytest
 from pytestlibs.CExecute import CExecute
 
 # --------------------------------------------------------------------------------------------------------------
-# mas2hc: Commented out the Test_NAMING_CONVENTION_BADCASE test cases due to the comment out in TestConfig.py is not effective
-# class Test_NAMING_CONVENTION_BADCASE:
 
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (1)",]
-#    )
-#    def test_JPP_0450(self, Description):
-#       nReturn = CExecute.Execute("JPP_0450")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (2)",]
-#    )
-#    def test_JPP_0451(self, Description):
-#       nReturn = CExecute.Execute("JPP_0451")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (3)",]
-#    )
-#    def test_JPP_0452(self, Description):
-#       nReturn = CExecute.Execute("JPP_0452")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (4)",]
-#    )
-#    def test_JPP_0453(self, Description):
-#       nReturn = CExecute.Execute("JPP_0453")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (5)",]
-#    )
-#    def test_JPP_0454(self, Description):
-#       nReturn = CExecute.Execute("JPP_0454")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
-#    # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
-#    @pytest.mark.parametrize(
-#       "Description", ["JSON file with several invalid parameter names (6)",]
-#    )
-#    def test_JPP_0455(self, Description):
-#       nReturn = CExecute.Execute("JPP_0455")
-#       assert nReturn == 0
-# # --------------------------------------------------------------------------------------------------------------
+class Test_NAMING_CONVENTION_BADCASE:
+
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (10)",]
+   )
+   def test_JPP_0459(self, Description):
+      nReturn = CExecute.Execute("JPP_0459")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (11)",]
+   )
+   def test_JPP_0460(self, Description):
+      nReturn = CExecute.Execute("JPP_0460")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (12)",]
+   )
+   def test_JPP_0461(self, Description):
+      nReturn = CExecute.Execute("JPP_0461")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (13)",]
+   )
+   def test_JPP_0462(self, Description):
+      nReturn = CExecute.Execute("JPP_0462")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (14)",]
+   )
+   def test_JPP_0463(self, Description):
+      nReturn = CExecute.Execute("JPP_0463")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with several invalid parameter names (15)",]
+   )
+   def test_JPP_0464(self, Description):
+      nReturn = CExecute.Execute("JPP_0464")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------

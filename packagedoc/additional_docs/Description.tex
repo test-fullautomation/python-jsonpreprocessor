@@ -45,6 +45,38 @@ to call the method \pcode{jsonLoad} inside a \pcode{try/except} block.
 In chapter \hyperref[thejsonpformat]{The JSONP format} the format of JSON files used by the \pkg, is described in detail.
 All discussed JSON files can be tested with the example script listed above.
 
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{User defined naming convention}
+
+By default, key names in JSON files can contain any characters (but cannot be empty). But it might be required to limit the character set.
+For this purpose the \pkg\ supports an optional user-defined convention for key names. This is enforced using a \pcode{regex} pattern
+passed to the constructor of the \pkg\ class.
+
+Assuming key names may only contain letters, digits and underscores, but must start with a letter, then the \pkg\ has to be initialized
+in this way:
+
+\begin{pythoncode}[linebackgroundcolor=\hlcode{3,5}]
+from JsonPreprocessor.CJsonPreprocessor import CJsonPreprocessor
+import pprint
+import regex
+
+json_preprocessor = CJsonPreprocessor(keyPattern=r'^\p{L}[\p{L}\p{Nd}_]*$'))
+try:
+   values = json_preprocessor.jsonLoad("./file.jsonp")
+   pprint.pprint(values)
+except Exception as reason:
+   print(f"'{reason}'")
+\end{pythoncode}
+
+The regular expressions \pcode{\\p\{L\}} and \pcode{\\p\{Nd\}} are provided by the \pcode{regex} module:
+
+\begin{itemize}
+   \item \pcode{\\p\{L\}} matches all Unicode characters classified as \textbf{letter}
+   \item \pcode{\\p\{Nd\}} matches all Unicode characters classified as \textbf{decimal digit}
+\end{itemize}
 
 % --------------------------------------------------------------------------------------------------------------
 
