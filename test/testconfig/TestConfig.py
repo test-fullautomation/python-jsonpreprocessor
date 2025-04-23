@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 10.04.2025
+# 23.04.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -3189,10 +3189,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1150.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3206,10 +3203,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1151.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3223,10 +3217,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1152.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3240,10 +3231,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1153.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3408,9 +3396,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Cyclic import is detected, but file list in exception should be checked.
-# Similar to: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# Here: 'imported.ST03.1.jsonp' is not expected to be part of file list in exception.
 dictUsecase['TESTID']            = "JPP_1165"
 dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (sawtooth, stopped)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -3419,17 +3404,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1165.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Cyclic import is detected, but file list in exception is not correct.
-# Similar to: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
 dictUsecase['TESTID']            = "JPP_1166"
 dictUsecase['DESCRIPTION']       = "JSON file with cyclic imports (sawtooth, endless)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -3438,10 +3418,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1166.jsonp"
-# temporary adaption
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/389
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/393#issuecomment-2792637445
-dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection while handling the file"
+dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
