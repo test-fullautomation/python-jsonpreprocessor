@@ -1537,9 +1537,11 @@ expression '{self.__removeTokenStr(sInput.strip())}'."
                 if regex.match(r'^\${[^}]+}+(\[.+\])*\s*$', sInput) and \
                     (sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]")):
                     errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"                
-        elif sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+        elif sInput.count("{") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
             if CNameMangling.STRINGCONVERT.value not in sInput:
-                errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}' - The brackets mismatch!!!"
+                errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput.strip())}'"
+                if sInput.count("${") != sInput.count("}") or sInput.count("[") != sInput.count("]"):
+                    errorMsg = f"{errorMsg} - The brackets mismatch!!!"
         elif regex.search(r'\[[^\[]+\]', sInput) and bKey:
             invalidFormat = []
             for item in regex.findall(r"\[[^\[]+'[^'\[]+'\s*\]", sInput):
@@ -1632,6 +1634,13 @@ to overwrite the value of this parameter."
         elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()):
             if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
                 errorMsg = oKeyChecker.errorMsg
+        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]', sInput) or regex.search(r'\[\s*\'[^\']+\'[^\]]+\]', sInput):
+            errorMsg = f"Invalid key name: {sInput}"
+        elif regex.search(r'\$+\${', sInput):
+            correctKey = regex.sub(r'(\$+\${)', '${', sInput)
+            errorMsg = f"Invalid key name: {sInput} - This key name must be '{correctKey}'"
+        elif sInput.count('${') != sInput.count('}') or sInput.count('[') != sInput.count(']'):
+            errorMsg = f"Invalid key name: {sInput} - The brackets mismatch!!!"
         elif regex.search(r'\${[^}]*}', sInput):
             if regex.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -1898,7 +1907,7 @@ This function checks key names in JSON configuration files.
                             __checkKeynameFormat(item)
                 elif isinstance(v, dict):
                     __checkKeynameFormat(v)
-        
+
         def __handleLastElement(sInput : str) -> str:
             '''
 This function handle a last element of a list or dictionary
@@ -1948,6 +1957,9 @@ This function handle a last element of a list or dictionary
             if reservedToken in sJsonData:
                 self.__reset()
                 raise Exception(f"The JSONP content contains a reserved token '{reservedToken}'")
+        indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
+        dictPattern = rf"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{\s*[^\[]+\s*}}.*\]+|{indexPattern}"
+        nestedPattern = rf"\${{\s*[^\[}}\$]+(\.*\${{\s*[^\[]+\s*}})*\s*}}({dictPattern})*"
         sJsonDataUpdated = ""
         lNestedParams = []
         for line in sJsonData.splitlines():
@@ -1958,7 +1970,6 @@ This function handle a last element of a list or dictionary
             except Exception as error:
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
-
             if "${" in line:
                 curLine = line
                 tmpList03 = []
@@ -2005,9 +2016,6 @@ This function handle a last element of a list or dictionary
                             item = item.replace(CNameMangling.NESTEDPARAM.value, tmpList03.pop(0))
                     curItem = item
                     if "${" in item:
-                        indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
-                        dictPattern = rf"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{\s*[^\[]+\s*}}.*\]+|{indexPattern}"
-                        nestedPattern = rf"\${{\s*[^\[}}\$]+(\.*\${{\s*[^\[]+\s*}})*\s*}}({dictPattern})*"
                         bHandle = False
                         if '"' in item and item.count('"')%2==0:
                             tmpList = regex.findall(r'"[^"]+"', item)
@@ -2042,7 +2050,7 @@ This function handle a last element of a list or dictionary
                                             else:
                                                 subItem = regex.sub(r'(\${.+$)', '"\\1"', subItem.strip())
                                         else:
-                                            subItem = __handleLastElement(subItem)   
+                                            subItem = __handleLastElement(subItem)
                                     if j < iSubItems:
                                         newSubItem = f'{newSubItem}{subItem}, '
                                     else:
@@ -2051,7 +2059,10 @@ This function handle a last element of a list or dictionary
                                 item = newSubItem
                         else:
                             if "${" in item and not bHandle:
-                                item = __handleLastElement(item)
+                                if i==iItems:
+                                    item = __handleLastElement(item)
+                                elif not regex.match(r'^[\s{]*"[^"]*"\s*$', item):
+                                    item = regex.sub('(\$.+)\s*$', '"\\1" ', item)
                         while CNameMangling.STRINGVALUE.value in item:
                             if "${" in tmpList[0]:
                                 sValue = tmpList.pop(0)
@@ -2070,6 +2081,8 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{newLine}\n"
             else:
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
+        sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
+        sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
         lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
         for key in lKeyName:
             if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
