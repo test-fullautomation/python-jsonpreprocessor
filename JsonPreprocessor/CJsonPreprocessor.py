@@ -1634,8 +1634,17 @@ to overwrite the value of this parameter."
         elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()):
             if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
                 errorMsg = oKeyChecker.errorMsg
-        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]', sInput) or regex.search(r'\[\s*\'[^\']+\'[^\]]+\]', sInput):
-            errorMsg = f"Invalid key name: {sInput}"
+        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or\
+            regex.search(r'\[[^\d\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
+            errorMsg = f"Invalid syntax: {sInput}"
+        elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
+            tmpInput = sInput
+            while regex.search(r'\[[^\[\]]+\]', tmpInput):
+                lCheck = regex.findall(r'\[[^\[\]]+\]', tmpInput)
+                for item in lCheck:
+                    if regex.match(r'^\[[^\'\$]+.+\]$', item):
+                        errorMsg = f"Invalid syntax: {sInput}"
+                tmpInput = regex.sub(r'\[[^\[\]]+\]', '', tmpInput)
         elif regex.search(r'\$+\${', sInput):
             correctKey = regex.sub(r'(\$+\${)', '${', sInput)
             errorMsg = f"Invalid key name: {sInput} - This key name must be '{correctKey}'"
