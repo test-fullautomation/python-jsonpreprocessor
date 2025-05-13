@@ -1426,7 +1426,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                     continue
             keyPattern = regex.escape(k)
             if regex.match(rf"^.+\['{keyPattern}'\]$", parentParams, regex.UNICODE):
-                parentParams = regex.sub(rf"\['{k}'\]", "", parentParams)
+                parentParams = regex.sub(rf"\['{keyPattern}'\]", "", parentParams)
             elif not recursive:
                 parentParams = ''
             __jsonUpdated(k, v, oJson, parentParams, keyNested, paramInValue, bDuplicatedHandle, recursive)
