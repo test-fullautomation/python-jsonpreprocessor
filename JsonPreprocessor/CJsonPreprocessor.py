@@ -1980,6 +1980,7 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
             if "${" in line:
+                line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line
                 tmpList03 = []
                 while regex.search(r'\${([^}]*)}', line):
