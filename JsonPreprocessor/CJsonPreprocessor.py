@@ -1465,7 +1465,7 @@ This is recrusive funtion collects all parameters which contain "." in the name.
             if isinstance(v, dict):
                 self.__checkDotInParamName(v)
 
-    def __checkNestedParam(self, sInput : str, bKey=False, bCheckKeyName=False) -> bool:
+    def __checkNestedParam(self, sInput : str, bKey=False) -> bool:
         """
 Checks nested parameter format.
 
@@ -2094,11 +2094,23 @@ This function handle a last element of a list or dictionary
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
         lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
+        tmpJsonDataUpdated = regex.sub(r":\s*\"[^\"]*\"", ": \"\"", sJsonDataUpdated)
+        tmpJsonDataUpdated = regex.sub(r"\[[^:]*:[^:]*\]", "[]", tmpJsonDataUpdated)
+        lKeyName = lKeyName + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*', tmpJsonDataUpdated)
         for key in lKeyName:
             if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
+            elif regex.match(r'^\s*\${.*$', key):
+                if key.count('${') != key.count('}'):
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets are mismatch."
+                    self.__reset()
+                    raise Exception(errorMsg)
+                elif key.count('[') != key.count(']'):
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The square brackets are mismatch."
+                    self.__reset()
+                    raise Exception(errorMsg)
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
             keyDecode = bytes(key, 'utf-8').decode('utf-8')
