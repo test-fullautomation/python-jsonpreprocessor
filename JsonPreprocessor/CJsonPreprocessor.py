@@ -1481,7 +1481,8 @@ Checks nested parameter format.
         """
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
-        pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
+        pattern2 = r"\[[0-9\.\-\+'\s]*:[0-9\.\-\+'\s]*\]|\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]|" # Slicing pattern
+        pattern2 = pattern2 + r"\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[0-9\.\-\+'\s]*\]|\[[0-9\.\-\+'\s]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]" # Slicing pattern
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
@@ -2093,10 +2094,10 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
-        lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
+        lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
         tmpJsonDataUpdated = regex.sub(r":\s*\"[^\"]*\"", ": \"\"", sJsonDataUpdated)
         tmpJsonDataUpdated = regex.sub(r"\[[^:]*:[^:]*\]", "[]", tmpJsonDataUpdated)
-        lKeyName = lKeyName + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*', tmpJsonDataUpdated)
+        lKeyName = lKeyName + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*[^\]}]', tmpJsonDataUpdated)
         for key in lKeyName:
             if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'
