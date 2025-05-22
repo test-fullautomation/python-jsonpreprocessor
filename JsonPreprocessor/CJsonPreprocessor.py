@@ -2105,11 +2105,11 @@ This function handle a last element of a list or dictionary
                 key = newKey
             elif regex.match(r'^\s*\${.*$', key):
                 if key.count('${') != key.count('}'):
-                    errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets are mismatch."
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets do not match."
                     self.__reset()
                     raise Exception(errorMsg)
                 elif key.count('[') != key.count(']'):
-                    errorMsg = f"Invalid syntax: '{key.strip()}' - The square brackets are mismatch."
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The square brackets do not match."
                     self.__reset()
                     raise Exception(errorMsg)
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
