@@ -1426,7 +1426,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                     continue
             keyPattern = regex.escape(k)
             if regex.match(rf"^.+\['{keyPattern}'\]$", parentParams, regex.UNICODE):
-                parentParams = regex.sub(rf"\['{k}'\]", "", parentParams)
+                parentParams = regex.sub(rf"\['{keyPattern}'\]", "", parentParams)
             elif not recursive:
                 parentParams = ''
             __jsonUpdated(k, v, oJson, parentParams, keyNested, paramInValue, bDuplicatedHandle, recursive)
@@ -1465,7 +1465,7 @@ This is recrusive funtion collects all parameters which contain "." in the name.
             if isinstance(v, dict):
                 self.__checkDotInParamName(v)
 
-    def __checkNestedParam(self, sInput : str, bKey=False, bCheckKeyName=False) -> bool:
+    def __checkNestedParam(self, sInput : str, bKey=False) -> bool:
         """
 Checks nested parameter format.
 
@@ -1481,7 +1481,8 @@ Checks nested parameter format.
         """
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
-        pattern2 = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]" # Slicing pattern
+        pattern2 = r"\[[0-9\.\-\+'\s]*:[0-9\.\-\+'\s]*\]|\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]|" # Slicing pattern
+        pattern2 = pattern2 + r"\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[0-9\.\-\+'\s]*\]|\[[0-9\.\-\+'\s]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]" # Slicing pattern
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
@@ -2093,12 +2094,24 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
-        lKeyName = regex.findall(r'[,\s{]*("[^:,\n]*")\s*:\s*', sJsonDataUpdated)
+        lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
+        tmpJsonDataUpdated = regex.sub(r":\s*\"[^\"]*\"", ": \"\"", sJsonDataUpdated)
+        tmpJsonDataUpdated = regex.sub(r"\[[^:]*:[^:]*\]", "[]", tmpJsonDataUpdated)
+        lKeyName = lKeyName + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*[^\]}]', tmpJsonDataUpdated)
         for key in lKeyName:
             if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
+            elif regex.match(r'^\s*\${.*$', key):
+                if key.count('${') != key.count('}'):
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets do not match."
+                    self.__reset()
+                    raise Exception(errorMsg)
+                elif key.count('[') != key.count(']'):
+                    errorMsg = f"Invalid syntax: '{key.strip()}' - The square brackets do not match."
+                    self.__reset()
+                    raise Exception(errorMsg)
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
             keyDecode = bytes(key, 'utf-8').decode('utf-8')
