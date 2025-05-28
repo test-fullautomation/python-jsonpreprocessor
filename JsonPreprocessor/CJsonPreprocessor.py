@@ -1638,6 +1638,8 @@ to overwrite the value of this parameter."
         elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or\
             regex.search(r'\[[^\d\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
             errorMsg = f"Invalid syntax: {sInput}"
+            if regex.search(r'\[\s*[\-\+]\d+\]', sInput):
+                errorMsg = f"Slicing is not supported (expression: '{sInput}')."
         elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
             tmpInput = sInput
             while regex.search(r'\[[^\[\]]+\]', tmpInput):
