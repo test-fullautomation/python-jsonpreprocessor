@@ -1653,6 +1653,8 @@ to overwrite the value of this parameter."
             errorMsg = f"Invalid key name: {sInput} - This key name must be '{correctKey}'"
         elif sInput.count('${') != sInput.count('}') or sInput.count('[') != sInput.count(']'):
             errorMsg = f"Invalid key name: {sInput} - The brackets mismatch!!!"
+        elif regex.match(r'^\s*[^\$]+\${.+$|^\s*\${.+[^}\]]\s*$', sInput):
+            errorMsg = f"Invalid key name: '{sInput}'."
         elif regex.search(r'\${[^}]*}', sInput):
             if regex.search(r'\[\s*\]', sInput):
                 errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
@@ -2075,7 +2077,7 @@ This function handle a last element of a list or dictionary
                                 if i==iItems:
                                     item = __handleLastElement(item)
                                 elif not regex.match(r'^[\s{]*"[^"]*"\s*$', item):
-                                    item = regex.sub('(\$.+)\s*$', '"\\1" ', item)
+                                    item = regex.sub('^\s*([^\s].+[^\s])\s*$', '"\\1" ', item)
                         while CNameMangling.STRINGVALUE.value in item:
                             if "${" in tmpList[0]:
                                 sValue = tmpList.pop(0)
