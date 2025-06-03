@@ -1635,15 +1635,10 @@ to overwrite the value of this parameter."
         elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()):
             if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
                 errorMsg = oKeyChecker.errorMsg
-        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput):
+        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or \
+            regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
             errorMsg = f"Invalid syntax: {sInput}"
-        elif regex.search(r'\[[^\d\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
-            tmpList = regex.findall(r'\[([^\d\]]+\d+\]|\[\d+[^\d\]]+\])', sInput)
-            for item in tmpList:
-                if regex.search(r'^(?!.*\$\{).*$', item):
-                    errorMsg = f"Invalid syntax: {sInput}"
-                    break
-            if errorMsg!='' and regex.search(r'\[\s*[\-\+]\d+\]', sInput):
+            if regex.search(r'\[\s*[\-\+]\d+\]', sInput):
                 errorMsg = f"Slicing is not supported (expression: '{sInput}')."
         elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
             tmpInput = sInput
