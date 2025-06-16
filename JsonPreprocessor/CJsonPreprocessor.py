@@ -1176,7 +1176,7 @@ This method replaces all nested parameters in key and value of a JSON object .
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             indexPattern = r"\[[\s\-\+\d]*\]"
             dictPattern = rf"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{\s*[^\[]*\s*}}.*\]+)*|{indexPattern}"
-            pattern = rf"\${{\s*[^\[}}\$]*(\.*\${{\s*[\[]*\s*}})*{dictPattern}"
+            pattern = rf"\${{\s*[^\[}}\$]*(\.*\${{\s*[\[]*\s*}})*}}*{dictPattern}"
             bValueConvertString = False
             if CNameMangling.STRINGCONVERT.value in sInputStr or regex.match(r'^\[\s*import\s*\]_\d+$', key):
                 bValueConvertString = True
@@ -1351,7 +1351,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
             elif isinstance(v, str) and self.__checkNestedParam(v):
                 if regex.search(pattern, v, regex.UNICODE):
                     if '\\' in v:
-                        v = repr(v).strip("'")
+                        v = repr(v).strip("'|\"")
                     bNested = True
                     initValue = v
                     while isinstance(v, str) and "${" in v:
