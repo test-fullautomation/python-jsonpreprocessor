@@ -1733,7 +1733,8 @@ Checks and handle dynamic path of imported file.
                 jsonException = str(error)
             else:
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    # jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    jsonException = f"{error}"
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
@@ -2167,7 +2168,8 @@ This function handle a last element of a list or dictionary
                 jsonException = str(error)
             else:
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    # jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    jsonException = f"{error}"
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
