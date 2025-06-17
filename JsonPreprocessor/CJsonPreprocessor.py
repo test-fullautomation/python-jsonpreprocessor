@@ -852,7 +852,7 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 sVar = var[0].replace(rootVar, sRootVar)
             tmpValue = __getNestedValue(sVar)
             if bConvertToStr and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
-                dataType = regex.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
+                dataType = regex.sub(r"^.+'([\p{L}]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
                 sVar = self.__removeTokenStr(sVar)
                 raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
@@ -1103,7 +1103,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 if not bDuplicatedHandle and keyNested in oJson.keys():
                     del oJson[keyNested]
                 rootKey = regex.sub(r'\[.*\]', "", k, regex.UNICODE)
-                if regex.search(r'^[0-9]+.*$', rootKey, regex.UNICODE):
+                if regex.search(r'^[\p{Nd}]+.*$', rootKey, regex.UNICODE):
                     oJson[f"{rootKey}"] = {}
                 elif rootKey not in self.JPGlobals.keys():
                     oJson[rootKey] = {}
@@ -1481,8 +1481,8 @@ Checks nested parameter format.
         """
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
-        pattern2 = r"\[[0-9\.\-\+'\s]*:[0-9\.\-\+'\s]*\]|\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]|" # Slicing pattern
-        pattern2 = pattern2 + r"\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[0-9\.\-\+'\s]*\]|\[[0-9\.\-\+'\s]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]" # Slicing pattern
+        pattern2 = r"\[[\p{Nd}\.\-\+'\s]*:[\p{Nd}\.\-\+'\s]*\]|\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]|" # Slicing pattern
+        pattern2 = pattern2 + r"\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\p{Nd}\.\-\+'\s]*\]|\[[\p{Nd}\.\-\+'\s]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]" # Slicing pattern
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
@@ -1508,8 +1508,8 @@ Checks nested parameter format.
         if regex.search(rf"\${{\s*[^{regex.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, regex.UNICODE):
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in \
 the parameter '{self.__removeTokenStr(sInput)}'"
-        elif regex.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, regex.UNICODE):
-            invalidElem = regex.search(r"\[([0-9\s]*[A-Za-z_]+[0-9\s]*)\]", sInput, regex.UNICODE)[1]
+        elif regex.search(r"\[[\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*\]", sInput, regex.UNICODE):
+            invalidElem = regex.search(r"\[([\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*)\]", sInput, regex.UNICODE)[1]
             errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {self.__removeTokenStr(sInput)} \
 need to be referenced using ${{{invalidElem}}} or enclosed in quotes ['{invalidElem}']."
         elif regex.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
@@ -1530,8 +1530,8 @@ expression '{self.__removeTokenStr(sInput.strip())}'."
         elif (not regex.match(r"^\${.+[}\]]+$", sInput) or (regex.search(pattern1, sInput) and not bKey)) \
             and not self.bJSONPreCheck:
             if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
-                sTmpInput = regex.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
-                if not regex.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                sTmpInput = regex.sub(r"(\.\${[\p{L}\p{Nd}\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                if not regex.match(r"^\s*\${[\p{L}\p{Nd}\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
                     errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
             elif CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
@@ -2003,7 +2003,7 @@ This function handle a last element of a list or dictionary
                         break
                 tmpList01 = regex.findall(r"(\"[^\"]+\")", line)
                 line = regex.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
-                slicingPattern = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]"
+                slicingPattern = r"\[[\p{L}\p{Nd}\.\-\+\${}'\s]*:[\p{L}\p{Nd}\.\-\+\${}'\s]*\]"
                 tmpList02 = regex.findall(slicingPattern, line)
                 line = regex.sub(slicingPattern, CNameMangling.SLICEINDEX.value, line)
                 indexPattern = r"\[[\s\-\+\d]*\]"
@@ -2179,7 +2179,7 @@ This function handle a last element of a list or dictionary
         if firstLevel:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
-                if regex.match(r"^[0-9]+.*$", k) or regex.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
+                if regex.match(r"^[\p{Nd}]+.*$", k) or regex.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
                     or CNameMangling.DUPLICATEDKEY_01.value in k:
                     continue
                 if k in self.lDataTypes:
