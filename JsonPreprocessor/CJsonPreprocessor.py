@@ -52,6 +52,7 @@ import sys
 import copy
 import shlex
 import hashlib
+import unicodedata
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -553,6 +554,36 @@ Loads a given json file or json content and filters all C/C++ style comments.
         pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
         sContentCleaned=regex.sub(pattern, replacer, sContent)
         return sContentCleaned
+
+    def __NomalizeDigits(self, sInput : str) -> str:
+        """
+Convert/Replace all Unicode digits inside square brackets like [<digits>] to [<ASCII digits>].
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+  The string which need to find and convert Unicode digits to ASCII digits.
+
+**Returns:**
+
+* ``sOutput``
+
+  / *Type*: str /
+
+  The string contains only ASCII digits index.
+        """
+        pattern = r'\[\s*(\p{Nd}+)\s*\]'
+
+        # Replace using the ASCII equivalent
+        def replacer(match):
+            digits = match.group(1)
+            asciiDigits = ''.join(str(unicodedata.decimal(item)) for item in digits)
+            return f'[{asciiDigits}]'
+        
+        return regex.sub(pattern, replacer, sInput)
 
     def __checkParamName(self, sInput: str) -> str:
         """
@@ -2097,6 +2128,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{newLine}\n"
             else:
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
+        sJsonDataUpdated = self.__NomalizeDigits(sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
         lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
