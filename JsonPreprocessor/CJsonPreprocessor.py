@@ -214,6 +214,125 @@ Retrieve the path from this node to the root.
     #     for child in self.children.values():
     #         child.display(level + 1)
 
+class CTextProcessor():
+    @staticmethod
+    def loadAndRemoveComments(jsonP : str, isFile = True) -> str:
+        """
+Loads a given json file or json content and filters all C/C++ style comments.
+
+**Arguments:**
+
+* ``jsonP``
+
+  / *Condition*: required / *Type*: str /
+
+  Path of file to be processed or a JSONP content.
+
+* ``isFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Indicates the jsonP is a path of file or a JSONP content, default value is True.
+
+**Returns:**
+
+* ``sContentCleaned``
+
+  / *Type*: str /
+
+  String version of JSON file after removing all comments.
+        """
+        def replacer(match):
+            s = match.group(0)
+            if s.startswith('/'):
+                return ""
+            else:
+                return s
+
+        if isFile:
+            file=open(jsonP, mode='r', encoding='utf-8')
+            sContent=file.read()
+            file.close()
+        else:
+            sContent = jsonP
+
+        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
+        sContentCleaned=regex.sub(pattern, replacer, sContent)
+        return sContentCleaned
+
+    @staticmethod
+    def multipleReplace(sInput : str, dReplacements : str) -> str:
+        """
+    Replaces multiple parts in a string.
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+**Returns:**
+
+* ``sOutput``
+
+  / *Type*: str /
+
+        """
+        pattern = regex.compile('|'.join(regex.escape(key) for key in dReplacements.keys()))
+        sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
+        return sOutput
+
+    @staticmethod
+    def normalizeDigits(sInput : str) -> str:
+        """
+Convert/Replace all Unicode digits inside square brackets like [<digits>] to [<ASCII digits>].
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+  The string which need to find and convert Unicode digits to ASCII digits.
+
+**Returns:**
+
+* ``sOutput``
+
+  / *Type*: str /
+
+  The string contains only ASCII digits within brackets.
+
+**Raises:**
+
+ * ``TypeError``: If sInput is not a string.
+        """
+        # Validate input type
+        if not isinstance(sInput, str):
+            errorMsg = f'Invalid input type: {type(sInput)}. Expected str.'
+            raise Exception(errorMsg)
+        
+        # Define regex pattern to match Unicode digits within brackets
+        pattern = r'\[\s*(\p{Nd}+)\s*\]'
+
+        # Replace using the ASCII equivalent
+        def replacer(match):
+            digits = match.group(1)
+            try:
+                asciiDigits = ''.join(str(unicodedata.decimal(item)) for item in digits)
+                return f'[{asciiDigits}]'
+            except ValueError as e:
+                # retain original match if conversion fails without further message
+                return match.group(0)
+        
+        try:
+            # Perform the replacement
+            result = regex.sub(pattern, replacer, sInput)
+        except regex.error as e:
+            errorMsg = f'Could not replace Unicode digits with their ASCII equivalents. Regex error occurred: {e}'
+            raise Exception(errorMsg)
+        return result
+
 class CJsonPreprocessor():
     """
 CJsonPreprocessor extends the JSON syntax by the following features:
@@ -456,9 +575,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 dotFormatKey = key
                             # Check and ignore duplicated keys handling at the top level of JSONP
                             if  not (k1 in self.jsonCheck.keys() and dotFormatKey in self.jsonCheck.keys()) \
-                                or self.__multipleReplace(key, {"${":"", "}":""}) == self.__multipleReplace(k1, {"${":"", "}":""}):
+                                or CTextProcessor.multipleReplace(key, {"${":"", "}":""}) == CTextProcessor.multipleReplace(k1, {"${":"", "}":""}):
                                 bCheck = True
-                                tmpKey = self.__multipleReplace(key, {"${":"", "}":""})
+                                tmpKey = CTextProcessor.multipleReplace(key, {"${":"", "}":""})
                                 items = []
                                 if regex.search(rf'\[\'*[^{regex.escape(specialCharacters)}]+\'*\]', tmpKey, regex.UNICODE):
                                     try:
@@ -511,80 +630,6 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             i+=1
         return out_dict
 
-    def __loadAndRemoveComments(self, jsonP : str, isFile = True) -> str:
-        """
-Loads a given json file or json content and filters all C/C++ style comments.
-
-**Arguments:**
-
-* ``jsonP``
-
-  / *Condition*: required / *Type*: str /
-
-  Path of file to be processed or a JSONP content.
-
-* ``isFile``
-
-  / *Condition*: required / *Type*: bool /
-
-  Indicates the jsonP is a path of file or a JSONP content, default value is True.
-
-**Returns:**
-
-* ``sContentCleaned``
-
-  / *Type*: str /
-
-  String version of JSON file after removing all comments.
-        """
-        def replacer(match):
-            s = match.group(0)
-            if s.startswith('/'):
-                return ""
-            else:
-                return s
-
-        if isFile:
-            file=open(jsonP, mode='r', encoding='utf-8')
-            sContent=file.read()
-            file.close()
-        else:
-            sContent = jsonP
-
-        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
-        sContentCleaned=regex.sub(pattern, replacer, sContent)
-        return sContentCleaned
-
-    def __NomalizeDigits(self, sInput : str) -> str:
-        """
-Convert/Replace all Unicode digits inside square brackets like [<digits>] to [<ASCII digits>].
-
-**Arguments:**
-
-* ``sInput``
-
-  / *Condition*: required / *Type*: str /
-
-  The string which need to find and convert Unicode digits to ASCII digits.
-
-**Returns:**
-
-* ``sOutput``
-
-  / *Type*: str /
-
-  The string contains only ASCII digits index.
-        """
-        pattern = r'\[\s*(\p{Nd}+)\s*\]'
-
-        # Replace using the ASCII equivalent
-        def replacer(match):
-            digits = match.group(1)
-            asciiDigits = ''.join(str(unicodedata.decimal(item)) for item in digits)
-            return f'[{asciiDigits}]'
-        
-        return regex.sub(pattern, replacer, sInput)
-
     def __checkParamName(self, sInput: str) -> str:
         """
 Checks a parameter name, in case the name is conflict with Python keywords, the temporary prefix
@@ -611,27 +656,6 @@ Json object.
             if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in self.JPGlobals.keys():
                 sInput = regex.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
         return sInput
-    
-    def __multipleReplace(self, sInput : str, dReplacements : str) -> str:
-        """
-    Replaces multiple parts in a string.
-
-**Arguments:**
-
-* ``sInput``
-
-  / *Condition*: required / *Type*: str /
-
-**Returns:**
-
-* ``sOutput``
-
-  / *Type*: str /
-
-        """
-        pattern = regex.compile('|'.join(regex.escape(key) for key in dReplacements.keys()))
-        sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
-        return sOutput
     
     def __parseDictPath(self, sInput : str) -> list:
         """
@@ -689,7 +713,7 @@ This method handles nested variables in parameter names or values. Variable synt
   List of resolved variables which contains in the ``sInputStr``.
         """
         def __getNestedValue(sNestedParam : str):
-            sParameter = self.__multipleReplace(sNestedParam, {"$${":"", "}":""})
+            sParameter = CTextProcessor.multipleReplace(sNestedParam, {"$${":"", "}":""})
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
             oTmpObj = self.JPGlobals
@@ -850,7 +874,7 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 rootVar = regex.search(pattern, sInputStr, regex.UNICODE)[0]
                 sRootVar = self.__handleDotInNestedParam(rootVar) if regex.search(r'\${.+\..+}', rootVar) else rootVar
                 sInputStr = sInputStr.replace(rootVar, sRootVar)
-                return self.__multipleReplace(sInputStr, {"$${":"", "}":""})
+                return CTextProcessor.multipleReplace(sInputStr, {"$${":"", "}":""})
             var = regex.search(tmpPattern, sInputStr, regex.UNICODE)
             if var==None:
                 sVar = self.__handleDotInNestedParam(sInputStr) if regex.search(r'\${.+\..+}', sInputStr) else sInputStr
@@ -1390,7 +1414,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                         if v.count('${')==1 and CNameMangling.STRINGCONVERT.value not in v:
                             if regex.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
-                                paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
+                                paramInValue = CTextProcessor.multipleReplace(paramInValue, {'${':'', '}':''})
                         # Check datatype of [import] value 
                         if regex.match(r'^\[\s*import\s*\]_\d+$', k):
                             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
@@ -1835,7 +1859,7 @@ This method is the entry point of JsonPreprocessor.
 
         self.jsonPath = os.path.dirname(jFile)
         try:
-            sJsonData= self.__loadAndRemoveComments(jFile)
+            sJsonData= CTextProcessor.loadAndRemoveComments(jFile)
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
@@ -1881,7 +1905,7 @@ This function handles duplicated keys in a list which including dict elements.
                         self.__reset()
                         formatOverwritten1 = regex.sub(r'^\[([^\[]+)\]', '${\\1}', parentParams)
                         formatOverwritten1 = formatOverwritten1 + f"['{key}']"
-                        formatOverwritten2 = self.__multipleReplace(parentParams, {"][":".", "][":".", "[":"", "]":"", "]":"", "'":""})
+                        formatOverwritten2 = CTextProcessor.multipleReplace(parentParams, {"][":".", "][":".", "[":"", "]":"", "]":"", "'":""})
                         formatOverwritten2 = f"${{{formatOverwritten2}.{key}}}"
                         raise Exception(f"Missing scope for parameter '${{{key}}}'. To change the value of this parameter, \
 an absolute path must be used: '{formatOverwritten1}' or '{formatOverwritten2}'.")
@@ -1991,7 +2015,7 @@ This function handle a last element of a list or dictionary
             self.currentNode = self.importTree
         if self.masterFile is None or not firstLevel:
             try:
-                sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
+                sJsonData= CTextProcessor.loadAndRemoveComments(sJsonpContent, isFile=False)
             except Exception as reason:
                 self.__reset()
                 raise Exception(f"Could not read JSONP content due to: '{reason}'!")
@@ -2128,7 +2152,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{newLine}\n"
             else:
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
-        sJsonDataUpdated = self.__NomalizeDigits(sJsonDataUpdated)
+        sJsonDataUpdated = CTextProcessor.normalizeDigits(sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
         lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
