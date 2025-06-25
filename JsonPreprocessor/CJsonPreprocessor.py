@@ -1693,7 +1693,7 @@ to overwrite the value of this parameter."
         elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or \
             regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
             errorMsg = f"Invalid syntax: {sInput}"
-            if regex.search(r'\[\s*[\-\+]\d+\]', sInput):
+            if regex.search(r'\[\s*[\-\+:]\d+\s*\]', sInput) or regex.search(r'\[\s*\d+:\s*\]', sInput):
                 errorMsg = f"Slicing is not supported (expression: '{sInput}')."
         elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
             tmpInput = sInput
@@ -2165,7 +2165,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
             elif regex.match(r'^\s*\${.*$', key):
-                if key.count('${') != key.count('}'):
+                if key.count('{') != key.count('}'):
                     errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets do not match."
                     self.__reset()
                     raise Exception(errorMsg)
