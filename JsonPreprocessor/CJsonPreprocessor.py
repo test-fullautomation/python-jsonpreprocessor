@@ -2133,7 +2133,10 @@ This function handle a last element of a list or dictionary
                                 if i==iItems:
                                     item = __handleLastElement(item)
                                 elif not regex.match(r'^[\s{]*"[^"]*"\s*$', item):
-                                    item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1"\\2" ', item)
+                                    if CNameMangling.STRINGVALUE.value in item:
+                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1\'\\2\' ', item)
+                                    else:
+                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1"\\2" ', item)
                         while CNameMangling.STRINGVALUE.value in item:
                             if "${" in tmpList[0]:
                                 sValue = tmpList.pop(0)
