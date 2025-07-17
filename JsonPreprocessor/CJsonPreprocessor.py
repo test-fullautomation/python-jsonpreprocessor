@@ -261,7 +261,7 @@ Loads a given json file or json content and filters all C/C++ style comments.
         return sContentCleaned
 
     @staticmethod
-    def multipleReplace(sInput : str, dReplacements : str) -> str:
+    def multipleReplace(sInput : str, dReplacements : dict) -> str:
         """
     Replaces multiple parts in a string.
 
@@ -386,6 +386,7 @@ Constructor
             self.keyPattern = keyPattern
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
+        self.pyCallPattern     = r'<<\s*eval(?:(?!<<\s*eval|>>).)*>>' # The pattern of call Python builtin function in JSONP
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.importTree      = None
@@ -776,6 +777,9 @@ Reason: Key error {error}"
                     raise Exception(errorMsg)
             return tmpValue
         
+        bPyBuiltIn = False
+        if regex.match(self.pyCallPattern, sInputStr):
+            bPyBuiltIn = True
         specialCharacters = r'[]{}'
         pattern = rf'\$\${{\s*[^{regex.escape(specialCharacters)}]+\s*}}'
         referVars = regex.findall(f"({pattern})", sInputStr, regex.UNICODE)
@@ -805,7 +809,7 @@ Reason: Key error {error}"
                 if self.bJSONPreCheck:
                     if "${" in tmpValue and bConvertToStr:
                         tmpValue = tmpValue + CNameMangling.STRINGCONVERT.value
-                if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
+                if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr and not bPyBuiltIn:
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
                     raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
@@ -1404,7 +1408,20 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
             elif isinstance(v, list):
                 v = __handleList(v, bNested, parentParams)
             elif isinstance(v, str) and self.__checkNestedParam(v):
-                if regex.search(pattern, v, regex.UNICODE):
+                # Check and handle the Python builtIn in JSONP
+                if regex.match(self.pyCallPattern, v):
+                    if regex.match(r'^\s*<<\s*eval\s*>>\s*$', v):
+                        errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
+                        self.__reset()
+                        raise Exception(errorMsg)
+                    elif "${" not in v:
+                        try:
+                            v = self.__pyBuiltInHandle(v)
+                        except Exception as error:
+                            errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(v)}. Reason: {str(error)}"
+                            self.__reset()
+                            raise Exception(errorMsg)
+                if isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
                     if '\\' in v:
                         v = repr(v).strip("'|\"")
                     bNested = True
@@ -1427,6 +1444,14 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 self.__reset()
                                 raise Exception(errorMsg)
                         v = __loadNestedValue(initValue, v, key=k)
+                        # Check and handle the Python builtIn in JSONP
+                        if isinstance(v, str) and regex.match(self.pyCallPattern, v):
+                            try:
+                                v = self.__pyBuiltInHandle(v)
+                            except Exception as error:
+                                errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(initValue)}. Reason: {str(error)}"
+                                self.__reset()
+                                raise Exception(errorMsg)
                         # Handle dynamic import value
                         if regex.match(r'^\[\s*import\s*\]_\d+$', k):
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
@@ -1538,6 +1563,8 @@ Checks nested parameter format.
         pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
         pattern2 = r"\[[\p{Nd}\.\-\+'\s]*:[\p{Nd}\.\-\+'\s]*\]|\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]|" # Slicing pattern
         pattern2 = pattern2 + r"\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\p{Nd}\.\-\+'\s]*\]|\[[\p{Nd}\.\-\+'\s]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]" # Slicing pattern
+        if not bKey and regex.match(self.pyCallPattern, sInput):
+            return True
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
@@ -1819,6 +1846,20 @@ Checks and handle dynamic path of imported file.
             sInput = sJson
         return sInput
 
+    def __pyBuiltInHandle(self, sInput : str):
+        """
+Handles Python builtIn function.
+        """
+        sExec = regex.sub(r'<<\s*eval(.*)>>', "evalValue = \\1", sInput)
+        try:
+            ldict = {}
+            exec(sExec, locals(), ldict)
+            evalValue = ldict['evalValue']
+        except Exception as error:
+            raise Exception(error)
+        
+        return evalValue
+
     def jsonLoad(self, jFile : str):
         """
 This method is the entry point of JsonPreprocessor.
@@ -2040,6 +2081,9 @@ This function handle a last element of a list or dictionary
             except Exception as error:
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
+            line = line.rstrip()
+            if regex.search(self.pyCallPattern, line):
+                line = regex.sub(rf'({self.pyCallPattern})', '"\\1"', line)
             if "${" in line:
                 line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line
