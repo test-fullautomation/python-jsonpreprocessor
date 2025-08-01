@@ -868,5 +868,11 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 10.04.2025 - 17:21:06
+Test JPP_2100 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code
+Expectation: JsonPreprocessor returns expected values
+Comment....: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454
+Hint.......: Test needs to be adapted after bugfixing
+------------------------------------------------------------------------------------------------------------------------
+Generated: 18.07.2025 - 16:02:56
 
