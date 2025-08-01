@@ -52,6 +52,7 @@ import sys
 import copy
 import shlex
 import hashlib
+import unicodedata
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -213,6 +214,125 @@ Retrieve the path from this node to the root.
     #     for child in self.children.values():
     #         child.display(level + 1)
 
+class CTextProcessor():
+    @staticmethod
+    def loadAndRemoveComments(jsonP : str, isFile = True) -> str:
+        """
+Loads a given json file or json content and filters all C/C++ style comments.
+
+**Arguments:**
+
+* ``jsonP``
+
+  / *Condition*: required / *Type*: str /
+
+  Path of file to be processed or a JSONP content.
+
+* ``isFile``
+
+  / *Condition*: required / *Type*: bool /
+
+  Indicates the jsonP is a path of file or a JSONP content, default value is True.
+
+**Returns:**
+
+* ``sContentCleaned``
+
+  / *Type*: str /
+
+  String version of JSON file after removing all comments.
+        """
+        def replacer(match):
+            s = match.group(0)
+            if s.startswith('/'):
+                return ""
+            else:
+                return s
+
+        if isFile:
+            file=open(jsonP, mode='r', encoding='utf-8')
+            sContent=file.read()
+            file.close()
+        else:
+            sContent = jsonP
+
+        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
+        sContentCleaned=regex.sub(pattern, replacer, sContent)
+        return sContentCleaned
+
+    @staticmethod
+    def multipleReplace(sInput : str, dReplacements : dict) -> str:
+        """
+    Replaces multiple parts in a string.
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+**Returns:**
+
+* ``sOutput``
+
+  / *Type*: str /
+
+        """
+        pattern = regex.compile('|'.join(regex.escape(key) for key in dReplacements.keys()))
+        sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
+        return sOutput
+
+    @staticmethod
+    def normalizeDigits(sInput : str) -> str:
+        """
+Convert/Replace all Unicode digits inside square brackets like [<digits>] to [<ASCII digits>].
+
+**Arguments:**
+
+* ``sInput``
+
+  / *Condition*: required / *Type*: str /
+
+  The string which need to find and convert Unicode digits to ASCII digits.
+
+**Returns:**
+
+* ``sOutput``
+
+  / *Type*: str /
+
+  The string contains only ASCII digits within brackets.
+
+**Raises:**
+
+ * ``TypeError``: If sInput is not a string.
+        """
+        # Validate input type
+        if not isinstance(sInput, str):
+            errorMsg = f'Invalid input type: {type(sInput)}. Expected str.'
+            raise Exception(errorMsg)
+        
+        # Define regex pattern to match Unicode digits within brackets
+        pattern = r'\[\s*(\p{Nd}+)\s*\]'
+
+        # Replace using the ASCII equivalent
+        def replacer(match):
+            digits = match.group(1)
+            try:
+                asciiDigits = ''.join(str(unicodedata.decimal(item)) for item in digits)
+                return f'[{asciiDigits}]'
+            except ValueError as e:
+                # retain original match if conversion fails without further message
+                return match.group(0)
+        
+        try:
+            # Perform the replacement
+            result = regex.sub(pattern, replacer, sInput)
+        except regex.error as e:
+            errorMsg = f'Could not replace Unicode digits with their ASCII equivalents. Regex error occurred: {e}'
+            raise Exception(errorMsg)
+        return result
+
 class CJsonPreprocessor():
     """
 CJsonPreprocessor extends the JSON syntax by the following features:
@@ -266,6 +386,7 @@ Constructor
             self.keyPattern = keyPattern
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
+        self.pyCallPattern     = r'<<\s*eval(?:(?!<<\s*eval|>>).)*>>' # The pattern of call Python builtin function in JSONP
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.importTree      = None
@@ -455,9 +576,9 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
                                 dotFormatKey = key
                             # Check and ignore duplicated keys handling at the top level of JSONP
                             if  not (k1 in self.jsonCheck.keys() and dotFormatKey in self.jsonCheck.keys()) \
-                                or self.__multipleReplace(key, {"${":"", "}":""}) == self.__multipleReplace(k1, {"${":"", "}":""}):
+                                or CTextProcessor.multipleReplace(key, {"${":"", "}":""}) == CTextProcessor.multipleReplace(k1, {"${":"", "}":""}):
                                 bCheck = True
-                                tmpKey = self.__multipleReplace(key, {"${":"", "}":""})
+                                tmpKey = CTextProcessor.multipleReplace(key, {"${":"", "}":""})
                                 items = []
                                 if regex.search(rf'\[\'*[^{regex.escape(specialCharacters)}]+\'*\]', tmpKey, regex.UNICODE):
                                     try:
@@ -510,50 +631,6 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
             i+=1
         return out_dict
 
-    def __loadAndRemoveComments(self, jsonP : str, isFile = True) -> str:
-        """
-Loads a given json file or json content and filters all C/C++ style comments.
-
-**Arguments:**
-
-* ``jsonP``
-
-  / *Condition*: required / *Type*: str /
-
-  Path of file to be processed or a JSONP content.
-
-* ``isFile``
-
-  / *Condition*: required / *Type*: bool /
-
-  Indicates the jsonP is a path of file or a JSONP content, default value is True.
-
-**Returns:**
-
-* ``sContentCleaned``
-
-  / *Type*: str /
-
-  String version of JSON file after removing all comments.
-        """
-        def replacer(match):
-            s = match.group(0)
-            if s.startswith('/'):
-                return ""
-            else:
-                return s
-
-        if isFile:
-            file=open(jsonP, mode='r', encoding='utf-8')
-            sContent=file.read()
-            file.close()
-        else:
-            sContent = jsonP
-
-        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
-        sContentCleaned=regex.sub(pattern, replacer, sContent)
-        return sContentCleaned
-
     def __checkParamName(self, sInput: str) -> str:
         """
 Checks a parameter name, in case the name is conflict with Python keywords, the temporary prefix
@@ -580,27 +657,6 @@ Json object.
             if "." in param and CNameMangling.AVOIDDATATYPE.value + param.split('.')[0] in self.JPGlobals.keys():
                 sInput = regex.sub(param, CNameMangling.AVOIDDATATYPE.value + param, sInput, count=1)
         return sInput
-    
-    def __multipleReplace(self, sInput : str, dReplacements : str) -> str:
-        """
-    Replaces multiple parts in a string.
-
-**Arguments:**
-
-* ``sInput``
-
-  / *Condition*: required / *Type*: str /
-
-**Returns:**
-
-* ``sOutput``
-
-  / *Type*: str /
-
-        """
-        pattern = regex.compile('|'.join(regex.escape(key) for key in dReplacements.keys()))
-        sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
-        return sOutput
     
     def __parseDictPath(self, sInput : str) -> list:
         """
@@ -658,7 +714,7 @@ This method handles nested variables in parameter names or values. Variable synt
   List of resolved variables which contains in the ``sInputStr``.
         """
         def __getNestedValue(sNestedParam : str):
-            sParameter = self.__multipleReplace(sNestedParam, {"$${":"", "}":""})
+            sParameter = CTextProcessor.multipleReplace(sNestedParam, {"$${":"", "}":""})
             lElements = self.__parseDictPath(sParameter)
             sExec = "value = self.JPGlobals"
             oTmpObj = self.JPGlobals
@@ -721,6 +777,9 @@ Reason: Key error {error}"
                     raise Exception(errorMsg)
             return tmpValue
         
+        bPyBuiltIn = False
+        if regex.match(self.pyCallPattern, sInputStr):
+            bPyBuiltIn = True
         specialCharacters = r'[]{}'
         pattern = rf'\$\${{\s*[^{regex.escape(specialCharacters)}]+\s*}}'
         referVars = regex.findall(f"({pattern})", sInputStr, regex.UNICODE)
@@ -750,7 +809,7 @@ Reason: Key error {error}"
                 if self.bJSONPreCheck:
                     if "${" in tmpValue and bConvertToStr:
                         tmpValue = tmpValue + CNameMangling.STRINGCONVERT.value
-                if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr:
+                if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr and not bPyBuiltIn:
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
                     raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
@@ -819,7 +878,7 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 rootVar = regex.search(pattern, sInputStr, regex.UNICODE)[0]
                 sRootVar = self.__handleDotInNestedParam(rootVar) if regex.search(r'\${.+\..+}', rootVar) else rootVar
                 sInputStr = sInputStr.replace(rootVar, sRootVar)
-                return self.__multipleReplace(sInputStr, {"$${":"", "}":""})
+                return CTextProcessor.multipleReplace(sInputStr, {"$${":"", "}":""})
             var = regex.search(tmpPattern, sInputStr, regex.UNICODE)
             if var==None:
                 sVar = self.__handleDotInNestedParam(sInputStr) if regex.search(r'\${.+\..+}', sInputStr) else sInputStr
@@ -852,7 +911,7 @@ the expression '{sNestedParam}' is not allowed! Composite data types like lists 
                 sVar = var[0].replace(rootVar, sRootVar)
             tmpValue = __getNestedValue(sVar)
             if bConvertToStr and (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
-                dataType = regex.sub(r"^.+'([a-zA-Z]+)'.*$", "\\1", str(type(tmpValue)))
+                dataType = regex.sub(r"^.+'([\p{L}]+)'.*$", "\\1", str(type(tmpValue)))
                 self.__reset()
                 sVar = self.__removeTokenStr(sVar)
                 raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
@@ -1103,7 +1162,7 @@ This method replaces all nested parameters in key and value of a JSON object .
                 if not bDuplicatedHandle and keyNested in oJson.keys():
                     del oJson[keyNested]
                 rootKey = regex.sub(r'\[.*\]', "", k, regex.UNICODE)
-                if regex.search(r'^[0-9]+.*$', rootKey, regex.UNICODE):
+                if regex.search(r'^[\p{Nd}]+.*$', rootKey, regex.UNICODE):
                     oJson[f"{rootKey}"] = {}
                 elif rootKey not in self.JPGlobals.keys():
                     oJson[rootKey] = {}
@@ -1176,7 +1235,7 @@ This method replaces all nested parameters in key and value of a JSON object .
         def __loadNestedValue(initValue: str, sInputStr: str, bKey=False, key=''):
             indexPattern = r"\[[\s\-\+\d]*\]"
             dictPattern = rf"(\[+\s*'[^\$\[\]\(\)]+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{\s*[^\[]*\s*}}.*\]+)*|{indexPattern}"
-            pattern = rf"\${{\s*[^\[}}\$]*(\.*\${{\s*[\[]*\s*}})*{dictPattern}"
+            pattern = rf"\${{\s*[^\[}}\$]*(\.*\${{\s*[\[]*\s*}})*}}*{dictPattern}"
             bValueConvertString = False
             if CNameMangling.STRINGCONVERT.value in sInputStr or regex.match(r'^\[\s*import\s*\]_\d+$', key):
                 bValueConvertString = True
@@ -1349,9 +1408,22 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
             elif isinstance(v, list):
                 v = __handleList(v, bNested, parentParams)
             elif isinstance(v, str) and self.__checkNestedParam(v):
-                if regex.search(pattern, v, regex.UNICODE):
+                # Check and handle the Python builtIn in JSONP
+                if regex.match(self.pyCallPattern, v):
+                    if regex.match(r'^\s*<<\s*eval\s*>>\s*$', v):
+                        errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
+                        self.__reset()
+                        raise Exception(errorMsg)
+                    elif "${" not in v:
+                        try:
+                            v = self.__pyBuiltInHandle(v)
+                        except Exception as error:
+                            errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(v)}. Reason: {str(error)}"
+                            self.__reset()
+                            raise Exception(errorMsg)
+                if isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
                     if '\\' in v:
-                        v = repr(v).strip("'")
+                        v = repr(v).strip("'|\"")
                     bNested = True
                     initValue = v
                     while isinstance(v, str) and "${" in v:
@@ -1359,7 +1431,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                         if v.count('${')==1 and CNameMangling.STRINGCONVERT.value not in v:
                             if regex.search(r'\${.+\..+}', v):
                                 paramInValue = self.__handleDotInNestedParam(v)
-                                paramInValue = self.__multipleReplace(paramInValue, {'${':'', '}':''})
+                                paramInValue = CTextProcessor.multipleReplace(paramInValue, {'${':'', '}':''})
                         # Check datatype of [import] value 
                         if regex.match(r'^\[\s*import\s*\]_\d+$', k):
                             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', v)
@@ -1372,6 +1444,14 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 self.__reset()
                                 raise Exception(errorMsg)
                         v = __loadNestedValue(initValue, v, key=k)
+                        # Check and handle the Python builtIn in JSONP
+                        if isinstance(v, str) and regex.match(self.pyCallPattern, v):
+                            try:
+                                v = self.__pyBuiltInHandle(v)
+                            except Exception as error:
+                                errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(initValue)}. Reason: {str(error)}"
+                                self.__reset()
+                                raise Exception(errorMsg)
                         # Handle dynamic import value
                         if regex.match(r'^\[\s*import\s*\]_\d+$', k):
                             if '${' not in v and CNameMangling.DYNAMICIMPORTED.value in v:
@@ -1481,8 +1561,10 @@ Checks nested parameter format.
         """
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
         pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
-        pattern2 = r"\[[0-9\.\-\+'\s]*:[0-9\.\-\+'\s]*\]|\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]|" # Slicing pattern
-        pattern2 = pattern2 + r"\[[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*:[0-9\.\-\+'\s]*\]|\[[0-9\.\-\+'\s]*:[\s0-9\+\-]*\${.+[}\]][\s0-9\+\-]*\]" # Slicing pattern
+        pattern2 = r"\[[\p{Nd}\.\-\+'\s]*:[\p{Nd}\.\-\+'\s]*\]|\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]|" # Slicing pattern
+        pattern2 = pattern2 + r"\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\p{Nd}\.\-\+'\s]*\]|\[[\p{Nd}\.\-\+'\s]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]" # Slicing pattern
+        if not bKey and regex.match(self.pyCallPattern, sInput):
+            return True
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
@@ -1508,8 +1590,8 @@ Checks nested parameter format.
         if regex.search(rf"\${{\s*[^{regex.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, regex.UNICODE):
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in \
 the parameter '{self.__removeTokenStr(sInput)}'"
-        elif regex.search(r"\[[0-9\s]*[A-Za-z_]+[0-9\s]*\]", sInput, regex.UNICODE):
-            invalidElem = regex.search(r"\[([0-9\s]*[A-Za-z_]+[0-9\s]*)\]", sInput, regex.UNICODE)[1]
+        elif regex.search(r"\[[\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*\]", sInput, regex.UNICODE):
+            invalidElem = regex.search(r"\[([\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*)\]", sInput, regex.UNICODE)[1]
             errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {self.__removeTokenStr(sInput)} \
 need to be referenced using ${{{invalidElem}}} or enclosed in quotes ['{invalidElem}']."
         elif regex.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
@@ -1530,8 +1612,8 @@ expression '{self.__removeTokenStr(sInput.strip())}'."
         elif (not regex.match(r"^\${.+[}\]]+$", sInput) or (regex.search(pattern1, sInput) and not bKey)) \
             and not self.bJSONPreCheck:
             if CNameMangling.STRINGCONVERT.value not in sInput and CNameMangling.DUPLICATEDKEY_01.value not in sInput:
-                sTmpInput = regex.sub(r"(\.\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*)", "", sInput)
-                if not regex.match(r"^\s*\${[a-zA-Z0-9\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
+                sTmpInput = regex.sub(r"(\.\${[\p{L}\p{Nd}\.\_]+}(\[[^\[]+\])*)", "", sInput)
+                if not regex.match(r"^\s*\${[\p{L}\p{Nd}\.\_]+}(\[[^\[]+\])*\s*$", sTmpInput):
                     errorMsg = f"Invalid expression found: '{self.__removeTokenStr(sInput)}' - The double quotes are missing!!!"
             elif CNameMangling.STRINGCONVERT.value in sInput:
                 sInput = sInput.replace(CNameMangling.STRINGCONVERT.value, '')
@@ -1638,7 +1720,7 @@ to overwrite the value of this parameter."
         elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or \
             regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
             errorMsg = f"Invalid syntax: {sInput}"
-            if regex.search(r'\[\s*[\-\+]\d+\]', sInput):
+            if regex.search(r'\[\s*[\-\+:]\d+\s*\]', sInput) or regex.search(r'\[\s*\d+:\s*\]', sInput):
                 errorMsg = f"Slicing is not supported (expression: '{sInput}')."
         elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
             tmpInput = sInput
@@ -1733,7 +1815,8 @@ Checks and handle dynamic path of imported file.
                 jsonException = str(error)
             else:
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    # jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    jsonException = f"{error}"
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
@@ -1762,6 +1845,20 @@ Checks and handle dynamic path of imported file.
                 sJson = self.__preCheckJsonFile(sJson, CJSONDecoder)
             sInput = sJson
         return sInput
+
+    def __pyBuiltInHandle(self, sInput : str):
+        """
+Handles Python builtIn function.
+        """
+        sExec = regex.sub(r'<<\s*eval(.*)>>', "evalValue = \\1", sInput)
+        try:
+            ldict = {}
+            exec(sExec, locals(), ldict)
+            evalValue = ldict['evalValue']
+        except Exception as error:
+            raise Exception(error)
+        
+        return evalValue
 
     def jsonLoad(self, jFile : str):
         """
@@ -1803,7 +1900,7 @@ This method is the entry point of JsonPreprocessor.
 
         self.jsonPath = os.path.dirname(jFile)
         try:
-            sJsonData= self.__loadAndRemoveComments(jFile)
+            sJsonData= CTextProcessor.loadAndRemoveComments(jFile)
         except Exception as reason:
             self.__reset()
             raise Exception(f"Could not read json file '{jFile}' due to: '{reason}'!")
@@ -1849,7 +1946,7 @@ This function handles duplicated keys in a list which including dict elements.
                         self.__reset()
                         formatOverwritten1 = regex.sub(r'^\[([^\[]+)\]', '${\\1}', parentParams)
                         formatOverwritten1 = formatOverwritten1 + f"['{key}']"
-                        formatOverwritten2 = self.__multipleReplace(parentParams, {"][":".", "][":".", "[":"", "]":"", "]":"", "'":""})
+                        formatOverwritten2 = CTextProcessor.multipleReplace(parentParams, {"][":".", "][":".", "[":"", "]":"", "]":"", "'":""})
                         formatOverwritten2 = f"${{{formatOverwritten2}.{key}}}"
                         raise Exception(f"Missing scope for parameter '${{{key}}}'. To change the value of this parameter, \
 an absolute path must be used: '{formatOverwritten1}' or '{formatOverwritten2}'.")
@@ -1959,7 +2056,7 @@ This function handle a last element of a list or dictionary
             self.currentNode = self.importTree
         if self.masterFile is None or not firstLevel:
             try:
-                sJsonData= self.__loadAndRemoveComments(sJsonpContent, isFile=False)
+                sJsonData= CTextProcessor.loadAndRemoveComments(sJsonpContent, isFile=False)
             except Exception as reason:
                 self.__reset()
                 raise Exception(f"Could not read JSONP content due to: '{reason}'!")
@@ -1984,6 +2081,9 @@ This function handle a last element of a list or dictionary
             except Exception as error:
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
+            line = line.rstrip()
+            if regex.search(self.pyCallPattern, line):
+                line = regex.sub(rf'({self.pyCallPattern})', '"\\1"', line)
             if "${" in line:
                 line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line
@@ -2003,7 +2103,7 @@ This function handle a last element of a list or dictionary
                         break
                 tmpList01 = regex.findall(r"(\"[^\"]+\")", line)
                 line = regex.sub(r"(\"[^\"]+\")", CNameMangling.COLONS.value, line)
-                slicingPattern = r"\[[a-zA-Z0-9\.\-\+\${}'\s]*:[a-zA-Z0-9\.\-\+\${}'\s]*\]"
+                slicingPattern = r"\[[\p{L}\p{Nd}\.\-\+\${}'\s]*:[\p{L}\p{Nd}\.\-\+\${}'\s]*\]"
                 tmpList02 = regex.findall(slicingPattern, line)
                 line = regex.sub(slicingPattern, CNameMangling.SLICEINDEX.value, line)
                 indexPattern = r"\[[\s\-\+\d]*\]"
@@ -2077,7 +2177,10 @@ This function handle a last element of a list or dictionary
                                 if i==iItems:
                                     item = __handleLastElement(item)
                                 elif not regex.match(r'^[\s{]*"[^"]*"\s*$', item):
-                                    item = regex.sub('^\s*([^\s].+[^\s])\s*$', '"\\1" ', item)
+                                    if CNameMangling.STRINGVALUE.value in item:
+                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1\'\\2\' ', item)
+                                    else:
+                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1"\\2" ', item)
                         while CNameMangling.STRINGVALUE.value in item:
                             if "${" in tmpList[0]:
                                 sValue = tmpList.pop(0)
@@ -2096,6 +2199,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = f"{sJsonDataUpdated}{newLine}\n"
             else:
                 sJsonDataUpdated = f"{sJsonDataUpdated}{line}\n"
+        sJsonDataUpdated = CTextProcessor.normalizeDigits(sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
         lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
@@ -2108,7 +2212,7 @@ This function handle a last element of a list or dictionary
                 sJsonDataUpdated = sJsonDataUpdated.replace(key, newKey)
                 key = newKey
             elif regex.match(r'^\s*\${.*$', key):
-                if key.count('${') != key.count('}'):
+                if key.count('{') != key.count('}'):
                     errorMsg = f"Invalid syntax: '{key.strip()}' - The curly brackets do not match."
                     self.__reset()
                     raise Exception(errorMsg)
@@ -2167,7 +2271,8 @@ This function handle a last element of a list or dictionary
                 jsonException = str(error)
             else:
                 if failedJsonDoc is None:
-                    jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    # jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
+                    jsonException = f"{error}"
                 else:
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
@@ -2179,7 +2284,7 @@ This function handle a last element of a list or dictionary
         if firstLevel:
             oJson = __handleDuplicatedKey(oJson)
             for k, v in oJson.items():
-                if regex.match(r"^[0-9]+.*$", k) or regex.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
+                if regex.match(r"^[\p{Nd}]+.*$", k) or regex.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
                     or CNameMangling.DUPLICATEDKEY_01.value in k:
                     continue
                 if k in self.lDataTypes:
