@@ -1188,8 +1188,6 @@ This will not work (because of a key with name \pcode{A_2} does not yet exist):
 A substitution in key names is not allowed! Please update the key name "${strval}_2"
 \end{pythonlog}
 
-
-
 % --------------------------------------------------------------------------------------------------------------
 
 \newpage
@@ -1369,12 +1367,49 @@ The same error will happen in case of the standard notation is used:
 }
 \end{pythoncode}
 
+% --------------------------------------------------------------------------------------------------------------
 
+\newpage
 
+\section{Python inline code}
 
+It might be required to have access to Python builtin functions, e.g. for combining multiple lists into a single list.
+In pure Python this can be realized in the following way:
 
+\begin{pythoncode}
+A = [1,2,3]
+B = [4,5,6]
+C = A + B
+print(C)
+\end{pythoncode}
 
+With result:
 
+\begin{pythonlog}
+[1, 2, 3, 4, 5, 6]
+\end{pythonlog}
+
+In JSONP files, the implementation looks as follows:
+
+\begin{pythoncode}
+"A" : [1,2,3],
+"B" : [4,5,6],
+"C" : <\textless{}\textless{}>eval ${A} + ${B}<\textgreater{}\textgreater{}>
+\end{pythoncode}
+
+The expression \pcode{$\{A\} + $\{B\}} is handled as Python inline code. It is possible to use dollar operator expressions
+inside Python inline code to access any other parameter defined in JSONP files.
+
+\vspace{2ex}
+
+The syntax of Python inline code is:
+
+\begin{pythoncode}
+<\textless{}\textless{}>eval <(\emph{Python expression})><\textgreater{}\textgreater{}>
+\end{pythoncode}
+
+The usage of Python inline code is limited to the right hand side of the colon (\emph{key values}).
+This feature cannot be used to create key names.
 
 
 % --------------------------------------------------------------------------------------------------------------
