@@ -2125,19 +2125,5 @@ Test Use Cases
 
 ----
 
-* **Test JPP_2100**
-
-  [INLINE_CODE / GOODCASE]
-
-   **JSON file containing Python inline code**
-
-   Expected: JsonPreprocessor returns expected values
-
-   *Comment: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454*
-
-   *Hint: Test needs to be adapted after bugfixing*
-
-----
-
-Generated: 18.07.2025 - 16:02:56
+Generated: 05.08.2025 - 16:52:10
 

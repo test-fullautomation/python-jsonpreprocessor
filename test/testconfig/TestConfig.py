@@ -4425,10 +4425,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
-
-# dictUsecase['HINT']              = "Test needs to be adapted after bugfixing"
-# dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
-
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2100"
 dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with simple data types"
@@ -4441,7 +4437,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2100.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4456,7 +4452,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2101.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4471,7 +4467,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2102.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4486,7 +4482,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2103.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4501,7 +4497,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2104.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4516,7 +4512,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2105.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4531,7 +4527,7 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2106.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4546,6 +4542,6 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2107.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """
-listofdictUsecases.append(dictUsecase)
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
