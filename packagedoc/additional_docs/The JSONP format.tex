@@ -1394,7 +1394,7 @@ In JSONP files, the implementation looks as follows:
 \begin{pythoncode}
 "A" : [1,2,3],
 "B" : [4,5,6],
-"C" : <\textless{}\textless{}>eval ${A} + ${B}<\textgreater{}\textgreater{}>
+"C" : <\textless{}\textless{}>${A} + ${B}<\textgreater{}\textgreater{}>
 \end{pythoncode}
 
 The expression \pcode{$\{A\} + $\{B\}} is handled as Python inline code. It is possible to use dollar operator expressions
@@ -1405,11 +1405,22 @@ inside Python inline code to access any other parameter defined in JSONP files.
 The syntax of Python inline code is:
 
 \begin{pythoncode}
-<\textless{}\textless{}>eval <(\emph{Python expression})><\textgreater{}\textgreater{}>
+<\textless{}\textless{}><(\emph{Python expression})><\textgreater{}\textgreater{}>
 \end{pythoncode}
 
 The usage of Python inline code is limited to the right hand side of the colon (\emph{key values}).
 This feature cannot be used to create key names.
+
+The Python inline code syntax cannot be used within strings:
+
+\begin{pythoncode}
+"param" : "The value is <\textless{}\textless{}><(\emph{Python expression})><\textgreater{}\textgreater{}>"
+\end{pythoncode}
+
+
+
+
+
 
 
 % --------------------------------------------------------------------------------------------------------------

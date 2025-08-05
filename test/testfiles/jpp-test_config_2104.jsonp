@@ -13,12 +13,16 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // simple data types
-    "value1" : <<"ABC">>,
-    "value2" : <<25>>,
-    "value3" : <<2.5>>,
-    "value4" : <<True>>,
-    "value5" : <<None>>,
-    "value6" : <<null>>,
-    "value7" : <<false>>
+    // Python inline code as list index and dictionary key
+    //
+    "A"  : 0,
+    "B"  : 1,
+    "kA" : "kA",
+    "kB" : "kB",
+    //
+    "listval" : [1,2,3],
+    "dictval" : {"kA" : "vA", "kB" : "vB"},
+    //
+    "value1" : ${listval}[<<${A} if True else ${B}>>],
+    "value2" : ${dictval}[<<"${kA}" if True else "${kB}">>]
 }

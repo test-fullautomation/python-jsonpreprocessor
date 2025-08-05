@@ -13,12 +13,14 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // simple data types
-    "value1" : <<"ABC">>,
-    "value2" : <<25>>,
-    "value3" : <<2.5>>,
-    "value4" : <<True>>,
-    "value5" : <<None>>,
-    "value6" : <<null>>,
-    "value7" : <<false>>
+    // Simple conditions
+    //
+    "value1" : <<1 if True else 2>>,
+    //
+    "choice"  : True,
+    "value2" : <<1 if ${choice} else 2>>,
+    //
+    "A"       : 1,
+    "B"       : 2,
+    "value3"  : <<"${A}" if True else "${B}">>
 }

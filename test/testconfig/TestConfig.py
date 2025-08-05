@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 18.07.2025
+# 05.08.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -4425,51 +4425,126 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
+
+# dictUsecase['HINT']              = "Test needs to be adapted after bugfixing"
+# dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2100"
-dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with simple data types"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
 dictUsecase['SECTION']           = "INLINE_CODE"
 dictUsecase['SUBSECTION']        = "GOODCASE"
-dictUsecase['HINT']              = "Test needs to be adapted after bugfixing"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
 dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2100.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
-[DOTDICT] (18/1) > {A} [INT]  :  0
-[DOTDICT] (18/2) > {B} [INT]  :  1
-[DOTDICT] (18/3) > {L1} [LIST] (3/1) > [INT]  :  1
-[DOTDICT] (18/3) > {L1} [LIST] (3/2) > [INT]  :  2
-[DOTDICT] (18/3) > {L1} [LIST] (3/3) > [INT]  :  3
-[DOTDICT] (18/4) > {L2} [LIST] (3/1) > [INT]  :  4
-[DOTDICT] (18/4) > {L2} [LIST] (3/2) > [INT]  :  5
-[DOTDICT] (18/4) > {L2} [LIST] (3/3) > [INT]  :  6
-[DOTDICT] (18/5) > {kA} [STR]  :  'kA'
-[DOTDICT] (18/6) > {kB} [STR]  :  'kB'
-[DOTDICT] (18/7) > {D1} [DOTDICT] (2/1) > {kA} [STR]  :  'vA'
-[DOTDICT] (18/7) > {D1} [DOTDICT] (2/2) > {kB} [STR]  :  'vB'
-[DOTDICT] (18/8) > {choice} [BOOL]  :  True
-[DOTDICT] (18/9) > {value01} [INT]  :  10
-[DOTDICT] (18/10) > {value02} [LIST] (2/1) > [INT]  :  1
-[DOTDICT] (18/10) > {value02} [LIST] (2/2) > [INT]  :  2
-[DOTDICT] (18/11) > {value04} [INT]  :  4
-[DOTDICT] (18/12) > {code04} [STR]  :  '0 if True else 1'
-[DOTDICT] (18/13) > {value04b} [INT]  :  4
-[DOTDICT] (18/14) > {value05} [INT]  :  5
-[DOTDICT] (18/15) > {code05} [STR]  :  '0 if not True else 1'
-[DOTDICT] (18/16) > {value05b} [INT]  :  5
-[DOTDICT] (18/17) > {values01} [DOTDICT] (3/1) > {kA} [STR]  :  'A'
-[DOTDICT] (18/17) > {values01} [DOTDICT] (3/2) > {kB} [INT]  :  0
-[DOTDICT] (18/17) > {values01} [DOTDICT] (3/3) > {kC} [STR]  :  'Z'
-[DOTDICT] (18/18) > {values02} [LIST] (4/1) > [INT]  :  1
-[DOTDICT] (18/18) > {values02} [LIST] (4/2) > [INT]  :  2
-[DOTDICT] (18/18) > {values02} [LIST] (4/3) > [INT]  :  3
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/1) > [INT]  :  4
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/2) > [INT]  :  5
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/3) > [INT]  :  6
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/4) > [INT]  :  1
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/5) > [INT]  :  2
-[DOTDICT] (18/18) > {values02} [LIST] (4/4) > [LIST] (6/6) > [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2101"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with composite data types"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2101.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2102"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with simple conditions"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2102.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2103"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code within lists and dictionaries"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2103.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2104"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code as list index and dictionary key"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2104.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2105"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code in more complex scenarios"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2105.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2106"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with slicing"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required; slicing still banned"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2106.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2107"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with import paths"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Issue because of 'eval' still required; entire import interpreted as path"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2107.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
