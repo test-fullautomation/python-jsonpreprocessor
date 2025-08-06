@@ -3454,10 +3454,10 @@ class CSnippets():
     # -- Python inline code
     # --------------------------------------------------------------------------------------------------------------
 
-    # -- TODO: GOODGASE (snippets to be taken over from selftest)
+    # -- TODO: GOODCASE (snippets to be taken over from selftest)
 
 
-    # -- BADGASE (from official selftest)
+    # -- BADCASE (from official selftest)
 
       listCodeSnippets.append("""{
     // "JPP_2150"
