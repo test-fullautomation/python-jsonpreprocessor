@@ -29,6 +29,5 @@
     "C" : "C",
     "D" : "D",
     "value2" : <<${C} + ${D}>>,
-    // ?? with or without quotes ??
     "value3" : <<"${C}" + "${D}">>
 }

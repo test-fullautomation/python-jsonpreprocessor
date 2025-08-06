@@ -13,15 +13,9 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // Python inline code within lists and dictionaries
+    // Python inline code inside a dictionary returns data type not supported by JSON
     //
-    "A"      : 1,
-    "B"      : 2,
-    "choice" : True,
-    //
-    "values" : ["A", <<${A} if ${choice} else ${B}>>, "C"],
-    //
-    "values" : {"kA" : "A",
-                "kB" : <<${A} if ${choice} else ${B}>>,
-                "kC" : "C"}
+    "A" : {"kA"  : "A",
+           "now" : <<from datetime import datetime; now = datetime.now()>>,
+           "kC"  : "C"}
 }
