@@ -13,12 +13,10 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // simple data types
-    "value1" : <<"ABC">>,
-    "value2" : <<25>>,
-    "value3" : <<2.5>>,
-    "value4" : <<True>>,
-    "value5" : <<None>>,
-    "value6" : <<null>>,
-    "value7" : <<false>>
+    // Python inline code with import paths
+    //
+    "path_1" : "./dynamic_imports/AA/imported.AA.jsonp",
+    "path_2" : "./dynamic_imports/AA/BB/imported.BB.jsonp",
+    //
+    "[import]" : <<${path_1} if True else ${path_2}>>
 }

@@ -13,12 +13,22 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // simple data types
-    "value1" : <<"ABC">>,
-    "value2" : <<25>>,
-    "value3" : <<2.5>>,
-    "value4" : <<True>>,
-    "value5" : <<None>>,
-    "value6" : <<null>>,
-    "value7" : <<false>>
+    // More complex scenarios with Python inline code
+    //
+    "A"      : [1,2,3],
+    "B"      : [4,5,6],
+    "values" : <<${A} + [${B} + ${A}]>>,
+    //
+    "dict"     : {"kA" : "vA", "kB" : "vB"},
+    "key_list" : <<list(${dict}.keys())>>,
+    //
+    "value1"  : <<(${A}[0] if True else ${B.1) + 1>>,
+    "code1"   : (${A}[0] if True else ${B.1) + 1,
+    "value1b" : <<(${code04}) + 4>>,
+    //
+    "C" : "C",
+    "D" : "D",
+    "value2" : <<${C} + ${D}>>,
+    // ?? with or without quotes ??
+    "value3" : <<"${C}" + "${D}">>
 }

@@ -213,7 +213,7 @@ This feature is an option. If the user does not define the parameter ``keyPatter
 
 | ``\"A\" : [1,2,3],``
 | ``\"B\" : [4,5,6],``
-| ``\"C\" : <<eval ${A} + ${B}>>``
+| ``\"C\" : <<${A} + ${B}>>``
 
 *Result*
 

@@ -202,4 +202,3 @@ JPP_2055|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing s
 JPP_2056|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (7)
 JPP_2057|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (8)
 JPP_2058|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing scope (9)
-JPP_2100|INLINE_CODE|GOODCASE|JSON file containing Python inline code
