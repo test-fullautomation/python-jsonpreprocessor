@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 06.08.2025
+# 07.08.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -5170,6 +5170,51 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = "Feature still under construction"
 dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2191.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2192"
+dictUsecase['DESCRIPTION']       = "Python inline code is parameter name"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Feature still under construction"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2192.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2193"
+dictUsecase['DESCRIPTION']       = "Python inline code is parameter name inside a list"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Feature still under construction"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2193.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+"""
+# # # listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2194"
+dictUsecase['DESCRIPTION']       = "Python inline code is parameter name inside a dictionary"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "Feature still under construction"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2194.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = """
 """

@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.44.0"
-VERSION_DATE = "06.08.2025"
+VERSION      = "0.45.0"
+VERSION_DATE = "07.08.2025"
 #
 # **************************************************************************************************************
 
@@ -3773,6 +3773,31 @@ class CSnippets():
            "kC" : "C"}
 }
 """)
+
+      listCodeSnippets.append("""{
+    // "JPP_2192"
+    // Python inline code is parameter name
+    "value" : ${<<[3, 4] if True else [5, 6]>>}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2193"
+    // Python inline code is parameter name inside a list
+    "A" : ["B", ${<<[3, 4] if True else [5, 6]>>}, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2194"
+    // Python inline code is parameter name inside a dictionary
+    "A" : {"kA" : "A",
+           "kB" : ${<<[3, 4] if True else [5, 6]>>},
+           "kC" : "C"}
+}
+""")
+
+
 
     # -- Python inline code - old stuff (to be shortened)
 
