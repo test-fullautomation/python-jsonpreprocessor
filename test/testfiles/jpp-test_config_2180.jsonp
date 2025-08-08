@@ -13,15 +13,7 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // Python inline code within lists and dictionaries
+    // Python inline code with additional leading angle bracket
     //
-    "A"      : 1,
-    "B"      : 2,
-    "choice" : True,
-    //
-    "values" : ["A", <<${A} if ${choice} else ${B}>>, "C"],
-    //
-    "values" : {"kA" : "A",
-                "kB" : <<${A} if ${choice} else ${B}>>,
-                "kC" : "C"}
+    "A" : <<<0 if True else 1>>
 }

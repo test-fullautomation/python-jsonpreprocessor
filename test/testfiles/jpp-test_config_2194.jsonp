@@ -13,15 +13,9 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // Python inline code within lists and dictionaries
+    // Python inline code is parameter name inside a dictionary
     //
-    "A"      : 1,
-    "B"      : 2,
-    "choice" : True,
-    //
-    "values" : ["A", <<${A} if ${choice} else ${B}>>, "C"],
-    //
-    "values" : {"kA" : "A",
-                "kB" : <<${A} if ${choice} else ${B}>>,
-                "kC" : "C"}
+    "A" : {"kA" : "A",
+           "kB" : ${<<[3, 4] if True else [5, 6]>>},
+           "kC" : "C"}
 }

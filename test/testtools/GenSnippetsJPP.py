@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.38.0"
-VERSION_DATE = "10.01.2025"
+VERSION      = "0.45.0"
+VERSION_DATE = "07.08.2025"
 #
 # **************************************************************************************************************
 
@@ -3440,6 +3440,567 @@ class CSnippets():
 }
 """)
 
+   # --------------------------------------------------------------------------------------------------------------
+
+   # -- unicode digits
+
+      listCodeSnippets.append("""{
+    "listparam_൯" : [1,2,3,4,5,6,7,8,9,10],
+    "listvalue" : ${listparam_൯}[൯]
+}
+""")
+
+    # --------------------------------------------------------------------------------------------------------------
+    # -- Python inline code
+    # --------------------------------------------------------------------------------------------------------------
+
+    # -- TODO: GOODCASE (snippets to be taken over from selftest)
+
+
+    # -- BADCASE (from official selftest)
+
+      listCodeSnippets.append("""{
+    // "JPP_2150"
+    // Python inline code as embedded part of a string (1)
+    "value" : "<<[1, 2]>>"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2151"
+    // Python inline code as embedded part of a string (2)
+    "value" : "ABC <<[\"A\", \"B\"]>> DEF"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2152"
+    // Python inline code as embedded part of a string (3)
+    "A"     : [1,2,3],
+    "value" : "ABC <<${A}>> DEF"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2153"
+    // Python inline code as embedded part of a string within a list
+    "value" : ["ABC",  "<<[1, 2]>>",  "DEF"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2154"
+    // Python inline code as embedded part of a string within a dictionary
+    "value" : {"A" : 1, "B" : "<<[1, 2]>>", "C" : 1}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2155"
+    // Python inline code as embedded part of a key name (1)
+    "<<[1, 2]>>" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2156"
+    // Python inline code as embedded part of a key name (2)
+    "ABC <<[\"A\", \"B\"]>> DEF" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2157"
+    // Python inline code as embedded part of a key name (3)
+    "A"        : [1,2,3],
+    "<<${A}>>" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2158"
+    // Python inline code without quotes at left hand side of the colon (1)
+    <<1 if True else 2>> : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2159"
+    // Python inline code without quotes at left hand side of the colon (2)
+    <<"A" if True else "B">> : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2160"
+    // Python inline code within quotes at left hand side of the colon (1)
+    "<<1 if True else 2>>" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2161"
+    // Python inline code within quotes at left hand side of the colon (2)
+    "<<(\"A\" if True else \"B\">>" : 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2162"
+    // Completely invalid Python inline code at left hand side of the colon (1)
+    "A"_<<1 if True else 2>> : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2163"
+    // Completely invalid Python inline code at left hand side of the colon (2)
+    <<1 if True else 2>>_"A" : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2164"
+    // Python inline code as key name at left hand side of the colon (1)
+    ${<<1 if True else 2>>} : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2165"
+    // Python inline code as key name at left hand side of the colon (2)
+    "A" : [1,2,3],
+    ${<<1 if ${A} else 2>>} : "B"
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2166"
+    // Python inline code as list index at left hand side of the colon
+    "A" : [1,2,3],
+    ${A}[<<0 if True else 1>>] : 4
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2167"
+    // Python inline code as dictionary key at left hand side of the colon
+    "A" : {"B" : 1, "C" . 2},
+    ${A}[<<"B" if True else "C">>] : 3
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2168"
+    // Python inline code with missing leading angle bracket
+    "A" : <0 if True else 1>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2169"
+    // Python inline code with missing trailing angle bracket
+    "A" : <<0 if True else 1>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2170"
+    // Python inline code inside a list with missing leading angle bracket
+    "A" : ["B", <1 if True else 2>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2171"
+    // Python inline code inside a list with missing trailing angle bracket
+    "A" : ["B", <<1 if True else 2>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2172"
+    // Python inline code inside a dictionary with missing leading angle bracket
+    "A" : {"kA" : "A",
+           "kB" : <1 if True else 2>>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2173"
+    // Python inline code inside a dictionary with missing trailing angle bracket
+    "A" : {"kA" : "A",
+           "kB" : <<1 if True else 2>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2174"
+    // Python inline code with missing both leading angle brackets
+    "A" : 0 if True else 1>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2175"
+    // Python inline code with missing both trailing angle brackets
+    "A" : <<0 if True else 1
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2176"
+    // Python inline code inside a list with missing both leading angle brackets
+    "A" : ["B", 1 if True else 2>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2177"
+    // Python inline code inside a list with missing both trailing angle brackets
+    "A" : ["B", <<1 if True else 2, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2178"
+    // Python inline code inside a dictionary with missing both leading angle brackets
+    "A" : {"kA" : "A",
+           "kB" : 1 if True else 2>>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2179"
+    // Python inline code inside a dictionary with missing both trailing angle brackets
+    "A" : {"kA" : "A",
+           "kB" : <<1 if True else 2,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2180"
+    // Python inline code with additional leading angle bracket
+    "A" : <<<0 if True else 1>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2181"
+    // Python inline code with additional trailing angle bracket
+    "A" : <<0 if True else 1>>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2182"
+    // Python inline code inside a list with additional leading angle bracket
+    "A" : ["B", <<<1 if True else 2>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2183"
+    // Python inline code inside a list with additional trailing angle bracket
+    "A" : ["B", <<1 if True else 2>>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2184"
+    // Python inline code inside a dictionary with additional leading angle bracket
+    "A" : {"kA" : "A",
+           "kB" : <<<1 if True else 2>>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2185"
+    // Python inline code inside a dictionary with additional trailing angle bracket
+    "A" : {"kA" : "A",
+           "kB" : <<1 if True else 2>>>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2186"
+    // Python inline code returns data type not supported by JSON
+    "now" : <<from datetime import datetime; now = datetime.now()>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2187"
+    // Python inline code inside a list returns data type not supported by JSON
+    "A" : ["B", <<from datetime import datetime; now = datetime.now()>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2188"
+    // Python inline code inside a dictionary returns data type not supported by JSON
+    "A" : {"kA"  : "A",
+           "now" : <<from datetime import datetime; now = datetime.now()>>,
+           "kC"  : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2189"
+    // Nested Python inline code
+    "value" : <<[1, 2] + <<[3, 4] if True else [5, 6]>>>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2190"
+    // Nested Python inline code inside a list
+    "A" : ["B", <<[1, 2] + <<[3, 4] if True else [5, 6]>>>>, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2191"
+    // Nested Python inline code inside a dictionary
+    "A" : {"kA" : "A",
+           "kB" : <<[1, 2] + <<[3, 4] if True else [5, 6]>>>>,
+           "kC" : "C"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2192"
+    // Python inline code is parameter name
+    "value" : ${<<[3, 4] if True else [5, 6]>>}
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2193"
+    // Python inline code is parameter name inside a list
+    "A" : ["B", ${<<[3, 4] if True else [5, 6]>>}, "C"]
+}
+""")
+
+      listCodeSnippets.append("""{
+    // "JPP_2194"
+    // Python inline code is parameter name inside a dictionary
+    "A" : {"kA" : "A",
+           "kB" : ${<<[3, 4] if True else [5, 6]>>},
+           "kC" : "C"}
+}
+""")
+
+
+
+    # -- Python inline code - old stuff (to be shortened)
+
+      listCodeSnippets.append("""{
+    "A"      : 1,
+    "B"      : 2,
+    "choice" : True,
+    "value"  : <<${A} if ${choice} else ${B}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"        : 1,
+    "B"        : 4,
+    "choice"   : True,
+    "value_1"  : <<(${A} if ${choice} else ${B}) + 4>>,
+    "code_1"   : "${A} if ${choice} else ${B}",
+    "value_1b" : <<(${code_1}) + 4>>,
+    "value_2"  : <<(${A} if not ${choice} else ${B}) + 4>>,
+    "code_2"   : "${A} if not ${choice} else ${B}",
+    "value_2b" : <<(${code_2}) + 4>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "value" : <<25>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "value" : <<[1, 2]>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "value" : <<{"kA" : 1, "kB" : 2, "kC" : 3}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"      : 1,
+    "B"      : 2,
+    "choice" : True,
+    "values" : ["A", <<${A} if ${choice} else ${B}>>, "Z"] 
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"      : 1,
+    "B"      : 2,
+    "choice" : True,
+    "values" : {"kA" : "A",
+                "kB" : <<${A} if ${choice} else ${B}>>,
+                "kC" : "Z"}
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"      : [1,2,3],
+    "B"      : [4,5,6],
+    "values" : <<${A} + [${B} + ${A}]>>
+}
+""")
+
+
+      listCodeSnippets.append("""{
+    "value" : <<1 if True else 2>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "choice" : True,
+    "value"  : "<<1 if ${choice} else 2>>"
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"      : [1,2,3],
+    "B"      : [4,5,6],
+    "values" : <<${A} + <<${A} + ${B}>> >>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "value"_<<1 if True else 2>> : 25
+}
+""")
+
+      listCodeSnippets.append("""{
+    "value_<<1 if True else 2>>" : 25
+}
+""")
+
+      listCodeSnippets.append("""{
+    "choice" : True,
+    "value"_<<1 if ${choice} else 2>> : 25
+}
+""")
+
+      listCodeSnippets.append("""{
+    "code"  : "1 if True else 2",
+    "value" : <<${code>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "code"  : "1 if True else 2",
+    "value" : <<${code}>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "code"  : "1 if True else 2",
+    "value" : <eval ${code}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"     : 0,
+    "B"     : 1,
+    "C"     : [2,3,4],
+    "value" : ${C}[<<${A} if True else ${B}>>]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"     : 0,
+    "B"     : 1,
+    "C"     : [2,3,4],
+    "value" : ${C}[<<"${A}" if True else "${B}">>]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"     : "kA",
+    "B"     : "kB",
+    "C"     : {"kA" : "vA", "kB" : "vB"},
+    "value" : ${C}[<<${A} if True else ${B}>>]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A"     : "kA",
+    "B"     : "kB",
+    "C"     : {"kA" : "vA", "kB" : "vB"},
+    "value" : ${C}[<<"${A}" if True else "${B}">>]
+}
+""")
+
+      listCodeSnippets.append("""{
+    "path_1"   : "./imports/AA/imported.AA.jsonp",
+    "path_2"   : "./imports/AA/imported.X.jsonp",
+    "[import]" : <<${path_1} if True else ${path_2}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "A" : <<1 + B>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "C" : <<1 + ${D}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "D" : <<1 / 0>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "E" : 0,
+    "F" : <<1 / ${E}>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "G" : {"a" : 0, "b" : 1},
+    "H" : <<1 / ${G}['a']>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "K" : [0,1],
+    "L" : <<1 / ${K}[0]>>
+}
+""")
+
+      listCodeSnippets.append("""{
+    "dict"  : {"kA" : "vA", "kB" : "vB"},
+    "key_list" : <<list(${dict}.keys())>>
+}
+""")
+
+
+      # listCodeSnippets.append("""{
+# }
+# """)
+
+
+   # --------------------------------------------------------------------------------------------------------------
+
       # listCodeSnippets.append("""{
 # }
 # """)
@@ -3940,11 +4501,11 @@ class CSnippets():
 
    # --------------------------------------------------------------------------------------------------------------
 
-   def GetMissingBrackets(self):
-      """Missing brackets at several positions within a complex data structure
+   def GetMissingBrackets_1(self):
+      """Missing brackets at several positions within a complex data structure (1)
       """
 
-      sHeadline = "Missing brackets at several positions within a complex data structure"
+      sHeadline = "Missing brackets at several positions within a complex data structure (1)"
 
       # data structure 1
       sDataStructure1 = """   "params" : {*01* : *02*,
@@ -4012,7 +4573,129 @@ class CSnippets():
 
       return sHeadline, listCodeSnippets
 
-   # eof def GetMissingBrackets(self):
+   # eof def GetMissingBrackets_1(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetMissingBrackets_2(self):
+      """Missing brackets at several positions within a complex data structure (2)
+      """
+
+      sHeadline = "Missing brackets at several positions within a complex data structure (2)"
+
+      JSONP = """    "A" : 1, "B" : 2, "C" : 3, "D" : 4, "E" : 5, "F" : 6, "G" : 7, "H" : 8, "I" : 9, "J" : 10,
+    "params" : [
+                  11,
+                  {"A" : 12,
+                   "B" : [
+                            {
+                               "C" : 13,
+                               ${params}[1]['B'][0]['C'] : 130,
+                               "D" : 14,
+                               ${params.1.B.0.D} : 140,
+                               "E" : 15,
+                               "F" : 16,
+                               "G" : ["017", {"018" : "019"}],
+                               "H" : [{"020" : "021"}, "022"],
+                               "I" : {"023" : ["024", "025"]},
+                               "J" : {"026" : ["027", {"028" : ["029", "030"]}]}
+                            },
+                            31
+                         ]
+                  },
+                  32
+               ],
+    ${params}[1]['B'][0]['E'] : 150,
+    ${params.1.B.0.F} : 160,
+    ${params}[1]['B'][0]['J']['026'][1]['028'][0] : "0290",
+    ${params.1.B.0.J.026.1.028.1} : "0300" """
+
+      sCodeSnippetPattern = """{
+####DATASTRUCTURE####
+}
+"""
+
+      # prepare the data structure pattern (automatically out of JSONP)
+      sDataStructurePattern = ""
+
+      curly_open   = "{"
+      curly_close  = "}"
+      square_open  = "["
+      square_close = "]"
+
+      list_placeholder_curly_open   = []
+      list_placeholder_curly_close  = []
+      list_placeholder_square_open  = []
+      list_placeholder_square_close = []
+
+      cnt_brackets = 0
+
+      for char in JSONP:
+          if char == curly_open:
+              cnt_brackets = cnt_brackets + 1
+              numberstring = str(cnt_brackets).rjust(2, "0")
+              placeholder = f"##{numberstring}##"
+              sDataStructurePattern = sDataStructurePattern + placeholder
+              list_placeholder_curly_open.append(placeholder)
+          elif char == curly_close:
+              cnt_brackets = cnt_brackets + 1
+              numberstring = str(cnt_brackets).rjust(2, "0")
+              placeholder = f"##{numberstring}##"
+              sDataStructurePattern = sDataStructurePattern + placeholder
+              list_placeholder_curly_close.append(placeholder)
+          elif char == square_open:
+              cnt_brackets = cnt_brackets + 1
+              numberstring = str(cnt_brackets).rjust(2, "0")
+              placeholder = f"##{numberstring}##"
+              sDataStructurePattern = sDataStructurePattern + placeholder
+              list_placeholder_square_open.append(placeholder)
+          elif char == square_close:
+              cnt_brackets = cnt_brackets + 1
+              numberstring = str(cnt_brackets).rjust(2, "0")
+              placeholder = f"##{numberstring}##"
+              sDataStructurePattern = sDataStructurePattern + placeholder
+              list_placeholder_square_close.append(placeholder)
+          else:
+              sDataStructurePattern = sDataStructurePattern + char
+
+      nNrOfPlaceholders = len(list_placeholder_curly_open) + \
+                          len(list_placeholder_curly_close) + \
+                          len(list_placeholder_square_open) + \
+                          len(list_placeholder_square_close)
+
+      # prepare list of code snippets
+
+      listCodeSnippets = []
+
+      for number_1 in range(1, nNrOfPlaceholders+1):
+          numberstring_1 = str(number_1).rjust(2, "0")
+          placeholder_1 = f"##{numberstring_1}##"
+          sDataStructure = sDataStructurePattern # init a new data structure from pattern sDataStructurePattern
+          sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+          # remove the bracket at current position
+          sDataStructure = sDataStructure.replace(placeholder_1, "")
+          for number_2 in range(1, nNrOfPlaceholders+1):
+              numberstring_2 = str(number_2).rjust(2, "0")
+              placeholder_2 = f"##{numberstring_2}##"
+              if placeholder_2 in list_placeholder_curly_open:
+                  replacement = curly_open
+              elif placeholder_2 in list_placeholder_curly_close:
+                  replacement = curly_close
+              elif placeholder_2 in list_placeholder_square_open:
+                  replacement = square_open
+              elif placeholder_2 in list_placeholder_square_close:
+                  replacement = square_close
+              else:
+                  replacement = "" # should not happen
+              sDataStructure = sDataStructure.replace(placeholder_2, replacement)
+          # eof for number_2 in range(1, nNrOfPlaceholders+1):
+          sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+          listCodeSnippets.append(sCodeSnippet)
+      # eof for number_1 in range(1, nNrOfPlaceholders+1):
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetMissingBrackets_2(self):
 
    # --------------------------------------------------------------------------------------------------------------
 
@@ -4571,6 +5254,101 @@ class CSnippets():
 
    # --------------------------------------------------------------------------------------------------------------
 
+   def GetInlineCode(self):
+      """Python inline code at several positions within a complex data structure
+      """
+
+      sHeadline = "Python inline code at several positions within a complex data structure"
+
+    # scheme:
+    # "EvT"     : 1000,
+    # "EvF"     : 2000,
+    # # # "EvT"     : "EVAL_TRUE",
+    # # # "EvF"     : "EVAL_FALSE",
+    # "choice"  : True,
+    # "value_1" : <<..>>,
+    # "value_2" : [10, <<..>>, 11],
+    # "value_3" : [20, <<..>>, <<..>>, 22],
+    # "value_4" : [<<..>>, 30, <<..>>],
+    # "value_5" : {"kA" : 40, "kB" : <<..>>, "kC" : 41},
+    # "value_6" : {"kD" : <<..>>, "kE" : <<..>>},
+    # "value_7" : {"kF" : [<<..>>, 60], "kG" : [80, <<..>>]},
+    # "value_8" : [{"kH" : [<<..>>, 60]}, {"kM" : {"kN" : [70, <<..>>]}}]
+
+      # data structure
+      sDataStructurePattern = """   "value_1" : ##01##,
+   "value_2" : [10, ##02##, 11],
+   "value_3" : [20, ##03##, ##04##, 22],
+   "value_4" : [##05##, 30, ##06##],
+   "value_5" : {"kA" : 40, "kB" : ##07##, "kC" : 41},
+   "value_6" : {"kD" : ##08##, "kE" : ##09##},
+   "value_7" : {"kF" : [##10##, 60], "kG" : [80, ##11##]},
+   "value_8" : [{"kH" : [##12##, 60]}, {"kM" : {"kN" : [70, ##13##]}}]"""
+
+      sDefinitions = """   "EvT"     : 1000,
+   "EvF"     : 2000,
+   "choice"  : True,"""
+    # sDefinitions = """   "EvT"     : "EVAL_TRUE",
+   # "EvF"     : "EVAL_FALSE",
+   # "choice"  : True,"""
+
+      sCodeSnippetPattern = """{
+####DEFINITIONS####
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple values) that are only used to complete the code snippet,
+      # but are not in focus.
+
+      listExpressions = ["<<${EvT} if ${choice} else ${EvF}>>",]
+      # listExpressions = ["<<\"${EvT}\" if ${choice} else \"${EvF}\">>",]
+
+      nNrOfPlaceholders = 13
+
+      listPlaceholders = []
+      listFillers      = []
+      for number in range(1, nNrOfPlaceholders+1):
+          value1 = str(number).rjust(2, "0")
+          listPlaceholders.append(f"##{value1}##")
+          value2 = str(number).rjust(3, "0")
+          listFillers.append(f"{value2}")
+
+      listPositions = listPlaceholders[:] # to support a nested iterations of the same list (better readibility of code because of different names)
+
+      # -- put all things together
+      listCodeSnippets = []
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructurePattern # init a new data structure from data structure pattern
+            sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFillers)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"\"{sFiller}\"")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DEFINITIONS####", sDefinitions)
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+# TODO: Add bad cases / invalid syntax
+# TODO: merge of lists
+# TODO: indices and dictionary keys by eval
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetInlineCode(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
 # eof class CSnippets():
 
 # --------------------------------------------------------------------------------------------------------------
@@ -4697,7 +5475,10 @@ bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 sHeadline, listCodeSnippets = oSnippets.GetKeywords()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
-sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets()
+sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets_1()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets_2()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetAdditionalBrackets()
@@ -4719,6 +5500,9 @@ sHeadline, listCodeSnippets = oSnippets.GetSpacesAndLineBreaks()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetInternalTokenStrings()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetInlineCode()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 print()

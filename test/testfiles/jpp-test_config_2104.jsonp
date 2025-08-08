@@ -24,5 +24,5 @@
     "dictval" : {"kA" : "vA", "kB" : "vB"},
     //
     "value1" : ${listval}[<<${A} if True else ${B}>>],
-    "value2" : ${dictval}[<<"${kA}" if True else "${kB}">>]
+    "value2" : ${dictval}[<<${kA} if True else ${kB}>>]
 }
