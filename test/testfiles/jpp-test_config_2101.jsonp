@@ -17,7 +17,7 @@
     "value1"      : <<[1, 2]>>,
     "value2"      : <<{"kA" : 1, "kB" : 2, "kC" : 3}>>,
     "expression1" : [1, 2],
-    "value3"      : <<${expression}>>,
+    "value3"      : <<${expression1}>>,
     "expression2" : {"kA" : 1, "kB" : 2},
-    "value3"      : <<${expression}>>
+    "value3"      : <<${expression2}>>
 }
