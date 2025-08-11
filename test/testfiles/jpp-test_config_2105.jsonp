@@ -22,12 +22,12 @@
     "dict"     : {"kA" : "vA", "kB" : "vB"},
     "key_list" : <<list(${dict}.keys())>>,
     //
-    "value1"  : <<(${A}[0] if True else ${B.1) + 1>>,
-    "code1"   : (${A}[0] if True else ${B.1) + 1,
-    "value1b" : <<(${code04}) + 4>>,
-    //
+    // "value1"  : <<(${A}[0] if True else ${B.1) + 1>>
+    // "code1"   : (${A}[0] if True else ${B.1) + 1,
+    // "value1b" : <<(${code04}) + 4>>,
+    // //
     "C" : "C",
     "D" : "D",
-    "value2" : <<${C} + ${D}>>,
-    "value3" : <<"${C}" + "${D}">>
+    "value2" : <<${C} + ${D}>>
+    // "value3" : <<"${C}" + "${D}">>
 }

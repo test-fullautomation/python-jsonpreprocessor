@@ -868,5 +868,61 @@ Test JPP_2058 / PARAMETER_SCOPE / BADCASE
 Description: JSON file containing a parameter with missing scope (9)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 05.08.2025 - 16:52:10
+Test JPP_2100 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code with simple data types
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2101 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code with composite data types
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2102 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code with simple conditions
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2103 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code within lists and dictionaries
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2105 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code in more complex scenarios
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2107 / INLINE_CODE / GOODCASE
+Description: JSON file containing Python inline code with import paths
+Expectation: JsonPreprocessor returns expected values
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2150 / INLINE_CODE / BADCASE
+Description: Python inline code as embedded part of a string (1)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2151 / INLINE_CODE / BADCASE
+Description: Python inline code as embedded part of a string (2)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2152 / INLINE_CODE / BADCASE
+Description: Python inline code as embedded part of a string (3)
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2180 / INLINE_CODE / BADCASE
+Description: Python inline code with additional leading angle bracket
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2184 / INLINE_CODE / BADCASE
+Description: Python inline code inside a dictionary with additional leading angle bracket
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2192 / INLINE_CODE / BADCASE
+Description: Python inline code is parameter name
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2193 / INLINE_CODE / BADCASE
+Description: Python inline code is parameter name inside a list
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Test JPP_2194 / INLINE_CODE / BADCASE
+Description: Python inline code is parameter name inside a dictionary
+Expectation: No values are returned, and JsonPreprocessor throws an exception
+------------------------------------------------------------------------------------------------------------------------
+Generated: 11.08.2025 - 16:48:21
 
