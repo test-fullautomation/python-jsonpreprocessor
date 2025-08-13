@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 11.08.2025
+# 13.08.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -554,6 +554,20 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (59/59) > {param_208} [STR]  :  '50: None / 51: None'
 """
 listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0006"
+dictUsecase['DESCRIPTION']       = "JSON file with Python data types used as key name"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor accepts all key names and returns values"
+dictUsecase['SECTION']           = "DATA_TYPES"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0006.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # to be defined
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
@@ -4601,6 +4615,20 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (3/3) > {level} [STR]  :  'AA'
 """
 listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2108"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with import of an additional module"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2108.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = None # to be defined
+# # # listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------

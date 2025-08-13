@@ -22,8 +22,8 @@
 #
 # **************************************************************************************************************
 #
-VERSION      = "0.45.0"
-VERSION_DATE = "07.08.2025"
+VERSION      = "0.47.0"
+VERSION_DATE = "13.08.2025"
 #
 # **************************************************************************************************************
 
@@ -3456,6 +3456,11 @@ class CSnippets():
 
     # -- TODO: GOODCASE (snippets to be taken over from selftest)
 
+      listCodeSnippets.append("""{
+    // Python inline code with import of an additional module
+    "element" : <<eval import itertools; combined_list=list(itertools.combinations([1, 2, 3], 2)); element=combined_list[0]>>
+}
+""")
 
     # -- BADCASE (from official selftest)
 
@@ -4426,7 +4431,7 @@ class CSnippets():
 
    # --------------------------------------------------------------------------------------------------------------
 
-   def GetKeywords(self):
+   def GetPythonKeywordsAtSeveralPositions(self):
       """Python keywords at several positions within a complex data structure
       """
 
@@ -4497,7 +4502,74 @@ class CSnippets():
 
       return sHeadline, listCodeSnippets
 
-   # eof def GetKeywords(self):
+   # eof def GetPythonKeywordsAtSeveralPositions(self):
+
+   # --------------------------------------------------------------------------------------------------------------
+
+   def GetPythonKeywordsUsedAsKeyName(self):
+
+      """Python keywords used as key name
+      """
+
+      sHeadline = "Python keywords used as key name"
+
+      # data structure
+      sDataStructurePattern = """    "##01##" : [1,2],
+    ${##01##}[0] : 3,
+    //
+    "##02##" : {"A" : 1, "B" : 2},
+    ${##02##}['A'] : 3"""
+
+      sCodeSnippetPattern = """{
+####DATASTRUCTURE####
+}
+"""
+
+      # We have a list of expressions and we have a list of placeholders like used in sDataStructure.
+      # The followig code runs in a nested loop: Every expression is placed at every placeholder position. Only one single
+      # expression and placeholder per iteration. All remaining placeholders in current iteration are replaced by elements
+      # from a list of filler expressions (simple values) that are only used to complete the code snippet,
+      # but are not in focus.
+
+      listExpressions = ["int", "float", "complex", "bool", "str", "list", "tuple", "set", "frozenset", "dict", "NoneType",
+                         "None", "True", "False", "DotDict",
+                         "dev", "class", "self", "return", "import", "[import]"]
+
+      nNrOfPlaceholders = 2
+
+      listPlaceholders = []
+      listFillers      = []
+      for number in range(1, nNrOfPlaceholders+1):
+          value1 = str(number).rjust(2, "0")
+          listPlaceholders.append(f"##{value1}##")
+          value2 = str(number).rjust(3, "0")
+          listFillers.append(f"key_{value2}")
+
+      listPositions = listPlaceholders[:] # to support a nested iterations of the same list (better readibility of code because of different names)
+
+      # -- put all things together
+      listCodeSnippets = []
+      for sExpression in listExpressions:
+         for sPosition in listPositions:
+            sDataStructure = sDataStructurePattern # init a new data structure from data structure pattern
+            sCodeSnippet   = sCodeSnippetPattern   # init a new code snippet from code snippet pattern
+            oFiller = CListElements(listFillers)   # init a new filler object (= content for remaining placeholders)
+            for sPlaceholder in listPlaceholders:
+               sFiller = oFiller.GetElement()
+               if sPosition == sPlaceholder:
+                  sDataStructure = sDataStructure.replace(sPlaceholder, sExpression)
+               else:
+                  # sDataStructure = sDataStructure.replace(sPlaceholder, f"\"{sFiller}\"")
+                  sDataStructure = sDataStructure.replace(sPlaceholder, f"{sFiller}")
+            # eof for sPlaceholder in listPlaceholders:
+            sCodeSnippet = sCodeSnippet.replace("####DATASTRUCTURE####", sDataStructure)
+            listCodeSnippets.append(sCodeSnippet)
+         # eof for sPosition in listPositions:
+      # eof for sExpression in listExpressions:
+
+      return sHeadline, listCodeSnippets
+
+   # eof def GetPythonKeywordsUsedAsKeyName(self):
 
    # --------------------------------------------------------------------------------------------------------------
 
@@ -5216,7 +5288,7 @@ class CSnippets():
       # from a list of filler expressions (simple letters) that are only used to complete the code snippet, but are not in focus.
 
       listExpressions = ["__handleColonsInLine__","__handleDuplicatedKey__00","__handleDuplicatedKey__","__ConvertParameterToString__",
-                         "__IndexOfList__","__SlicingIndex__","__StringValueMake-up__"]
+                         "__IndexOfList__","__SlicingIndex__","__StringValueMake-up__","JPavoidDataType_"]
 
       listPlaceholders = ["*01*",]
 
@@ -5304,7 +5376,7 @@ class CSnippets():
       # from a list of filler expressions (simple values) that are only used to complete the code snippet,
       # but are not in focus.
 
-      listExpressions = ["<<${EvT} if ${choice} else ${EvF}>>",]
+      listExpressions = ["<<${EvT} if ${choice} else ${EvF}>>", "${<<[3, 4] if True else [5, 6]>>}"]
       # listExpressions = ["<<\"${EvT}\" if ${choice} else \"${EvF}\">>",]
 
       nNrOfPlaceholders = 13
@@ -5472,7 +5544,10 @@ bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 sHeadline, listCodeSnippets = oSnippets.GetNotExistingParams()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
-sHeadline, listCodeSnippets = oSnippets.GetKeywords()
+sHeadline, listCodeSnippets = oSnippets.GetPythonKeywordsAtSeveralPositions()
+bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
+
+sHeadline, listCodeSnippets = oSnippets.GetPythonKeywordsUsedAsKeyName()
 bSuccess, sResult = oExecutor.Execute(sHeadline, listCodeSnippets, "JPP")
 
 sHeadline, listCodeSnippets = oSnippets.GetMissingBrackets_1()
