@@ -1,0 +1,62 @@
+//  Copyright 2020-2024 Robert Bosch GmbH
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//**************************************************************************
+{
+    // Python data types used as key name
+
+    "int" : [1,2],
+    ${int}[0] : 3,
+
+    "float" : {"A" : 1, "B" : 2},
+    ${float}['A'] : 3,
+
+    "complex" : [1,2],
+    ${complex}[0] : 3,
+
+    "bool" : {"A" : 1, "B" : 2},
+    ${bool}['A'] : 3,
+
+    "str" : [1,2],
+    ${str}[0] : 3,
+
+    "list" : {"A" : 1, "B" : 2},
+    ${list}['A'] : 3,
+
+    "tuple" : [1,2],
+    ${tuple}[0] : 3,
+
+    "set" : {"A" : 1, "B" : 2},
+    ${set}['A'] : 3,
+
+    "frozenset" : [1,2],
+    ${frozenset}[0] : 3,
+
+    "dict" : {"A" : 1, "B" : 2},
+    ${dict}['A'] : 3,
+
+    "NoneType" : [1,2],
+    ${NoneType}[0] : 3,
+
+    "None" : {"A" : 1, "B" : 2},
+    ${None}['A'] : 3,
+
+    "True" : [1,2],
+    ${True}[0] : 3,
+
+    "False" : {"A" : 1, "B" : 2},
+    ${False}['A'] : 3,
+
+    "DotDict" : [1,2],
+    ${DotDict}[0] : 3
+}
