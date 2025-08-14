@@ -1890,7 +1890,7 @@ Checks the syntax of Python inline code.
             self.__reset()
             raise Exception(errorMsg)
         elif regex.search(rf':\s*".*{self.pyCallPattern}[^"]*"', sInput):
-            errorMsg = f"Python inline code must not be embededed part of a string! Please check the line {sInput}"
+            errorMsg = f"Python inline code must not be embedded part of a string! Please check the line {sInput}"
             self.__reset()
             raise Exception(errorMsg)
         else:
