@@ -75,6 +75,8 @@ class CNameMangling(Enum):
     STRINGVALUE      = "__StringValueMake-up__"
     HANDLEIMPORTED   = "__CheckImportedHandling__"
     DYNAMICIMPORTED  = "__DynamicImportedHandling__"
+    PYTHONBUILTIN    = "__PythonBuiltInFunction__"
+    PYBUILTINSTR     = "__StrInPythonInlineCode__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -156,7 +158,7 @@ CkeyChecker checks key names format based on a rule defined by user.
 
     def keyNameChecker(self, sKeyName: str):
         if sKeyName=='' or regex.match(r'^\s+$', sKeyName):
-            self.errorMsg = f"Empty key name detected. Please enter a valid name."
+            self.errorMsg = "Empty key name detected. Please enter a valid name."
             return False
         if regex.match(self.keyPattern, sKeyName):
             return True
@@ -386,7 +388,7 @@ Constructor
             self.keyPattern = keyPattern
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
         self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
-        self.pyCallPattern     = r'<<\s*eval(?:(?!<<\s*eval|>>).)*>>' # The pattern of call Python builtin function in JSONP
+        self.pyCallPattern     = r'<<\s*(?:(?!<<\s*|>>).)*>>' # The pattern of call Python builtin function in JSONP
         self.lDataTypes.append(keyword.kwlist)
         self.jsonPath        = None
         self.importTree      = None
@@ -649,7 +651,7 @@ Json object.
 
   / *Type*: str /
         """
-        pattern = rf'\${{\s*([^\[]+)\s*}}'
+        pattern = r'\${\s*([^\[]+)\s*}'
         lParams = regex.findall(pattern, sInput, regex.UNICODE)
         for param in lParams:
             if "." not in param and param in self.lDataTypes:
@@ -750,9 +752,12 @@ This method handles nested variables in parameter names or values. Variable synt
                         oTmpObj = oTmpObj[int(element)]
                 i+=1
             try:
-                ldict = {}
-                exec(sExec, locals(), ldict)
-                tmpValue = ldict['value']
+                if bPyBuiltIn:
+                    tmpValue = sExec.replace('value = ', '')
+                else:
+                    ldict = {}
+                    exec(sExec, locals(), ldict)
+                    tmpValue = ldict['value']
             except Exception as error:
                 if self.bJSONPreCheck:
                     sNestedParam = self.__removeTokenStr(sNestedParam)
@@ -769,7 +774,7 @@ This method handles nested variables in parameter names or values. Variable synt
                         errorMsg = f"{errorMsg} Reason: {error}" if ' or slices' not in str(error) else \
                                     f"{errorMsg} Reason: {str(error).replace(' or slices', '')}"
                     else:
-                        if isinstance(error, KeyError) and regex.search(r"\[\s*" + str(error) + "\s*\]", sNestedParam):
+                        if isinstance(error, KeyError) and regex.search(r"\[\s*" + str(error) + r"\s*\]", sNestedParam):
                             errorMsg = f"Could not resolve expression '{sNestedParam.replace('$${', '${')}'. \
 Reason: Key error {error}"
                         else:
@@ -778,7 +783,7 @@ Reason: Key error {error}"
             return tmpValue
         
         bPyBuiltIn = False
-        if regex.match(self.pyCallPattern, sInputStr):
+        if regex.search(self.pyCallPattern, sInputStr):
             bPyBuiltIn = True
         specialCharacters = r'[]{}'
         pattern = rf'\$\${{\s*[^{regex.escape(specialCharacters)}]+\s*}}'
@@ -1286,7 +1291,7 @@ This method replaces all nested parameters in key and value of a JSON object .
             oJson = self.currentCfg | oJson
 
         tmpJson = copy.deepcopy(oJson)
-        pattern = rf"\${{\s*[^\[]+\s*}}"
+        pattern = r"\${\s*[^\[]+\s*}"
         pattern = rf"{pattern}(\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{.+\s*\]+)*"
         for k, v in tmpJson.items():
             if "${" not in k and CNameMangling.DUPLICATEDKEY_01.value not in k:
@@ -1408,13 +1413,11 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
             elif isinstance(v, list):
                 v = __handleList(v, bNested, parentParams)
             elif isinstance(v, str) and self.__checkNestedParam(v):
+                bPyBuiltIn = False
                 # Check and handle the Python builtIn in JSONP
-                if regex.match(self.pyCallPattern, v):
-                    if regex.match(r'^\s*<<\s*eval\s*>>\s*$', v):
-                        errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
-                        self.__reset()
-                        raise Exception(errorMsg)
-                    elif "${" not in v:
+                if regex.search(self.pyCallPattern, v):
+                    bPyBuiltIn = True
+                    if '${' not in v:
                         try:
                             v = self.__pyBuiltInHandle(v)
                         except Exception as error:
@@ -1445,7 +1448,8 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 raise Exception(errorMsg)
                         v = __loadNestedValue(initValue, v, key=k)
                         # Check and handle the Python builtIn in JSONP
-                        if isinstance(v, str) and regex.match(self.pyCallPattern, v):
+                        if isinstance(v, str) and regex.search(self.pyCallPattern, v):
+                            bPyBuiltIn = True
                             try:
                                 v = self.__pyBuiltInHandle(v)
                             except Exception as error:
@@ -1466,7 +1470,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                                 raise Exception(f"Invalid expression found: '{self.__removeTokenStr(initValue)}'.")
                             else:
                                 break
-                    if isinstance(v, str) and regex.search(r'\[[^\]]+\]', v):
+                    if isinstance(v, str) and regex.search(r'\[[^\]]+\]', v) and not bPyBuiltIn:
                         sExec = 'value = ' + v
                         try:
                             ldict = {}
@@ -1511,7 +1515,7 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                 parentParams = ''
             __jsonUpdated(k, v, oJson, parentParams, keyNested, paramInValue, bDuplicatedHandle, recursive)
             if keyNested is not None and not bStrConvert:
-                transTable = str.maketrans({"[":"\[", "]":"\]" })
+                transTable = str.maketrans({"[":r"\[", "]":r"\]" })
                 tmpList = []
                 for key in self.dUpdatedParams:
                     if regex.match(r"^" + k.translate(transTable) + r"\['.+$", key, regex.UNICODE):
@@ -1560,7 +1564,7 @@ Checks nested parameter format.
   *raise exception if nested parameter format invalid*
         """
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
-        pattern1 = rf"\${{[^\${{]+}}(\[[^\[]+\])*[^\[]*\${{"
+        pattern1 = r"\${[^\${]+}(\[[^\[]+\])*[^\[]*\${"
         pattern2 = r"\[[\p{Nd}\.\-\+'\s]*:[\p{Nd}\.\-\+'\s]*\]|\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]|" # Slicing pattern
         pattern2 = pattern2 + r"\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\p{Nd}\.\-\+'\s]*\]|\[[\p{Nd}\.\-\+'\s]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]" # Slicing pattern
         if not bKey and regex.match(self.pyCallPattern, sInput):
@@ -1823,7 +1827,7 @@ Checks and handle dynamic path of imported file.
                 self.__reset()
                 raise Exception(jsonException)
         self.JPGlobals = self.jsonCheck
-        importPattern = rf'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
+        importPattern = r'([\'|"]\s*\[\s*import\s*\](_\d+)*\s*[\'|"]\s*:\s*[\'|"][^\'"]+[\'|"])'
         sJson = json.dumps(self.jsonCheck)
         # Check cyclic import by comparing the content of the whole JSONP configuration object.
         if len(self.importCheck)>1:
@@ -1850,15 +1854,59 @@ Checks and handle dynamic path of imported file.
         """
 Handles Python builtIn function.
         """
-        sExec = regex.sub(r'<<\s*eval(.*)>>', "evalValue = \\1", sInput)
+        if CNameMangling.PYBUILTINSTR.value in sInput:
+            sInput = sInput.replace(CNameMangling.PYBUILTINSTR.value, '"')
+        if CNameMangling.PYTHONBUILTIN.value in sInput:
+            sInput = regex.sub(rf'(self\.JPGlobals(?:(?!self\.JPGlobals).)+){CNameMangling.PYTHONBUILTIN.value}', '"\\1"', sInput)
+        pyInlineCode = regex.findall(self.pyCallPattern, sInput)[0]
+        sExec = regex.sub(r'<<\s*(.*)>>', "evalValue = \\1", pyInlineCode)
         try:
             ldict = {}
             exec(sExec, locals(), ldict)
             evalValue = ldict['evalValue']
         except Exception as error:
             raise Exception(error)
-        
+        if not isinstance(evalValue, (str, int, float, bool, type(None), list, dict)):
+            errorMsg = f"The Python builtIn '{self.__removeTokenStr(sInput)}' return the value with \
+the datatype '{type(evalValue)}' is not suitable for JSON."
+            raise Exception(errorMsg)
+        if CNameMangling.DYNAMICIMPORTED.value in sInput:
+            sInput = regex.sub(f'{CNameMangling.DYNAMICIMPORTED.value}', '/', sInput)
+            sInput = regex.sub(f'{self.pyCallPattern}', f'{evalValue}', sInput)
+            evalValue = sInput
+
         return evalValue
+    
+    def __pyInlineCodeSyntaxCheck(self, sInput):
+        """
+Checks the syntax of Python inline code.
+        """
+        if regex.match(r'^\s*<<\s*>>\s*$', sInput):
+            errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
+            self.__reset()
+            raise Exception(errorMsg)
+        elif regex.search(rf'["\s]*{self.pyCallPattern}[^:]*["\s]*:', sInput):
+            errorMsg = f"Python inline code is not allowed as key! Please check the line {sInput}"
+            self.__reset()
+            raise Exception(errorMsg)
+        elif regex.search(rf':\s*".*{self.pyCallPattern}[^"]*"', sInput):
+            errorMsg = f"Python inline code must not be embedded part of a string! Please check the line {sInput}"
+            self.__reset()
+            raise Exception(errorMsg)
+        else:
+            pyInlineCode = regex.search(self.pyCallPattern, sInput)
+            if len(pyInlineCode) > 0:
+                pyInlineCode = pyInlineCode[0]
+                if pyInlineCode.count('"') % 2 == 1:
+                    errorMsg = f"Invalid syntax in the Python inline code '{pyInlineCode}'."
+                    self.__reset()
+                    raise Exception(errorMsg)
+                elif regex.search(r'"\s*\${[^"]+"', pyInlineCode):
+                    pyInlineCode = regex.sub(r'"\s*(\${[^"]+)\s*"', f'\\1{CNameMangling.PYTHONBUILTIN.value}', pyInlineCode)
+                pyInlineCode = regex.sub(r'"(\s*(?:(?!\${)[^"])*)"', \
+                                         f'{CNameMangling.PYBUILTINSTR.value}\\1{CNameMangling.PYBUILTINSTR.value}', pyInlineCode)
+                sInput = regex.sub(rf'({self.pyCallPattern})', f'"{pyInlineCode}"', sInput)
+        return sInput
 
     def jsonLoad(self, jFile : str):
         """
@@ -2083,7 +2131,7 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
             if regex.search(self.pyCallPattern, line):
-                line = regex.sub(rf'({self.pyCallPattern})', '"\\1"', line)
+                line = self.__pyInlineCodeSyntaxCheck(line)
             if "${" in line:
                 line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line
@@ -2131,6 +2179,7 @@ This function handle a last element of a list or dictionary
                             item = item.replace(CNameMangling.NESTEDPARAM.value, tmpList03.pop(0))
                     curItem = item
                     if "${" in item:
+                        tmpList = []
                         bHandle = False
                         if '"' in item and item.count('"')%2==0:
                             tmpList = regex.findall(r'"[^"]+"', item)
@@ -2178,9 +2227,9 @@ This function handle a last element of a list or dictionary
                                     item = __handleLastElement(item)
                                 elif not regex.match(r'^[\s{]*"[^"]*"\s*$', item):
                                     if CNameMangling.STRINGVALUE.value in item:
-                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1\'\\2\' ', item)
+                                        item = regex.sub(r'(^[\s{]*)([^\s].+[^\s])\s*$', '\\1\'\\2\' ', item)
                                     else:
-                                        item = regex.sub('(^[\s{]*)([^\s].+[^\s])\s*$', '\\1"\\2" ', item)
+                                        item = regex.sub(r'(^[\s{]*)([^\s].+[^\s])\s*$', '\\1"\\2" ', item)
                         while CNameMangling.STRINGVALUE.value in item:
                             if "${" in tmpList[0]:
                                 sValue = tmpList.pop(0)

@@ -1188,8 +1188,6 @@ This will not work (because of a key with name \pcode{A_2} does not yet exist):
 A substitution in key names is not allowed! Please update the key name "${strval}_2"
 \end{pythonlog}
 
-
-
 % --------------------------------------------------------------------------------------------------------------
 
 \newpage
@@ -1369,12 +1367,109 @@ The same error will happen in case of the standard notation is used:
 }
 \end{pythoncode}
 
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{Python inline code}
+
+It might be required to have access to Python builtin functions, e.g. for combining multiple lists into a single list.
+In pure Python this can be realized in the following way:
+
+\begin{pythoncode}
+A = [1,2,3]
+B = [4,5,6]
+C = A + B
+print(C)
+\end{pythoncode}
+
+With result:
+
+\begin{pythonlog}
+[1, 2, 3, 4, 5, 6]
+\end{pythonlog}
+
+In JSONP files, the implementation looks as follows:
+
+\begin{pythoncode}
+"A" : [1,2,3],
+"B" : [4,5,6],
+"C" : <\textless{}\textless{}>${A} + ${B}<\textgreater{}\textgreater{}>
+\end{pythoncode}
+
+The expression \pcode{$\{A\} + $\{B\}} is handled as Python inline code. It is possible to use dollar operator expressions
+inside Python inline code to access any other parameter defined in JSONP files.
+
+\vspace{2ex}
+
+The syntax of Python inline code is:
+
+\begin{pythoncode}
+<\textless{}\textless{}><(\emph{Python expression})><\textgreater{}\textgreater{}>
+\end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Limitations}
+
+The Python inline code syntax cannot be used within strings. The following code is invalid:
+
+\begin{pythoncode}
+"param" : "The value is <\textless{}\textless{}><(\emph{Python expression})><\textgreater{}\textgreater{}>"
+\end{pythoncode}
+
+The usage of Python inline code is limited to the right hand side of the colon (\emph{key values}).
+This feature cannot be used to create key names.
+
+Python inline code cannot be used immediately to select list elements or dictionary keys that shall be overwritten. The following code is invalid:
+
+\begin{pythoncode}
+"param" : [1,2,3],
+${param}[<\textless{}\textless{}>0 if True else 1<\textgreater{}\textgreater{}>] : 4
+\end{pythoncode}
+
+This is a possible workaround:
+
+\begin{pythoncode}
+"param" : [1,2,3],
+"index" : <\textless{}\textless{}>0 if True else 1<\textgreater{}\textgreater{}>,
+${param}[${index}] : 4
+\end{pythoncode}
+
+% TODO when supported by JsonPreprocessor:
+
+% Python inline code can only be used to return values of data types supported by the JSON format. The following Python inline code returns a \pcode{datetime} object
+% and therefore is invalid:
+
+% \begin{pythoncode}
+% "now" : <\textless{}\textless{}>from datetime import datetime; now = datetime.now()<\textgreater{}\textgreater{}>
+% \end{pythoncode}
+
+\vspace{2ex}
+
+\textbf{Further examples}
+
+\textit{Create a list of dictionary keys:}
+
+\begin{pythoncode}
+"dict"     : {"kA" : "vA", "kB" : "vB"},
+"key_list" : <\textless{}\textless{}>list(${dict}.keys())<\textgreater{}\textgreater{}>
+\end{pythoncode}
+
+\textit{Define an import path:}
+
+\begin{pythoncode}
+"path_1" : "./file_1.jsonp",
+"path_2" : "./file_2.jsonp"
+//
+"[import]" : <\textless{}\textless{}>${path_1} if True else ${path_2}<\textgreater{}\textgreater{}>
+\end{pythoncode}
 
 
-
-
-
-
+% TODO when supported by JsonPreprocessor:
+    % // Python inline code with import of an additional module
+    % "element" : <<eval import itertools; combined_list=list(itertools.combinations([1, 2, 3], 2)); element=combined_list[0]>>
+    % C:\workplace\ROBFW\components\python-jsonpreprocessor\test\testfiles\jpp-test_config_2108.jsonp
 
 
 % --------------------------------------------------------------------------------------------------------------
