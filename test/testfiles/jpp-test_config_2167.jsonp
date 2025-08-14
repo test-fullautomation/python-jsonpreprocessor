@@ -15,6 +15,6 @@
 {
     // Python inline code as dictionary key at left hand side of the colon
     //
-    "A" : {"B" : 1, "C" . 2},
+    "A" : {"B" : 1, "C" : 2},
     ${A}[<<"B" if True else "C">>] : 3
 }
