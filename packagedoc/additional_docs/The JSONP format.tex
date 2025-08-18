@@ -20,7 +20,7 @@ The JSONP format is computed by the Python application \textbf{JsonPreprocessor}
 within tests of a test automation framework called \textbf{RobotFramework AIO} (\href{https://robotframework-aio.org/}{homepage}).
 
 The component that within the \textbf{RobotFramework AIO} is responsible for the execution of the \textbf{JsonPreprocessor}, is called
-\textbf{TestsuitesManagement}. Because of the \textbf{JsonPreprocessor} is a pure Python application, whereas the \textbf{RobotFramework AIO}
+\textbf{TestsuitesManagement}. Because the \textbf{JsonPreprocessor} is a pure Python application, whereas the \textbf{RobotFramework AIO}
 is a framework with own syntax rules and conditions, in some cases the JSONP format deviates in both worlds. Where required you will find corresponding
 hints in this chapter. In all other cases the JSONP format is the same in \textbf{JsonPreprocessor} and \textbf{RobotFramework AIO}.
 
@@ -136,7 +136,7 @@ Comments can be added to JSON files with \pcode{//}:
 }
 \end{pythoncode}
 
-All lines starting with \pcode{//}, are ignored by the \textbf{JsonPreprocessor}. The output of this example is the same than in the previous example.
+All lines starting with \pcode{//}, are ignored by the \textbf{JsonPreprocessor}. The output of this example is the same as in the previous example.
 
 \vspace{2ex}
 
@@ -776,7 +776,7 @@ Again we change the content of file \plog{componentB.2.jsonp}:
 }
 \end{pythoncode}
 
-The dollar operator syntax at the left hand side of the colon is the same than previously used on the right hand side.
+The dollar operator syntax at the left hand side of the colon is the same as previously used on the right hand side.
 The entire expression at the left hand side of the colon must \textit{not} be encapsulated in quotes in this case.
 
 \textbf{Outcome:}
