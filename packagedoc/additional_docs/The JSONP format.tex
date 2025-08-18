@@ -21,7 +21,7 @@ within tests of a test automation framework called \textbf{RobotFramework AIO} (
 
 The component that within the \textbf{RobotFramework AIO} is responsible for the execution of the \textbf{JsonPreprocessor}, is called
 \textbf{TestsuitesManagement}. Because of the \textbf{JsonPreprocessor} is a pure Python application, whereas the \textbf{RobotFramework AIO}
-is a framework with own synatx rules and conditions, in some cases the JSONP format deviates in both worlds. Where required you will find corresponding
+is a framework with own syntax rules and conditions, in some cases the JSONP format deviates in both worlds. Where required you will find corresponding
 hints in this chapter. In all other cases the JSONP format is the same in \textbf{JsonPreprocessor} and \textbf{RobotFramework AIO}.
 
 This chapter explains the format of JSONP files in detail. We concentrate here on the content of the JSONP files and the corresponding results,
@@ -1236,7 +1236,7 @@ The result will be the same as in the previous example.
 It can be seen now that this way of creating nested dictionaries is rather long winded, because every inititialization of a dictionary
 requires a separate line of code (at every level).
 
-To shorten the code, the \textbf{JsonPreprocessor} supports an implicite creation of dictionaries.
+To shorten the code, the \textbf{JsonPreprocessor} supports an implicit creation of dictionaries.
 
 This is the resulting code in standard notation:
 
@@ -1280,7 +1280,7 @@ Please be aware of: In case of a missing level in between an expression like
 you will \textit{not} get an error message! The entire data structure will be created implicitly. The impact is that this method
 is very susceptible to typing mistakes.
 
-The implicite creation of data structures does not work with lists! In case you use a list index out of range, you will get
+The implicit creation of data structures does not work with lists! In case you use a list index out of range, you will get
 a corresponding error message.
 
 % --------------------------------------------------------------------------------------------------------------
