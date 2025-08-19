@@ -51,9 +51,13 @@ All discussed JSON files can be tested with the example script listed above.
 
 \section{User defined naming convention}
 
-By default, key names in JSON files can contain any characters (but cannot be empty). But it might be required to limit the character set.
-For this purpose the \pkg\ supports an optional user-defined convention for key names. This is enforced using a \pcode{regex} pattern
-passed to the constructor of the \pkg\ class.
+By default, key names in JSON files can contain any characters (but cannot be empty). The JSONP format extends the JSON format with some features using
+square, curly and angle brackets as syntax elements: \pcode{[}, \pcode{]}, \pcode{\{}, \pcode{\}}, \pcode{<}, \pcode{>}, that will be described below in this document.
+
+\textbf{These brackets must not be used within key names!}
+
+It might be required to add further limitations to the set of allowed characters. For this purpose the \pkg\ supports an optional user-defined convention for key names.
+This is enforced using a \pcode{regex} pattern passed to the constructor of the \pkg\ class.
 
 Assuming key names may only contain letters, digits and underscores, but must start with a letter, then the \pkg\ has to be initialized
 in this way:
