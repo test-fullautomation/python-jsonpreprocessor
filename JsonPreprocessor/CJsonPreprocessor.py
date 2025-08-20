@@ -1718,7 +1718,8 @@ to overwrite the value of this parameter."
         sInput = self.__removeTokenStr(sInput)
         if errorMsg!='':
             pass
-        elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()):
+        elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()) \
+            and not regex.search(self.pyCallPattern, sInput):
             if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
                 errorMsg = oKeyChecker.errorMsg
         elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or \
@@ -1764,6 +1765,8 @@ to overwrite the value of this parameter."
                             nestedParam = param[0]
                             nestedParam = regex.escape(nestedParam)
                             tmpStr = regex.sub(rf"[\[\s']*{nestedParam}['\s\]]*", '', tmpStr)
+        elif regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sInput):
+            errorMsg = f"Python inline code cannot be used to define a key name! Please check the key name '{sInput}'"
         if errorMsg != '':
             self.__reset()
             raise Exception(errorMsg)
@@ -1885,11 +1888,7 @@ Checks the syntax of Python inline code.
             errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
             self.__reset()
             raise Exception(errorMsg)
-        elif regex.search(rf'["\s]*{self.pyCallPattern}[^:]*["\s]*:', sInput):
-            errorMsg = f"Python inline code is not allowed as key! Please check the line {sInput}"
-            self.__reset()
-            raise Exception(errorMsg)
-        elif regex.search(rf':\s*".*{self.pyCallPattern}[^"]*"', sInput):
+        elif regex.search(rf'\s*"[^",]*{self.pyCallPattern}[^",]*"', sInput):
             errorMsg = f"Python inline code must not be embedded part of a string! Please check the line {sInput}"
             self.__reset()
             raise Exception(errorMsg)
