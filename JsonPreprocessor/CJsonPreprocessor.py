@@ -723,7 +723,7 @@ This method handles nested variables in parameter names or values. Variable synt
             i=0
             for element in lElements:
                 bList = False
-                if regex.match(r"^[\s\-\+]*\d+$", element):
+                if regex.match(r"^[\s\-\+:]*\d+$", element):
                     bList = True
                     tmpExec = sExec
                     sExec = f"{tmpExec}[{element}]"
@@ -746,7 +746,7 @@ This method handles nested variables in parameter names or values. Variable synt
                     if element in oTmpObj and (isinstance(oTmpObj[element], dict) or \
                                                isinstance(oTmpObj[element], list)):
                         oTmpObj = oTmpObj[element]
-                elif bList and isinstance(oTmpObj, list):
+                elif bList and isinstance(oTmpObj, list) and regex.match(r'^[\s\d]+$', element):
                     if int(element)<len(oTmpObj) and (isinstance(oTmpObj[int(element)], dict) or \
                                                       isinstance(oTmpObj[int(element)], list)):
                         oTmpObj = oTmpObj[int(element)]
