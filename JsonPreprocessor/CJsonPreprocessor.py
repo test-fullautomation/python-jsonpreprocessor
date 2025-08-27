@@ -1682,13 +1682,13 @@ Replace an existing key in a dictionary with a new key name. The replacement is 
             dOutput[key] = dInput[sOldKey] if key==sNewKey else dInput[key]
         return dOutput
     
-    def __keyNameValidation(self, sInput):
+    def __keyNameValidation(self, sKeyName : str):
         """
 Validates the key names of a JSON object to ensure they adhere to certain rules and conventions.
 
 **Arguments:**
 
-* ``sInput``
+* ``sKeyName``
 
   / *Condition*: required / *Type*: str /
 
@@ -1704,69 +1704,69 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                 return False
         oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
-        if CNameMangling.STRINGCONVERT.value in sInput:
-            if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sInput):
-                sInput = self.__removeTokenStr(sInput.strip('"'))
-                sInputSuggestion1 = regex.sub(r'(\[\s*")', '[\'', sInput)
-                sInputSuggestion1 = regex.sub(r'("\s*\])', '\']', sInputSuggestion1)
-                sInputSuggestion2 = regex.sub(r'(\[\s*")', '[', sInput)
-                sInputSuggestion2 = regex.sub(r'("\s*\])', ']', sInputSuggestion2)
-                errorMsg = f"Invalid key name {sInput}. Please use the syntax {sInputSuggestion1} or {sInputSuggestion2} \
+        if CNameMangling.STRINGCONVERT.value in sKeyName:
+            if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sKeyName):
+                sKeyName = self.__removeTokenStr(sKeyName.strip('"'))
+                sKeyNameSuggestion1 = regex.sub(r'(\[\s*")', '[\'', sKeyName)
+                sKeyNameSuggestion1 = regex.sub(r'("\s*\])', '\']', sKeyNameSuggestion1)
+                sKeyNameSuggestion2 = regex.sub(r'(\[\s*")', '[', sKeyName)
+                sKeyNameSuggestion2 = regex.sub(r'("\s*\])', ']', sKeyNameSuggestion2)
+                errorMsg = f"Invalid key name {sKeyName}. Please use the syntax {sKeyNameSuggestion1} or {sKeyNameSuggestion2} \
 to overwrite the value of this parameter."
             else:
-                errorMsg = f"A substitution in key names is not allowed! Please update the key name \"{self.__removeTokenStr(sInput)}\""
-        sInput = self.__removeTokenStr(sInput)
+                errorMsg = f"A substitution in key names is not allowed! Please update the key name \"{self.__removeTokenStr(sKeyName)}\""
+        sKeyName = self.__removeTokenStr(sKeyName)
         if errorMsg!='':
             pass
-        elif '${' not in sInput and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sInput.lower()) \
-            and not regex.search(self.pyCallPattern, sInput):
-            if not oKeyChecker.keyNameChecker(sInput) and __isAscii(sInput):
+        elif '${' not in sKeyName and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sKeyName.lower()) \
+            and not regex.search(self.pyCallPattern, sKeyName):
+            if not oKeyChecker.keyNameChecker(sKeyName) and __isAscii(sKeyName):
                 errorMsg = oKeyChecker.errorMsg
-        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sInput) or \
-            regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sInput):
-            errorMsg = f"Invalid syntax: {sInput}"
-            if regex.search(r'\[\s*[\-\+:]\d+\s*\]', sInput) or regex.search(r'\[\s*\d+:\s*\]', sInput):
-                errorMsg = f"Slicing is not supported (expression: '{sInput}')."
-        elif regex.match(r'^\s*\${.+[\]}]*$', sInput):
-            tmpInput = sInput
-            while regex.search(r'\[[^\[\]]+\]', tmpInput):
-                lCheck = regex.findall(r'\[[^\[\]]+\]', tmpInput)
+        elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sKeyName) or \
+            regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sKeyName):
+            errorMsg = f"Invalid syntax: {sKeyName}"
+            if regex.search(r'\[\s*[\-\+:]\d+\s*\]', sKeyName) or regex.search(r'\[\s*\d+:\s*\]', sKeyName):
+                errorMsg = f"Slicing is not supported (expression: '{sKeyName}')."
+        elif regex.match(r'^\s*\${.+[\]}]*$', sKeyName):
+            tmpKeyName = sKeyName
+            while regex.search(r'\[[^\[\]]+\]', tmpKeyName):
+                lCheck = regex.findall(r'\[[^\[\]]+\]', tmpKeyName)
                 for item in lCheck:
                     if regex.match(r'^\[[^\'\$]+.+\]$', item):
-                        errorMsg = f"Invalid syntax: {sInput}"
-                tmpInput = regex.sub(r'\[[^\[\]]+\]', '', tmpInput)
-        elif regex.search(r'\$+\${', sInput):
-            correctKey = regex.sub(r'(\$+\${)', '${', sInput)
-            errorMsg = f"Invalid key name: {sInput} - This key name must be '{correctKey}'"
-        elif sInput.count('${') != sInput.count('}') or sInput.count('[') != sInput.count(']'):
-            errorMsg = f"Invalid key name: {sInput} - The brackets mismatch!!!"
-        elif regex.match(r'^\s*[^\$]+\${.+$|^\s*\${.+[^}\]]\s*$', sInput):
-            errorMsg = f"Invalid key name: '{sInput}'."
-        elif regex.search(r'\${[^}]*}', sInput):
-            if regex.search(r'\[\s*\]', sInput):
-                errorMsg = f"Invalid key name: {sInput}. A pair of square brackets is empty!!!"
+                        errorMsg = f"Invalid syntax: {sKeyName}"
+                tmpKeyName = regex.sub(r'\[[^\[\]]+\]', '', tmpKeyName)
+        elif regex.search(r'\$+\${', sKeyName):
+            correctKey = regex.sub(r'(\$+\${)', '${', sKeyName)
+            errorMsg = f"Invalid key name: {sKeyName} - This key name must be '{correctKey}'"
+        elif sKeyName.count('${') != sKeyName.count('}') or sKeyName.count('[') != sKeyName.count(']'):
+            errorMsg = f"Invalid key name: {sKeyName} - The brackets mismatch!!!"
+        elif regex.match(r'^\s*[^\$]+\${.+$|^\s*\${.+[^}\]]\s*$', sKeyName):
+            errorMsg = f"Invalid key name: '{sKeyName}'."
+        elif regex.search(r'\${[^}]*}', sKeyName):
+            if regex.search(r'\[\s*\]', sKeyName):
+                errorMsg = f"Invalid key name: {sKeyName}. A pair of square brackets is empty!!!"
             else:
-                tmpStr = sInput
+                tmpStr = sKeyName
                 while regex.search(r'\${([^}]*)}', tmpStr):
                     param = regex.search(r'\${([^}\$]*)}', tmpStr)
                     if param is None and regex.search(r'\${.*\$(?!\{).*}', tmpStr):
                         param = regex.search(r'\${([^}]*)}', tmpStr)
                     if param is not None:
                         if param[1].strip() == '':
-                            errorMsg = f"Invalid key name: {sInput}. A pair of curly brackets is empty!!!"
+                            errorMsg = f"Invalid key name: {sKeyName}. A pair of curly brackets is empty!!!"
                             break
                         elif not oKeyChecker.keyNameChecker(param[1].strip()) and __isAscii(param[1].strip()):
                             errorMsg = oKeyChecker.errorMsg
                             break
                         elif regex.search(r'^.+\[.+\]$', param[1].strip()):
-                            errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sInput}'"
+                            errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in the parameter '{sKeyName}'"
                             break
                         else:
                             nestedParam = param[0]
                             nestedParam = regex.escape(nestedParam)
                             tmpStr = regex.sub(rf"[\[\s']*{nestedParam}['\s\]]*", '', tmpStr)
-        elif regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sInput):
-            errorMsg = f"Python inline code cannot be used to define a key name! Please check the key name '{sInput}'"
+        elif regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sKeyName):
+            errorMsg = f"Python inline code cannot be used to define a key name! Please check the key name '{sKeyName}'"
         if errorMsg != '':
             self.__reset()
             raise Exception(errorMsg)
