@@ -1885,7 +1885,7 @@ the datatype '{type(evalValue)}' is not suitable for JSON."
 Checks the syntax of Python inline code.
         """
         if regex.match(r'^\s*<<\s*>>\s*$', sInput):
-            errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(v)}'"
+            errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(sInput)}'"
             self.__reset()
             raise Exception(errorMsg)
         elif regex.search(rf'\s*"[^",]*{self.pyCallPattern}[^",]*"', sInput):
@@ -1893,7 +1893,7 @@ Checks the syntax of Python inline code.
             self.__reset()
             raise Exception(errorMsg)
         else:
-            pyInlineCode = regex.search(self.pyCallPattern, sInput)
+            pyInlineCode = regex.search(r'<+\s*(?:(?!<<\s*|>>).)*>+', sInput)
             if len(pyInlineCode) > 0:
                 pyInlineCode = pyInlineCode[0]
                 if pyInlineCode.count('"') % 2 == 1:
@@ -1904,7 +1904,7 @@ Checks the syntax of Python inline code.
                     pyInlineCode = regex.sub(r'"\s*(\${[^"]+)\s*"', f'\\1{CNameMangling.PYTHONBUILTIN.value}', pyInlineCode)
                 pyInlineCode = regex.sub(r'"(\s*(?:(?!\${)[^"])*)"', \
                                          f'{CNameMangling.PYBUILTINSTR.value}\\1{CNameMangling.PYBUILTINSTR.value}', pyInlineCode)
-                sInput = regex.sub(rf'({self.pyCallPattern})', f'"{pyInlineCode}"', sInput)
+                sInput = regex.sub(r'(<+\s*(?:(?!<<\s*|>>).)*>+)', f'"{pyInlineCode}"', sInput)
         return sInput
 
     def jsonLoad(self, jFile : str):
@@ -2129,6 +2129,14 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
+            # Checks the syntax of the Python inline code
+            pyInline = regex.findall(r':\s*(<<*(?:(?!>>).)*>*>)[,\]\}\s]*', line)
+            if len(pyInline)>0:
+                for item in pyInline:
+                    if not regex.match(self.pyCallPattern, item):
+                        errorMsg = f"Invalid syntax: Check the Python inline code '{item}'"
+                        self.__reset()
+                        raise Exception(errorMsg)
             if regex.search(self.pyCallPattern, line):
                 line = self.__pyInlineCodeSyntaxCheck(line)
             if "${" in line:
