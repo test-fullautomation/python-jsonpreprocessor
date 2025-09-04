@@ -752,11 +752,11 @@ This method handles nested variables in parameter names or values. Variable synt
                         oTmpObj = oTmpObj[int(element)]
                 i+=1
             try:
+                ldict = {}
+                exec(sExec, locals(), ldict)
                 if bPyBuiltIn:
                     tmpValue = sExec.replace('value = ', '')
                 else:
-                    ldict = {}
-                    exec(sExec, locals(), ldict)
                     tmpValue = ldict['value']
             except Exception as error:
                 if self.bJSONPreCheck:
