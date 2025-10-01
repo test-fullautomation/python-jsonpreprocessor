@@ -2149,19 +2149,22 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
             # Check for Python inline code on left-hand side of colon (not allowed)
-            if '<<' in line or '>>' in line:
-                # Split line by colons to analyze key-value pairs
-                # If a Python inline code appears before the first colon of a key-value pair, it's invalid
-                colon_split = line.split(':', 1)  # Split on first colon only
-                if len(colon_split) > 1 and regex.search(r'<<.*?>>', colon_split[0]):
-                    # Check if this is actually a key (not just a value from previous line)
-                    # Look for typical key patterns: "key", ${key}, etc.
-                    key_part = colon_split[0].strip()
-                    # Remove common prefixes like comma and whitespace
-                    key_part = regex.sub(r'^[,\s]*', '', key_part)
-                    if regex.search(r'<<.*?>>', key_part):
-                        self.__reset()
-                        raise Exception("Python inline code on the left-hand side of the colon is generally not allowed.")
+            if '<<' in line and ':' in line:
+                # Check if any Python inline code pattern appears before any colon on the line
+                # This catches all forms: <<...>>, "<<...>>", ${<<...>>}, param[<<...>>], etc.
+                # Split by colon and check if left parts contain Python inline code
+                parts = line.split(':')
+                for i in range(len(parts) - 1):  # All parts except the last could be key parts
+                    left_part = parts[i]
+                    if regex.search(r'<<.*?>>', left_part):
+                        # Additional check: make sure this looks like a key part, not a value part
+                        # Skip if this part seems to be continuing a previous value
+                        stripped_left = left_part.strip()
+                        # Simple heuristic: if it starts with a quote, comma, or common key patterns, it's likely a key
+                        if (stripped_left.startswith(('"', "'", '${', ',')) or 
+                            regex.search(r'[{,]\s*[^,}]*$', stripped_left)):
+                            self.__reset()
+                            raise Exception("Python inline code on the left-hand side of the colon is generally not allowed.")
             # Checks the syntax of the Python inline code
             if '<<' in line or '>>' in line:
                 patterns = [
