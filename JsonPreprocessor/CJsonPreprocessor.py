@@ -245,6 +245,8 @@ Loads a given json file or json content and filters all C/C++ style comments.
   String version of JSON file after removing all comments.
         """
         def replacer(match):
+            # If the match starts with '/', it's a comment - remove it
+            # Otherwise, it's a string literal - keep it unchanged
             s = match.group(0)
             if s.startswith('/'):
                 return ""
@@ -258,6 +260,11 @@ Loads a given json file or json content and filters all C/C++ style comments.
         else:
             sContent = jsonP
 
+        # Complex regex pattern for removing C/C++ style comments while preserving strings:
+        # - //.*?$ : Single-line comments from // to end of line
+        # - /\*.*?\*/ : Multi-line comments from /* to */
+        # - \'(?:\\.|[^\\\'])*\' : Single-quoted strings (handles escaped quotes)
+        # - "(?:\\.|[^\\"])*" : Double-quoted strings (handles escaped quotes)
         pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
         sContentCleaned=regex.sub(pattern, replacer, sContent)
         return sContentCleaned
@@ -280,6 +287,8 @@ Loads a given json file or json content and filters all C/C++ style comments.
   / *Type*: str /
 
         """
+        # Create a regex pattern that matches all replacement keys (escaped for safety)
+        # Then substitute each match with its corresponding replacement value
         pattern = regex.compile('|'.join(regex.escape(key) for key in dReplacements.keys()))
         sOutput = pattern.sub(lambda x: dReplacements[x.group()], sInput)
         return sOutput
@@ -314,13 +323,18 @@ Convert/Replace all Unicode digits inside square brackets like [<digits>] to [<A
             errorMsg = f'Invalid input type: {type(sInput)}. Expected str.'
             raise Exception(errorMsg)
         
-        # Define regex pattern to match Unicode digits within brackets
+        # Define regex pattern to match Unicode digits within brackets:
+        # \[ \s* : Opening bracket with optional whitespace  
+        # (\p{Nd}+) : Capture group for one or more Unicode decimal digits
+        # \s* \] : Optional whitespace and closing bracket
         pattern = r'\[\s*(\p{Nd}+)\s*\]'
 
         # Replace using the ASCII equivalent
         def replacer(match):
+            # Extract the Unicode digits from the match
             digits = match.group(1)
             try:
+                # Convert each Unicode digit to its ASCII equivalent
                 asciiDigits = ''.join(str(unicodedata.decimal(item)) for item in digits)
                 return f'[{asciiDigits}]'
             except ValueError as e:
@@ -375,6 +389,7 @@ Constructor
 
   Used to update parameters from jsonp file to current JSON object.
         """
+        # Validate and set the key pattern for parameter names
         import builtins
         import keyword
         if not isinstance(keyPattern, str):
@@ -386,24 +401,29 @@ Constructor
             raise Exception(f"The key pattern '{keyPattern}' just allows a key name that contains only whitespace!")
         else:
             self.keyPattern = keyPattern
+            
+        # Initialize data types and patterns for validation
         self.lDataTypes = [name for name, value in vars(builtins).items() if isinstance(value, type)]
-        self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"
+        self.specialCharacters = r"!#$%^&()=[]{}|;',?`~"  # Characters not allowed in parameter names
+        # Pattern to match Python builtin function calls wrapped in << >>
         self.pyCallPattern     = r'<<\s*(?:(?!<<\s*|>>).)*>>' # The pattern of call Python builtin function in JSONP
         self.lDataTypes.append(keyword.kwlist)
-        self.jsonPath        = None
-        self.importTree      = None
-        self.currentNode     = None
-        self.masterFile      = None
-        self.handlingFile    = []
-        self.importCheck     = []
-        self.recursive_level = 0
-        self.bDynamicImport  = False
-        self.iDynamicImport  = 0
-        self.lDynamicImports = []
-        self.syntax          = syntax
-        self.currentCfg      = currentCfg
-        self.dUpdatedParams  = {}
-        self.lDotInParamName = []
+        
+        # Initialize state variables for JSON processing
+        self.jsonPath        = None  # Path to the main JSON file being processed
+        self.importTree      = None  # Tree structure to track file imports
+        self.currentNode     = None  # Current position in the import tree
+        self.masterFile      = None  # Reference to the master JSON file
+        self.handlingFile    = []    # Stack of files currently being processed
+        self.importCheck     = []    # List to prevent cyclic imports
+        self.recursive_level = 0     # Current depth of recursive processing
+        self.bDynamicImport  = False # Flag for dynamic import processing
+        self.iDynamicImport  = 0     # Counter for dynamic imports
+        self.lDynamicImports = []    # List of dynamic import entries
+        self.syntax          = syntax        # JSON syntax type (python/json)
+        self.currentCfg      = currentCfg    # Current configuration dictionary
+        self.dUpdatedParams  = {}    # Dictionary of updated parameters
+        self.lDotInParamName = []    # List to handle dotted parameter names
         self.bJSONPreCheck   = False
         self.jsonCheck       = {}
         self.JPGlobals       = {}
@@ -414,22 +434,35 @@ Constructor
                                 "index out of range"]
 
     def __getFailedJsonDoc(self, jsonDecodeError=None, areaBeforePosition=50, areaAfterPosition=20, oneLine=True):
+        """
+        Extract a snippet of the JSON document around the position where parsing failed.
+        This helps provide better error messages by showing the problematic area.
+        """
         failedJsonDoc = None
         if jsonDecodeError is None:
             return failedJsonDoc
         try:
+            # Extract the JSON document from the error object
             jsonDoc = jsonDecodeError.doc
         except:
             # 'jsonDecodeError' seems not to be a JSON exception object ('doc' not available)
             return failedJsonDoc
+            
+        # Calculate the bounds for extracting the error context
         jsonDocSize     = len(jsonDoc)
         positionOfError = jsonDecodeError.pos
+        
+        # Ensure we don't go beyond document boundaries
         if areaBeforePosition > positionOfError:
             areaBeforePosition = positionOfError
         if areaAfterPosition > (jsonDocSize - positionOfError):
             areaAfterPosition = jsonDocSize - positionOfError
+            
+        # Extract the problematic area around the error position
         failedJsonDoc = jsonDoc[positionOfError-areaBeforePosition:positionOfError+areaAfterPosition]
         failedJsonDoc = f"... {failedJsonDoc} ..."
+        
+        # Optionally flatten newlines for single-line error display
         if oneLine is True:
             failedJsonDoc = failedJsonDoc.replace("\n", r"\n")
         return failedJsonDoc
@@ -481,13 +514,19 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
         i=1
         sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
         for key, value in input_data:
+            # Check for nested parameters in the key (${...} syntax)
             if '${' in key:
                 self.__checkNestedParam(key, bKey=True)
-            # Check and convert dotdict in key name
+                
+            # Check and convert dotdict format in key name
+            # Pattern matches: ${key.subkey.subsubkey...} - dotted parameter notation
             if regex.match(r'^\s*\${[^\.}]+\.[^\.]+.+$', key) and not self.bJSONPreCheck:
                 keyInDotFormat = key
                 key = self.__handleDotInNestedParam(keyInDotFormat)
                 self.dKeyDDictCoverted.update({key : keyInDotFormat})
+                
+            # Check if this is an import directive: [import] with optional suffix like _1, _2, etc.
+            # Pattern: [import] optionally followed by whitespace or _digits
             if regex.match(r'^\s*\[\s*import\s*\](\s|_\d+)*$', key.lower()):
                 if not isinstance(value, str):
                     typeValue = regex.search(r"^<class\s*('.+')>$", str(type(value)))
@@ -782,46 +821,83 @@ Reason: Key error {error}"
                     raise Exception(errorMsg)
             return tmpValue
         
+        # Check if this contains Python builtin function calls
         bPyBuiltIn = False
         if regex.search(self.pyCallPattern, sInputStr):
             bPyBuiltIn = True
+            
+        # Define characters not allowed in parameter names
         specialCharacters = r'[]{}'
+        
+        # Pattern to match parameter references: $${parameter_name}
+        # \$\${ : Literal $${
+        # \s* : Optional whitespace
+        # [^...] : Any character except the special ones
+        # + : One or more characters
+        # \s* : Optional whitespace  
+        # } : Literal closing brace
         pattern = rf'\$\${{\s*[^{regex.escape(specialCharacters)}]+\s*}}'
         referVars = regex.findall(f"({pattern})", sInputStr, regex.UNICODE)
-        # Resolve dotdict in sInputStr
+        
+        # Resolve dotdict notation in parameter references
         for var in referVars:
             if var not in sInputStr:
                 continue
+            # Check for dotted parameter notation like ${param.subparam}
             if regex.search(r'\${.+\..+}', var):
                 sVar = self.__handleDotInNestedParam(var)
                 sInputStr = sInputStr.replace(var, sVar)
+                
+        # Extended pattern to include array/object access:
+        # Basic pattern + optional array indices [123] or string keys ['key']
         tmpPattern = rf'{pattern}(\[\s*\d+\s*\]|\[\s*\'[^{regex.escape(specialCharacters)}]+\'\s*\])*'
+        # Convert key reference to display format for error messages
         sNestedParam = self.__removeTokenStr(sInputStr.replace("$${", "${"))
+        
+        # Check if this key has a dotdict format conversion stored
         for key in self.dKeyDDictCoverted.keys():
             if sNestedParam == key:
                 sNestedParam = self.dKeyDDictCoverted[key]
                 break
+                
+        # Handle dotted parameter notation if present and not converting to string
         if regex.search(r'\${.+\..+}', sInputStr) and not bConvertToStr:
             sInputStr = self.__handleDotInNestedParam(sInputStr)
+            
+        # Process multiple nested parameters in the same expression
+        # Continue while there are parameters to resolve and more than one parameter reference
         while regex.search(tmpPattern, sInputStr, regex.UNICODE) and sInputStr.count("$${")>1:
-            sLoopCheck = sInputStr
+            sLoopCheck = sInputStr  # Track changes to prevent infinite loops
+            
+            # Find parameter references not followed by opening bracket (to avoid double processing)
             referVars = regex.findall(rf'({tmpPattern})[^\[]', sInputStr, regex.UNICODE)
             if len(referVars)==0:
+                # If no variables found with that pattern, try end-of-string pattern
                 referVars = regex.findall(rf'({tmpPattern})$', sInputStr, regex.UNICODE)
+                
             for var in referVars:
+                # Handle dotted notation if present
                 sVar = self.__handleDotInNestedParam(var[0]) if regex.search(r'\${.+\..+}', var[0]) else var[0]
                 tmpValue = __getNestedValue(sVar)
+                
+                # Special handling for JSON pre-check mode
                 if self.bJSONPreCheck:
                     if "${" in tmpValue and bConvertToStr:
                         tmpValue = tmpValue + CNameMangling.STRINGCONVERT.value
+                        
+                # Validate that complex data types aren't being substituted into strings
                 if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)) and bConvertToStr and not bPyBuiltIn:
                     self.__reset()
                     sVar = self.__removeTokenStr(sVar)
                     raise Exception(f"The substitution of parameter '{sVar.replace('$${', '${')}' inside the string \
 value '{sNestedParam}' is not allowed! Composite data types like lists and dictionaries cannot be substituted inside strings.")
+
+                # Replace all occurrences of this variable in the input string
                 while var[0] in sInputStr:
-                    sLoopCheck1 = sInputStr
+                    sLoopCheck1 = sInputStr  # Track inner loop changes
                     varPattern = regex.escape(var[0])
+                    
+                    # Check if the variable is used as an array/object key: [${var}]
                     if regex.search(rf"\[['\s]*{varPattern}['\s]*\]", sInputStr):
                         if regex.search(rf"\[\s*'\s*{varPattern}\s*'\s*\]", sInputStr):
                             if (isinstance(tmpValue, list) or isinstance(tmpValue, dict)):
@@ -1704,42 +1780,64 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                 return False
         oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
+        # Check for string conversion tokens indicating parameter substitution issues
         if CNameMangling.STRINGCONVERT.value in sKeyName:
+            # Check for quoted parameter references in array access
             if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sKeyName):
                 sKeyName = self.__removeTokenStr(sKeyName.strip('"'))
-                sKeyNameSuggestion1 = regex.sub(r'(\[\s*")', '[\'', sKeyName)
+                # Suggest correct syntax alternatives
+                sKeyNameSuggestion1 = regex.sub(r'(\[\s*")', '[\'', sKeyName)  # Use single quotes
                 sKeyNameSuggestion1 = regex.sub(r'("\s*\])', '\']', sKeyNameSuggestion1)
-                sKeyNameSuggestion2 = regex.sub(r'(\[\s*")', '[', sKeyName)
+                sKeyNameSuggestion2 = regex.sub(r'(\[\s*")', '[', sKeyName)   # Remove quotes
                 sKeyNameSuggestion2 = regex.sub(r'("\s*\])', ']', sKeyNameSuggestion2)
                 errorMsg = f"Invalid key name {sKeyName}. Please use the syntax {sKeyNameSuggestion1} or {sKeyNameSuggestion2} \
 to overwrite the value of this parameter."
             else:
+                # General substitution error in key names
                 errorMsg = f"A substitution in key names is not allowed! Please update the key name \"{self.__removeTokenStr(sKeyName)}\""
+        # Remove any internal tokens before validation
         sKeyName = self.__removeTokenStr(sKeyName)
+        
+        # Check if any validation errors were detected during token processing
         if errorMsg!='':
-            pass
+            pass  # Error already set above
+        # Validate normal key names (not parameters, imports, or Python calls)
         elif '${' not in sKeyName and not regex.match(r'^\s*\[\s*import\s*\]\s*$', sKeyName.lower()) \
             and not regex.search(self.pyCallPattern, sKeyName):
+            # Use the key checker for standard key name validation
             if not oKeyChecker.keyNameChecker(sKeyName) and __isAscii(sKeyName):
                 errorMsg = oKeyChecker.errorMsg
+                
+        # Check for malformed array/object access syntax
         elif regex.search(r'\[[^\'\[]+\'[^\']+\'\s*\]|\[\s*\'[^\']+\'[^\]]+\]', sKeyName) or \
             regex.search(r'\[[^\d\[\]]+\d+\]|\[\d+[^\d\]]+\]', sKeyName):
             errorMsg = f"Invalid syntax: {sKeyName}"
+            # Special error message for slicing attempts (not supported)
             if regex.search(r'\[\s*[\-\+:]\d+\s*\]', sKeyName) or regex.search(r'\[\s*\d+:\s*\]', sKeyName):
                 errorMsg = f"Slicing is not supported (expression: '{sKeyName}')."
+                
+        # Validate parameter reference syntax
         elif regex.match(r'^\s*\${.+[\]}]*$', sKeyName):
             tmpKeyName = sKeyName
+            # Check each bracket pair for proper syntax
             while regex.search(r'\[[^\[\]]+\]', tmpKeyName):
                 lCheck = regex.findall(r'\[[^\[\]]+\]', tmpKeyName)
                 for item in lCheck:
+                    # Array access must be quoted strings or variables
                     if regex.match(r'^\[[^\'\$]+.+\]$', item):
                         errorMsg = f"Invalid syntax: {sKeyName}"
                 tmpKeyName = regex.sub(r'\[[^\[\]]+\]', '', tmpKeyName)
+                
+        # Check for incorrect parameter syntax (extra $ signs)
         elif regex.search(r'\$+\${', sKeyName):
             correctKey = regex.sub(r'(\$+\${)', '${', sKeyName)
             errorMsg = f"Invalid key name: {sKeyName} - This key name must be '{correctKey}'"
+            
+        # Check for mismatched brackets
         elif sKeyName.count('${') != sKeyName.count('}') or sKeyName.count('[') != sKeyName.count(']'):
             errorMsg = f"Invalid key name: {sKeyName} - The brackets mismatch!!!"
+            
+        # Check for mixed syntax (text + parameters)
         elif regex.match(r'^\s*[^\$]+\${.+$|^\s*\${.+[^}\]]\s*$', sKeyName):
             errorMsg = f"Invalid key name: '{sKeyName}'."
         elif regex.search(r'\${[^}]*}', sKeyName):
@@ -2128,14 +2226,19 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"Could not read JSONP content due to: '{reason}'!")
         else:
             sJsonData = sJsonpContent
-        # Checking: Do token strings which are reserved in CNameMangling present jsonp file.
+        # Check for reserved tokens that could interfere with processing
         lReservedTokens = [tokenStr.value for tokenStr in CNameMangling]
         for reservedToken in lReservedTokens:
             if reservedToken in sJsonData:
                 self.__reset()
                 raise Exception(f"The JSONP content contains a reserved token '{reservedToken}'")
+                
+        # Define regex patterns for parameter processing:
+        # indexPattern: matches array indices [123] or slicing [1:2]
         indexPattern = r"\[[\s\-\+\d]*\]|\[.*:.*\]"
+        # dictPattern: matches various dictionary/array access patterns
         dictPattern = rf"\[+\s*'.+'\s*\]+|\[+\s*\d+\s*\]+|\[+\s*\${{\s*[^\[]+\s*}}.*\]+|{indexPattern}"
+        # nestedPattern: matches nested parameter references with optional dictionary/array access
         nestedPattern = rf"\${{\s*[^\[}}\$]+(\.*\${{\s*[^\[]+\s*}})*\s*}}({dictPattern})*"
         sJsonDataUpdated = ""
         lNestedParams = []
@@ -2148,8 +2251,9 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
-            # Checks the syntax of the Python inline code
+            # Check the syntax of Python inline code blocks (delimited by << >>)
             if '<<' in line or '>>' in line:
+                # Define patterns to match Python inline code in different contexts:
                 patterns = [
                     r':\s*([^<:\[]*<.*>[^>,\]\}\n]*)\s*[,\]\}\n]*',            # normal JSONP value
                     r'\[\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*[,\]\}\n]*', # first list element in JSOP value
@@ -2164,13 +2268,20 @@ This function handle a last element of a list or dictionary
                             continue
                         newItem = self.__pyInlineCodeSyntaxCheck(item)
                         line = line.replace(item, newItem)
+                        
+            # Process parameter substitutions (${...} syntax)
             if "${" in line:
+                # Remove extra whitespace in parameter references: ${  param  } -> ${param}
                 line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line
                 tmpList03 = []
+                
+                # Find and process all parameter references in the line
                 while regex.search(r'\${([^}]*)}', line):
                     tmpLine = line
+                    # Find parameter that doesn't contain nested ${} 
                     param = regex.search(r'\${([^}\$]*)}', line)
+                    # Handle case where parameter contains $ but not ${
                     if param is None and regex.search(r'\${.*\$(?!\{).*}', line):
                         param = regex.search(r'\${([^}]*)}', line)
                     if param is not None:
@@ -2305,40 +2416,59 @@ This function handle a last element of a list or dictionary
                 continue
             keyDecode = bytes(key, 'utf-8').decode('utf-8')
             self.__keyNameValidation(keyDecode.strip('"'))
+        # ============================================================================
+        # FINAL JSON PROCESSING PHASE
+        # ============================================================================
+        # After all preprocessing, validate key names and parse the final JSON
+        
+        # Validate all key names found in the processed JSON
         for param in lNestedParams:
             self.__keyNameValidation(param)
+            
+        # Select appropriate JSON decoder based on syntax type
         CJSONDecoder = None
         if self.syntax != CSyntaxType.json:
             if self.syntax == CSyntaxType.python:
-                CJSONDecoder = CPythonJSONDecoder
+                CJSONDecoder = CPythonJSONDecoder  # Supports Python literals like True, False, None
             else:
                 self.__reset()
                 raise Exception(f"Provided syntax '{self.syntax}' is not supported.")
+                
+        # PHASE 1: Pre-check JSON structure and handle dynamic imports
         # Load the temporary Json object without checking duplicated keys for 
         # verifying duplicated keys later. The pre-check method also checks dynamic 
         # imported files in JSON files.
         if firstLevel:
-            self.bJSONPreCheck = True
+            self.bJSONPreCheck = True  # Enable pre-check mode
             try:
                 sDummyData = self.__preCheckJsonFile(sJsonDataUpdated, CJSONDecoder)
             except Exception as error:
                 if "Cyclic import detection" in str(error):
-                    pass
+                    pass  # This will be caught in the main parsing phase
                 else:
                     self.__reset()
                     raise Exception(error)
+            # Reset counters for main parsing phase
             self.iDynamicImport = 0
             self.recursive_level = 0
+            # Reset state variables for main parsing phase
             self.bDynamicImport  = False
             self.handlingFile = [] if self.masterFile is None else [self.masterFile]
+            
+            # Extract proper json path from import tree
             if not regex.match(f'^Root:.+$', self.importTree.value):
                 self.jsonPath = os.path.dirname(self.importTree.value)
             else:
                 self.jsonPath = regex.sub(r'(^Root:)', '', self.importTree.value)
+                
+            # Reset import tree for main parsing
             self.importTree.children = {}
             self.currentNode = self.importTree
-            self.bJSONPreCheck = False
+            self.bJSONPreCheck = False  # Disable pre-check mode
 
+        # ============================================================================
+        # PHASE 2: Main JSON parsing with import processing and duplicate key checking
+        # ============================================================================
         # Load Json object with checking duplicated keys feature is enabled.
         # The duplicated keys feature uses the self.jsonCheck object to check duplicated keys. 
         try:
@@ -2346,25 +2476,35 @@ This function handle a last element of a list or dictionary
                                cls=CJSONDecoder,
                                object_pairs_hook=self.__processImportFiles)
         except Exception as error:
+            # Enhanced error reporting with context around the failure point
             failedJsonDoc = self.__getFailedJsonDoc(error)
             jsonException = "not defined"
             if "Cyclic import detection" in str(error):
                 jsonException = str(error)
             else:
                 if failedJsonDoc is None:
-                    # jsonException = f"{error}\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else f"{error}"
                     jsonException = f"{error}"
                 else:
+                    # Include the problematic JSON snippet in the error message
                     jsonException = f"{error}\nNearby: '{failedJsonDoc}'\nIn file: '{self.handlingFile.pop(-1)}'" if len(self.handlingFile)>0 else \
                                     f"{error}\nNearby: '{failedJsonDoc}'"
             if firstLevel:
                 self.__reset()
             raise Exception(jsonException)
+            
+        # Check for dotted parameter names that need special handling
         self.__checkDotInParamName(oJson)
 
+        # ============================================================================
+        # PHASE 3: Final processing - duplicates, validation, and parameter resolution
+        # ============================================================================
         if firstLevel:
+            # Handle duplicated keys that were detected during parsing
             oJson = __handleDuplicatedKey(oJson)
+            
+            # Validate key names and handle special cases
             for k, v in oJson.items():
+                # Skip validation for numeric keys, parameter references, or duplicate markers
                 if regex.match(r"^[\p{Nd}]+.*$", k) or regex.match(r"^[\s\"]*\${.+}[\s\"]*$", k) \
                     or CNameMangling.DUPLICATEDKEY_01.value in k:
                     continue
