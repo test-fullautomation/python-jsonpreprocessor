@@ -510,6 +510,15 @@ This method helps to import JSON files which are provided in ``"[import]"`` keyw
 
   Dictionary with resolved content from imported JSON file
         """
+        # ============================================================================
+        # IMPORT PROCESSING CORE METHOD
+        # ============================================================================
+        # This method is called by json.loads for each key-value pair and handles:
+        # - File imports via [import] keys
+        # - Dynamic imports with parameter resolution
+        # - Duplicate key detection and handling
+        # - Dotted parameter name conversion
+        
         out_dict = {}
         i=1
         sCheckElement = CNameMangling.DUPLICATEDKEY_01.value
@@ -720,15 +729,23 @@ Parse a dictionary path string into a list of its components.
   A list containing the dictionary object and its successive elements.
         """
         lOutput = []
-        specialCharacters = r'$[]{}'
+        specialCharacters = r'$[]{}'  # Characters that need special handling in regex
+        
+        # Case 1: No array access notation - just a simple variable name
         if not regex.search(r"\[.+\]", sInput):
             lOutput.append(sInput)
+        # Case 2: Single array/object access [element]
         elif regex.match(r"^\[[^\[]+\]$", sInput):
+            # Extract the element inside brackets: [element] -> element  
             lOutput.append(regex.sub(r"^\[\s*([^\[]+)\s*\]", "\\1", sInput))
+        # Case 3: Complex path with object and array access: object[elem1][elem2]...
         else:
+            # If path doesn't start with [, extract the root object name
             if not regex.match(r'^\s*\[.+$', sInput):
                 index = sInput.index("[")
-                lOutput.append(sInput[:index])
+                lOutput.append(sInput[:index])  # Add root object name
+            # Extract all array/object access elements: [elem1], [elem2], etc.
+            # Matches: [ optional-quote non-special-chars optional-quote ]
             elements = regex.findall(rf"\[\s*('*[^{regex.escape(specialCharacters)}]+'*)\s*\]", sInput)
             for element in elements:
                 lOutput.append(element)
@@ -1639,41 +1656,62 @@ Checks nested parameter format.
 
   *raise exception if nested parameter format invalid*
         """
+        # Define patterns for parameter validation:
+        # pattern: Basic nested parameter with array access ${param}[index]
         pattern = rf"^\${{\s*[^{regex.escape(self.specialCharacters)}]+\s*}}(\[.*\])+$"
+        # pattern1: Detects mixed parameter syntax (parameter followed by non-array content then another parameter)  
         pattern1 = r"\${[^\${]+}(\[[^\[]+\])*[^\[]*\${"
+        # pattern2: Detects slicing patterns which are not supported
         pattern2 = r"\[[\p{Nd}\.\-\+'\s]*:[\p{Nd}\.\-\+'\s]*\]|\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]|" # Slicing pattern
         pattern2 = pattern2 + r"\[[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*:[\p{Nd}\.\-\+'\s]*\]|\[[\p{Nd}\.\-\+'\s]*:[\s\p{Nd}\+\-]*\${.+[}\]][\s\p{Nd}\+\-]*\]" # Slicing pattern
+        
+        # Skip validation for Python builtin calls
         if not bKey and regex.match(self.pyCallPattern, sInput):
             return True
+            
+        # Handle dynamic import markers
         if CNameMangling.DYNAMICIMPORTED.value in sInput:
             dynamicImported = regex.search(rf'^(.*){CNameMangling.DYNAMICIMPORTED.value}(.*)$', sInput)
             sInput = dynamicImported[2]
-        # Checks special character in parameters
+            
+        # Check for special characters within parameter names
         sTmpInput = sInput
         bSpecialCharInParam = False
         sCheckInput = sTmpInput
+        
+        # Iterate through nested parameters to check for invalid characters
         while sTmpInput.count("${") > 1:
+            # Find all parameter names in the current expression
             lParams = regex.findall(r'\${([^\$}]*)}', sTmpInput)
             for param in lParams:
+                # Check for empty parameters, special characters, or invalid dash usage
                 if param.strip()=='' or regex.search(regex.escape(self.specialCharacters), param) or \
                                         regex.match(r'^\s*\-+.*\s*$', param) or regex.match(r'^\s*[^\-]*\-+\s*$', param):
                     bSpecialCharInParam = True
                     break
+                # Remove this parameter to check remaining ones
                 sTmpInput = sTmpInput.replace(f'${{{param}}}', '')
             if bSpecialCharInParam or sCheckInput==sTmpInput:
                 break
             sCheckInput = sTmpInput
+            
+        # If no parameters, validation passes
         if "${" not in sInput:
             return True
+            
         errorMsg = None
-        # Start checking nested parameter
+        
+        # Comprehensive validation of parameter syntax
+        # Check for array access inside parameter braces (not allowed)
         if regex.search(rf"\${{\s*[^{regex.escape(self.specialCharacters)}]+\['*.+'*\].*}}", sInput, regex.UNICODE):
             errorMsg = f"Invalid syntax: Found index or sub-element inside curly brackets in \
 the parameter '{self.__removeTokenStr(sInput)}'"
+        # Check for unquoted alphabetic characters in array indices
         elif regex.search(r"\[[\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*\]", sInput, regex.UNICODE):
             invalidElem = regex.search(r"\[([\p{Nd}\s]*[\p{L}_]+[\p{Nd}\s]*)\]", sInput, regex.UNICODE)[1]
             errorMsg = f"Invalid syntax! Sub-element '{invalidElem}' in {self.__removeTokenStr(sInput)} \
 need to be referenced using ${{{invalidElem}}} or enclosed in quotes ['{invalidElem}']."
+        # Check for empty brackets or brackets with only special characters
         elif regex.search(r'\[[!@#\$%\^&\*\(\)=\[\]|;\s\-\+\'",<>?/`~]*\]', sInput):
             if CNameMangling.STRINGCONVERT.value not in sInput or \
                 regex.match(pattern, sInput.replace(CNameMangling.STRINGCONVERT.value, "")):
