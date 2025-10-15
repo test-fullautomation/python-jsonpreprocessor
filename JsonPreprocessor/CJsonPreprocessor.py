@@ -53,6 +53,7 @@ import copy
 import shlex
 import hashlib
 import unicodedata
+import ast
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -77,6 +78,7 @@ class CNameMangling(Enum):
     DYNAMICIMPORTED  = "__DynamicImportedHandling__"
     PYTHONBUILTIN    = "__PythonBuiltInFunction__"
     PYBUILTINSTR     = "__StrInPythonInlineCode__"
+    BYTEVALUE        = "__HandleByteValue__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -408,6 +410,8 @@ Constructor
         self.jsonCheck       = {}
         self.JPGlobals       = {}
         self.dKeyDDictCoverted = {}
+        self.iByteValueIndex = 0
+        self.dByteValue      = {}
         self.pythonTypeError = ["object is not subscriptable",
                                 "string indices must be integers",
                                 "list indices must be integers",
@@ -454,6 +458,8 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.jsonCheck       = {}
         self.JPGlobals       = {}
         self.dKeyDDictCoverted = {}
+        self.iByteValueIndex = 0
+        self.dByteValue      = {}
 
     def __processImportFiles(self, input_data : dict) -> dict:
         """
@@ -1261,7 +1267,10 @@ This method replaces all nested parameters in key and value of a JSON object .
             i=0
             for item in lInput:
                 parentParams = f"{parentParams}[{i}]"
-                if isinstance(item, str) and regex.search(pattern, item, regex.UNICODE):
+                # Handle byte value in JSONP by un-mark the token string
+                if isinstance(item, str) and CNameMangling.BYTEVALUE.value in item:
+                    item = ast.literal_eval(self.dByteValue[item])
+                elif isinstance(item, str) and regex.search(pattern, item, regex.UNICODE):
                     bNested = True
                     initItem = item
                     while isinstance(item, str) and "${" in item:
@@ -1424,7 +1433,10 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(v)}. Reason: {str(error)}"
                             self.__reset()
                             raise Exception(errorMsg)
-                if isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
+                # Handle byte value in JSONP by un-mark the token string
+                if isinstance(v, str) and CNameMangling.BYTEVALUE.value in v:
+                    v = ast.literal_eval(self.dByteValue[v])
+                elif isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
                     if '\\' in v:
                         v = repr(v).strip("'|\"")
                     bNested = True
@@ -2148,6 +2160,13 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
+            # Handles byte value in JSONP by make-up byte values by token string
+            lByteValue = regex.findall(r'[^"]+\s*(b\'[^\']+\')\s*[^"]*', line)
+            for byteValue in lByteValue:
+                self.iByteValueIndex +=1
+                key = f'{CNameMangling.BYTEVALUE.value}{self.iByteValueIndex}'
+                self.dByteValue.update({key: byteValue})
+                line = line.replace(byteValue, f'"{key}"')
             # Checks the syntax of the Python inline code
             if '<<' in line or '>>' in line:
                 patterns = [
