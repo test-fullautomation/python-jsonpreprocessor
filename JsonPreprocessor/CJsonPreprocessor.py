@@ -2171,9 +2171,9 @@ This function handle a last element of a list or dictionary
             if '<<' in line or '>>' in line:
                 patterns = [
                     r':\s*([^<:\[]*<.*>[^>,\]\}\n]*)\s*[,\]\}\n]*',            # normal JSONP value
-                    r'\[\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*[,\]\}\n]*', # first list element in JSOP value
-                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*,',           # list element in JSOP value
-                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*\]'           # last list element in JSOP value
+                    r'\[\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*[,\]\}\n]*', # first list element in JSONP value
+                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*,',           # list element in JSONP value
+                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*\]'           # last list element in JSONP value
                 ]
                 pyInline = []
                 pyInline = [match for pattern in patterns for match in regex.findall(pattern, line)]
