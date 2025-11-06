@@ -53,6 +53,7 @@ import copy
 import shlex
 import hashlib
 import unicodedata
+import ast
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
@@ -77,6 +78,7 @@ class CNameMangling(Enum):
     DYNAMICIMPORTED  = "__DynamicImportedHandling__"
     PYTHONBUILTIN    = "__PythonBuiltInFunction__"
     PYBUILTINSTR     = "__StrInPythonInlineCode__"
+    BYTEVALUE        = "__HandleByteValue__"
 
 class CPythonJSONDecoder(json.JSONDecoder):
     """
@@ -408,6 +410,8 @@ Constructor
         self.jsonCheck       = {}
         self.JPGlobals       = {}
         self.dKeyDDictCoverted = {}
+        self.iByteValueIndex = 0
+        self.dByteValue      = {}
         self.pythonTypeError = ["object is not subscriptable",
                                 "string indices must be integers",
                                 "list indices must be integers",
@@ -454,6 +458,8 @@ Reset initial variables which are set in constructor method after master JSON fi
         self.jsonCheck       = {}
         self.JPGlobals       = {}
         self.dKeyDDictCoverted = {}
+        self.iByteValueIndex = 0
+        self.dByteValue      = {}
 
     def __processImportFiles(self, input_data : dict) -> dict:
         """
@@ -1261,7 +1267,10 @@ This method replaces all nested parameters in key and value of a JSON object .
             i=0
             for item in lInput:
                 parentParams = f"{parentParams}[{i}]"
-                if isinstance(item, str) and regex.search(pattern, item, regex.UNICODE):
+                # Handle byte value in JSONP by un-mark the token string
+                if isinstance(item, str) and CNameMangling.BYTEVALUE.value in item:
+                    item = ast.literal_eval(self.dByteValue[item])
+                elif isinstance(item, str) and regex.search(pattern, item, regex.UNICODE):
                     bNested = True
                     initItem = item
                     while isinstance(item, str) and "${" in item:
@@ -1424,7 +1433,10 @@ Use the '<name> : <value>' syntax to create a new based parameter.")
                             errorMsg = f"Could not evaluate the Python builtIn {self.__removeTokenStr(v)}. Reason: {str(error)}"
                             self.__reset()
                             raise Exception(errorMsg)
-                if isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
+                # Handle byte value in JSONP by un-mark the token string
+                if isinstance(v, str) and CNameMangling.BYTEVALUE.value in v:
+                    v = ast.literal_eval(self.dByteValue[v])
+                elif isinstance(v, str) and regex.search(pattern, v, regex.UNICODE):
                     if '\\' in v:
                         v = repr(v).strip("'|\"")
                     bNested = True
@@ -1861,7 +1873,10 @@ Handles Python builtIn function.
             sInput = sInput.replace(CNameMangling.PYBUILTINSTR.value, '"')
         if CNameMangling.PYTHONBUILTIN.value in sInput:
             sInput = regex.sub(rf'(self\.JPGlobals(?:(?!self\.JPGlobals).)+){CNameMangling.PYTHONBUILTIN.value}', '"\\1"', sInput)
-        pyInlineCode = regex.findall(self.pyCallPattern, sInput)[0]
+        if regex.match(r'^<<\s*(.*)>$', sInput):
+            pyInlineCode = sInput
+        else:
+            pyInlineCode = regex.findall(rf'{self.pyCallPattern}+', sInput)[0]
         sExec = regex.sub(r'<<\s*(.*)>>', "evalValue = \\1", pyInlineCode)
         try:
             ldict = {}
@@ -1884,18 +1899,31 @@ the datatype '{type(evalValue)}' is not suitable for JSON."
         """
 Checks the syntax of Python inline code.
         """
+        errorMsg = None
         if regex.match(r'^\s*<<\s*>>\s*$', sInput):
             errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(sInput)}'"
-            self.__reset()
-            raise Exception(errorMsg)
         elif regex.search(rf'\s*"[^",]*{self.pyCallPattern}[^",]*"', sInput):
             errorMsg = f"Python inline code must not be embedded part of a string! Please check the line {sInput}"
-            self.__reset()
-            raise Exception(errorMsg)
+        elif not regex.search(self.pyCallPattern, sInput):
+            errorMsg = f"Invalid syntax: Check the Python inline code '{sInput}'. "
+            if sInput.count('<<') > sInput.count('>>'):
+                errorMsg = errorMsg + "Missing closed bracket!"
+            elif sInput.count('<<') < sInput.count('>>'):
+                errorMsg = errorMsg + "Missing opened bracket!"
+            else:
+                errorMsg = errorMsg + "The correct syntax is '<<Python_inline_code>>'!"
+        elif regex.match(r'^<<.+>>$', sInput.strip()) and (sInput.count('<<')>1 or sInput.count('>>')>1):
+            return f'"{sInput}"'
         else:
-            pyInlineCode = regex.search(r'<+\s*(?:(?!<<\s*|>>).)*>+', sInput)
+            pyInlineCode = regex.search(rf'{self.pyCallPattern}+', sInput)
             if len(pyInlineCode) > 0:
                 pyInlineCode = pyInlineCode[0]
+                if regex.search(rf'[^\s]+', sInput.replace(pyInlineCode, ' ')):
+                    # tmpInput is used to check the list format (is py inline code in a list)
+                    tmpInput = sInput.replace(pyInlineCode, ' ')
+                    tmpInput = regex.sub(r'"[^"]+"', ' ', tmpInput)
+                    if not regex.match(r'^\[([^,]+,*)+\s*\]*$', tmpInput):
+                        return sInput
                 if pyInlineCode.count('"') % 2 == 1:
                     errorMsg = f"Invalid syntax in the Python inline code '{pyInlineCode}'."
                     self.__reset()
@@ -1904,7 +1932,10 @@ Checks the syntax of Python inline code.
                     pyInlineCode = regex.sub(r'"\s*(\${[^"]+)\s*"', f'\\1{CNameMangling.PYTHONBUILTIN.value}', pyInlineCode)
                 pyInlineCode = regex.sub(r'"(\s*(?:(?!\${)[^"])*)"', \
                                          f'{CNameMangling.PYBUILTINSTR.value}\\1{CNameMangling.PYBUILTINSTR.value}', pyInlineCode)
-                sInput = regex.sub(r'(<+\s*(?:(?!<<\s*|>>).)*>+)', f'"{pyInlineCode}"', sInput)
+                sInput = regex.sub(rf'({self.pyCallPattern}+)', f'"{pyInlineCode}"', sInput)
+        if errorMsg is not None:
+            self.__reset()
+            raise Exception(errorMsg)
         return sInput
 
     def jsonLoad(self, jFile : str):
@@ -2129,16 +2160,29 @@ This function handle a last element of a list or dictionary
                 self.__reset()
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
+            # Handles byte value in JSONP by make-up byte values by token string
+            lByteValue = regex.findall(r'[^"]+\s*(b\'[^\']+\')\s*[^"]*', line)
+            for byteValue in lByteValue:
+                self.iByteValueIndex +=1
+                key = f'{CNameMangling.BYTEVALUE.value}{self.iByteValueIndex}'
+                self.dByteValue.update({key: byteValue})
+                line = line.replace(byteValue, f'"{key}"')
             # Checks the syntax of the Python inline code
-            pyInline = regex.findall(r':\s*(<<*(?:(?!>>).)*>*>)[,\]\}\s]*', line)
-            if len(pyInline)>0:
-                for item in pyInline:
-                    if not regex.match(self.pyCallPattern, item):
-                        errorMsg = f"Invalid syntax: Check the Python inline code '{item}'"
-                        self.__reset()
-                        raise Exception(errorMsg)
-            if regex.search(self.pyCallPattern, line):
-                line = self.__pyInlineCodeSyntaxCheck(line)
+            if '<<' in line or '>>' in line:
+                patterns = [
+                    r':\s*([^<:\[]*<.*>[^>,\]\}\n]*)\s*[,\]\}\n]*',            # normal JSONP value
+                    r'\[\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*[,\]\}\n]*', # first list element in JSONP value
+                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*,',           # list element in JSONP value
+                    r',\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*\]'           # last list element in JSONP value
+                ]
+                pyInline = []
+                pyInline = [match for pattern in patterns for match in regex.findall(pattern, line)]
+                if len(pyInline)>0:
+                    for item in pyInline:
+                        if item.strip()=='' or ('<<' not in item and '>>' not in item):
+                            continue
+                        newItem = self.__pyInlineCodeSyntaxCheck(item)
+                        line = line.replace(item, newItem)
             if "${" in line:
                 line = regex.sub(r'\${\s*([^\s][^}]+[^\s])\s*}', '${\\1}', line)
                 curLine = line

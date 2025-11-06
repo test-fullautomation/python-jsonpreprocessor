@@ -1547,8 +1547,25 @@ In opposite to the \textbf{JsonPreprocessor}, the \textbf{TestsuitesManagement} 
 and does not allow any special characters. Key names are limited to letters and digits!
 \end{boxhint}
 
+% --------------------------------------------------------------------------------------------------------------
 
+\newpage
 
+\section{Byte sequences}
+
+The \textbf{JsonPreprocessor} supports the explicit embedding of binary values (in Hexadecimal Escape Notation).
+
+\begin{pythoncode}
+"bytesequence" : b'\x52\x6f\x62\x6f\x74\x46\x72\x61\x6d\x65\x77\x6f\x72\x6b\x20\x41\x49\x4f'
+\end{pythoncode}
+
+The result is the resolved content:
+
+\begin{pythonlog}
+DotDict({'bytesequence': b'RobotFramework AIO'})
+\end{pythonlog}
+
+This feature requires the usage of single quotes: \pcode{b'...'}. Double quotes must not be used.
 
 
 
