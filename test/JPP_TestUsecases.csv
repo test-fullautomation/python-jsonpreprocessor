@@ -205,14 +205,32 @@ JPP_2058|PARAMETER_SCOPE|BADCASE|JSON file containing a parameter with missing s
 JPP_2100|INLINE_CODE|GOODCASE|JSON file containing Python inline code with simple data types
 JPP_2101|INLINE_CODE|GOODCASE|JSON file containing Python inline code with composite data types
 JPP_2102|INLINE_CODE|GOODCASE|JSON file containing Python inline code with simple conditions
-JPP_2103|INLINE_CODE|GOODCASE|JSON file containing Python inline code within lists and dictionaries
+JPP_2103|INLINE_CODE|GOODCASE|JSON file containing Python inline code within a dictionary (key value)
 JPP_2105|INLINE_CODE|GOODCASE|JSON file containing Python inline code in more complex scenarios
+JPP_2106|INLINE_CODE|GOODCASE|JSON file containing Python inline code with slicing
 JPP_2107|INLINE_CODE|GOODCASE|JSON file containing Python inline code with import paths
 JPP_2150|INLINE_CODE|BADCASE|Python inline code as embedded part of a string (1)
 JPP_2151|INLINE_CODE|BADCASE|Python inline code as embedded part of a string (2)
 JPP_2152|INLINE_CODE|BADCASE|Python inline code as embedded part of a string (3)
+JPP_2153|INLINE_CODE|BADCASE|Python inline code as embedded part of a string within a list
+JPP_2154|INLINE_CODE|BADCASE|Python inline code as embedded part of a string within a dictionary
+JPP_2168|INLINE_CODE|BADCASE|Python inline code with missing leading angle bracket
+JPP_2169|INLINE_CODE|BADCASE|Python inline code with missing trailing angle bracket
+JPP_2170|INLINE_CODE|BADCASE|Python inline code inside a list with missing leading angle bracket
+JPP_2171|INLINE_CODE|BADCASE|Python inline code inside a list with missing trailing angle bracket
+JPP_2172|INLINE_CODE|BADCASE|Python inline code inside a dictionary with missing leading angle bracket
+JPP_2173|INLINE_CODE|BADCASE|Python inline code inside a dictionary with missing trailing angle bracket
 JPP_2180|INLINE_CODE|BADCASE|Python inline code with additional leading angle bracket
+JPP_2181|INLINE_CODE|BADCASE|Python inline code with additional trailing angle bracket
+JPP_2182|INLINE_CODE|BADCASE|Python inline code inside a list with additional leading angle bracket
+JPP_2183|INLINE_CODE|BADCASE|Python inline code inside a list with additional trailing angle bracket
 JPP_2184|INLINE_CODE|BADCASE|Python inline code inside a dictionary with additional leading angle bracket
+JPP_2185|INLINE_CODE|BADCASE|Python inline code inside a dictionary with additional trailing angle bracket
+JPP_2187|INLINE_CODE|BADCASE|Python inline code inside a list returns data type not supported by JSON
+JPP_2189|INLINE_CODE|BADCASE|Nested Python inline code
+JPP_2190|INLINE_CODE|BADCASE|Nested Python inline code inside a list
+JPP_2191|INLINE_CODE|BADCASE|Nested Python inline code inside a dictionary
 JPP_2192|INLINE_CODE|BADCASE|Python inline code is parameter name
 JPP_2193|INLINE_CODE|BADCASE|Python inline code is parameter name inside a list
 JPP_2194|INLINE_CODE|BADCASE|Python inline code is parameter name inside a dictionary
+JPP_2195|INLINE_CODE|BADCASE|JSON file containing Python inline code within a list

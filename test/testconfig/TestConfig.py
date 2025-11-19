@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 13.08.2025
+# 19.11.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -4510,7 +4510,7 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2103"
-dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code within lists and dictionaries"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code within a dictionary (key value)"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
 dictUsecase['SECTION']           = "INLINE_CODE"
 dictUsecase['SUBSECTION']        = "GOODCASE"
@@ -4547,6 +4547,7 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 # JSONP file still partially commented out
+# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/483
 dictUsecase['TESTID']            = "JPP_2105"
 dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code in more complex scenarios"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
@@ -4584,7 +4585,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# slicing under discussion
 dictUsecase['TESTID']            = "JPP_2106"
 dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code with slicing"
 dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
@@ -4593,10 +4593,9 @@ dictUsecase['SUBSECTION']        = "GOODCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2106.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
-dictUsecase['EXPECTEDRETURN']    = """
-"""
-# # # listofdictUsecases.append(dictUsecase)
+dictUsecase['EXPECTEDEXCEPTION'] = "Slicing is not supported (expression: '<<${A} + ${B}[-1]>>')."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -4675,8 +4674,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting ',' delimiter
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/454
 dictUsecase['TESTID']            = "JPP_2153"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a string within a list"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4685,14 +4682,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2153.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be embedded part of a string! Please check the expression \"<<[1, 2]>>\""
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# error message to be reworked: Python inline code is not allowed as key!
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2154"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a string within a dictionary"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4701,14 +4696,14 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2154.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be embedded part of a string! Please check the expression \"<<[1, 2]>>\""
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2155"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (1)"
@@ -4724,8 +4719,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2156"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (2)"
@@ -4741,8 +4736,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2157"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (3)"
@@ -4758,8 +4753,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2158"
 dictUsecase['DESCRIPTION']       = "Python inline code without quotes at left hand side of the colon (1)"
@@ -4776,8 +4771,8 @@ del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2159"
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['DESCRIPTION']       = "Python inline code without quotes at left hand side of the colon (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4792,8 +4787,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2160"
 dictUsecase['DESCRIPTION']       = "Python inline code within quotes at left hand side of the colon (1)"
@@ -4809,8 +4804,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2161"
 dictUsecase['DESCRIPTION']       = "Python inline code within quotes at left hand side of the colon (2)"
@@ -4826,8 +4821,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
+# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
+# should be rephrased to: Python inline code not allowed at left hand side of the colon
 # https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2162"
 dictUsecase['DESCRIPTION']       = "Completely invalid Python inline code at left hand side of the colon (1)"
@@ -4928,7 +4923,6 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2168"
 dictUsecase['DESCRIPTION']       = "Python inline code with missing leading angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4937,13 +4931,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2168.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<0 if True else 1>>'. Missing opened bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2169"
 dictUsecase['DESCRIPTION']       = "Python inline code with missing trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4952,13 +4945,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2169.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<<0 if True else 1>'. Missing closed bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2170"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a list with missing leading angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4967,13 +4959,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2170.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<1 if True else 2>>'. Missing opened bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2171"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a list with missing trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4982,13 +4973,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2171.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<<1 if True else 2>'. Missing closed bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2172"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a dictionary with missing leading angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4997,13 +4987,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2172.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<1 if True else 2>>'. Missing opened bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Exception: 'Expecting value: line 2 column 11
 dictUsecase['TESTID']            = "JPP_2173"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a dictionary with missing trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5012,9 +5001,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2173.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax: Check the Python inline code '<<1 if True else 2>'. Missing closed bracket!"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -5122,7 +5111,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting ',' delimiter:
 dictUsecase['TESTID']            = "JPP_2181"
 dictUsecase['DESCRIPTION']       = "Python inline code with additional trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5131,13 +5119,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2181.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not evaluate the Python builtIn <<0 if True else 1>>>. Reason: invalid syntax (<string>, line 1)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Python inline code not resolved
 dictUsecase['TESTID']            = "JPP_2182"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a list with additional leading angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5146,13 +5133,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2182.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<<1 if True else 2>>'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting ',' delimiter:
 dictUsecase['TESTID']            = "JPP_2183"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a list with additional trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5161,9 +5147,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2183.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<1 if True else 2>>>'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -5181,7 +5167,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting ',' delimiter
 dictUsecase['TESTID']            = "JPP_2185"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a dictionary with additional trailing angle bracket"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5190,9 +5175,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2185.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not evaluate the Python builtIn <<1 if True else 2>>>. Reason: invalid syntax (<string>, line 1)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -5213,7 +5198,6 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Python inline code not resolved
 dictUsecase['TESTID']            = "JPP_2187"
 dictUsecase['DESCRIPTION']       = "Python inline code inside a list returns data type not supported by JSON"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5222,9 +5206,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2187.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<from datetime import datetime; now = datetime.now()>>'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -5245,8 +5229,8 @@ dictUsecase['EXPECTEDRETURN']    = None
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting value:
-# Nesting not detected
+# Detected syntax error is OK.
+# Better would be to detect the nesting.
 dictUsecase['TESTID']            = "JPP_2189"
 dictUsecase['DESCRIPTION']       = "Nested Python inline code"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5255,14 +5239,14 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2189.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not evaluate the Python builtIn <<[1, 2] + <<[3, 4] if True else [5, 6]>>>>. Reason: invalid syntax (<string>, line 1)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting value:
-# Nesting not detected
+# Detected syntax error is OK.
+# Better would be to detect the nesting.
 dictUsecase['TESTID']            = "JPP_2190"
 dictUsecase['DESCRIPTION']       = "Nested Python inline code inside a list"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5271,14 +5255,14 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2190.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<[1, 2] + <<[3, 4] if True else [5, 6]>>>>'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Expecting value:
-# Nesting not detected
+# Detected syntax error is OK.
+# Better would be to detect the nesting.
 dictUsecase['TESTID']            = "JPP_2191"
 dictUsecase['DESCRIPTION']       = "Nested Python inline code inside a dictionary"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -5287,9 +5271,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2191.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not evaluate the Python builtIn <<[1, 2] + <<[3, 4] if True else [5, 6]>>>>. Reason: invalid syntax (<string>, line 1)"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
@@ -5301,7 +5285,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2192.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5315,7 +5299,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2193.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5329,8 +5313,24 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2194.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2195"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code within a list"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2195.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<${A}__ConvertParameterToString__ if ${choice}__ConvertParameterToString__ else ${B}__ConvertParameterToString__>>'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+
+
