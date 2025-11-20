@@ -1719,7 +1719,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
         if regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sKeyName):
-            errorMsg = f"Python inline code cannot be used to define a key name! Please check the key name '{self.__removeTokenStr(sKeyName)}'"
+            errorMsg = f"Python inline code in the left hand side of the colon is not allowed!"
         elif CNameMangling.STRINGCONVERT.value in sKeyName:
             if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sKeyName):
                 sKeyName = self.__removeTokenStr(sKeyName.strip('"'))
