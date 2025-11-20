@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 19.11.2025
+# 20.11.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -5285,7 +5285,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2192.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}'"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used within dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5299,7 +5299,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2193.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used within dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5313,7 +5313,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2194.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used inside dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used within dollar operator expression! Please check the expression '${<<[3, 4] if True else [5, 6]>>}"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5327,7 +5327,7 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2195.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<${A}__ConvertParameterToString__ if ${choice}__ConvertParameterToString__ else ${B}__ConvertParameterToString__>>'"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<${A} if ${choice} else ${B}>>'"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
