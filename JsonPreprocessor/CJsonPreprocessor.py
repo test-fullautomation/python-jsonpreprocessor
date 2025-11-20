@@ -1267,7 +1267,8 @@ This method replaces all nested parameters in key and value of a JSON object .
             i=0
             for item in lInput:
                 if isinstance(item, str) and regex.search(rf'{self.pyCallPattern}', item):
-                    raise Exception(f"Python inline code must not be a part of a list! Please check the expression '{item}'")
+                    raise Exception(f"Python inline code must not be a part of a list! Please check \
+the expression '{self.__removeTokenStr(item)}'")
                 parentParams = f"{parentParams}[{i}]"
                 # Handle byte value in JSONP by un-mark the token string
                 if isinstance(item, str) and CNameMangling.BYTEVALUE.value in item:
@@ -1719,7 +1720,7 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
         oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
         if regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sKeyName):
-            errorMsg = f"Python inline code in the left hand side of the colon is not allowed!"
+            errorMsg = f"Python inline code is not allowed at the left hand side of the colon."
         elif CNameMangling.STRINGCONVERT.value in sKeyName:
             if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sKeyName):
                 sKeyName = self.__removeTokenStr(sKeyName.strip('"'))
@@ -2173,7 +2174,7 @@ This function handle a last element of a list or dictionary
             if '<<' in line or '>>' in line:
                 if regex.search(rf'\${{\s*{self.pyCallPattern}\s*}}', line):
                     InvalidParam = regex.findall(rf'\${{\s*{self.pyCallPattern}\s*}}', line)[0]
-                    raise Exception(f"Python inline code must not be used inside dollar operator expression! \
+                    raise Exception(f"Python inline code must not be used within dollar operator expression! \
 Please check the expression '{InvalidParam}'")
                 patterns = [
                     r':\s*([^<:\[]*<.*>[^>,\]\}\n]*)\s*[,\]\}\n]*',            # normal JSONP value
