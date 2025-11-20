@@ -2245,6 +2245,136 @@ Test Use Cases
 
 ----
 
+* **Test JPP_2155**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2156**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2157**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2158**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code without quotes at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2159**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code without quotes at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2160**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code within quotes at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2161**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code within quotes at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2162**
+
+  [INLINE_CODE / BADCASE]
+
+   **Completely invalid Python inline code at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2163**
+
+  [INLINE_CODE / BADCASE]
+
+   **Completely invalid Python inline code at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2164**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as key name at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2165**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as key name at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2166**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as list index at left hand side of the colon**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2167**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as dictionary key at left hand side of the colon**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_2168**
 
   [INLINE_CODE / BADCASE]
@@ -2445,5 +2575,5 @@ Test Use Cases
 
 ----
 
-Generated: 19.11.2025 - 16:54:47
+Generated: 20.11.2025 - 13:52:43
 

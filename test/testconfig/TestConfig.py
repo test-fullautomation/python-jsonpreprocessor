@@ -4702,9 +4702,6 @@ listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2155"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4713,15 +4710,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2155.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<[1, 2]>>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2156"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4730,15 +4724,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2156.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression 'ABC <<[\"A\", \"B\"]>> DEF'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2157"
 dictUsecase['DESCRIPTION']       = "Python inline code as embedded part of a key name (3)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4747,15 +4738,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2157.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<${A}>>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2158"
 dictUsecase['DESCRIPTION']       = "Python inline code without quotes at left hand side of the colon (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4764,16 +4752,13 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2158.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<1 if True else 2>>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2159"
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['DESCRIPTION']       = "Python inline code without quotes at left hand side of the colon (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "INLINE_CODE"
@@ -4781,15 +4766,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2159.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<\"A\" if True else \"B\">>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2160"
 dictUsecase['DESCRIPTION']       = "Python inline code within quotes at left hand side of the colon (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4798,15 +4780,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2160.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<1 if True else 2>>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2161"
 dictUsecase['DESCRIPTION']       = "Python inline code within quotes at left hand side of the colon (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4815,15 +4794,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2161.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<(\"A\" if True else \"B\">>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message: 'Python inline code cannot be used to define a key name! Please check the key name '<<[1, 2]>>''!
-# should be rephrased to: Python inline code not allowed at left hand side of the colon
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2162"
 dictUsecase['DESCRIPTION']       = "Completely invalid Python inline code at left hand side of the colon (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4832,15 +4808,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2162.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '<<1 if True else 2>>'."
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2163"
 dictUsecase['DESCRIPTION']       = "Completely invalid Python inline code at left hand side of the colon (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4849,15 +4822,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2163.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Expecting property name enclosed in double quotes"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2164"
 dictUsecase['DESCRIPTION']       = "Python inline code as key name at left hand side of the colon (1)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4866,15 +4836,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2164.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used within dollar operator expression! Please check the expression '${<<1 if True else 2>>}'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2165"
 dictUsecase['DESCRIPTION']       = "Python inline code as key name at left hand side of the colon (2)"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4883,15 +4850,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2165.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be used within dollar operator expression! Please check the expression '${<<1 if ${A} else 2>>}'"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2166"
 dictUsecase['DESCRIPTION']       = "Python inline code as list index at left hand side of the colon"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4900,15 +4864,12 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2166.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '${A}[\"<<0 if True else 1>>\"]'  '"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
-# Error message "Python inline code is not allowed as key!" should be
-# rephrased to "Python inline code cannot be used to define a key name."
-# https://github.com/test-fullautomation/python-jsonpreprocessor/issues/464
 dictUsecase['TESTID']            = "JPP_2167"
 dictUsecase['DESCRIPTION']       = "Python inline code as dictionary key at left hand side of the colon"
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
@@ -4917,9 +4878,9 @@ dictUsecase['SUBSECTION']        = "BADCASE"
 dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2167.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code is not allowed at the left hand side of the colon. Please check expression '${A}[\"<<B if True else C>>\"]'  '"
 dictUsecase['EXPECTEDRETURN']    = None
-# # # listofdictUsecases.append(dictUsecase)
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}

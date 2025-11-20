@@ -214,6 +214,19 @@ JPP_2151|INLINE_CODE|BADCASE|Python inline code as embedded part of a string (2)
 JPP_2152|INLINE_CODE|BADCASE|Python inline code as embedded part of a string (3)
 JPP_2153|INLINE_CODE|BADCASE|Python inline code as embedded part of a string within a list
 JPP_2154|INLINE_CODE|BADCASE|Python inline code as embedded part of a string within a dictionary
+JPP_2155|INLINE_CODE|BADCASE|Python inline code as embedded part of a key name (1)
+JPP_2156|INLINE_CODE|BADCASE|Python inline code as embedded part of a key name (2)
+JPP_2157|INLINE_CODE|BADCASE|Python inline code as embedded part of a key name (3)
+JPP_2158|INLINE_CODE|BADCASE|Python inline code without quotes at left hand side of the colon (1)
+JPP_2159|INLINE_CODE|BADCASE|Python inline code without quotes at left hand side of the colon (2)
+JPP_2160|INLINE_CODE|BADCASE|Python inline code within quotes at left hand side of the colon (1)
+JPP_2161|INLINE_CODE|BADCASE|Python inline code within quotes at left hand side of the colon (2)
+JPP_2162|INLINE_CODE|BADCASE|Completely invalid Python inline code at left hand side of the colon (1)
+JPP_2163|INLINE_CODE|BADCASE|Completely invalid Python inline code at left hand side of the colon (2)
+JPP_2164|INLINE_CODE|BADCASE|Python inline code as key name at left hand side of the colon (1)
+JPP_2165|INLINE_CODE|BADCASE|Python inline code as key name at left hand side of the colon (2)
+JPP_2166|INLINE_CODE|BADCASE|Python inline code as list index at left hand side of the colon
+JPP_2167|INLINE_CODE|BADCASE|Python inline code as dictionary key at left hand side of the colon
 JPP_2168|INLINE_CODE|BADCASE|Python inline code with missing leading angle bracket
 JPP_2169|INLINE_CODE|BADCASE|Python inline code with missing trailing angle bracket
 JPP_2170|INLINE_CODE|BADCASE|Python inline code inside a list with missing leading angle bracket
