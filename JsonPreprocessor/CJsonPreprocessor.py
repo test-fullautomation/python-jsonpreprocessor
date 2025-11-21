@@ -1266,6 +1266,9 @@ This method replaces all nested parameters in key and value of a JSON object .
             tmpValue = []
             i=0
             for item in lInput:
+                if isinstance(item, str) and regex.search(rf'{self.pyCallPattern}', item):
+                    raise Exception(f"Python inline code must not be a part of a list! Please check \
+the expression '{self.__removeTokenStr(item)}'")
                 parentParams = f"{parentParams}[{i}]"
                 # Handle byte value in JSONP by un-mark the token string
                 if isinstance(item, str) and CNameMangling.BYTEVALUE.value in item:
@@ -1716,7 +1719,10 @@ Validates the key names of a JSON object to ensure they adhere to certain rules 
                 return False
         oKeyChecker = CKeyChecker(self.keyPattern)
         errorMsg = ''
-        if CNameMangling.STRINGCONVERT.value in sKeyName:
+        if regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sKeyName):
+            errorMsg = f"Python inline code is not allowed at the left hand side of the colon. Please check \
+expression '{self.__removeTokenStr(sKeyName)}'."
+        elif CNameMangling.STRINGCONVERT.value in sKeyName:
             if regex.search(r'\[\s*"\s*\${[^"]+"\s*\]', sKeyName):
                 sKeyName = self.__removeTokenStr(sKeyName.strip('"'))
                 sKeyNameSuggestion1 = regex.sub(r'(\[\s*")', '[\'', sKeyName)
@@ -1777,8 +1783,6 @@ to overwrite the value of this parameter."
                             nestedParam = param[0]
                             nestedParam = regex.escape(nestedParam)
                             tmpStr = regex.sub(rf"[\[\s']*{nestedParam}['\s\]]*", '', tmpStr)
-        elif regex.search(rf'["\s]*{self.pyCallPattern}["\s]*', sKeyName):
-            errorMsg = f"Python inline code cannot be used to define a key name! Please check the key name '{sKeyName}'"
         if errorMsg != '':
             self.__reset()
             raise Exception(errorMsg)
@@ -1903,7 +1907,7 @@ Checks the syntax of Python inline code.
         if regex.match(r'^\s*<<\s*>>\s*$', sInput):
             errorMsg = f"The Python builtIn must not be empty. Please check '{self.__removeTokenStr(sInput)}'"
         elif regex.search(rf'\s*"[^",]*{self.pyCallPattern}[^",]*"', sInput):
-            errorMsg = f"Python inline code must not be embedded part of a string! Please check the line {sInput}"
+            errorMsg = f"Python inline code must not be embedded part of a string! Please check the expression {sInput}"
         elif not regex.search(self.pyCallPattern, sInput):
             errorMsg = f"Invalid syntax: Check the Python inline code '{sInput}'. "
             if sInput.count('<<') > sInput.count('>>'):
@@ -2169,6 +2173,10 @@ This function handle a last element of a list or dictionary
                 line = line.replace(byteValue, f'"{key}"')
             # Checks the syntax of the Python inline code
             if '<<' in line or '>>' in line:
+                if regex.search(rf'\${{\s*{self.pyCallPattern}\s*}}', line):
+                    InvalidParam = regex.findall(rf'\${{\s*{self.pyCallPattern}\s*}}', line)[0]
+                    raise Exception(f"Python inline code must not be used within dollar operator expression! \
+Please check the expression '{InvalidParam}'")
                 patterns = [
                     r':\s*([^<:\[]*<.*>[^>,\]\}\n]*)\s*[,\]\}\n]*',            # normal JSONP value
                     r'\[\s*([^<,]*<(?:(?!>>).)*>*>[^>,\]\}\n]*)\s*[,\]\}\n]*', # first list element in JSONP value
@@ -2302,10 +2310,13 @@ This function handle a last element of a list or dictionary
         sJsonDataUpdated = CTextProcessor.normalizeDigits(sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\[\s+\'', '[\'', sJsonDataUpdated)
         sJsonDataUpdated = regex.sub(r'\'\s+\]', '\']', sJsonDataUpdated)
+        # Get the list of key names which are enclosed by double quotes
         lKeyName = regex.findall(r'[,\s{]*("[^"\n]*")\s*:\s*', sJsonDataUpdated)
         tmpJsonDataUpdated = regex.sub(r":\s*\"[^\"]*\"", ": \"\"", sJsonDataUpdated)
         tmpJsonDataUpdated = regex.sub(r"\[[^:]*:[^:]*\]", "[]", tmpJsonDataUpdated)
+        # Get the list of nested key names and Python inline code in key names
         lKeyName = lKeyName + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*[^\]}]', tmpJsonDataUpdated)
+        lKeyName = lKeyName + regex.findall(rf'[,\s{{]*({self.pyCallPattern})\s*:\s*[^\]}}]', tmpJsonDataUpdated)
         for key in lKeyName:
             if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 newKey = '"' + key.strip('"').strip() + '"'

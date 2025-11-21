@@ -2159,7 +2159,7 @@ Test Use Cases
 
   [INLINE_CODE / GOODCASE]
 
-   **JSON file containing Python inline code within lists and dictionaries**
+   **JSON file containing Python inline code within a dictionary (key value)**
 
    Expected: JsonPreprocessor returns expected values
 
@@ -2170,6 +2170,16 @@ Test Use Cases
   [INLINE_CODE / GOODCASE]
 
    **JSON file containing Python inline code in more complex scenarios**
+
+   Expected: JsonPreprocessor returns expected values
+
+----
+
+* **Test JPP_2106**
+
+  [INLINE_CODE / GOODCASE]
+
+   **JSON file containing Python inline code with slicing**
 
    Expected: JsonPreprocessor returns expected values
 
@@ -2215,6 +2225,216 @@ Test Use Cases
 
 ----
 
+* **Test JPP_2153**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a string within a list**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2154**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a string within a dictionary**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2155**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2156**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2157**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as embedded part of a key name (3)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2158**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code without quotes at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2159**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code without quotes at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2160**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code within quotes at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2161**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code within quotes at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2162**
+
+  [INLINE_CODE / BADCASE]
+
+   **Completely invalid Python inline code at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2163**
+
+  [INLINE_CODE / BADCASE]
+
+   **Completely invalid Python inline code at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2164**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as key name at left hand side of the colon (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2165**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as key name at left hand side of the colon (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2166**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as list index at left hand side of the colon**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2167**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code as dictionary key at left hand side of the colon**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2168**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code with missing leading angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2169**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code with missing trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2170**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a list with missing leading angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2171**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a list with missing trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2172**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a dictionary with missing leading angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2173**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a dictionary with missing trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_2180**
 
   [INLINE_CODE / BADCASE]
@@ -2225,11 +2445,91 @@ Test Use Cases
 
 ----
 
+* **Test JPP_2181**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code with additional trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2182**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a list with additional leading angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2183**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a list with additional trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
 * **Test JPP_2184**
 
   [INLINE_CODE / BADCASE]
 
    **Python inline code inside a dictionary with additional leading angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2185**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a dictionary with additional trailing angle bracket**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2187**
+
+  [INLINE_CODE / BADCASE]
+
+   **Python inline code inside a list returns data type not supported by JSON**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2189**
+
+  [INLINE_CODE / BADCASE]
+
+   **Nested Python inline code**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2190**
+
+  [INLINE_CODE / BADCASE]
+
+   **Nested Python inline code inside a list**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+* **Test JPP_2191**
+
+  [INLINE_CODE / BADCASE]
+
+   **Nested Python inline code inside a dictionary**
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
@@ -2265,5 +2565,15 @@ Test Use Cases
 
 ----
 
-Generated: 11.08.2025 - 16:48:21
+* **Test JPP_2195**
+
+  [INLINE_CODE / BADCASE]
+
+   **JSON file containing Python inline code within a list**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 20.11.2025 - 13:52:43
 

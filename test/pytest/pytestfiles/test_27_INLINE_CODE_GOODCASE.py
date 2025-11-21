@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 11.08.2025 - 16:48:21
+# 19.11.2025 - 16:54:47
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ class Test_INLINE_CODE_GOODCASE:
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected values
    @pytest.mark.parametrize(
-      "Description", ["JSON file containing Python inline code within lists and dictionaries",]
+      "Description", ["JSON file containing Python inline code within a dictionary (key value)",]
    )
    def test_JPP_2103(self, Description):
       nReturn = CExecute.Execute("JPP_2103")
@@ -68,6 +68,14 @@ class Test_INLINE_CODE_GOODCASE:
    )
    def test_JPP_2105(self, Description):
       nReturn = CExecute.Execute("JPP_2105")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns expected values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file containing Python inline code with slicing",]
+   )
+   def test_JPP_2106(self, Description):
+      nReturn = CExecute.Execute("JPP_2106")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------
    # Expected: JsonPreprocessor returns expected values

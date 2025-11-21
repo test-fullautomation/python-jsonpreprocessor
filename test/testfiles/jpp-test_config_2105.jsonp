@@ -22,10 +22,12 @@
     "dict"     : {"kA" : "vA", "kB" : "vB"},
     "key_list" : <<list(${dict}.keys())>>,
     //
-    // "value1"  : <<(${A}[0] if True else ${B.1) + 1>>
-    // "code1"   : (${A}[0] if True else ${B.1) + 1,
-    // "value1b" : <<(${code04}) + 4>>,
-    // //
+    // rework required
+    // https://github.com/test-fullautomation/python-jsonpreprocessor/issues/483
+    // "value1"  : <<(${A}[0] if True else ${B.1}) + 1>>,
+    // "code1"   : "(${A}[0] if True else ${B.1}) + 2",
+    // "value1b" : <<${code1} + 3>>,
+    //
     "C" : "C",
     "D" : "D",
     "value2" : <<${C} + ${D}>>

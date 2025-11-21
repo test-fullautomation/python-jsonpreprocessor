@@ -13,13 +13,11 @@
 //  limitations under the License.
 //**************************************************************************
 {
-    // Python inline code within a dictionary (key value)
+    // Python inline code within a list
     //
     "A"      : 1,
     "B"      : 2,
     "choice" : True,
     //
-    "values" : {"kA" : "A",
-                "kB" : <<${A} if ${choice} else ${B}>>,
-                "kC" : "C"}
+    "values" : ["A", <<${A} if ${choice} else ${B}>>, "C"]
 }
