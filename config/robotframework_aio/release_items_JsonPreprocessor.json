@@ -233,7 +233,7 @@ This feature is an option. If the user does not define the parameter ``keyPatter
 
 *Example*
 
-| ``\"A\" : b'\x58\x44\x47\x5F\x52',``
+| ``\"A\" : b'\\x58\\x44\\x47\\x5F\\x52',``
 
 *Result*
 
