@@ -1886,6 +1886,15 @@ Handles Python builtIn function.
             ldict = {}
             exec(sExec, locals(), ldict)
             evalValue = ldict['evalValue']
+            # Check if py inline code is set as a value of a JSONP parameter
+            if isinstance(evalValue, str) and not regex.match(r'^[0-9\.\-+\s]+$', evalValue):
+                sExec = f"evalValue = {evalValue}"
+                try:
+                    ldict = {}
+                    exec(sExec, locals(), ldict)
+                    evalValue = ldict['evalValue']
+                except:
+                    pass
         except Exception as error:
             raise Exception(error)
         if not isinstance(evalValue, (str, int, float, bool, type(None), list, dict)):
