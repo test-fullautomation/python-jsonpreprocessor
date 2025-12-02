@@ -1872,7 +1872,8 @@ Handles Python builtIn function.
         if CNameMangling.PYBUILTINSTR.value in input:
             input = input.replace(CNameMangling.PYBUILTINSTR.value, '"')
         if CNameMangling.PYTHONBUILTIN.value in input:
-            input = regex.sub(rf'(self\.jp_globals(?:(?!self\.jp_globals).)+){CNameMangling.PYTHONBUILTIN.value}', '"\\1"', input)
+            input = regex.sub(rf'(self\.jp_globals(?:(?!self\.jp_globals).)+){CNameMangling.PYTHONBUILTIN.value}', \
+                              f'"\\1{CNameMangling.PYTHONBUILTIN.value}"', input)
         if regex.match(r'^<<\s*(.*)>$', input):
             py_inline_code = input
         else:
@@ -1884,13 +1885,16 @@ Handles Python builtIn function.
             eval_value = ldict['eval_value']
             # Check if py inline code is set as a value of a JSONP parameter
             if isinstance(eval_value, str) and not regex.match(r'^[0-9\.\-+\s]+$', eval_value):
-                str_exec = f"eval_value = {eval_value}"
-                try:
-                    ldict = {}
-                    exec(str_exec, locals(), ldict)
-                    eval_value = ldict['eval_value']
-                except:
-                    pass
+                if CNameMangling.PYTHONBUILTIN.value in eval_value:
+                    eval_value = eval_value.replace(CNameMangling.PYTHONBUILTIN.value, '')
+                else:
+                    str_exec = f"eval_value = {eval_value}"
+                    try:
+                        ldict = {}
+                        exec(str_exec, locals(), ldict)
+                        eval_value = ldict['eval_value']
+                    except:
+                        pass
         except Exception as error:
             raise Exception(error)
         if not isinstance(eval_value, (str, int, float, bool, type(None), list, dict)):
