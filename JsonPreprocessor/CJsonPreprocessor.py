@@ -1953,7 +1953,7 @@ Checks the syntax of Python inline code.
 
     def jsonLoad(self, json_file : str):
         """
-This is a wrapper around the json_load() function.
+This is a wrapper for the json_load() function.
         """
         return self.json_load(json_file)
 
@@ -2005,7 +2005,7 @@ This method is the entry point of JsonPreprocessor.
 
     def jsonLoads(self, jsonp_content : str, reference_dir : str = None):
         """
-This is a wrapper around the json_loads() function.
+This is a wrapper for the json_loads() function.
         """
         return self.json_loads(jsonp_content, reference_dir)
 
@@ -2432,7 +2432,7 @@ Please check the expression '{invalid_param}'")
 
     def jsonDump(self, json_obj : dict, out_file : str) -> str:
         """
-This is a wrapper around the json_dump() function.
+This is a wrapper for the json_dump() function.
         """
         return self.json_dump(json_obj, out_file)
 
