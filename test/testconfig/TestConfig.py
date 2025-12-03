@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 20.11.2025
+# 02.12.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -4503,7 +4503,7 @@ dictUsecase['EXPECTEDRETURN']    = """
 [DOTDICT] (6/3) > {value2} [INT]  :  1
 [DOTDICT] (6/4) > {A} [INT]  :  1
 [DOTDICT] (6/5) > {B} [INT]  :  2
-[DOTDICT] (6/6) > {value3} [STR]  :  'self.JPGlobals['A']'
+[DOTDICT] (6/6) > {value3} [STR]  :  'self.jp_globals['A']'
 """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
