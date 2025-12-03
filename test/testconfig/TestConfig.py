@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 02.12.2025
+# 03.12.2025
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -5289,6 +5289,42 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2195.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be a part of a list! Please check the expression '<<${A} if ${choice} else ${B}>>'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2600"
+dictUsecase['DESCRIPTION']       = "JSON file containing byte sequences"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "BYTE_SEQUENCES"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "test not in final version"
+dictUsecase['COMMENT']           = "https://github.com/test-fullautomation/python-jsonpreprocessor/issues/492"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2600.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (4/1) > {bytesequence1} [<class 'bytes'>]  :  'b'AIO''
+[DOTDICT] (4/2) > {bytesequence2} [<class 'bytes'>]  :  'b'+A-I-O+''
+[DOTDICT] (4/3) > {bytesequence3} [<class 'bytes'>]  :  'b'RobotFramework AIO''
+[DOTDICT] (4/4) > {bytesequence5} [DOTDICT] (2/1) > {A} [<class 'bytes'>]  :  'b'AIO''
+[DOTDICT] (4/4) > {bytesequence5} [DOTDICT] (2/2) > {B} [<class 'bytes'>]  :  'b'AIO''
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2650"
+dictUsecase['DESCRIPTION']       = "JSON file containing an invalid byte sequence (1)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "BYTE_SEQUENCES"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2650.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = r"(value error) invalid \x escape at position 8"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
