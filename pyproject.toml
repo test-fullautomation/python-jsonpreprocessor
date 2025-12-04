@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools==79.0.1", "wheel", "colorama==0.4.6", "pypandoc_binary==1.15", "PythonExtensionsCollection"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "JsonPreprocessor"
+version = "0.11.0"
+description = "Preprocessor for json files"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "Apache-2.0"
+authors = [
+    {name = "Mai Dinh Nam Son", email = "son.maidinhnam@vn.bosch.com"}
+]
+keywords = ["JSON", "Preprocessor", "Configuration"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pydotdict",
+]
+
+[project.urls]
+Homepage = "https://github.com/test-fullautomation/python-jsonpreprocessor"
+Repository = "https://github.com/test-fullautomation/python-jsonpreprocessor"
+
+[tool.setuptools]
+packages = ["JsonPreprocessor"]
+
+[tool.setuptools.package-data]
+JsonPreprocessor = ["*.pdf"]
