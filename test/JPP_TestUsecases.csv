@@ -247,3 +247,5 @@ JPP_2192|INLINE_CODE|BADCASE|Python inline code is parameter name
 JPP_2193|INLINE_CODE|BADCASE|Python inline code is parameter name inside a list
 JPP_2194|INLINE_CODE|BADCASE|Python inline code is parameter name inside a dictionary
 JPP_2195|INLINE_CODE|BADCASE|JSON file containing Python inline code within a list
+JPP_2600|BYTE_SEQUENCES|GOODCASE|JSON file containing byte sequences
+JPP_2650|BYTE_SEQUENCES|BADCASE|JSON file containing an invalid byte sequence (1)

@@ -2575,5 +2575,29 @@ Test Use Cases
 
 ----
 
-Generated: 20.11.2025 - 13:52:43
+* **Test JPP_2600**
+
+  [BYTE_SEQUENCES / GOODCASE]
+
+   **JSON file containing byte sequences**
+
+   Expected: JsonPreprocessor returns expected values
+
+   *Comment: https://github.com/test-fullautomation/python-jsonpreprocessor/issues/492*
+
+   *Hint: test not in final version*
+
+----
+
+* **Test JPP_2650**
+
+  [BYTE_SEQUENCES / BADCASE]
+
+   **JSON file containing an invalid byte sequence (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+----
+
+Generated: 03.12.2025 - 18:06:32
 
