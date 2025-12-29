@@ -2186,7 +2186,7 @@ This function handle a last element of a list or dictionary
                 raise Exception(f"{error} in line: '{line}'")
             line = line.rstrip()
             # Handles byte value in JSONP by make-up byte values by token string
-            list_byte_value = regex.findall(r'[^"]+\s*(b\'[^\']+\')\s*[^"]*', line)
+            list_byte_value = regex.findall(r'[^"]\s*(b\'[^\']+\')\s*', line)
             for byte_value in list_byte_value:
                 self.byte_value_index +=1
                 key = f'{CNameMangling.BYTEVALUE.value}{self.byte_value_index}'
