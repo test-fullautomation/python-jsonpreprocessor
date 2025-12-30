@@ -2339,19 +2339,21 @@ Please check the expression '{invalid_param}'")
         list_key_name = list_key_name + regex.findall(r'[,\s{]*(\${[^:,\n]+)\s*:\s*[^\]}]', tmp_json_data_updated)
         list_key_name = list_key_name + regex.findall(rf'[,\s{{]*({self.py_call_pattern})\s*:\s*[^\]}}]', tmp_json_data_updated)
         for key in list_key_name:
-            if regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
+            error_msg = None
+            if regex.match(rf'^"{CNameMangling.BYTEVALUE.value}\d+"$', key):
+                error_msg = f"Invalid syntax: {self.byte_value[key.strip('"')]} - Byte value is not allowed as a key name."
+            elif regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 new_key = '"' + key.strip('"').strip() + '"'
                 json_data_updated = json_data_updated.replace(key, new_key)
                 key = new_key
             elif regex.match(r'^\s*\${.*$', key):
                 if key.count('{') != key.count('}'):
                     error_msg = f"Invalid syntax: '{key.strip()}' - The curly brackets do not match."
-                    self.__reset()
-                    raise Exception(error_msg)
                 elif key.count('[') != key.count(']'):
                     error_msg = f"Invalid syntax: '{key.strip()}' - The square brackets do not match."
-                    self.__reset()
-                    raise Exception(error_msg)
+            if error_msg is not None:
+                self.__reset()
+                raise Exception(error_msg)
             if r'\"' in key:  # Ignore key name validation in case user converts a dictionary to string.
                 continue
             key_decode = bytes(key, 'utf-8').decode('utf-8')
