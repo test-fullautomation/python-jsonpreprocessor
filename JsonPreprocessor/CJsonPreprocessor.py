@@ -2341,7 +2341,7 @@ Please check the expression '{invalid_param}'")
         for key in list_key_name:
             error_msg = None
             if regex.match(rf'^"{CNameMangling.BYTEVALUE.value}\d+"$', key):
-                error_msg = f"Type error in key {self.byte_value[key.strip('"')]}. Key names must be strings; byte values are not supported."
+                error_msg = f"Type error in key {self.byte_value[key.strip('\"')]}. Key names must be strings; byte values are not supported."
             elif regex.match(r'^"\s+[^\s]+.+"$|^".+[^\s]+\s+"$', key):
                 new_key = '"' + key.strip('"').strip() + '"'
                 json_data_updated = json_data_updated.replace(key, new_key)
