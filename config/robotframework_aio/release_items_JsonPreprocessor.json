@@ -243,6 +243,11 @@ This feature is an option. If the user does not define the parameter ``keyPatter
 
 Improved and aligned error messages
 "
-                                    ]
+                                    ],
+                "1.0.0.;1.1.0." : [
+"
+* Usage of **Setuptools** replaced by usage of **PIP/TOML/Setuptools**.
+"
+                                  ]
                 }
 }

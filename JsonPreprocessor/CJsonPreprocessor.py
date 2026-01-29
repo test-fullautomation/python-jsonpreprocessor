@@ -1,4 +1,4 @@
-#  Copyright 2020-2023 Robert Bosch GmbH
+#  Copyright 2020-2026 Robert Bosch GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ import ast
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
-from JsonPreprocessor.version import VERSION, VERSION_DATE
+from JsonPreprocessor.version import __version__, __version_date__
 from pydotdict import DotDict
 
 class CSyntaxType():
@@ -351,13 +351,13 @@ CJsonPreprocessor extends the JSON syntax by the following features:
         """
 Returns the version of JsonPreprocessor as string.
         """
-        return VERSION
+        return __version__
     
     def getVersionDate(self):
         """
 Returns the version date of JsonPreprocessor as string.
         """
-        return VERSION_DATE
+        return __version_date__
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.python , current_cfg : dict = {}, key_pattern = r'.+') -> None:
         """
