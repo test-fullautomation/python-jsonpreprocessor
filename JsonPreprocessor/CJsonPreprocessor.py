@@ -57,7 +57,7 @@ import ast
 
 from PythonExtensionsCollection.String.CString import CString
 from enum import Enum
-from JsonPreprocessor.version import __version__, __version_date__
+from JsonPreprocessor.version import __version__, _version_date
 from pydotdict import DotDict
 
 class CSyntaxType():
@@ -357,7 +357,7 @@ Returns the version of JsonPreprocessor as string.
         """
 Returns the version date of JsonPreprocessor as string.
         """
-        return __version_date__
+        return _version_date
 
     def __init__(self, syntax: CSyntaxType = CSyntaxType.python , current_cfg : dict = {}, key_pattern = r'.+') -> None:
         """

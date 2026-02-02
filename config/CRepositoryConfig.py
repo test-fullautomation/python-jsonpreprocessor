@@ -29,7 +29,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 29.01.2026
+# 02.02.2026
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ import tomllib
 from PythonExtensionsCollection.String.CString import CString
 
 from JsonPreprocessor.version import __version__
-from JsonPreprocessor.version import __version_date__
+from JsonPreprocessor.version import _version_date
 
 col.init(autoreset=True)
 COLBR = col.Style.BRIGHT + col.Fore.RED
@@ -81,7 +81,7 @@ class CRepositoryConfig():
 
         # add version and date of the package this repository configuration belongs to
         self.__dictRepositoryConfig['PACKAGEVERSION'] = __version__
-        self.__dictRepositoryConfig['PACKAGEDATE']    = __version_date__
+        self.__dictRepositoryConfig['PACKAGEDATE']    = _version_date
 
         # make absolute path to package documentation
         self.__dictRepositoryConfig['PACKAGEDOC'] = CString.NormalizePath(sPath=self.__dictRepositoryConfig['PACKAGEDOC'], sReferencePathAbs=self.__sReferencePath)
