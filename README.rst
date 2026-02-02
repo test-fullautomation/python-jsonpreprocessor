@@ -1,4 +1,4 @@
-.. Copyright 2020-2023 Robert Bosch GmbH
+.. Copyright 2020-2026 Robert Bosch GmbH
 
 .. Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,25 +51,14 @@ The **JsonPreprocessor** can be installed in two different ways.
 
      `JsonPreprocessor in GitHub <https://github.com/test-fullautomation/python-jsonpreprocessor>`_
 
-   * Install dependencies
-
-     **JsonPreprocessor** requires some additional Python libraries. Before you install the cloned repository sources
-     you have to install the dependencies manually. The names of all related packages you can find in the file ``requirements.txt``
-     in the repository root folder. Use pip to install them:
-
-     .. code::
-
-        pip install -r ./requirements.txt
-
-     Additionally install **LaTeX** (recommended: TeX Live). This is used to render the documentation.
-
-   * Configure dependencies
+   * Install and configure dependencies
 
      The installation of **JsonPreprocessor** includes to generate the documentation in PDF format. This is done by
-     an application called **GenPackageDoc**, that is part of the installation dependencies (see ``requirements.txt``).
+     an application called **GenPackageDoc**, that is part of the installation dependencies.
 
-     **GenPackageDoc** uses **LaTeX** to generate the documentation in PDF format. Therefore **GenPackageDoc** needs to know where to find
-     **LaTeX**. This is defined in the **GenPackageDoc** configuration file
+     **GenPackageDoc** uses **LaTeX** to generate the documentation in PDF format. Therefore, **LaTeX** needs to be installed
+     (recommended: TeX Live). After this installation, **GenPackageDoc** needs to know where to find **LaTeX**.
+     This is defined in the **GenPackageDoc** configuration file
 
      .. code::
 
@@ -79,17 +68,29 @@ The **JsonPreprocessor** can be installed in two different ways.
 
      - ``GENDOC_LATEXPATH`` : path to ``pdflatex`` executable
 
-   * Use the following command to install **JsonPreprocessor**:
+   * Use the following command to install **JsonPreprocessor** (executed in repository main folder):
 
      .. code::
 
-        setup.py install
+        python -m pip install .
+
+     In case you want to have a really clean installation (without any outdated or not used files left from previous installations),
+     extend the installation to:
+
+     .. code::
+
+        python "./cleanup_installation.py"
+        python -m pip install .
+
+     ``cleanup_installation.py`` explicitly deletes all files and folders within the component installation folder under
+     ``site-packages`` and also deletes local build artefacts.
 
 
 Package Documentation
 ---------------------
 
-A detailed documentation of the Json Preprocessor's package can be found here: `JsonPreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/JsonPreprocessor/JsonPreprocessor.pdf>`_
+A detailed documentation of the **JsonPreprocessor** can be found here:
+`JsonPreprocessor.pdf <https://github.com/test-fullautomation/python-jsonpreprocessor/blob/develop/JsonPreprocessor/JsonPreprocessor.pdf>`_
 
 Feedback
 --------
@@ -114,7 +115,7 @@ Contributors
 License
 -------
 
-Copyright 2020-2023 Robert Bosch GmbH
+Copyright 2020-2026 Robert Bosch GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

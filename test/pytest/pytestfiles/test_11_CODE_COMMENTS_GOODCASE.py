@@ -1,5 +1,5 @@
 # **************************************************************************************************************
-#  Copyright 2020-2023 Robert Bosch GmbH
+#  Copyright 2020-2026 Robert Bosch GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 28.10.2024 - 20:15:13
+# 02.02.2026 - 10:50:05
 #
 # --------------------------------------------------------------------------------------------------------------
 

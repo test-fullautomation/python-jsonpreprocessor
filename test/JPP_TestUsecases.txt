@@ -1,5 +1,5 @@
 ************************************************************************************************************************
-Copyright 2020-2023 Robert Bosch GmbH
+Copyright 2020-2026 Robert Bosch GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -1058,5 +1058,5 @@ Test JPP_2650 / BYTE_SEQUENCES / BADCASE
 Description: JSON file containing an invalid byte sequence (1)
 Expectation: No values are returned, and JsonPreprocessor throws an exception
 ------------------------------------------------------------------------------------------------------------------------
-Generated: 03.12.2025 - 18:06:32
+Generated: 02.02.2026 - 10:50:05
 

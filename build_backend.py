@@ -20,19 +20,16 @@
 Custom Build Backend including additional installation steps like
 
 * Documentation rendering
-* Delete artefacts from previous installation/build
 
 All data needed to do this are taken from the repository configuration.
 No define of any paths here.
 """
 
 import os
-import json
 import sys
 import logging
 import subprocess
 import shlex
-import shutil
 
 from pathlib import Path
 from typing import Dict, Optional
@@ -75,42 +72,6 @@ Custom Build Backend
             logger.critical(str(ex))
             raise Exception(str(ex))
 
-
-    def delete_previous_build(self):
-        """
-Deletes folder containing previous builds within the local repository
-        """
-        setup_build_folder = self.repository_config.Get('SETUPBUILDFOLDER')
-        egginfo_folder     = self.repository_config.Get('EGGINFOFOLDER')
-
-        for folder in (setup_build_folder, egginfo_folder):
-            if os.path.isdir(folder) is True:
-                logger.info(f"Deleting '{folder}'")
-                try:
-                    shutil.rmtree(folder)
-                except Exception as ex:
-                    logger.critical(str(ex))
-                    return ERROR
-
-        return SUCCESS
-    # eof def delete_previous_build():
-
-    def delete_previous_installation(self):
-        """
-Deletes previous package installation folder within the Python installation
-        """
-        installed_package_folder = self.repository_config.Get('INSTALLEDPACKAGEFOLDER')
-        if os.path.isdir(installed_package_folder) is True:
-            logger.info(f"Deleting '{installed_package_folder}'")
-            try:
-                shutil.rmtree(installed_package_folder)
-            except Exception as ex:
-                logger.critical(str(ex))
-                return ERROR
-
-        return SUCCESS
-    # eof def delete_previous_installation():
-
     def genpackagedoc(self):
         """
 Executes the documentation builder
@@ -142,28 +103,6 @@ Executes the documentation builder
 Custom build steps
         """
         logger.info("Entering pre build process")
-
-        logger.info("Deleting local build artefacts")
-        returnval = None
-        try:
-            returnval = self.delete_previous_build()
-            logger.info(f"'delete_previous_build' returned '{returnval}'")
-        except Exception as ex:
-            logger.error(str(ex))
-            return ERROR
-        if returnval != SUCCESS:
-            return returnval
-
-        logger.info("Deleting previous installation")
-        returnval = None
-        try:
-            returnval = self.delete_previous_installation()
-            logger.info(f"'delete_previous_installation' returned '{returnval}'")
-        except Exception as ex:
-            logger.error(str(ex))
-            return ERROR
-        if returnval != SUCCESS:
-            return returnval
 
         logger.info("Rendering documentation")
         returnval = None
