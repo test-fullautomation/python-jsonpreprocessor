@@ -18,15 +18,13 @@ Json Preprocessor's Package Description
 Getting Started
 ---------------
 
-The **JsonPreprocessor** is a Python3 package which allows programmers to handle
-additional features in JSON files such as
+The **JsonPreprocessor** is a Python 3 package that enables programmers to extend the functionality of JSON files with features such as:
 
-* add comments
-* import other json files
-* overwrite already existing parameters with new values
+* Adding comments
+* Importing other JSON files
+* Overwriting existing parameters with new values
 
-These JSON files will be handled by the **JsonPreprocessor** which returns as result
-a dictionary object of the deserialized data.
+The **JsonPreprocessor** processes these enhanced JSON files and returns a dictionary object containing the deserialized data.
 
 How to install
 --------------
