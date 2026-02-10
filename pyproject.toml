@@ -18,11 +18,11 @@
 #
 # TOML file used for component installation
 #
-# Version 0.1.0 / 30.01.2026
+# Version 0.1.0 / 10.02.2026
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# Accordingly to the TOML specification:
+# According to the TOML specification:
 # * Names in square brackets (e.g. [build-system]) are called 'table'.
 # * Names located to the left of the equal sign (e.g. 'requires') are called 'key'.
 #
@@ -33,7 +33,7 @@
 #
 [build-system]
 # 'requires' specifies the dependencies necessary for the build process (meaning the conversion of source code into an installable distribution)
-requires      = ["setuptools>=80.9.0", "wheel", "docutils>=0.22.4", "dotdict", "pydotdict", "colorama", "regex", "PythonExtensionsCollection", "GenPackageDoc"] # need to be strengthened later to: "GenPackageDoc>=0.43.0"
+requires      = ["setuptools>=80.9.0", "wheel", "build", "docutils>=0.22.4", "dotdict", "pydotdict", "colorama", "regex", "PythonExtensionsCollection", "GenPackageDoc"] # need to be strengthened later to: "GenPackageDoc>=0.43.0"
 build-backend = "build_backend"
 backend-path  = ["."] # the repository main folder
 
@@ -48,9 +48,9 @@ description     = "Preprocessor for JSON files with extended syntax"
 requires-python = ">=3.11"
 authors         = [{name = "Mai Dinh Nam Son", email = "son.maidinhnam@vn.bosch.com"}]
 readme          = "README.rst"
-license         = "Apache-2.0"
+license         = { text = "Apache-2.0" }
 keywords        = ["JSON", "preprocessing"]
-# 'classifiers' need to be choosen accordingly to: https://pypi.org/classifiers/
+# 'classifiers' need to be chosen according to: https://pypi.org/classifiers/
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -62,7 +62,8 @@ dependencies = [
     "colorama",
     "pydotdict",
     "regex",
-    "PythonExtensionsCollection"
+    "PythonExtensionsCollection",
+    "GenPackageDoc"
 ]
 dynamic = ["version"]
 
