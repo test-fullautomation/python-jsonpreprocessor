@@ -18,7 +18,7 @@
 #
 # dump_repository_config.py
 #
-# XC-CT/ECA3-Queckenstedt
+# XC-HWP/ESW3-Queckenstedt
 #
 # dump_repository_config.py is a little helper to get deeper knowledge about the environment under which
 # the software in this repository is being executed.
