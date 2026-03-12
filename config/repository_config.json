@@ -1,4 +1,4 @@
 {
    "REPOSITORYNAME" : "python-jsonpreprocessor",
-   "PACKAGEDOC" : "./packagedoc"
+   "PACKAGEDOC"     : "./packagedoc"
 }

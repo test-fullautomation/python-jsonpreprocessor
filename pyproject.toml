@@ -117,4 +117,4 @@ packages = ["JsonPreprocessor"]
 # Status: Optional (but required if 'dynamic' is used within the [project] block!)
 #
 [tool.setuptools.dynamic]
-version = {attr = "JsonPreprocessor.version.__version__"} # not defined here; we take the version from source code
+version = {attr = "JsonPreprocessor.version.VERSION"} # not defined here; we take the version from source code
