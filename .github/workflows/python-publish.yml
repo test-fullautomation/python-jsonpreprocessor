@@ -34,7 +34,11 @@ jobs:
             sudo apt-get install -y pandoc
             sudo apt-get install -y texlive-latex-*
             echo "GENDOC_LATEXPATH=$(dirname $(which pdflatex))" >> $GITHUB_ENV
-            python -m pip install --upgrade build twine wheel GenPackageDoc PythonExtensionsCollection
+            if [ -f "./requirements_linux.sh" ]; then
+              chmod +x ./requirements_linux.sh
+              ./requirements_linux.sh
+            fi
+            python -m pip install --upgrade setuptools build twine wheel GenPackageDoc PythonExtensionsCollection
             if [ -f "./requirements.txt" ]; then
               python -m pip install -r ./requirements.txt
             fi
