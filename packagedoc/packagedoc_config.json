@@ -57,7 +57,7 @@
    "TOC" : {
             "introduction"   : "./additional_docs/Introduction.tex",
             "description"    : "./additional_docs/Description.tex",
-            "thejsonpformat" : "./additional_docs/The JSONP format.rst",
+            "thejsonpformat" : "./additional_docs/The JSONP format.tex",
             "INTERFACE"      : "../###PACKAGENAME###",
             "appendix"       : "./additional_docs/Appendix.rst",
             "history"        : "./additional_docs/History.tex",
