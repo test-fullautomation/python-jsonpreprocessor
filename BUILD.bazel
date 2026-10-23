@@ -1,0 +1,62 @@
+# =============================================================================
+# python-jsonpreprocessor/BUILD.bazel
+# =============================================================================
+#
+# This package builds "JsonPreprocessor" directly from its GitHub
+# repository source (see MODULE.bazel: variant_git_repository
+# "python_jsonpreprocessor_src"), together with its transitive PyPI
+# dependencies, installed the normal, hash-verified way from
+# requirements_lock.txt.
+#
+# Proxy Configuration:
+#   Proxy settings are inherited from the environment via .bazelrc.
+#   Set HTTPS_PROXY, HTTP_PROXY, and NO_PROXY environment variables
+#   before running bazel build.
+#
+# =============================================================================
+
+load("@pip_utils//:pip_install.bzl", "pip_install_from_source")
+
+# TODO-PLACEHOLDER: "requirements_lock.txt" does NOT exist yet in this
+# directory (unlike robotframework-testsuitesmanagement/python-extensions-
+# collection, which already ship one). It must be generated before this
+# target can actually build - see documentation/docs/
+# Bazel_Requirements_Lock_Files.md for how the other components' lock
+# files were produced (pip-compile --generate-hashes against this
+# project's own dependency list, see pyproject.toml's [build-system]
+# "requires" / any runtime "dependencies" table).
+pip_install_from_source(
+    name         = "python_jsonpreprocessor",
+    source       = "@python_jsonpreprocessor_src//:src",
+    requirements = "requirements_lock.txt",  # TODO-PLACEHOLDER: file does not exist yet, see comment above
+    interpreter  = "@python//:python_interpreter",
+    runtime      = "@python//:python_runtime",
+    # No explicit env needed - proxy variables are inherited via --action_env
+    # NOTE: Public visibility required - granting "@installer//:__pkg__" here
+    # would force this module to bazel_dep(installer), but installer already
+    # bazel_dep's this module, creating a circular dependency. Access control
+    # is enforced via the one-directional bazel_dep graph instead.
+    visibility = ["//visibility:public"],
+)
+
+# Linux counterpart of the target above, for debian_package-based installer
+# variants (see build/config/variant_config.bzl's "rf_testsuitesmanagement_linux"
+# for the pattern this mirrors). Same source tree and requirements_lock.txt,
+# just resolved/installed against the Linux Python runtime instead of the
+# Windows one.
+#
+# TODO-PLACEHOLDER: only add/enable this target once a Linux installer
+# variant actually needs JsonPreprocessor (not required yet - remove this
+# target entirely if it stays unused, see "Deletion over addition" in
+# AGENTS.md). Also note the same "ponytail:" caveat as
+# robotframework_testsuitesmanagement_linux: requirements_lock.txt would be
+# hash-pinned against Windows wheels; a real Linux rollout needs its own
+# requirements_lock_linux.txt.
+pip_install_from_source(
+    name         = "python_jsonpreprocessor_linux",
+    source       = "@python_jsonpreprocessor_src//:src",
+    requirements = "requirements_lock.txt",  # TODO-PLACEHOLDER: see target above
+    interpreter  = "@python//:python_interpreter_linux",
+    runtime      = "@python//:python_runtime_linux",
+    visibility = ["//visibility:public"],
+)
