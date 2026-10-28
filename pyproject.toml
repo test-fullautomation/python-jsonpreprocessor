@@ -33,7 +33,7 @@
 #
 [build-system]
 # 'requires' specifies the dependencies necessary for the build process (meaning the conversion of source code into an installable distribution)
-requires      = ["setuptools>=80.9.0", "wheel", "build", "docutils>=0.22.4", "dotdict", "pydotdict", "colorama", "regex", "PythonExtensionsCollection", "GenPackageDoc"] # need to be strengthened later to: "GenPackageDoc>=0.43.0"
+requires      = ["setuptools>=80.9.0", "wheel", "build", "docutils>=0.22.4", "dotdict", "pydotdict", "colorama", "regex", "PythonExtensionsCollection"]
 build-backend = "build_backend"
 backend-path  = ["."] # the repository main folder
 
@@ -62,8 +62,7 @@ dependencies = [
     "colorama",
     "pydotdict",
     "regex",
-    "PythonExtensionsCollection",
-    "GenPackageDoc"
+    "PythonExtensionsCollection"
 ]
 dynamic = ["version"]
 
