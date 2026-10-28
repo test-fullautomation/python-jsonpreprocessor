@@ -9,10 +9,8 @@ module(
 # @python//:python_runtime), since the underlying "@python_portable_windows"
 # repository is private to the "python" module and not visible here.
 #
-# Same pattern as robotframework-testsuitesmanagement / py_modules_set_1 /
-# py_modules_set_2 - Bzlmod isolates each module's dependency graph, so this
-# module must declare bazel_dep(python) itself even though the root module
-# ("build") already does.
+# Bzlmod isolates each module's dependency graph, so this module must declare
+# bazel_dep(python) itself even though the root module ("build") already does.
 bazel_dep(name = "python", version = "0.1.0")
 
 local_path_override(
@@ -20,7 +18,15 @@ local_path_override(
     path = "../product-tools/python",
 )
 
-# Shared pip_install.bzl rules (pip_install_from_source)
+# Needed for py_binary (used by the "update_requirements_lock"/
+# "update_requirements_lock_linux" bazel-run targets in this module's own
+# BUILD.bazel - see pip_utils/update_requirements_lock.py). Bzlmod requires
+# each module to declare its own direct dependencies even though the root
+# module ("build") already declares rules_python - same rationale as
+# build/config/MODULE.bazel's identical bazel_dep.
+bazel_dep(name = "rules_python", version = "1.7.0")
+
+# Shared pip_install.bzl rules (pip_install_dir)
 bazel_dep(name = "pip_utils", version = "0.1.0")
 
 local_path_override(
@@ -47,10 +53,7 @@ local_path_override(
 # GitHub Source
 # =============================================================================
 #
-# JsonPreprocessor is built directly from its GitHub repository. This
-# mirrors the pattern established for python-extensions-collection,
-# python-genpackagedoc and robotframework-testsuitesmanagement (see
-# ../python-extensions-collection/MODULE.bazel for the full rationale).
+# JsonPreprocessor is built directly from its GitHub repository.
 #
 #   https://github.com/test-fullautomation/python-jsonpreprocessor
 #
@@ -63,10 +66,6 @@ local_path_override(
 # NEVER use the "daily" variant for production/installer builds - see
 # documentation/docs/Bazel_Git_Repository_Tag_vs_Branch.md.
 #
-# Requirements on the build machine: see
-# ../python-extensions-collection/MODULE.bazel's equivalent comment (git.exe
-# on PATH, proxy/network access to github.com, GitHub PAT authentication via
-# _netrc - identical requirements, same GitHub organization).
 variant_git_repository = use_repo_rule(
     "@repo_rules//:variant_git_repository.bzl",
     "variant_git_repository",
@@ -78,17 +77,6 @@ variant_git_repository(
     # Used when --config=tagged is passed (BUILD_VARIANT=tagged) and no
     # RELEASE_TAG_OVERRIDE is set.
     #
-    # TODO-PLACEHOLDER: The local VERSION constant (JsonPreprocessor/
-    # version.py) currently reads "0.12.0", but the exact corresponding
-    # GitHub release tag has NOT been verified against
-    # https://github.com/test-fullautomation/python-jsonpreprocessor/tags
-    # yet (unlike python-extensions-collection's "rel/0.17.1", confirmed
-    # there). Check that page and replace the placeholder below with the
-    # real tag name (this project's convention is "rel/<version>" for plain
-    # releases, or "rel/aio/<version>" for "all-in-one" releases - see
-    # robotframework-testsuitesmanagement/MODULE.bazel for an example of
-    # the latter).
-    #
     # To build against a DIFFERENT tag without editing this file, override
     # it on the command line instead:
     #   bazel build --config=tagged --repo_env=RELEASE_TAG_OVERRIDE=rel/<version> //...
@@ -96,11 +84,6 @@ variant_git_repository(
     # Used when BUILD_VARIANT=daily (the project default - no --config
     # needed, see build/.bazelrc) - tracks this branch's current HEAD at
     # fetch time. Intentionally non-hermetic; Daily Build/Test only.
-    #
-    # TODO-PLACEHOLDER: branch name not yet confirmed for this repository -
-    # verified elsewhere (python-extensions-collection, robotframework-
-    # testsuitesmanagement) to be "develop"; assumed identical here but not
-    # yet checked against this repository's actual branch list.
     daily_branch = "develop",
     build_file_content = """filegroup(name = "src", srcs = glob(["**"], exclude = [".git/**"]), visibility = ["//visibility:public"])""",
 )
