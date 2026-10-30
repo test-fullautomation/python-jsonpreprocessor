@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 02.02.2026 - 10:50:05
+# 30.10.2026 - 12:27:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -148,5 +148,109 @@ class Test_FILE_IMPORTS_BADCASE:
    )
    def test_JPP_1166(self, Description):
       nReturn = CExecute.Execute("JPP_1166")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object containing an invalid key",]
+   )
+   def test_JPP_1167(self, Description):
+      nReturn = CExecute.Execute("JPP_1167")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object without key 'file'",]
+   )
+   def test_JPP_1168(self, Description):
+      nReturn = CExecute.Execute("JPP_1168")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with key 'else' but without key 'if'",]
+   )
+   def test_JPP_1169(self, Description):
+      nReturn = CExecute.Execute("JPP_1169")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with invalid data type of key 'if' (1)",]
+   )
+   def test_JPP_1170(self, Description):
+      nReturn = CExecute.Execute("JPP_1170")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with invalid data type of key 'if' (2)",]
+   )
+   def test_JPP_1171(self, Description):
+      nReturn = CExecute.Execute("JPP_1171")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with condition referring to a not existing parameter",]
+   )
+   def test_JPP_1172(self, Description):
+      nReturn = CExecute.Execute("JPP_1172")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with key 'optional' not being a literal boolean value",]
+   )
+   def test_JPP_1173(self, Description):
+      nReturn = CExecute.Execute("JPP_1173")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import?] key and [import] object as value",]
+   )
+   def test_JPP_1174(self, Description):
+      nReturn = CExecute.Execute("JPP_1174")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object with invalid data type of key 'file'",]
+   )
+   def test_JPP_1175(self, Description):
+      nReturn = CExecute.Execute("JPP_1175")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition true, file not existing, not optional)",]
+   )
+   def test_JPP_1176(self, Description):
+      nReturn = CExecute.Execute("JPP_1176")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object containing a duplicate key",]
+   )
+   def test_JPP_1177(self, Description):
+      nReturn = CExecute.Execute("JPP_1177")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with invalid data type of [import?] key",]
+   )
+   def test_JPP_1178(self, Description):
+      nReturn = CExecute.Execute("JPP_1178")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: No values are returned, and JsonPreprocessor throws an exception
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with optional import of a file containing a not optional import of a not existing file",]
+   )
+   def test_JPP_1179(self, Description):
+      nReturn = CExecute.Execute("JPP_1179")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

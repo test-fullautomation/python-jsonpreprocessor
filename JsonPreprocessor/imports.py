@@ -32,6 +32,7 @@ from .common import JsonpError, CNameMangling, CTextProcessor
 from .jsonp_parser import Source, Obj, Arr, Member, Import, DollarKey, parse_jsonp
 
 _RESERVED_TOKENS = [token.value for token in CNameMangling]
+SKIP = ''   # resolved path of an import which is not executed (condition false or optional file missing)
 
 
 def normalize_file_path(path: str) -> str:
@@ -103,6 +104,8 @@ current file, ``resolved`` maps dynamic imports to their paths.
                     path = self.static_path(member) if member.is_static else resolved.get(self.key(member))
                     if path is None:
                         members.append(member)
+                    elif path == SKIP or member.optional and not os.path.isfile(path):
+                        continue
                     else:
                         imported = [m if isinstance(m, Import) or m.origin is not None else Member(m.key, m.value, path)
                                     for m in self.import_file(path, chain, resolved).members]

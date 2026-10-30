@@ -1,0 +1,49 @@
+component_test.py started at: 30.10.2026 - 12:27:30
+
+                    THISSCRIPT : C:/usr_dev/AIO/python-jsonpreprocessor/test/component_test.py
+                THISSCRIPTNAME : component_test.py
+                 REFERENCEPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test
+                TESTCONFIGPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test/testconfig
+                        OSNAME : nt
+                PLATFORMSYSTEM : Windows
+                        PYTHON : C:/Program Files/RobotFramework/python3/python.exe
+                    PYTHONPATH : C:/Program Files/RobotFramework/python3
+                 PYTHONVERSION : 3.13.2 (main, Feb  5 2025, 19:16:35) [MSC v.1942 64 bit (AMD64)]
+                        TESTID : JPP_1105
+                      CODEDUMP : False
+                    CONFIGDUMP : False
+              RECREATEINSTANCE : False
+               SELFTESTLOGFILE : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles/JPP_SelfTest_JPP_1105.log
+            TESTLOGFILESFOLDER : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles
+                       VERSION : 0.17.1
+                  VERSION_DATE : 22.06.2026
+            THISSCRIPTFULLNAME : component_test.py v. 0.17.1 / 22.06.2026
+                 SUT_FULL_NAME : JsonPreprocessor v. 0.12.0 / 02.02.2026
+
+====== [START OF TEST] : 'JPP_1105-(FILE_IMPORTS)-[GOODCASE]' / (1/1)
+
+   [JSONFILE] : 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/jpp-test_config_1105.jsonp'
+[DESCRIPTION] : JSON file import based on parameters (dynamic import (6))
+[EXPECTATION] : JsonPreprocessor returns values
+
+JsonPreprocessor returned:
+
+[DOTDICT] (6/1) > {P1} [STR]  :  './dynamic'
+[DOTDICT] (6/2) > {P2} [STR]  :  '_import'
+[DOTDICT] (6/3) > {P3} [STR]  :  's/AA/imp'
+[DOTDICT] (6/4) > {P4} [STR]  :  'orted.A'
+[DOTDICT] (6/5) > {P5} [STR]  :  'A.jsonp'
+[DOTDICT] (6/6) > {level} [STR]  :  'AA'
+
+JsonPreprocessor returned expected values.
+
+No exception thrown from JsonPreprocessor (like expected).
+
+    Test 'JPP_1105-(FILE_IMPORTS)-[GOODCASE]' PASSED
+
+Component test PASSED
+
+Defined : 1
+PASSED  : 1
+FAILED  : 0
+UNKNOWN : 0

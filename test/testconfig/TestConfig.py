@@ -3193,6 +3193,250 @@ dictUsecase['EXPECTEDRETURN']    = """
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1114"
+dictUsecase['DESCRIPTION']       = "JSON file with optional import ([import?]) of an existing file"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1114.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (3/1) > {name} [STR]  :  'JPP_1114'
+[DOTDICT] (3/2) > {mode} [STR]  :  'debug'
+[DOTDICT] (3/3) > {level} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1115"
+dictUsecase['DESCRIPTION']       = "JSON file with optional import ([import?]) of a not existing file"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor ignores the import and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1115.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {before} [INT]  :  1
+[DOTDICT] (2/2) > {after} [INT]  :  2
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1116"
+dictUsecase['DESCRIPTION']       = "JSON file with optional imports ([import?]) with dynamic paths (existing and not existing file)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the existing file, ignores the not existing file and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1116.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (5/1) > {bench_1} [STR]  :  'bench1'
+[DOTDICT] (5/2) > {bench_2} [STR]  :  'bench2'
+[DOTDICT] (5/3) > {bench_name} [STR]  :  'bench1'
+[DOTDICT] (5/4) > {baudrate} [INT]  :  115200
+[DOTDICT] (5/5) > {done} [BOOL]  :  True
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1117"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object without condition"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the file and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Same as a simple import"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1117.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {mode} [STR]  :  'debug'
+[DOTDICT] (2/2) > {level} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1118"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition true)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the 'file' and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1118.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (3/1) > {use_debug} [BOOL]  :  True
+[DOTDICT] (3/2) > {mode} [STR]  :  'debug'
+[DOTDICT] (3/3) > {level} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1119"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition false)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the 'else' file and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1119.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (3/1) > {use_debug} [BOOL]  :  False
+[DOTDICT] (3/2) > {mode} [STR]  :  'release'
+[DOTDICT] (3/3) > {level} [INT]  :  1
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1120"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition false, no 'else')"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports nothing and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1120.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (2/1) > {use_debug} [BOOL]  :  False
+[DOTDICT] (2/2) > {after} [STR]  :  'nothing imported'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1121"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional imports (conditions with Python inline code)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the files and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1121.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (6/1) > {hw_revision} [INT]  :  3
+[DOTDICT] (6/2) > {target} [STR]  :  'bench1'
+[DOTDICT] (6/3) > {mode} [STR]  :  'debug'
+[DOTDICT] (6/4) > {level} [INT]  :  3
+[DOTDICT] (6/5) > {bench_name} [STR]  :  'bench1'
+[DOTDICT] (6/6) > {baudrate} [INT]  :  115200
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1122"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] objects with key 'optional' (existing and not existing files)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the existing files, ignores the not existing file and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1122.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (4/1) > {bench_name} [STR]  :  'bench1'
+[DOTDICT] (4/2) > {baudrate} [INT]  :  115200
+[DOTDICT] (4/3) > {mode} [STR]  :  'debug'
+[DOTDICT] (4/4) > {level} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1123"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition false, optional 'else' file not existing)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports nothing and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1123.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (1/1) > {after} [STR]  :  'nothing imported'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1124"
+dictUsecase['DESCRIPTION']       = "JSON file with nested conditional imports (in imported file and in sub-object)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the files and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Relative paths within imported files are relative to the imported file"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1124.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (5/1) > {variant} [STR]  :  'debug'
+[DOTDICT] (5/2) > {nested_imported} [BOOL]  :  True
+[DOTDICT] (5/3) > {bench_name} [STR]  :  'bench1'
+[DOTDICT] (5/4) > {baudrate} [INT]  :  115200
+[DOTDICT] (5/5) > {sub} [DOTDICT] (2/1) > {mode} [STR]  :  'debug'
+[DOTDICT] (5/5) > {sub} [DOTDICT] (2/2) > {level} [INT]  :  3
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1125"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition in dotdict notation, imported value overwritten afterwards)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the file and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1125.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (3/1) > {config} [DOTDICT] (1/1) > {debug} [BOOL]  :  True
+[DOTDICT] (3/2) > {mode} [STR]  :  'debug'
+[DOTDICT] (3/3) > {level} [INT]  :  5
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1126"
+dictUsecase['DESCRIPTION']       = "JSON file with optional imports in all levels of nested imports (and in sub-objects)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor imports the existing files, ignores the not existing files and returns values"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = "Relative paths within imported files are relative to the imported file"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1126.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (6/1) > {root} [INT]  :  1
+[DOTDICT] (6/2) > {l1} [INT]  :  1
+[DOTDICT] (6/3) > {l2} [INT]  :  1
+[DOTDICT] (6/4) > {l3} [INT]  :  1
+[DOTDICT] (6/5) > {x} [DOTDICT]  :  {}
+[DOTDICT] (6/6) > {sub} [DOTDICT] (4/1) > {l1} [INT]  :  1
+[DOTDICT] (6/6) > {sub} [DOTDICT] (4/2) > {l2} [INT]  :  1
+[DOTDICT] (6/6) > {sub} [DOTDICT] (4/3) > {l3} [INT]  :  1
+[DOTDICT] (6/6) > {sub} [DOTDICT] (4/4) > {x} [DOTDICT]  :  {}
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_1150"
@@ -3386,10 +3630,10 @@ dictUsecase['DESCRIPTION']       = "JSON file with invalid data type of [import]
 dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
 dictUsecase['SECTION']           = "FILE_IMPORTS"
 dictUsecase['SUBSECTION']        = "BADCASE"
-dictUsecase['HINT']              = "'dict' instead of 'str'"
+dictUsecase['HINT']              = "'dict' is treated as [import] object, but contains invalid keys"
 dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1163.jsonp"
-dictUsecase['EXPECTEDEXCEPTION'] = "The [import] key requires a value of type 'str', but the type is 'dict'"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid key 'A' in [import] object. Allowed keys are: 'file', 'if', 'else', 'optional'."
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -3433,6 +3677,188 @@ dictUsecase['HINT']              = None
 dictUsecase['COMMENT']           = "Cyclic import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1166.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "Cyclic import detection"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1167"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object containing an invalid key"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1167.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid key 'when' in [import] object. Allowed keys are: 'file', 'if', 'else', 'optional'."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1168"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object without key 'file'"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1168.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The [import] object requires the key 'file'."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1169"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with key 'else' but without key 'if'"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1169.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The key 'else' of an [import] object requires the key 'if'."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1170"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with invalid data type of key 'if' (1)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "literal 'str' instead of 'bool'"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1170.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The key 'if' of an [import] object requires a value of type 'bool', but the type is 'str'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1171"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with invalid data type of key 'if' (2)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "parameter of type 'int' instead of 'bool'"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1171.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The key 'if' of an [import] object requires a value of type 'bool', but the type is 'int'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1172"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with condition referring to a not existing parameter"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1172.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Could not evaluate the condition of the [import] object. The parameter '${not_existing}' is not available!"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1173"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with key 'optional' not being a literal boolean value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "parameter instead of literal 'true' or 'false'"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1173.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The key 'optional' of an [import] object requires the literal value 'true' or 'false'."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1174"
+dictUsecase['DESCRIPTION']       = "JSON file with [import?] key and [import] object as value"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1174.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The [import?] key requires a value of type 'str'. Use the key 'optional' of an [import] object instead."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1175"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object with invalid data type of key 'file'"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "'list' instead of 'str'"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1175.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The key 'file' of an [import] object requires a value of type 'str', but the type is 'list'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1176"
+dictUsecase['DESCRIPTION']       = "JSON file with conditional import (condition true, file not existing, not optional)"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1176.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "not_existing.jsonp' is not existing!"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1177"
+dictUsecase['DESCRIPTION']       = "JSON file with [import] object containing a duplicate key"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1177.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Duplicate key 'if' in [import] object."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1178"
+dictUsecase['DESCRIPTION']       = "JSON file with invalid data type of [import?] key"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "'int' instead of 'str'"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1178.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The [import?] key requires a value of type 'str', but the type is 'int'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1179"
+dictUsecase['DESCRIPTION']       = "JSON file with optional import of a file containing a not optional import of a not existing file"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = "'optional' is not inherited by nested imports"
+dictUsecase['COMMENT']           = "Conditional import"
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1179.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "really_missing.jsonp' is not existing!"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase

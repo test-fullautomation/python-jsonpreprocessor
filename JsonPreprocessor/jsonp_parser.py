@@ -21,7 +21,8 @@
 # messages and positions. JSONP extensions handled here:
 #
 #   - Python literals True/False/None (syntax 'python')
-#   - "[import]" keys
+#   - "[import]" and "[import?]" keys (value: path or import object with the
+#     keys 'file', 'if', 'else' and 'optional')
 #   - unquoted dollar operator expressions as values and keys (${...})
 #   - Python inline code <<...>> as values
 #   - byte values b'...'
@@ -106,10 +107,13 @@ class Import:
     value: object               # Str (static or template), Bare or Inline
     source: Source
     pos: int
+    condition: object = None    # value node of 'if' (None: unconditional)
+    alternative: object = None  # value node of 'else' (None: nothing is imported if the condition is false)
+    optional: bool = False      # a not existing file is ignored
 
     @property
     def is_static(self) -> bool:
-        return isinstance(self.value, Str) and self.value.parts is None
+        return self.condition is None and isinstance(self.value, Str) and self.value.parts is None
 
 
 @dataclass(eq=False)
@@ -178,8 +182,10 @@ def format_json_error(err: json.JSONDecodeError, file: Optional[str]) -> str:
 
 _WS = WHITESPACE.match
 _WS_STR = ' \t\n\r'
-_IMPORT_KEY = regex.compile(r'^\s*\[\s*import\s*\]\s*$')
+_IMPORT_KEY = regex.compile(r'^\s*\[\s*import\s*(\?)?\s*\]\s*$')
 _IMPORT = object()      # marker for "[import]" keys
+_IMPORT_OPT = object()  # marker for "[import?]" keys
+_IMPORT_OPTIONS = ('file', 'if', 'else', 'optional')
 
 
 def _is_ascii(text: str) -> bool:
@@ -444,12 +450,13 @@ class JsonpParser:
                         end = _WS(s, end + 1).end()
             except IndexError:
                 pass
+            is_import = key is _IMPORT or key is _IMPORT_OPT
             try:
-                value, end = self.scan_value(end, 'object', for_import=key is _IMPORT)
+                value, end = self.scan_value(end, 'object', for_import=is_import)
             except StopIteration as err:
                 raise json.JSONDecodeError("Expecting value", s, err.value) from None
-            if key is _IMPORT:
-                members.append(self._make_import(value, key_pos))
+            if is_import:
+                members.append(self._make_import(value, key_pos, key is _IMPORT_OPT))
             else:
                 members.append(Member(key, value))
             try:
@@ -497,8 +504,9 @@ class JsonpParser:
             raise JsonpError(f"A substitution in key names is not allowed! Please update the key name \"{text}\"")
         if regex.match(r'^\s+[^\s]+.+$|^.+[^\s]+\s+$', text):
             text = text.strip()
-        if _IMPORT_KEY.match(text.lower()):
-            return _IMPORT
+        match = _IMPORT_KEY.match(text.lower())
+        if match is not None:
+            return _IMPORT if match[1] is None else _IMPORT_OPT
         if r'\"' not in raw and _is_ascii(text) and not self.key_checker.key_name_checker(text):
             raise JsonpError(self.key_checker.error_msg)
         return text
@@ -539,11 +547,53 @@ class JsonpParser:
 
     # -- imports -----------------------------------------------------------------
 
-    def _make_import(self, value, pos: int) -> Import:
+    def _make_import(self, value, pos: int, optional: bool) -> Import:
+        if isinstance(value, Obj):
+            if optional:
+                raise JsonpError("The [import?] key requires a value of type 'str'. "
+                                 "Use the key 'optional' of an [import] object instead.")
+            return self._make_import_object(value, pos)
+        self._check_import_path(value, "The [import?] key" if optional else "The [import] key")
+        return Import(value, self.source, pos, optional=optional)
+
+    @staticmethod
+    def _literal_type(node) -> str:
+        """Type name of a literal value node."""
+        sample = {Obj: {}, Arr: [], Bytes: b''}.get(type(node), getattr(node, 'value', getattr(node, 'text', None)))
+        return type_name(sample)
+
+    def _check_import_path(self, value, name: str):
         if isinstance(value, Scalar) and not isinstance(value.value, str) or isinstance(value, (Obj, Arr, Bytes)):
-            sample = {Obj: {}, Arr: []}.get(type(value), getattr(value, 'value', b''))
-            raise JsonpError(f"The [import] key requires a value of type 'str', but the type is {type_name(sample)}")
-        return Import(value, self.source, pos)
+            raise JsonpError(f"{name} requires a value of type 'str', but the type is {self._literal_type(value)}")
+
+    def _make_import_object(self, node: Obj, pos: int) -> Import:
+        """Import object: {"file": <path>, "if": <condition>, "else": <path>, "optional": <bool>}"""
+        options = {}
+        for member in node.members:
+            key = member.key if isinstance(member, Member) else '[import]'
+            if not isinstance(key, str) or key not in _IMPORT_OPTIONS:
+                key = key.text if isinstance(key, DollarKey) else key
+                raise JsonpError(f"Invalid key '{key}' in [import] object. "
+                                 f"Allowed keys are: {', '.join(repr(k) for k in _IMPORT_OPTIONS)}.")
+            if key in options:
+                raise JsonpError(f"Duplicate key '{key}' in [import] object.")
+            options[key] = member.value
+        if 'file' not in options:
+            raise JsonpError("The [import] object requires the key 'file'.")
+        if 'else' in options and 'if' not in options:
+            raise JsonpError("The key 'else' of an [import] object requires the key 'if'.")
+        self._check_import_path(options['file'], "The key 'file' of an [import] object")
+        if 'else' in options:
+            self._check_import_path(options['else'], "The key 'else' of an [import] object")
+        condition = options.get('if')
+        if isinstance(condition, (Obj, Arr, Bytes)) or isinstance(condition, Scalar) and not isinstance(condition.value, bool) \
+                or isinstance(condition, Str) and condition.parts is None:
+            raise JsonpError(f"The key 'if' of an [import] object requires a value of type 'bool', "
+                             f"but the type is {self._literal_type(condition)}")
+        optional = options.get('optional', Scalar(False))
+        if not (isinstance(optional, Scalar) and isinstance(optional.value, bool)):
+            raise JsonpError("The key 'optional' of an [import] object requires the literal value 'true' or 'false'.")
+        return Import(options['file'], self.source, pos, condition, options.get('else'), optional.value)
 
 
 def parse_jsonp(text: str, source: Source, python_syntax: bool, key_pattern: str):

@@ -1,0 +1,111 @@
+# ProperDocs configuration for JsonPreprocessor
+#
+# Build:   properdocs build      (output: build/site)
+# Preview: properdocs serve
+#
+# Requirements:
+#   pip install properdocs mkdocs-material pymdown-extensions
+
+site_name: JsonPreprocessor
+site_description: Preprocessor for JSON files with extended syntax (JSONP) - comments, imports, parameters, dotdict notation and Python inline code.
+site_author: Robert Bosch GmbH
+copyright: Copyright &copy; 2020-2026 Robert Bosch GmbH - Apache License 2.0
+
+repo_name: test-fullautomation/python-jsonpreprocessor
+repo_url: https://github.com/test-fullautomation/python-jsonpreprocessor
+edit_uri: edit/develop/doc/
+
+docs_dir: doc
+site_dir: build/site
+use_directory_urls: false
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - toc.follow
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - attr_list
+  - def_list
+  - tables
+  - footnotes
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Introduction: getting-started/introduction.md
+      - Installation: getting-started/installation.md
+      - Quick start: getting-started/quick-start.md
+  - User guide:
+      - Using the JsonPreprocessor in Python: user-guide/python-usage.md
+      - Error handling: user-guide/error-handling.md
+      - User defined naming convention: user-guide/naming-convention.md
+      - VSCodium support: user-guide/vscodium-support.md
+  - The JSONP format:
+      - Overview: jsonp-format/index.md
+      - Standard JSON format: jsonp-format/standard-json.md
+      - Boolean and null values: jsonp-format/boolean-null.md
+      - Comments: jsonp-format/comments.md
+      - Import of JSON files: jsonp-format/imports.md
+      - Overwriting parameters: jsonp-format/overwriting-parameters.md
+      - dotdict notation: jsonp-format/dotdict-notation.md
+      - Dynamic key names: jsonp-format/dynamic-key-names.md
+      - Implicit creation of dictionaries: jsonp-format/implicit-creation.md
+      - Python inline code: jsonp-format/python-inline-code.md
+      - Special characters within key names: jsonp-format/special-characters.md
+      - Byte sequences: jsonp-format/byte-sequences.md
+      - Cheat sheet: jsonp-format/cheat-sheet.md
+  - API reference: api/cjsonpreprocessor.md
+  - Appendix:
+      - FAQ: appendix/faq.md
+      - History: appendix/history.md
+      - About: appendix/about.md
+  - For Developers:
+      - developers/index.md
+      - Processing pipeline: developers/processing-pipeline.md
+      - Modules in detail: developers/modules.md
+      - Build, test and document: developers/build-and-test.md

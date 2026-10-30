@@ -1,0 +1,60 @@
+component_test.py started at: 30.10.2026 - 12:27:33
+
+                    THISSCRIPT : C:/usr_dev/AIO/python-jsonpreprocessor/test/component_test.py
+                THISSCRIPTNAME : component_test.py
+                 REFERENCEPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test
+                TESTCONFIGPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test/testconfig
+                        OSNAME : nt
+                PLATFORMSYSTEM : Windows
+                        PYTHON : C:/Program Files/RobotFramework/python3/python.exe
+                    PYTHONPATH : C:/Program Files/RobotFramework/python3
+                 PYTHONVERSION : 3.13.2 (main, Feb  5 2025, 19:16:35) [MSC v.1942 64 bit (AMD64)]
+                        TESTID : JPP_1113
+                      CODEDUMP : False
+                    CONFIGDUMP : False
+              RECREATEINSTANCE : False
+               SELFTESTLOGFILE : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles/JPP_SelfTest_JPP_1113.log
+            TESTLOGFILESFOLDER : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles
+                       VERSION : 0.17.1
+                  VERSION_DATE : 22.06.2026
+            THISSCRIPTFULLNAME : component_test.py v. 0.17.1 / 22.06.2026
+                 SUT_FULL_NAME : JsonPreprocessor v. 0.12.0 / 02.02.2026
+
+====== [START OF TEST] : 'JPP_1113-(FILE_IMPORTS)-[GOODCASE]' / (1/1)
+
+   [JSONFILE] : 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/jpp-test_config_1113.jsonp'
+[DESCRIPTION] : JSON file containing an import of the same file in different levels (within imported files)
+[EXPECTATION] : JsonPreprocessor returns values
+
+JsonPreprocessor returned:
+
+[DOTDICT] (9/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (9/2) > {values_AA} [DOTDICT] (3/1) > {AA_1} [INT]  :  1
+[DOTDICT] (9/2) > {values_AA} [DOTDICT] (3/2) > {common_sublevel_param} [STR]  :  'common_sublevel_param value'
+[DOTDICT] (9/2) > {values_AA} [DOTDICT] (3/3) > {AA_2} [INT]  :  2
+[DOTDICT] (9/3) > {BB} [STR]  :  'BB'
+[DOTDICT] (9/4) > {values_BB} [DOTDICT] (3/1) > {BB_1} [INT]  :  1
+[DOTDICT] (9/4) > {values_BB} [DOTDICT] (3/2) > {common_sublevel_param} [STR]  :  'common_sublevel_param value'
+[DOTDICT] (9/4) > {values_BB} [DOTDICT] (3/3) > {BB_2} [INT]  :  2
+[DOTDICT] (9/5) > {CC} [STR]  :  'CC'
+[DOTDICT] (9/6) > {values_CC} [DOTDICT] (3/1) > {CC_1} [INT]  :  1
+[DOTDICT] (9/6) > {values_CC} [DOTDICT] (3/2) > {common_sublevel_param} [STR]  :  'common_sublevel_param value'
+[DOTDICT] (9/6) > {values_CC} [DOTDICT] (3/3) > {CC_2} [INT]  :  2
+[DOTDICT] (9/7) > {DD} [STR]  :  'DD'
+[DOTDICT] (9/8) > {root} [STR]  :  '../../../../'
+[DOTDICT] (9/9) > {values_DD} [DOTDICT] (3/1) > {DD_1} [INT]  :  1
+[DOTDICT] (9/9) > {values_DD} [DOTDICT] (3/2) > {common_sublevel_param} [STR]  :  'common_sublevel_param value'
+[DOTDICT] (9/9) > {values_DD} [DOTDICT] (3/3) > {DD_2} [INT]  :  2
+
+JsonPreprocessor returned expected values.
+
+No exception thrown from JsonPreprocessor (like expected).
+
+    Test 'JPP_1113-(FILE_IMPORTS)-[GOODCASE]' PASSED
+
+Component test PASSED
+
+Defined : 1
+PASSED  : 1
+FAILED  : 0
+UNKNOWN : 0

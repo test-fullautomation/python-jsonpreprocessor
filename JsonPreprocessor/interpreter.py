@@ -32,11 +32,13 @@
 #################################################################################
 
 import ast
+import os
 
 import regex
 
 from .common import JsonpError, PYTHON_TYPE_ERRORS, type_name
 from .dollar_syntax import Ref, IntIndex, StrIndex, err_slicing
+from .imports import SKIP
 from .inline_code import InlineCodeEvaluator
 from .jsonp_parser import Scalar, Str, Bare, Inline, Bytes, Arr, Obj, Member, Import
 
@@ -454,23 +456,17 @@ Evaluates an (import expanded) AST.
     # -- imports -----------------------------------------------------------------
 
     def exec_import(self, imp: Import, target: dict, path: list):
-        """Handles an import which could not be expanded before (dynamic path)."""
+        """Handles an import which could not be expanded before (dynamic path or condition)."""
         try:
-            value = self.eval_node(imp.value, path)
-            if not isinstance(value, str):
-                raise JsonpError(f"The [import] key requires a value of type 'str', but the type is {type_name(value)}")
-            file = self.resolver.dynamic_path(value, imp.source.base_dir)
-        except JsonpError as error:
+            file = self.import_path(imp, path)
+        except JsonpError:
             if self.lenient:
                 return
-            if isinstance(error, NotAvailable):
-                text = imp.value.text if isinstance(imp.value, Str) else imp.value.src
-                params = regex.findall(rf'(\${{[^{regex.escape(_SPECIAL_CHARACTERS)}]+}}(\[.*\])*)', text)
-                params = ''.join(f"{item[0]} " for item in params)
-                raise JsonpError(f"Could not load the import file '{text}'. The parameter '{params}' is not available!")
             raise
         if self.lenient:
             self.resolved[self.resolver.key(imp)] = file
+            return
+        if file == SKIP:
             return
         imported = self.resolver.import_file(file, [imp.source.label], self.resolved)
         for member in imported.members:
@@ -478,3 +474,32 @@ Evaluates an (import expanded) AST.
                 target.pop(member.key, None)
         self.seed_object(imported, target, path)
         self.exec_object(imported, target, path)
+
+    def import_path(self, imp: Import, path: list) -> str:
+        """Path of the file to import; SKIP if nothing is imported."""
+        node = imp.value
+        if imp.condition is not None:
+            try:
+                condition = self.eval_node(imp.condition, path)
+            except NotAvailable as error:
+                raise JsonpError(f"Could not evaluate the condition of the [import] object. {error}")
+            if not isinstance(condition, bool):
+                raise JsonpError(f"The key 'if' of an [import] object requires a value of type 'bool', "
+                                 f"but the type is {type_name(condition)}")
+            if not condition:
+                if imp.alternative is None:
+                    return SKIP
+                node = imp.alternative
+        try:
+            value = self.eval_node(node, path)
+        except NotAvailable:
+            text = node.text if isinstance(node, Str) else node.src
+            params = regex.findall(rf'(\${{[^{regex.escape(_SPECIAL_CHARACTERS)}]+}}(\[.*\])*)', text)
+            params = ''.join(f"{item[0]} " for item in params)
+            raise JsonpError(f"Could not load the import file '{text}'. The parameter '{params}' is not available!")
+        if not isinstance(value, str):
+            raise JsonpError(f"The [import] key requires a value of type 'str', but the type is {type_name(value)}")
+        file = self.resolver.dynamic_path(value, imp.source.base_dir)
+        if imp.optional and not os.path.isfile(file):
+            return SKIP
+        return file

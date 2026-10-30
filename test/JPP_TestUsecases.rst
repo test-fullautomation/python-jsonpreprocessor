@@ -1393,6 +1393,168 @@ Test Use Cases
 
 ----
 
+* **Test JPP_1114**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with optional import ([import?]) of an existing file**
+
+   Expected: JsonPreprocessor returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1115**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with optional import ([import?]) of a not existing file**
+
+   Expected: JsonPreprocessor ignores the import and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1116**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with optional imports ([import?]) with dynamic paths (existing and not existing file)**
+
+   Expected: JsonPreprocessor imports the existing file, ignores the not existing file and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1117**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with [import] object without condition**
+
+   Expected: JsonPreprocessor imports the file and returns values
+
+   *Comment: Conditional import*
+
+   *Hint: Same as a simple import*
+
+----
+
+* **Test JPP_1118**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional import (condition true)**
+
+   Expected: JsonPreprocessor imports the 'file' and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1119**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional import (condition false)**
+
+   Expected: JsonPreprocessor imports the 'else' file and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1120**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional import (condition false, no 'else')**
+
+   Expected: JsonPreprocessor imports nothing and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1121**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional imports (conditions with Python inline code)**
+
+   Expected: JsonPreprocessor imports the files and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1122**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with [import] objects with key 'optional' (existing and not existing files)**
+
+   Expected: JsonPreprocessor imports the existing files, ignores the not existing file and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1123**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional import (condition false, optional 'else' file not existing)**
+
+   Expected: JsonPreprocessor imports nothing and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1124**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with nested conditional imports (in imported file and in sub-object)**
+
+   Expected: JsonPreprocessor imports the files and returns values
+
+   *Comment: Conditional import*
+
+   *Hint: Relative paths within imported files are relative to the imported file*
+
+----
+
+* **Test JPP_1125**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with conditional import (condition in dotdict notation, imported value overwritten afterwards)**
+
+   Expected: JsonPreprocessor imports the file and returns values
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1126**
+
+  [FILE_IMPORTS / GOODCASE]
+
+   **JSON file with optional imports in all levels of nested imports (and in sub-objects)**
+
+   Expected: JsonPreprocessor imports the existing files, ignores the not existing files and returns values
+
+   *Comment: Conditional import*
+
+   *Hint: Relative paths within imported files are relative to the imported file*
+
+----
+
 * **Test JPP_1150**
 
   [FILE_IMPORTS / BADCASE]
@@ -1523,7 +1685,7 @@ Test Use Cases
 
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
-   *Hint: 'dict' instead of 'str'*
+   *Hint: 'dict' is treated as [import] object, but contains invalid keys*
 
 ----
 
@@ -1560,6 +1722,174 @@ Test Use Cases
    Expected: No values are returned, and JsonPreprocessor throws an exception
 
    *Comment: Cyclic import*
+
+----
+
+* **Test JPP_1167**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object containing an invalid key**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1168**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object without key 'file'**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1169**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with key 'else' but without key 'if'**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1170**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with invalid data type of key 'if' (1)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: literal 'str' instead of 'bool'*
+
+----
+
+* **Test JPP_1171**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with invalid data type of key 'if' (2)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: parameter of type 'int' instead of 'bool'*
+
+----
+
+* **Test JPP_1172**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with condition referring to a not existing parameter**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1173**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with key 'optional' not being a literal boolean value**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: parameter instead of literal 'true' or 'false'*
+
+----
+
+* **Test JPP_1174**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import?] key and [import] object as value**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1175**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object with invalid data type of key 'file'**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: 'list' instead of 'str'*
+
+----
+
+* **Test JPP_1176**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with conditional import (condition true, file not existing, not optional)**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1177**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with [import] object containing a duplicate key**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+----
+
+* **Test JPP_1178**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with invalid data type of [import?] key**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: 'int' instead of 'str'*
+
+----
+
+* **Test JPP_1179**
+
+  [FILE_IMPORTS / BADCASE]
+
+   **JSON file with optional import of a file containing a not optional import of a not existing file**
+
+   Expected: No values are returned, and JsonPreprocessor throws an exception
+
+   *Comment: Conditional import*
+
+   *Hint: 'optional' is not inherited by nested imports*
 
 ----
 
@@ -2599,5 +2929,5 @@ Test Use Cases
 
 ----
 
-Generated: 02.02.2026 - 10:50:05
+Generated: 30.10.2026 - 12:27:16
 

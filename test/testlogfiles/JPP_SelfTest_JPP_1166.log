@@ -1,0 +1,49 @@
+component_test.py started at: 30.10.2026 - 12:27:43
+
+                    THISSCRIPT : C:/usr_dev/AIO/python-jsonpreprocessor/test/component_test.py
+                THISSCRIPTNAME : component_test.py
+                 REFERENCEPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test
+                TESTCONFIGPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test/testconfig
+                        OSNAME : nt
+                PLATFORMSYSTEM : Windows
+                        PYTHON : C:/Program Files/RobotFramework/python3/python.exe
+                    PYTHONPATH : C:/Program Files/RobotFramework/python3
+                 PYTHONVERSION : 3.13.2 (main, Feb  5 2025, 19:16:35) [MSC v.1942 64 bit (AMD64)]
+                        TESTID : JPP_1166
+                      CODEDUMP : False
+                    CONFIGDUMP : False
+              RECREATEINSTANCE : False
+               SELFTESTLOGFILE : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles/JPP_SelfTest_JPP_1166.log
+            TESTLOGFILESFOLDER : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles
+                       VERSION : 0.17.1
+                  VERSION_DATE : 22.06.2026
+            THISSCRIPTFULLNAME : component_test.py v. 0.17.1 / 22.06.2026
+                 SUT_FULL_NAME : JsonPreprocessor v. 0.12.0 / 02.02.2026
+
+====== [START OF TEST] : 'JPP_1166-(FILE_IMPORTS)-[BADCASE]' / (1/1)
+
+   [JSONFILE] : 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/jpp-test_config_1166.jsonp'
+[DESCRIPTION] : JSON file with cyclic imports (sawtooth, endless)
+[EXPECTATION] : No values are returned, and JsonPreprocessor throws an exception
+    [COMMENT] : Cyclic import
+
+JsonPreprocessor threw exception:
+
+'Cyclic import detection: The file 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/dynamic_imports/AA/imported.AA.ST.2.jsonp' is imported by 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/dynamic_imports/sawtooth_import.2.jsonp' and by file 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/dynamic_imports/AA/ST01/imported.ST01.2.jsonp'.'
+
+JsonPreprocessor returned:
+
+[NONE]  :  None
+
+No values returned from JsonPreprocessor (like expected).
+
+JsonPreprocessor threw expected exception.
+
+    Test 'JPP_1166-(FILE_IMPORTS)-[BADCASE]' PASSED
+
+Component test PASSED
+
+Defined : 1
+PASSED  : 1
+FAILED  : 0
+UNKNOWN : 0
