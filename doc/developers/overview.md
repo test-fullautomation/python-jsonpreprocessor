@@ -1,4 +1,4 @@
-# For Developers
+# Overview for Developers
 
 This chapter is meant for everybody who wants to understand, maintain or extend the JsonPreprocessor.
 It gives an overview of the code base and explains how the parts work together.
