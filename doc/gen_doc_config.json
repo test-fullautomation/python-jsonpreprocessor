@@ -1,0 +1,7 @@
+﻿{
+    "version_file"      : "../JsonPreprocessor/version.py",
+    "output_file"       : "./appendix/about_this_documentation.md",
+    "history_file"      : "../packagedoc/additional_docs/History.tex",
+    "properdocs_command": "%ROBOTPYTHONPATH%\\Scripts\\properdocs.exe build",
+    "properdocs_cwd"    : ".."
+}

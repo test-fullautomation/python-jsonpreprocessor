@@ -1,4 +1,4 @@
-# ProperDocs configuration for JsonPreprocessor
+﻿# ProperDocs configuration for JsonPreprocessor
 #
 # Build:   properdocs build      (output: build/site)
 # Preview: properdocs serve
@@ -67,6 +67,8 @@ markdown_extensions:
 
 plugins:
   - search
+  - minify:
+      minify_html: true
 
 validation:
   omitted_files: warn
@@ -115,3 +117,4 @@ nav:
       - FAQ: appendix/faq.md
       - History: appendix/history.md
       - About: appendix/about.md
+      - About this documentation: appendix/about_this_documentation.md

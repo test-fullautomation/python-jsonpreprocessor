@@ -3,7 +3,7 @@
 /* ===== CONTENT WIDTH ADJUSTMENTS ===== */
 /* Main content area - increase width for better readability */
 .wy-nav-content {
-    max-width: 1400px !important;  /* Default: 800px */
+    max-width: 1400px !important;
 }
 
 /* Alternative: Full-width content (remove max-width entirely) */
