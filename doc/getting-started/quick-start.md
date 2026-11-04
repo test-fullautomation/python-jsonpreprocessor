@@ -84,6 +84,6 @@ sequenceDiagram
 
 ## Next steps
 
-- Learn the complete syntax step by step in [The JSONP format](../jsonp-format/index.md).
+- Learn the complete syntax step by step in [The JSONP format](../jsonp-format/overview.md).
 - All discussed JSONP examples can be tested with the script from step 2.
 - Keep the [Cheat sheet](../jsonp-format/cheat-sheet.md) at hand.

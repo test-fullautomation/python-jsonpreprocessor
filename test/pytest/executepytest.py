@@ -26,7 +26,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 04.10.2022
+# 03.11.2026
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -127,7 +127,12 @@ else:
    listCmdLineParts.append(f"{sPytestCommandLine}")
 listCmdLineParts.append("--show-capture=all")
 listCmdLineParts.append(f"--junitxml=\"{sLogFile}\"")
-listCmdLineParts.append(f"\"{sThisScriptPath}\"")
+# Tests now live in the sibling 'jpp_test' folder (single, data-driven pytest
+# module replacing the former component_test.py / codedump-generated
+# pytestfiles setup - see test/jpp_test/test_usecases.py). This matches
+# "Example 1: Run ALL tests" from test/pytest/run_examples.bat.
+sTestFolder = CString.NormalizePath(f"{sThisScriptPath}/../jpp_test")
+listCmdLineParts.append(f"\"{sTestFolder}\"")
 sCmdLine = " ".join(listCmdLineParts)
 del listCmdLineParts
 

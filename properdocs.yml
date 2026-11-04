@@ -1,4 +1,4 @@
-# ProperDocs configuration for JsonPreprocessor
+﻿# ProperDocs configuration for JsonPreprocessor
 #
 # Build:   properdocs build      (output: build/site)
 # Preview: properdocs serve
@@ -16,8 +16,12 @@ repo_url: https://github.com/test-fullautomation/python-jsonpreprocessor
 edit_uri: edit/develop/doc/
 
 docs_dir: doc
-site_dir: build/site
+site_dir: JsonPreprocessor/doc
 use_directory_urls: false
+
+exclude_docs: |
+  gen_doc.py
+  gen_doc_config.json
 
 theme:
   name: material
@@ -74,6 +78,9 @@ validation:
   unrecognized_links: warn
   anchors: warn
 
+extra_css:
+  - css/custom.css
+
 nav:
   - Home: index.md
   - Getting started:
@@ -86,7 +93,7 @@ nav:
       - User defined naming convention: user-guide/naming-convention.md
       - VSCodium support: user-guide/vscodium-support.md
   - The JSONP format:
-      - Overview: jsonp-format/index.md
+      - Overview: jsonp-format/overview.md
       - Standard JSON format: jsonp-format/standard-json.md
       - Boolean and null values: jsonp-format/boolean-null.md
       - Comments: jsonp-format/comments.md
@@ -99,13 +106,17 @@ nav:
       - Special characters within key names: jsonp-format/special-characters.md
       - Byte sequences: jsonp-format/byte-sequences.md
       - Cheat sheet: jsonp-format/cheat-sheet.md
-  - API reference: api/cjsonpreprocessor.md
+  - API reference:
+      - Reference: api/cjsonpreprocessor.md
+  - For Developers:
+      - Overview: developers/overview.md
+      - Processing pipeline: developers/processing-pipeline.md
+      - Modules in detail: developers/modules.md
+      - Build, test and document: developers/build-and-test.md
+  - Selftest:
+      - Overview: selftest/json_preprocessor_selftest.md
   - Appendix:
       - FAQ: appendix/faq.md
       - History: appendix/history.md
       - About: appendix/about.md
-  - For Developers:
-      - developers/index.md
-      - Processing pipeline: developers/processing-pipeline.md
-      - Modules in detail: developers/modules.md
-      - Build, test and document: developers/build-and-test.md
+      - About this documentation: appendix/about_this_documentation.md

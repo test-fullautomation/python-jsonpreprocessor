@@ -22,7 +22,7 @@
 #
 # --------------------------------------------------------------------------------------------------------------
 #
-# 03.12.2025
+# 02.11.2026
 #
 # !!! Temporarily tests are deactivated by the following line commented out:
 # # # listofdictUsecases.append(dictUsecase)
@@ -1200,6 +1200,48 @@ dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0275"
+dictUsecase['DESCRIPTION']       = "JSON file with a sub-element index that is neither a reference nor enclosed in quotes"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0275.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid syntax! Sub-element 'element' in ${mylist}[element] need to be referenced using ${element} or enclosed in quotes ['element']."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0276"
+dictUsecase['DESCRIPTION']       = "JSON file with an empty index in square brackets"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0276.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Expression '${mylist}[]' cannot be evaluated. Reason: A pair of square brackets is empty or contains not allowed characters."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0277"
+dictUsecase['DESCRIPTION']       = "JSON file with an unquoted dollar expression fragment that is not a valid reference"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "PARAMETER_SUBSTITUTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0277.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Invalid expression found: '$notaref' - The double quotes are missing!!!"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_0300"
@@ -2048,6 +2090,20 @@ dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0466.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = None
 dictUsecase['EXPECTEDRETURN']    = None # TODO
 # # # listofdictUsecases.append(dictUsecase) # 10.04.2025 / name is valid now; TODO: move this test to GOODCASE section
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_0467"
+dictUsecase['DESCRIPTION']       = "JSON file with a quoted key name containing a dollar operator substitution"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "NAMING_CONVENTION"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_0467.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "A substitution in key names is not allowed! Please update the key name \"my_${param}_key\""
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
 
@@ -3859,6 +3915,20 @@ dictUsecase['HINT']              = "'optional' is not inherited by nested import
 dictUsecase['COMMENT']           = "Conditional import"
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1179.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = "really_missing.jsonp' is not existing!"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_1180"
+dictUsecase['DESCRIPTION']       = "JSON file importing a file whose root element is not a JSON object"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "FILE_IMPORTS"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_1180.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "must contain a JSON object"
 dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
@@ -5719,6 +5789,48 @@ dictUsecase['EXPECTEDRETURN']    = None
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2196"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code that evaluates to a datatype not suitable for JSON"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2196.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "is not suitable for JSON"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2197"
+dictUsecase['DESCRIPTION']       = "JSON file containing an empty Python inline code block"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2197.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "The Python builtIn must not be empty. Please check '<<>>'"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2198"
+dictUsecase['DESCRIPTION']       = "JSON file containing Python inline code embedded inside a quoted string"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "INLINE_CODE"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2198.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Python inline code must not be embedded part of a string!"
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------
 dictUsecase = {}
 dictUsecase['TESTID']            = "JPP_2600"
@@ -5752,6 +5864,160 @@ dictUsecase['COMMENT']           = None
 dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2650.jsonp"
 dictUsecase['EXPECTEDEXCEPTION'] = r"(value error) invalid \x escape at position 8"
 dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2651"
+dictUsecase['DESCRIPTION']       = "JSON file containing a byte literal used as a key name"
+dictUsecase['EXPECTATION']       = "No values are returned, and JsonPreprocessor throws an exception"
+dictUsecase['SECTION']           = "BYTE_SEQUENCES"
+dictUsecase['SUBSECTION']        = "BADCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2651.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = "Key names must be strings; byte values are not supported."
+dictUsecase['EXPECTEDRETURN']    = None
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2700"
+dictUsecase['DESCRIPTION']       = "JSON file with UTF-8 encoded values (German, Vietnamese, Japanese, Hindi, Thai, Korean, Chinese)"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "UTF8_ENCODING"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2700.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (7/1) > {German} [STR]  :  'Dies ist der UTF-8 SälfTest'
+[DOTDICT] (7/2) > {Vietnamese} [STR]  :  'Đây là bản tự kiểm tra UTF-8'
+[DOTDICT] (7/3) > {Japanese} [STR]  :  'これは UTF-8 セルフテストです'
+[DOTDICT] (7/4) > {Hindi} [STR]  :  'यह UTF-8 सेल्फ़टेस्ट है'
+[DOTDICT] (7/5) > {Thai} [STR]  :  'นี่คือการทดสอบตัวเอง UTF-8'
+[DOTDICT] (7/6) > {Korean} [STR]  :  '이것은 UTF-8 자체 테스트입니다'
+[DOTDICT] (7/7) > {Chinese} [STR]  :  '這是 UTF-8 自測'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2701"
+dictUsecase['DESCRIPTION']       = "JSON file with UTF-8 encoded keys and values"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "UTF8_ENCODING"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2701.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (7/1) > {Tiếng_Đức} [STR]  :  'Dies ist der UTF-8 SälfTest'
+[DOTDICT] (7/2) > {Tiếng_Việt} [STR]  :  'Đây là bản tự kiểm tra UTF-8'
+[DOTDICT] (7/3) > {日本} [STR]  :  'これは UTF-8 セルフテストです'
+[DOTDICT] (7/4) > {हिंदी} [STR]  :  'यह UTF-8 सेल्फ़टेस्ट है'
+[DOTDICT] (7/5) > {แบบไทย} [STR]  :  'นี่คือการทดสอบตัวเอง UTF-8'
+[DOTDICT] (7/6) > {한국인} [STR]  :  '이것은 UTF-8 자체 테스트입니다'
+[DOTDICT] (7/7) > {中國人} [STR]  :  '這是 UTF-8 自測'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2800"
+dictUsecase['DESCRIPTION']       = "JSON file with dotted key (dotdict) notation at right hand side of colon"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "DOTDICT_FORMAT"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2800.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/1) > {gPreprol.IntParam} [INT]  :  1
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/2) > {gPrepro.Float.Param} [FLOAT]  :  1.332
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/3) > {g.Prepro.String.test} [STR]  :  'This is a string'
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/4) > {gPrepro.Structure} [DOTDICT] (2/1) > {test.Structure} [STR]  :  'general'
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/4) > {gPrepro.Structure} [DOTDICT] (2/2) > {general} [STR]  :  'Structure test'
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/5) > {newParam_01} [INT]  :  1
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/1) > {global} [DOTDICT] (6/6) > {newParamStr_01} [STR]  :  '1'
+[DOTDICT] (3/1) > {params} [DOTDICT] (2/2) > {newParam_02} [STR]  :  'Structure test'
+[DOTDICT] (3/2) > {newParam_03} [STR]  :  'general'
+[DOTDICT] (3/3) > {newParam_04} [STR]  :  'This is a string'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2801"
+dictUsecase['DESCRIPTION']       = "JSON file with dotted key (dotdict) notation referenced as list elements"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "DOTDICT_FORMAT"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2801.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/1) > {gPreprol.IntParam} [INT]  :  1
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/2) > {gPrepro.Float.Param} [FLOAT]  :  1.332
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/3) > {g.Prepro.String.test} [STR]  :  'This is a string'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/4) > {gPrepro.Structure} [DOTDICT] (2/1) > {test.Structure} [STR]  :  'general'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/4) > {gPrepro.Structure} [DOTDICT] (2/2) > {general} [STR]  :  'Structure test'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/5) > {newListParam_01} [LIST] (4/1) > [STR]  :  'one'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/5) > {newListParam_01} [LIST] (4/2) > [INT]  :  2
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/5) > {newListParam_01} [LIST] (4/3) > [INT]  :  1
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/5) > {newListParam_01} [LIST] (4/4) > [STR]  :  'three'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/6) > {newListParam_02} [LIST] (5/1) > [STR]  :  'one'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/6) > {newListParam_02} [LIST] (5/2) > [INT]  :  2
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/6) > {newListParam_02} [LIST] (5/3) > [STR]  :  'This is a string'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/6) > {newListParam_02} [LIST] (5/4) > [STR]  :  'three'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (6/6) > {newListParam_02} [LIST] (5/5) > [STR]  :  'Structure test'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2802"
+dictUsecase['DESCRIPTION']       = "JSON file with dotted key (dotdict) notation at left hand side of colon"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "DOTDICT_FORMAT"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2802.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/1) > {gPreprol.IntParam} [INT]  :  1
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/2) > {gPrepro.Float.Param} [FLOAT]  :  9.999
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/3) > {g.Prepro.String.test} [STR]  :  'This is a string'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/4) > {gPrepro.Structure} [DOTDICT] (2/1) > {test.Structure} [STR]  :  'Change value'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/4) > {gPrepro.Structure} [DOTDICT] (2/2) > {general} [STR]  :  'Update value'
+"""
+listofdictUsecases.append(dictUsecase)
+del dictUsecase
+# --------------------------------------------------------------------------------------------------------------
+dictUsecase = {}
+dictUsecase['TESTID']            = "JPP_2803"
+dictUsecase['DESCRIPTION']       = "JSON file with dotted key (dotdict) notation at both sides of colon"
+dictUsecase['EXPECTATION']       = "JsonPreprocessor returns expected values"
+dictUsecase['SECTION']           = "DOTDICT_FORMAT"
+dictUsecase['SUBSECTION']        = "GOODCASE"
+dictUsecase['HINT']              = None
+dictUsecase['COMMENT']           = None
+dictUsecase['JSONFILE']          = r"..\testfiles\jpp-test_config_2803.jsonp"
+dictUsecase['EXPECTEDEXCEPTION'] = None
+dictUsecase['EXPECTEDRETURN']    = """
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/1) > {gPreprol.IntParam} [INT]  :  1
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/2) > {gPrepro.Float.Param} [INT]  :  1
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/3) > {g.Prepro.String.test} [STR]  :  'This is a string'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/4) > {gPrepro.Structure} [DOTDICT] (2/1) > {test.Structure} [STR]  :  'Structure test'
+[DOTDICT] (1/1) > {params} [DOTDICT] (1/1) > {global} [DOTDICT] (4/4) > {gPrepro.Structure} [DOTDICT] (2/2) > {general} [STR]  :  'Structure test'
+"""
 listofdictUsecases.append(dictUsecase)
 del dictUsecase
 # --------------------------------------------------------------------------------------------------------------

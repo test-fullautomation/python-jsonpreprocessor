@@ -1,0 +1,2500 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Preprocessor for JSON files with extended syntax (JSONP) - comments, imports, parameters, dotdict notation and Python inline code.">
+      
+      
+        <meta name="author" content="Robert Bosch GmbH">
+      
+      
+      
+        <link rel="prev" href="imports.html">
+      
+      
+        <link rel="next" href="dotdict-notation.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Overwriting parameters - JsonPreprocessor</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overwriting-parameters" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="JsonPreprocessor" class="md-header__button md-logo" aria-label="JsonPreprocessor" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            JsonPreprocessor
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overwriting parameters
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/test-fullautomation/python-jsonpreprocessor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    test-fullautomation/python-jsonpreprocessor
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="JsonPreprocessor" class="md-nav__button md-logo" aria-label="JsonPreprocessor" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    JsonPreprocessor
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/test-fullautomation/python-jsonpreprocessor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    test-fullautomation/python-jsonpreprocessor
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/quick-start.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/python-usage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the JsonPreprocessor in Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/error-handling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/naming-convention.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User defined naming convention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/vscodium-support.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VSCodium support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The JSONP format
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    The JSONP format
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="standard-json.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard JSON format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="boolean-null.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boolean and null values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comments.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="imports.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Import of JSON files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overwriting parameters
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="overwriting-parameters.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overwriting parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overwrite-a-value-defined-in-an-imported-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overwrite a value defined in an imported file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-order-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The order matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-existing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access existing parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access existing parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-or-without-quotes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With or without quotes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Composite strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-a-single-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access a single element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overwrite-a-single-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overwrite a single element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-an-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-keys-and-indices-as-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dictionary keys and indices as parameter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meaning-of-single-quotes-in-square-brackets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meaning of single quotes in square brackets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-of-a-common-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use of a common dictionary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dotdict-notation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dotdict notation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dynamic-key-names.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dynamic key names
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="implicit-creation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implicit creation of dictionaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="python-inline-code.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python inline code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="special-characters.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Special characters within key names
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="byte-sequences.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Byte sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cheat-sheet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheat sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/cjsonpreprocessor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    For Developers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    For Developers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/processing-pipeline.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processing pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/modules.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules in detail
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/build-and-test.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build, test and document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selftest
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Selftest
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selftest/json_preprocessor_selftest.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/faq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/history.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    History
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/about.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/about_this_documentation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About this documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overwrite-a-value-defined-in-an-imported-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overwrite a value defined in an imported file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-order-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The order matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-existing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access existing parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access existing parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-or-without-quotes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With or without quotes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Composite strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-a-single-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access a single element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overwrite-a-single-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overwrite a single element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-an-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an element
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dictionary-keys-and-indices-as-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dictionary keys and indices as parameter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meaning-of-single-quotes-in-square-brackets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meaning of single quotes in square brackets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-of-a-common-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use of a common dictionary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="overwriting-parameters">Overwriting parameters<a class="headerlink" href="#overwriting-parameters" title="Permanent link">&para;</a></h1>
+<p>This section is the heart of the JSONP format. It answers the following questions:</p>
+<ol>
+<li>How to change a value that was defined in an imported file?</li>
+<li>How to get the value of an already existing parameter?</li>
+<li>How to get the value of a single element of a list or a dictionary?</li>
+<li>How to overwrite the value of a single element of a list or a dictionary?</li>
+<li>How to add an element to a dictionary?</li>
+</ol>
+<h2 id="overwrite-a-value-defined-in-an-imported-file">Overwrite a value defined in an imported file<a class="headerlink" href="#overwrite-a-value-defined-in-an-imported-file" title="Permanent link">&para;</a></h2>
+<p>We take over the scenario from section <a href="imports.html">Import of JSON files</a>. But now component <em>B</em> requires a
+<strong>different value</strong> of a common parameter.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">common.jsonp</label><label for="__tabbed_1_2">componentB.jsonp</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">   </span><span class="c1">// common parameters</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">   </span><span class="nt">&quot;common_param_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">   </span><span class="nt">&quot;common_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 2&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">   </span><span class="c1">// common parameters</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./common.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">   </span><span class="c1">// component B parameters</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">   </span><span class="nt">&quot;componentB_param_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">   </span><span class="nt">&quot;componentB_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 2&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="hll"><span class="w">   </span><span class="c1">// overwrite parameter initialized by imported file</span>
+</span><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="hll"><span class="w">   </span><span class="nt">&quot;common_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common componentB value 2&quot;</span>
+</span><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>With <code>"common_param_2" : "common componentB value 2"</code> in <code>componentB.jsonp</code>, the initial definition
+<code>"common_param_2" : "common value 2"</code> in <code>common.jsonp</code> is overwritten.</p>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 1&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common componentB value 2&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 1&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2&#39;</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="the-order-matters">The order matters<a class="headerlink" href="#the-order-matters" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>The value a parameter has finally, depends on the <strong>order</strong> of definitions, redefinitions and imports!</p>
+</div>
+<p>In file <code>componentB.jsonp</code> we move the import of <code>common.jsonp</code> to the bottom:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">   </span><span class="c1">// component B parameters</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">   </span><span class="nt">&quot;componentB_param_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">   </span><span class="nt">&quot;componentB_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 2&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">   </span><span class="nt">&quot;common_param_2&quot;</span><span class="w">     </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common componentB value 2&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">   </span><span class="c1">// common parameters</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="hll"><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./common.jsonp&quot;</span>
+</span><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>Now the imported file overwrites the value initialized in the importing file.</p>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 1&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 1&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2&#39;</span><span class="p">}</span>
+</code></pre></div>
+<pre class="mermaid"><code>flowchart TB
+    subgraph top["Import at the top"]
+        direction TB
+        t1["import common.jsonp&lt;br/&gt;common_param_2 = 'common value 2'"] --&gt; t2["common_param_2 = 'common componentB value 2'"]
+        t2 --&gt; t3(["Result: 'common componentB value 2'"])
+    end
+    subgraph bottom["Import at the bottom"]
+        direction TB
+        b1["common_param_2 = 'common componentB value 2'"] --&gt; b2["import common.jsonp&lt;br/&gt;common_param_2 = 'common value 2'"]
+        b2 --&gt; b3(["Result: 'common value 2'"])
+    end</code></pre>
+<p><strong>Rule of thumb:</strong> the definition that is processed <em>last</em> wins - like in a program that assigns a variable several times.</p>
+<h2 id="access-existing-parameters">Access existing parameters<a class="headerlink" href="#access-existing-parameters" title="Permanent link">&para;</a></h2>
+<p>Up to now we considered simple data types only. In the following examples all values are part of composite data types
+like lists and dictionaries:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">common.jsonp</label><label for="__tabbed_2_2">componentB.jsonp</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">   </span><span class="c1">// common parameters</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span><span class="nt">&quot;common_param_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;common value 1.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;common value 1.2&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">   </span><span class="nt">&quot;common_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;common_key_2_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 2.1&quot;</span><span class="w"> </span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">                       </span><span class="nt">&quot;common_key_2_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 2.2&quot;</span><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">   </span><span class="c1">// common parameters</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./common.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">   </span><span class="c1">// component B parameters</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">   </span><span class="nt">&quot;componentB_param_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;componentB value 1.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;componentB value 1.2&quot;</span><span class="p">],</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">   </span><span class="nt">&quot;componentB_param_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;componentB_key_2_1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 2.1&quot;</span><span class="w"> </span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">                           </span><span class="nt">&quot;componentB_key_2_2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 2.2&quot;</span><span class="p">}</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>We introduce a new file <code>componentB.2.jsonp</code> that imports <code>componentB.jsonp</code> and creates new parameters based on
+already existing parameters:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">   </span><span class="c1">// import of componentB parameters</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./componentB.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">   </span><span class="c1">// some additional parameters of simple data type</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">   </span><span class="nt">&quot;string_val&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ABC&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">   </span><span class="nt">&quot;int_val&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">   </span><span class="nt">&quot;float_val&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="mf">4.56</span><span class="p">,</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">   </span><span class="nt">&quot;bool_val&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">   </span><span class="nt">&quot;null_val&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">   </span><span class="c1">// access to existing parameters</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">   </span><span class="nt">&quot;string_val_b&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g_val</span><span class="p">},</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">   </span><span class="nt">&quot;int_val_b&quot;</span><span class="w">            </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">nt</span><span class="err">_val</span><span class="p">},</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">   </span><span class="nt">&quot;float_val_b&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">fl</span><span class="err">oa</span><span class="kc">t</span><span class="err">_val</span><span class="p">},</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">   </span><span class="nt">&quot;bool_val_b&quot;</span><span class="w">           </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">bool_val</span><span class="p">},</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">   </span><span class="nt">&quot;null_val_b&quot;</span><span class="w">           </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">null</span><span class="err">_val</span><span class="p">},</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">   </span><span class="nt">&quot;common_param_1_b&quot;</span><span class="w">     </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">commo</span><span class="kc">n</span><span class="err">_param_</span><span class="mi">1</span><span class="p">},</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">   </span><span class="nt">&quot;componentB_param_2_b&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">compo</span><span class="kc">nent</span><span class="err">B_param_</span><span class="mi">2</span><span class="p">}</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="s1">&#39;bool_val&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a> <span class="s1">&#39;bool_val_b&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a> <span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;common value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;common value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a> <span class="s1">&#39;common_param_1_b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;common value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;common value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;common_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>                    <span class="s1">&#39;common_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;componentB value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;componentB value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;componentB_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>                        <span class="s1">&#39;componentB_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a> <span class="s1">&#39;componentB_param_2_b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;componentB_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>                          <span class="s1">&#39;componentB_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a> <span class="s1">&#39;float_val&#39;</span><span class="p">:</span> <span class="mf">4.56</span><span class="p">,</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a> <span class="s1">&#39;float_val_b&#39;</span><span class="p">:</span> <span class="mf">4.56</span><span class="p">,</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a> <span class="s1">&#39;int_val&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a> <span class="s1">&#39;int_val_b&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a> <span class="s1">&#39;null_val&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a> <span class="s1">&#39;null_val_b&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a> <span class="s1">&#39;string_val&#39;</span><span class="p">:</span> <span class="s1">&#39;ABC&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a> <span class="s1">&#39;string_val_b&#39;</span><span class="p">:</span> <span class="s1">&#39;ABC&#39;</span><span class="p">}</span>
+</code></pre></div>
+<div class="admonition abstract">
+<p class="admonition-title">Rules for accessing parameters</p>
+<ul>
+<li>Existing parameters are accessed by a dollar operator and a pair of curly brackets (<code>${...}</code>) with the parameter name inside.</li>
+<li>If the entire expression at the right-hand side of the colon is such a dollar operator expression, it is <strong>not required</strong>
+  to encapsulate this expression in quotes (in opposite to what pure JSON would require).</li>
+<li><strong>Without quotes</strong>, the dollar operator keeps the data type of the referenced parameter.
+  <strong>With quotes</strong>, the value is converted to type <code>str</code>. This implicit string conversion is limited to parameters of
+  simple data types. Composite data types like lists and dictionaries cannot be used for that.</li>
+</ul>
+</div>
+<h3 id="with-or-without-quotes">With or without quotes<a class="headerlink" href="#with-or-without-quotes" title="Permanent link">&para;</a></h3>
+<p>The dollar operator keeps the data type of the referenced parameter. If <code>int_val</code> is of type <code>int</code>, also <code>int_val_b</code> is of type <code>int</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">&quot;int_val_b&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">nt</span><span class="err">_val</span><span class="p">},</span>
+</code></pre></div>
+<p>With quotes, the parameter <code>int_val_b</code> is of type <code>str</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">&quot;int_val_b&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${int_val}&quot;</span><span class="p">,</span>
+</code></pre></div>
+<h3 id="composite-strings">Composite strings<a class="headerlink" href="#composite-strings" title="Permanent link">&para;</a></h3>
+<p>Further content can be added between the double quotes. This can be used to create composite strings:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">&quot;str_val&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ABC&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">&quot;int_val&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">&quot;float_val&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">2.3</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nt">&quot;bool_val&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="err">True</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nt">&quot;none_val&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="nt">&quot;list_val&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="nt">&quot;dict_val&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;A&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">},</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="nt">&quot;newparam1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${str_val}_suffix&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="nt">&quot;newparam2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${int_val}_suffix&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="nt">&quot;newparam3&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${float_val}_suffix&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nt">&quot;newparam4&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${bool_val}_suffix&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="nt">&quot;newparam5&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${none_val}_suffix&quot;</span>
+</code></pre></div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span><span class="s1">&#39;bool_val&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a> <span class="s1">&#39;dict_val&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">},</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a> <span class="s1">&#39;float_val&#39;</span><span class="p">:</span> <span class="mf">2.3</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a> <span class="s1">&#39;int_val&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a> <span class="s1">&#39;list_val&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a> <span class="s1">&#39;newparam1&#39;</span><span class="p">:</span> <span class="s1">&#39;prefix_ABC_suffix&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a> <span class="s1">&#39;newparam2&#39;</span><span class="p">:</span> <span class="s1">&#39;prefix_1_suffix&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a> <span class="s1">&#39;newparam3&#39;</span><span class="p">:</span> <span class="s1">&#39;prefix_2.3_suffix&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a> <span class="s1">&#39;newparam4&#39;</span><span class="p">:</span> <span class="s1">&#39;prefix_True_suffix&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a> <span class="s1">&#39;newparam5&#39;</span><span class="p">:</span> <span class="s1">&#39;prefix_None_suffix&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a> <span class="s1">&#39;none_val&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a> <span class="s1">&#39;str_val&#39;</span><span class="p">:</span> <span class="s1">&#39;ABC&#39;</span><span class="p">}</span>
+</code></pre></div>
+<p>Using composite data types inside strings is <strong>not supported</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&quot;newparam6&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${list_val}_suffix&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">&quot;newparam7&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prefix_${dict_val}_suffix&quot;</span>
+</code></pre></div>
+<p><strong>Result</strong> for <code>"newparam6"</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>The substitution of parameter &#39;${list_val}&#39; inside the string value &#39;prefix_${list_val}_suffix&#39; is not allowed!
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Composite data types like lists and dictionaries cannot be substituted inside strings.
+</code></pre></div>
+<h2 id="access-a-single-element">Access a single element<a class="headerlink" href="#access-a-single-element" title="Permanent link">&para;</a></h2>
+<p>To access an element of a list and a key of a dictionary, we change the content of file <code>componentB.2.jsonp</code> to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">   </span><span class="c1">// import of componentB parameters</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./componentB.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">   </span><span class="nt">&quot;list_element_0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">compo</span><span class="kc">nent</span><span class="err">B_param_</span><span class="mi">1</span><span class="p">}[</span><span class="mi">0</span><span class="p">],</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">   </span><span class="nt">&quot;dict_key_2_2&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="err">commo</span><span class="kc">n</span><span class="err">_param_</span><span class="mi">2</span><span class="p">}[</span><span class="err">&#39;commo</span><span class="kc">n</span><span class="err">_key_</span><span class="mi">2</span><span class="err">_</span><span class="mi">2</span><span class="err">&#39;</span><span class="p">]</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span><span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;common value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;common value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;common_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>                    <span class="s1">&#39;common_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;componentB value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;componentB value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;componentB_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>                        <span class="s1">&#39;componentB_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a> <span class="s1">&#39;dict_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.2&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a> <span class="s1">&#39;list_element_0&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 1.1&#39;</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="overwrite-a-single-element">Overwrite a single element<a class="headerlink" href="#overwrite-a-single-element" title="Permanent link">&para;</a></h2>
+<p>In the next example we overwrite the value of a list element and the value of a dictionary key:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">   </span><span class="c1">// import of componentB parameters</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./componentB.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">compo</span><span class="kc">nent</span><span class="err">B_param_</span><span class="mi">1</span><span class="p">}[</span><span class="mi">0</span><span class="p">]</span><span class="w">            </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;componentB value 1.1 (new)&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">commo</span><span class="kc">n</span><span class="err">_param_</span><span class="mi">2</span><span class="p">}[</span><span class="err">&#39;commo</span><span class="kc">n</span><span class="err">_key_</span><span class="mi">2</span><span class="err">_</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 2.1 (new)&quot;</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>The dollar operator syntax at the left-hand side of the colon is the same as previously used on the right-hand side.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The entire expression at the left-hand side of the colon must <strong>not</strong> be encapsulated in quotes.</p>
+</div>
+<p><strong>Outcome:</strong> The single elements of the list and the dictionary are updated, all other elements are unchanged.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span><span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;common value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;common value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;common_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.1 (new)&#39;</span><span class="p">,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>                    <span class="s1">&#39;common_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.2&#39;</span><span class="p">},</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;componentB value 1.1 (new)&#39;</span><span class="p">,</span> <span class="s1">&#39;componentB value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;componentB_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>                        <span class="s1">&#39;componentB_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.2&#39;</span><span class="p">}}</span>
+</code></pre></div>
+<h2 id="add-an-element">Add an element<a class="headerlink" href="#add-an-element" title="Permanent link">&para;</a></h2>
+<p>Adding further elements to an already existing <strong>list</strong> is not possible! But it is possible to add keys to an already
+existing <strong>dictionary</strong>.</p>
+<p>The following example extends the dictionary <code>common_param_2</code> by an additional key <code>common_key_2_3</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">   </span><span class="c1">// import of componentB parameters</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./componentB.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">commo</span><span class="kc">n</span><span class="err">_param_</span><span class="mi">2</span><span class="p">}[</span><span class="err">&#39;commo</span><span class="kc">n</span><span class="err">_key_</span><span class="mi">2</span><span class="err">_</span><span class="mi">3</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common value 2.3&quot;</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span><span class="s1">&#39;common_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;common value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;common value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a> <span class="s1">&#39;common_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;common_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>                    <span class="s1">&#39;common_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.2&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>                    <span class="s1">&#39;common_key_2_3&#39;</span><span class="p">:</span> <span class="s1">&#39;common value 2.3&#39;</span><span class="p">},</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a> <span class="s1">&#39;componentB_param_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;componentB value 1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;componentB value 1.2&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a> <span class="s1">&#39;componentB_param_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;componentB_key_2_1&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>                        <span class="s1">&#39;componentB_key_2_2&#39;</span><span class="p">:</span> <span class="s1">&#39;componentB value 2.2&#39;</span><span class="p">}}</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Need a longer list?</p>
+<p>Overwrite the entire list instead, e.g. with <a href="python-inline-code.html">Python inline code</a>:
+<code>${componentB_param_1} : &lt;&lt;${componentB_param_1} + ["new element"]&gt;&gt;</code>.</p>
+</div>
+<h2 id="dictionary-keys-and-indices-as-parameter">Dictionary keys and indices as parameter<a class="headerlink" href="#dictionary-keys-and-indices-as-parameter" title="Permanent link">&para;</a></h2>
+<p>In all examples above the indices of lists and the key names of dictionaries are hard coded. It is also possible to use parameters.
+The following example swaps the elements of a list and the values of a dictionary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">   </span><span class="nt">&quot;index1&quot;</span><span class="w">               </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">   </span><span class="nt">&quot;index2&quot;</span><span class="w">               </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">   </span><span class="nt">&quot;key1&quot;</span><span class="w">                 </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;keyA&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">   </span><span class="nt">&quot;key2&quot;</span><span class="w">                 </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;keyB&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">   </span><span class="nt">&quot;testlist&quot;</span><span class="w">             </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">   </span><span class="nt">&quot;testdict&quot;</span><span class="w">             </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;keyA&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;keyB&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">},</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">   </span><span class="nt">&quot;tmp1&quot;</span><span class="w">                 </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">testl</span><span class="err">is</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">n</span><span class="err">dex</span><span class="mi">1</span><span class="p">}],</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">   </span><span class="nt">&quot;tmp2&quot;</span><span class="w">                 </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">test</span><span class="err">dic</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">key</span><span class="mi">1</span><span class="p">}],</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="kc">testl</span><span class="err">is</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">n</span><span class="err">dex</span><span class="mi">1</span><span class="p">}]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">testl</span><span class="err">is</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">n</span><span class="err">dex</span><span class="mi">2</span><span class="p">}],</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="kc">test</span><span class="err">dic</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">key</span><span class="mi">1</span><span class="p">}]</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">test</span><span class="err">dic</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">key</span><span class="mi">2</span><span class="p">}],</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="kc">testl</span><span class="err">is</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">i</span><span class="kc">n</span><span class="err">dex</span><span class="mi">2</span><span class="p">}]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">t</span><span class="err">mp</span><span class="mi">1</span><span class="p">},</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="kc">test</span><span class="err">dic</span><span class="kc">t</span><span class="p">}[</span><span class="err">$</span><span class="p">{</span><span class="err">key</span><span class="mi">2</span><span class="p">}]</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="err">$</span><span class="p">{</span><span class="kc">t</span><span class="err">mp</span><span class="mi">2</span><span class="p">}</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span><span class="s1">&#39;index1&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a> <span class="s1">&#39;index2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a> <span class="s1">&#39;key1&#39;</span><span class="p">:</span> <span class="s1">&#39;keyA&#39;</span><span class="p">,</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a> <span class="s1">&#39;key2&#39;</span><span class="p">:</span> <span class="s1">&#39;keyB&#39;</span><span class="p">,</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a> <span class="s1">&#39;testdict&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;keyA&#39;</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;keyB&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">},</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a> <span class="s1">&#39;testlist&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">],</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a> <span class="s1">&#39;tmp1&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a> <span class="s1">&#39;tmp2&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="meaning-of-single-quotes-in-square-brackets">Meaning of single quotes in square brackets<a class="headerlink" href="#meaning-of-single-quotes-in-square-brackets" title="Permanent link">&para;</a></h2>
+<p>Single quotes convert the content inside to a string.</p>
+<ul>
+<li>If the parameter <code>param</code> is of type <code>str</code>, the expressions <code>[${param}]</code> and <code>['${param}']</code> have the same outcome:
+  the content inside the square brackets is a string.</li>
+<li>If the parameter <code>param</code> is of type <code>int</code>, the quotes in <code>['${param}']</code> convert the integer value to a string.
+  Without the quotes (<code>[${param}]</code>), the content inside the square brackets is an integer.</li>
+</ul>
+<p>Only strings and integers are expected inside square brackets. Dictionaries require a string (a key name),
+lists require an integer (an index). Deviations cause an error.</p>
+<p>Summarized, the following combinations are valid (on both sides of the colon):</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Container</th>
+<th>Index / key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${listparam}[${intparam}]</code></td>
+<td>list</td>
+<td>integer parameter</td>
+</tr>
+<tr>
+<td><code>${listparam}[1]</code></td>
+<td>list</td>
+<td>integer literal</td>
+</tr>
+<tr>
+<td><code>${dictparam}['${intparam}']</code></td>
+<td>dictionary</td>
+<td>integer parameter converted to string</td>
+</tr>
+<tr>
+<td><code>${dictparam}[${stringparam}]</code></td>
+<td>dictionary</td>
+<td>string parameter</td>
+</tr>
+<tr>
+<td><code>${dictparam}['${stringparam}']</code></td>
+<td>dictionary</td>
+<td>string parameter</td>
+</tr>
+<tr>
+<td><code>${dictparam}['keyname']</code></td>
+<td>dictionary</td>
+<td>string literal</td>
+</tr>
+</tbody>
+</table>
+<h2 id="use-of-a-common-dictionary">Use of a common dictionary<a class="headerlink" href="#use-of-a-common-dictionary" title="Permanent link">&para;</a></h2>
+<p>The last example in this section covers the following use case:</p>
+<ul>
+<li>A project has several JSONP files, each for a certain purpose (e.g. one file per feature).</li>
+<li>They are all imported into a main JSONP file - the file that is handed over to the JsonPreprocessor.</li>
+<li>Every imported file introduces a bunch of parameters. All parameters shall be part of <strong>one common dictionary</strong>.</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    A["featureA.jsonp"] -- "[import]" --&gt; P["project.jsonp"]
+    B["featureB.jsonp"] -- "[import]" --&gt; P
+    C["featureC.jsonp"] -- "[import]" --&gt; P
+    P --&gt; R[("project_values&lt;br/&gt;common · featureA_params ·&lt;br/&gt;featureB_params · featureC_params")]</code></pre>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">project.jsonp</label><label for="__tabbed_3_2">featureA.jsonp</label><label for="__tabbed_3_3">featureB.jsonp</label><label for="__tabbed_3_4">featureC.jsonp</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">   </span><span class="c1">// define some common values</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;commo</span><span class="kc">n</span><span class="err">_projec</span><span class="kc">t</span><span class="err">_param_</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common project value 1&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;commo</span><span class="kc">n</span><span class="err">_projec</span><span class="kc">t</span><span class="err">_param_</span><span class="mi">2</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;common project value 2&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">   </span><span class="c1">//</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">   </span><span class="c1">// import feature parameters</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./featureA.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./featureB.jsonp&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">   </span><span class="nt">&quot;[import]&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./featureC.jsonp&quot;</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">   </span><span class="c1">// parameters required for feature A</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">A_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">A_param_</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureA param 1 value&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">A_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">A_param_</span><span class="mi">2</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureA param 2 value&quot;</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">   </span><span class="c1">// parameters required for feature B</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">B_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">B_param_</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureB param 1 value&quot;</span><span class="p">,</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">B_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">B_param_</span><span class="mi">2</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureB param 2 value&quot;</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">   </span><span class="c1">// parameters required for feature C</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">C_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">C_param_</span><span class="mi">1</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureC param 1 value&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">   </span><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">C_params&#39;</span><span class="p">][</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">C_param_</span><span class="mi">2</span><span class="err">&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;featureC param 2 value&quot;</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>It is not required to start with dictionary initializations like</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">&quot;project_values&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">A_params&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">B_params&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="err">$</span><span class="p">{</span><span class="err">projec</span><span class="kc">t</span><span class="err">_values</span><span class="p">}[</span><span class="err">&#39;</span><span class="kc">feature</span><span class="err">C_params&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</code></pre></div>
+<p>These initializations are done implicitly by the JsonPreprocessor, see
+<a href="implicit-creation.html">Implicit creation of dictionaries</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is still possible to initialize a dictionary explicitly with <code>{}</code>. But keep in mind:
+this <strong>deletes all already existing keys</strong> in this dictionary!</p>
+</div>
+<p><strong>Outcome:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span><span class="s1">&#39;project_values&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;common_project_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;common project value 1&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>                    <span class="s1">&#39;common_project_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;common project value 2&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>                    <span class="s1">&#39;featureA_params&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;featureA_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;featureA param 1 value&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>                                        <span class="s1">&#39;featureA_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;featureA param 2 value&#39;</span><span class="p">},</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>                    <span class="s1">&#39;featureB_params&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;featureB_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;featureB param 1 value&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>                                        <span class="s1">&#39;featureB_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;featureB param 2 value&#39;</span><span class="p">},</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>                    <span class="s1">&#39;featureC_params&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;featureC_param_1&#39;</span><span class="p">:</span> <span class="s1">&#39;featureC param 1 value&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>                                        <span class="s1">&#39;featureC_param_2&#39;</span><span class="p">:</span> <span class="s1">&#39;featureC param 2 value&#39;</span><span class="p">}}}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="imports.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Import of JSON files">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Import of JSON files
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="dotdict-notation.html" class="md-footer__link md-footer__link--next" aria-label="Next: dotdict notation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                dotdict notation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2020-2026 Robert Bosch GmbH - Apache License 2.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
