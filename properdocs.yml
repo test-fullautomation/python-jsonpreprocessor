@@ -67,8 +67,6 @@ markdown_extensions:
 
 plugins:
   - search
-  - minify:
-      minify_html: true
 
 validation:
   omitted_files: warn
