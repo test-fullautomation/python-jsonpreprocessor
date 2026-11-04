@@ -19,6 +19,10 @@ docs_dir: doc
 site_dir: JsonPreprocessor/doc
 use_directory_urls: false
 
+exclude_docs: |
+  gen_doc.py
+  gen_doc_config.json
+
 theme:
   name: material
   language: en
