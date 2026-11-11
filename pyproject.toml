@@ -33,7 +33,7 @@
 #
 [build-system]
 # 'requires' specifies the dependencies necessary for the build process (meaning the conversion of source code into an installable distribution)
-requires      = ["setuptools>=80.9.0", "wheel", "build", "docutils>=0.22.4", "dotdict", "pydotdict", "colorama", "regex", "PythonExtensionsCollection"]
+requires      = ["setuptools>=80.9.0", "wheel", "build", "docutils>=0.22.4", "pydotdict", "colorama", "regex", "PythonExtensionsCollection"]
 build-backend = "build_backend"
 backend-path  = ["."] # the repository main folder
 
