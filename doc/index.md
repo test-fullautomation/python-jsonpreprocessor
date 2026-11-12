@@ -55,10 +55,10 @@ print(values.greeting)          # Hello Device_01!
 
 - **[Getting started](getting-started/introduction.md)** - why JSONP exists, how to install it and your first example.
 - **[User guide](user-guide/python-usage.md)** - how to use the JsonPreprocessor in your Python code.
-- **[The JSONP format](jsonp-format/index.md)** - the complete syntax reference, step by step, with many examples.
+- **[The JSONP format](jsonp-format/overview.md)** - the complete syntax reference, step by step, with many examples.
 - **[API reference](api/cjsonpreprocessor.md)** - all public methods of `CJsonPreprocessor`.
 - **[Appendix](appendix/faq.md)** - FAQ, version history and package information.
-- **[For Developers](developers/index.md)** - how the code is organized and how the pieces work together.
+- **[For Developers](developers/overview.md)** - how the code is organized and how the pieces work together.
 
 </div>
 

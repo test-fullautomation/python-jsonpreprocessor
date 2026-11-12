@@ -1,0 +1,219 @@
+/* Custom CSS for Bazel & Python Testing Documentation */
+
+/* ===== CONTENT WIDTH ADJUSTMENTS ===== */
+/* Main content area - increase width for better readability */
+.wy-nav-content {
+    max-width: 1400px !important;
+}
+
+/* Alternative: Full-width content (remove max-width entirely) */
+/* .wy-nav-content {
+    max-width: none !important;
+} */
+
+/* Improved code block styling */
+.codehilite {
+    border-radius: 4px;
+    margin: 1em 0;
+}
+
+.codehilite pre {
+    padding: 1em;
+    overflow-x: auto;
+}
+
+/* Table improvements */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+table th {
+    background-color: #2980b9;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    text-align: left;
+}
+
+table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Emoji and symbol support */
+.emoji {
+    height: 1.2em;
+    vertical-align: middle;
+}
+
+/* Admonition boxes */
+.admonition {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+    border-radius: 4px;
+}
+
+.admonition.note {
+    background-color: #e7f2fa;
+    border-color: #2196F3;
+}
+
+.admonition.warning {
+    background-color: #fff4e5;
+    border-color: #ff9800;
+}
+
+.admonition.danger {
+    background-color: #ffebee;
+    border-color: #f44336;
+}
+
+.admonition.tip {
+    background-color: #e8f5e9;
+    border-color: #4caf50;
+}
+
+/* Code inline */
+code {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Headings */
+h1 {
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+h2 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    margin-top: 1.5em;
+}
+
+h3 {
+    color: #2980b9;
+    margin-top: 1.2em;
+}
+
+/* Navigation improvements */
+.wy-menu-vertical a {
+    padding: 6px 12px;
+}
+
+.wy-menu-vertical li.current a {
+    border-right: 3px solid #2980b9;
+}
+
+/* Checkboxes in task lists */
+.task-list-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 15px;
+    margin-left: 0;
+    color: #666;
+    font-style: italic;
+}
+
+/* Links */
+a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Command examples with $ prompt */
+pre code::before {
+    content: '$ ';
+    color: #888;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9em;
+    }
+    
+    .codehilite pre {
+        font-size: 0.85em;
+    }
+}
+
+/* Search improvements */
+.wy-side-nav-search {
+    background-color: #2980b9;
+}
+
+.wy-side-nav-search input[type="text"] {
+    border-radius: 4px;
+}
+
+/* Footer */
+.rst-footer-buttons {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e4e5;
+}
+
+/* Version selector */
+.rst-versions {
+    border-top: 3px solid #27ae60;
+}
+
+/* Keyboard keys */
+kbd {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    padding: 2px 6px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.badge.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.badge.warning {
+    background-color: #ff9800;
+    color: white;
+}
+
+.badge.danger {
+    background-color: #f44336;
+    color: white;
+}
