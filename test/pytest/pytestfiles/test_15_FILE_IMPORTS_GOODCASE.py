@@ -18,7 +18,7 @@
 #
 # XC-HWP/ESW3-Queckenstedt
 #
-# 02.02.2026 - 10:50:05
+# 30.10.2026 - 12:27:16
 #
 # --------------------------------------------------------------------------------------------------------------
 
@@ -140,5 +140,109 @@ class Test_FILE_IMPORTS_GOODCASE:
    )
    def test_JPP_1113(self, Description):
       nReturn = CExecute.Execute("JPP_1113")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with optional import ([import?]) of an existing file",]
+   )
+   def test_JPP_1114(self, Description):
+      nReturn = CExecute.Execute("JPP_1114")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor ignores the import and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with optional import ([import?]) of a not existing file",]
+   )
+   def test_JPP_1115(self, Description):
+      nReturn = CExecute.Execute("JPP_1115")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the existing file, ignores the not existing file and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with optional imports ([import?]) with dynamic paths (existing and not existing file)",]
+   )
+   def test_JPP_1116(self, Description):
+      nReturn = CExecute.Execute("JPP_1116")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the file and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] object without condition",]
+   )
+   def test_JPP_1117(self, Description):
+      nReturn = CExecute.Execute("JPP_1117")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the 'file' and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition true)",]
+   )
+   def test_JPP_1118(self, Description):
+      nReturn = CExecute.Execute("JPP_1118")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the 'else' file and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition false)",]
+   )
+   def test_JPP_1119(self, Description):
+      nReturn = CExecute.Execute("JPP_1119")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports nothing and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition false, no 'else')",]
+   )
+   def test_JPP_1120(self, Description):
+      nReturn = CExecute.Execute("JPP_1120")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the files and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional imports (conditions with Python inline code)",]
+   )
+   def test_JPP_1121(self, Description):
+      nReturn = CExecute.Execute("JPP_1121")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the existing files, ignores the not existing file and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with [import] objects with key 'optional' (existing and not existing files)",]
+   )
+   def test_JPP_1122(self, Description):
+      nReturn = CExecute.Execute("JPP_1122")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports nothing and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition false, optional 'else' file not existing)",]
+   )
+   def test_JPP_1123(self, Description):
+      nReturn = CExecute.Execute("JPP_1123")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the files and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with nested conditional imports (in imported file and in sub-object)",]
+   )
+   def test_JPP_1124(self, Description):
+      nReturn = CExecute.Execute("JPP_1124")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the file and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with conditional import (condition in dotdict notation, imported value overwritten afterwards)",]
+   )
+   def test_JPP_1125(self, Description):
+      nReturn = CExecute.Execute("JPP_1125")
+      assert nReturn == 0
+# --------------------------------------------------------------------------------------------------------------
+   # Expected: JsonPreprocessor imports the existing files, ignores the not existing files and returns values
+   @pytest.mark.parametrize(
+      "Description", ["JSON file with optional imports in all levels of nested imports (and in sub-objects)",]
+   )
+   def test_JPP_1126(self, Description):
+      nReturn = CExecute.Execute("JPP_1126")
       assert nReturn == 0
 # --------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,49 @@
+component_test.py started at: 30.10.2026 - 12:27:34
+
+                    THISSCRIPT : C:/usr_dev/AIO/python-jsonpreprocessor/test/component_test.py
+                THISSCRIPTNAME : component_test.py
+                 REFERENCEPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test
+                TESTCONFIGPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test/testconfig
+                        OSNAME : nt
+                PLATFORMSYSTEM : Windows
+                        PYTHON : C:/Program Files/RobotFramework/python3/python.exe
+                    PYTHONPATH : C:/Program Files/RobotFramework/python3
+                 PYTHONVERSION : 3.13.2 (main, Feb  5 2025, 19:16:35) [MSC v.1942 64 bit (AMD64)]
+                        TESTID : JPP_1116
+                      CODEDUMP : False
+                    CONFIGDUMP : False
+              RECREATEINSTANCE : False
+               SELFTESTLOGFILE : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles/JPP_SelfTest_JPP_1116.log
+            TESTLOGFILESFOLDER : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles
+                       VERSION : 0.17.1
+                  VERSION_DATE : 22.06.2026
+            THISSCRIPTFULLNAME : component_test.py v. 0.17.1 / 22.06.2026
+                 SUT_FULL_NAME : JsonPreprocessor v. 0.12.0 / 02.02.2026
+
+====== [START OF TEST] : 'JPP_1116-(FILE_IMPORTS)-[GOODCASE]' / (1/1)
+
+   [JSONFILE] : 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/jpp-test_config_1116.jsonp'
+[DESCRIPTION] : JSON file with optional imports ([import?]) with dynamic paths (existing and not existing file)
+[EXPECTATION] : JsonPreprocessor imports the existing file, ignores the not existing file and returns values
+    [COMMENT] : Conditional import
+
+JsonPreprocessor returned:
+
+[DOTDICT] (5/1) > {bench_1} [STR]  :  'bench1'
+[DOTDICT] (5/2) > {bench_2} [STR]  :  'bench2'
+[DOTDICT] (5/3) > {bench_name} [STR]  :  'bench1'
+[DOTDICT] (5/4) > {baudrate} [INT]  :  115200
+[DOTDICT] (5/5) > {done} [BOOL]  :  True
+
+JsonPreprocessor returned expected values.
+
+No exception thrown from JsonPreprocessor (like expected).
+
+    Test 'JPP_1116-(FILE_IMPORTS)-[GOODCASE]' PASSED
+
+Component test PASSED
+
+Defined : 1
+PASSED  : 1
+FAILED  : 0
+UNKNOWN : 0

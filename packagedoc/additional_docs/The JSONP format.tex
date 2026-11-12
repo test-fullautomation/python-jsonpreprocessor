@@ -365,6 +365,91 @@ The outcome is the same like in the previous example.
 
 \newpage
 
+\textbf{Optional imports}
+
+The key \pcode{"[import?]"} imports a JSON file \textbf{only if the file exists}. A not existing file is silently ignored.
+
+\begin{pythoncode}[linebackgroundcolor=\hlcode{4}]
+{
+   "[import]"  : "./common.jsonp",
+   // local settings of a developer; not part of the repository
+   "[import?]" : "./local_overrides.jsonp"
+}
+\end{pythoncode}
+
+\begin{itemize}
+   \item The value must be of type \pcode{str}. Dollar operator expressions are allowed, like in \pcode{"[import]"}.
+   \item Only the \textbf{existence} of the file is optional. An existing file with a syntax error, a not available parameter
+         inside the path and a cyclic import are still errors.
+   \item Optional imports are possible in all levels, also within imported files and sub-objects. \textit{Optional} is \textbf{not inherited}:
+         a normal \pcode{"[import]"} of a not existing file inside an optionally imported file is still an error.
+   \item \pcode{"[import?]"} is a short form of an import object (see below) with \pcode{"optional" : true}.
+\end{itemize}
+
+\vspace{2ex}
+
+\textbf{Conditional imports}
+
+Instead of a path, the value of an \pcode{"[import]"} key can be an \textbf{import object} with the following keys:
+
+\begin{itemize}
+   \item \pcode{file} (required): path of the file to import (type \pcode{str}, dollar operator expressions allowed)
+   \item \pcode{if} (optional): condition of type \pcode{bool}; the file is imported only if the condition is \pcode{true}
+   \item \pcode{else} (optional, requires \pcode{if}): path of the file to import if the condition is \pcode{false}
+   \item \pcode{optional} (optional): literal \pcode{true} or \pcode{false} (default); a not existing file
+         (\pcode{file} or \pcode{else}) is ignored
+\end{itemize}
+
+\begin{pythoncode}[linebackgroundcolor=\hlcode{4,5,6,7,8,9,10,11,12,13}]
+{
+   "target"    : "bench1",
+   "use_debug" : true,
+   "[import]"  : {
+                    "file" : "./debug.jsonp",
+                    "if"   : ${use_debug},
+                    "else" : "./release.jsonp"
+                 },
+   "[import]"  : {
+                    "file"     : "./benches/${target}.jsonp",
+                    "if"       : <\textless{}\textless{}>${target} in ["bench1", "bench2"]<\textgreater{}\textgreater{}>,
+                    "optional" : true
+                 }
+}
+\end{pythoncode}
+
+The condition can be:
+
+\begin{itemize}
+   \item a boolean literal: \pcode{true}, \pcode{false}, \pcode{True}, \pcode{False}
+   \item a dollar operator expression referring to a parameter of type \pcode{bool}
+   \item Python inline code that returns a value of type \pcode{bool}
+\end{itemize}
+
+If the condition is \pcode{false} and no \pcode{else} key is given, nothing is imported.
+
+\vspace{2ex}
+
+\begin{boxhint}{Hint}
+It is recommended to define the parameters used in a condition \textbf{before} the import. Imported values overwrite previously
+defined values with the same name, like in a normal import.
+\end{boxhint}
+
+\vspace{2ex}
+
+\textbf{Rules for import objects:}
+
+\begin{itemize}
+   \item Only the keys \pcode{file}, \pcode{if}, \pcode{else} and \pcode{optional} are allowed, each key only once.
+   \item The value of \pcode{if} must be of type \pcode{bool}. A string like \pcode{"true"} is an error.
+   \item The value of \pcode{optional} must be the literal \pcode{true} or \pcode{false}. Parameters are not allowed.
+   \item The value of \pcode{"[import?]"} must be of type \pcode{str}. An import object is not allowed here;
+         use the key \pcode{optional} instead.
+\end{itemize}
+
+% --------------------------------------------------------------------------------------------------------------
+
+\newpage
+
 \section{Overwriting parameters}\label{overwriting-parameters}
 
 We take over the scenario from the previous section: We still have a JSON file \plog{componentA.jsonp} containig the parameters for

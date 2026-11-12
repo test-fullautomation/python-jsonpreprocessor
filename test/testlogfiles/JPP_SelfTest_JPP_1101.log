@@ -1,0 +1,52 @@
+component_test.py started at: 30.10.2026 - 12:27:28
+
+                    THISSCRIPT : C:/usr_dev/AIO/python-jsonpreprocessor/test/component_test.py
+                THISSCRIPTNAME : component_test.py
+                 REFERENCEPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test
+                TESTCONFIGPATH : C:/usr_dev/AIO/python-jsonpreprocessor/test/testconfig
+                        OSNAME : nt
+                PLATFORMSYSTEM : Windows
+                        PYTHON : C:/Program Files/RobotFramework/python3/python.exe
+                    PYTHONPATH : C:/Program Files/RobotFramework/python3
+                 PYTHONVERSION : 3.13.2 (main, Feb  5 2025, 19:16:35) [MSC v.1942 64 bit (AMD64)]
+                        TESTID : JPP_1101
+                      CODEDUMP : False
+                    CONFIGDUMP : False
+              RECREATEINSTANCE : False
+               SELFTESTLOGFILE : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles/JPP_SelfTest_JPP_1101.log
+            TESTLOGFILESFOLDER : C:/usr_dev/AIO/python-jsonpreprocessor/test/testlogfiles
+                       VERSION : 0.17.1
+                  VERSION_DATE : 22.06.2026
+            THISSCRIPTFULLNAME : component_test.py v. 0.17.1 / 22.06.2026
+                 SUT_FULL_NAME : JsonPreprocessor v. 0.12.0 / 02.02.2026
+
+====== [START OF TEST] : 'JPP_1101-(FILE_IMPORTS)-[GOODCASE]' / (1/1)
+
+   [JSONFILE] : 'C:/usr_dev/AIO/python-jsonpreprocessor/test/testfiles/jpp-test_config_1101.jsonp'
+[DESCRIPTION] : JSON file import based on parameters (dynamic import (2))
+[EXPECTATION] : JsonPreprocessor returns values
+
+JsonPreprocessor returned:
+
+[DOTDICT] (3/1) > {dictDirs} [DOTDICT] (4/1) > {AA} [STR]  :  'AA'
+[DOTDICT] (3/1) > {dictDirs} [DOTDICT] (4/2) > {BB} [STR]  :  'BB'
+[DOTDICT] (3/1) > {dictDirs} [DOTDICT] (4/3) > {CC} [STR]  :  'CC'
+[DOTDICT] (3/1) > {dictDirs} [DOTDICT] (4/4) > {DD} [STR]  :  'DD'
+[DOTDICT] (3/2) > {listDirs} [LIST] (4/1) > [STR]  :  'AA'
+[DOTDICT] (3/2) > {listDirs} [LIST] (4/2) > [STR]  :  'BB'
+[DOTDICT] (3/2) > {listDirs} [LIST] (4/3) > [STR]  :  'CC'
+[DOTDICT] (3/2) > {listDirs} [LIST] (4/4) > [STR]  :  'DD'
+[DOTDICT] (3/3) > {level} [STR]  :  'DD.1'
+
+JsonPreprocessor returned expected values.
+
+No exception thrown from JsonPreprocessor (like expected).
+
+    Test 'JPP_1101-(FILE_IMPORTS)-[GOODCASE]' PASSED
+
+Component test PASSED
+
+Defined : 1
+PASSED  : 1
+FAILED  : 0
+UNKNOWN : 0

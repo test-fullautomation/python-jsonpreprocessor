@@ -131,6 +131,19 @@ JPP_1110|FILE_IMPORTS|GOODCASE|JSON file import based on list elemens
 JPP_1111|FILE_IMPORTS|GOODCASE|JSON file import based on parameters (dynamic import (7))
 JPP_1112|FILE_IMPORTS|GOODCASE|JSON file containing an import of the same file in different levels (within the same file)
 JPP_1113|FILE_IMPORTS|GOODCASE|JSON file containing an import of the same file in different levels (within imported files)
+JPP_1114|FILE_IMPORTS|GOODCASE|JSON file with optional import ([import?]) of an existing file
+JPP_1115|FILE_IMPORTS|GOODCASE|JSON file with optional import ([import?]) of a not existing file
+JPP_1116|FILE_IMPORTS|GOODCASE|JSON file with optional imports ([import?]) with dynamic paths (existing and not existing file)
+JPP_1117|FILE_IMPORTS|GOODCASE|JSON file with [import] object without condition
+JPP_1118|FILE_IMPORTS|GOODCASE|JSON file with conditional import (condition true)
+JPP_1119|FILE_IMPORTS|GOODCASE|JSON file with conditional import (condition false)
+JPP_1120|FILE_IMPORTS|GOODCASE|JSON file with conditional import (condition false, no 'else')
+JPP_1121|FILE_IMPORTS|GOODCASE|JSON file with conditional imports (conditions with Python inline code)
+JPP_1122|FILE_IMPORTS|GOODCASE|JSON file with [import] objects with key 'optional' (existing and not existing files)
+JPP_1123|FILE_IMPORTS|GOODCASE|JSON file with conditional import (condition false, optional 'else' file not existing)
+JPP_1124|FILE_IMPORTS|GOODCASE|JSON file with nested conditional imports (in imported file and in sub-object)
+JPP_1125|FILE_IMPORTS|GOODCASE|JSON file with conditional import (condition in dotdict notation, imported value overwritten afterwards)
+JPP_1126|FILE_IMPORTS|GOODCASE|JSON file with optional imports in all levels of nested imports (and in sub-objects)
 JPP_1150|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, fix path)
 JPP_1151|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports another file, that is already imported, fix path)
 JPP_1152|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (JSON file imports itself, dynamic path)
@@ -146,6 +159,19 @@ JPP_1163|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (
 JPP_1164|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import] key (4)
 JPP_1165|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, stopped)
 JPP_1166|FILE_IMPORTS|BADCASE|JSON file with cyclic imports (sawtooth, endless)
+JPP_1167|FILE_IMPORTS|BADCASE|JSON file with [import] object containing an invalid key
+JPP_1168|FILE_IMPORTS|BADCASE|JSON file with [import] object without key 'file'
+JPP_1169|FILE_IMPORTS|BADCASE|JSON file with [import] object with key 'else' but without key 'if'
+JPP_1170|FILE_IMPORTS|BADCASE|JSON file with [import] object with invalid data type of key 'if' (1)
+JPP_1171|FILE_IMPORTS|BADCASE|JSON file with [import] object with invalid data type of key 'if' (2)
+JPP_1172|FILE_IMPORTS|BADCASE|JSON file with [import] object with condition referring to a not existing parameter
+JPP_1173|FILE_IMPORTS|BADCASE|JSON file with [import] object with key 'optional' not being a literal boolean value
+JPP_1174|FILE_IMPORTS|BADCASE|JSON file with [import?] key and [import] object as value
+JPP_1175|FILE_IMPORTS|BADCASE|JSON file with [import] object with invalid data type of key 'file'
+JPP_1176|FILE_IMPORTS|BADCASE|JSON file with conditional import (condition true, file not existing, not optional)
+JPP_1177|FILE_IMPORTS|BADCASE|JSON file with [import] object containing a duplicate key
+JPP_1178|FILE_IMPORTS|BADCASE|JSON file with invalid data type of [import?] key
+JPP_1179|FILE_IMPORTS|BADCASE|JSON file with optional import of a file containing a not optional import of a not existing file
 JPP_1200|PATH_FORMATS|GOODCASE|Relative path to JSON file
 JPP_1350|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
 JPP_1351|BLOCKED_SLICING|BADCASE|JSON file with blocked slicing notation (-1)
