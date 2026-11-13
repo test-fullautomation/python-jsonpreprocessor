@@ -20,14 +20,25 @@
 # The processing is split into the following layers:
 #
 #   common.py         shared definitions (syntax types, reserved tokens, key checker,
-#                     comment removal, error type)
-#   jsonp_parser.py   JSONP syntax: tokenizer/parser producing an AST (objects, arrays,
-#                     literals, strings, [import] members, Python inline code, keys)
-#   dollar_syntax.py  dollar operator syntax: recursive descent parser for ${...}
-#                     expressions (nested references, dotted names, indices)
-#   imports.py        loading of files and expansion of [import] members
-#   inline_code.py    evaluation of Python inline code <<...>>
-#   interpreter.py    evaluation of the AST (parameter store, references, dollar keys)
+#                     error type, lazy values)
+#   nodes.py          AST nodes of the JSON core syntax
+#   jsonp_parser.py   JSONP syntax: tokenizer/parser producing an AST (JSON core syntax;
+#                     the syntax extensions are mixed in)
+#   interpreter.py    evaluation of the AST (parameter store, seeding, lazy values;
+#                     the syntax extensions are mixed in)
+#
+#   dollar_syntax/    dollar operator syntax ${...}
+#     parser.py       recursive descent parser for ${...} expressions (nested
+#                     references, dotted names, indices)
+#     scanner.py      dollar operator expressions in values, keys and strings
+#     references.py   resolution of references
+#     dollar_keys.py  assignments with dollar keys
+#
+#   extensions/       further extensions of the JSON syntax
+#     comments.py         C/C++ style comments
+#     python_literals.py  True/False/None and byte values b'...'
+#     inline_code.py      Python inline code <<...>>
+#     imports.py          [import] and [import?] keys: loading of files and expansion
 #
 #################################################################################
 
@@ -43,9 +54,9 @@ from pydotdict import DotDict
 from JsonPreprocessor.version import VERSION, VERSION_DATE
 from .common import (JsonpError, CSyntaxType, CNameMangling, CPythonJSONDecoder, CKeyChecker,  # noqa: F401
                      CTreeNode, CTextProcessor)
-from .imports import ImportResolver, normalize_file_path, check_reserved_tokens, has_unresolved_imports
+from .extensions.imports import ImportResolver, normalize_file_path, check_reserved_tokens, has_unresolved_imports
 from .interpreter import Interpreter
-from .jsonp_parser import Source
+from .nodes import Source
 
 
 class CJsonPreprocessor():

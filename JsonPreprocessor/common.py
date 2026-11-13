@@ -18,6 +18,7 @@
 # Shared building blocks of the JsonPreprocessor:
 #   - public helper classes (kept for backward compatibility of the module API)
 #   - the internal exception type and shared constants/patterns
+#   - lazy values of the interpreter
 #
 #################################################################################
 
@@ -26,6 +27,8 @@ import unicodedata
 from enum import Enum
 
 import regex
+
+from .extensions.comments import remove_comments
 
 
 class JsonpError(Exception):
@@ -74,6 +77,20 @@ PYTHON_TYPE_ERRORS = ("object is not subscriptable",
 def type_name(value) -> str:
     """Returns the type of a value in the format "'int'"."""
     return regex.search(r"('.+')>\s*$", str(type(value)))[1]
+
+
+class Busy(Exception):
+    """A lazy value is referenced during its own evaluation."""
+
+
+class Lazy:
+    """Placeholder of a value which is evaluated on demand."""
+    __slots__ = ('node', 'path', 'busy')
+
+    def __init__(self, node, path):
+        self.node = node
+        self.path = path
+        self.busy = False
 
 
 class CPythonJSONDecoder(json.JSONDecoder):
@@ -236,22 +253,12 @@ Loads a given json file or json content and filters all C/C++ style comments.
 
   String version of JSON file after removing all comments.
         """
-        def replacer(match):
-            s = match.group(0)
-            if s.startswith('/'):
-                return ""
-            else:
-                return s
-
         if is_file:
             with open(jsonP, mode='r', encoding='utf-8') as file:
                 content = file.read()
         else:
             content = jsonP
-
-        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
-        content_cleaned=regex.sub(pattern, replacer, content)
-        return content_cleaned
+        return remove_comments(content)
 
     @staticmethod
     def multiple_replace(input : str, replacements : dict) -> str:

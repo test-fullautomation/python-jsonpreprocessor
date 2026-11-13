@@ -23,7 +23,8 @@ flowchart TD
 
 ## 1. Loading and comment removal
 
-`ImportResolver.load_file` reads the file and calls `CTextProcessor.load_and_remove_comments`, which removes
+`ImportResolver.load_file` reads the file and calls `CTextProcessor.load_and_remove_comments` (implemented in
+`extensions/comments.py`), which removes
 `//` line comments and `/* */` block comments (strings are respected). Parsed files are cached per resolver, so a file
 that is imported several times is parsed only once.
 
@@ -35,13 +36,13 @@ that is imported several times is parsed only once.
 
 - removes empty lines and trailing whitespace,
 - checks the quotation of every line (`shlex`),
-- rejects Python inline code inside dollar operator expressions,
-- normalizes index notation (`[+1]` → `[1]`, `[ 'key' ]` → `['key']`) and Unicode digits.
+- rejects Python inline code inside dollar operator expressions (`extensions/inline_code.py`),
+- normalizes index notation (`[+1]` → `[1]`, `[ 'key' ]` → `['key']`) and Unicode digits (`dollar_syntax/scanner.py`).
 
 ## 3. Parsing into an AST
 
 `JsonpParser` is a recursive scanner modeled after `json.decoder`. In addition to standard JSON it recognizes
-the JSONP extensions and produces these node types:
+the JSONP extensions (provided by the scanner mixins of `dollar_syntax/` and `extensions/`) and produces these node types:
 
 ```mermaid
 classDiagram
@@ -97,7 +98,7 @@ classDiagram
 | `"[import]" : ...` / `"[import?]" : ...` | `Import` (`path`, `condition`, `alternative`, `optional`) |
 | `${a}['k'] : ...` (key) | `Member` with `DollarKey` |
 
-Dollar operator expressions are parsed by `DollarParser` (`dollar_syntax.py`) into `Ref` objects:
+Dollar operator expressions are parsed by `DollarParser` (`dollar_syntax/parser.py`) into `Ref` objects:
 
 ```text
 template  := ( text | ref )*
@@ -164,14 +165,14 @@ is resolved against it.
 
 1. **Seeding** (`seed_object`): every object is seeded before its members are executed. Keys are created in their
    final order (a redefined key moves to the position of its last definition). Values that do not depend on anything
-   are stored immediately; all others are stored as `_Lazy` placeholders.
+   are stored immediately; all others are stored as `Lazy` placeholders.
 2. **Execution** (`exec_object`): members are executed in **document order**.
    - literal keys get their (evaluated) value,
    - dollar keys (`${...} : value`) overwrite existing values or implicitly create missing dictionaries (`assign`),
    - remaining `Import` nodes (dynamic paths) are loaded and executed in place (`exec_import`).
-3. **Lazy evaluation** (`force`): a `_Lazy` placeholder is evaluated when it is referenced. This allows references to
+3. **Lazy evaluation** (`force`): a `Lazy` placeholder is evaluated when it is referenced. This allows references to
    parameters that are defined later in the document. A placeholder that is referenced during its own evaluation
-   raises `_Busy` (cyclic reference).
+   raises `Busy` (cyclic reference).
 
 ```mermaid
 stateDiagram-v2
