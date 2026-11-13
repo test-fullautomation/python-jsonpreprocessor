@@ -74,13 +74,11 @@ variant_git_repository = use_repo_rule(
 variant_git_repository(
     name = "python_jsonpreprocessor_src",
     remote = "https://github.com/test-fullautomation/python-jsonpreprocessor.git",
-    # Used when --config=tagged is passed (BUILD_VARIANT=tagged) and no
-    # RELEASE_TAG_OVERRIDE is set.
-    #
-    # To build against a DIFFERENT tag without editing this file, override
-    # it on the command line instead:
-    #   bazel build --config=tagged --repo_env=RELEASE_TAG_OVERRIDE=rel/<version> //...
-    release_tag = "rel/0.12.0",
+    # release_tag intentionally omitted: for a release, every participating
+    # component gets the SAME tag, passed once via the command line instead
+    # of being hardcoded per component here:
+    #   bazel build --config=tagged --repo_env=RELEASE_TAG_OVERRIDE=rel/0.12.0 //...
+    # 'tagged' mode fails loudly at fetch time if this is not set.
     # Used when BUILD_VARIANT=daily (the project default - no --config
     # needed, see build/.bazelrc) - tracks this branch's current HEAD at
     # fetch time. Intentionally non-hermetic; Daily Build/Test only.
