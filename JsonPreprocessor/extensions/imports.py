@@ -37,13 +37,12 @@ from dataclasses import dataclass
 import regex
 from PythonExtensionsCollection.String.CString import CString
 
-from ..common import JsonpError, CNameMangling, CTextProcessor, type_name
+from ..common import JsonpError, CTextProcessor, type_name
 from ..dollar_syntax.references import NotAvailable
 from ..dollar_syntax.scanner import DollarKey
 from ..nodes import Source, Scalar, Str, Arr, Obj, Member
 from .python_literals import Bytes
 
-_RESERVED_TOKENS = [token.value for token in CNameMangling]
 _SPECIAL_CHARACTERS = r"!#$%^&()=[]{}|;',?`~"
 _IMPORT_KEY = regex.compile(r'^\s*\[\s*import\s*(\?)?\s*\]\s*$')
 IMPORT = object()       # marker for "[import]" keys
@@ -69,12 +68,6 @@ class Import:
 def normalize_file_path(path: str) -> str:
     """Normalizes a file path relative to the location of the executed script."""
     return CString.NormalizePath(path, sReferencePathAbs=os.path.dirname(os.path.abspath(sys.argv[0])))
-
-
-def check_reserved_tokens(content: str):
-    for token in _RESERVED_TOKENS:
-        if token in content:
-            raise JsonpError(f"The JSONP content contains a reserved token '{token}'")
 
 
 class ImportScannerMixin:
@@ -203,7 +196,6 @@ class ImportResolver:
     def parse(self, content: str, source: Source):
         """Parses comment free JSONP content."""
         from ..jsonp_parser import parse_jsonp     # local import: jsonp_parser depends on this module
-        check_reserved_tokens(content)
         return parse_jsonp(content, source, self.python_syntax, self.key_pattern)
 
     def load_file(self, path: str):

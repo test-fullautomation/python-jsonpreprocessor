@@ -24,7 +24,6 @@
 
 import json
 import unicodedata
-from enum import Enum
 
 import regex
 
@@ -38,26 +37,6 @@ class JsonpError(Exception):
 class CSyntaxType():
     python = "python"
     json = "json"
-
-
-class CNameMangling(Enum):
-    """
-Token strings reserved by former implementations. JSONP content must not contain them.
-    """
-    AVOIDDATATYPE    = "JPavoidDataType_"
-    COLONS           = "__handleColonsInLine__"
-    NESTEDPARAM      = "__handleNestedParamInLine__"
-    DUPLICATEDKEY_00 = "__handleDuplicatedKey__00"
-    DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
-    STRINGCONVERT    = "__ConvertParameterToString__"
-    LISTINDEX        = "__IndexOfList__"
-    SLICEINDEX       = "__SlicingIndex__"
-    STRINGVALUE      = "__StringValueMake-up__"
-    HANDLEIMPORTED   = "__CheckImportedHandling__"
-    DYNAMICIMPORTED  = "__DynamicImportedHandling__"
-    PYTHONBUILTIN    = "__PythonBuiltInFunction__"
-    PYBUILTINSTR     = "__StrInPythonInlineCode__"
-    BYTEVALUE        = "__HandleByteValue__"
 
 
 # Python inline code: <<...>> (no nested '<<' and no '>>' inside)

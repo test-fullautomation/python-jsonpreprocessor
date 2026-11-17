@@ -52,9 +52,9 @@ from PythonExtensionsCollection.String.CString import CString
 from pydotdict import DotDict
 
 from JsonPreprocessor.version import VERSION, VERSION_DATE
-from .common import (JsonpError, CSyntaxType, CNameMangling, CPythonJSONDecoder, CKeyChecker,  # noqa: F401
+from .common import (JsonpError, CSyntaxType, CPythonJSONDecoder, CKeyChecker,  # noqa: F401
                      CTreeNode, CTextProcessor)
-from .extensions.imports import ImportResolver, normalize_file_path, check_reserved_tokens, has_unresolved_imports
+from .extensions.imports import ImportResolver, normalize_file_path, has_unresolved_imports
 from .interpreter import Interpreter
 from .nodes import Source
 
@@ -190,7 +190,6 @@ This is a wrapper for the json_loads() function.
         except Exception as reason:
             raise Exception(f"Could not read JSONP content due to: '{reason}'!")
         try:
-            check_reserved_tokens(content)
             resolver = self.__create_resolver()
             label = f"Root:{base_dir}"
             tree = resolver.parse(content, Source(None, base_dir, label))

@@ -9,8 +9,7 @@ flowchart TD
     A["jsonLoad(path)"] --> B["normalize_file_path<br/>(relative to the executed script,<br/>environment variables expanded)"]
     B --> C["ImportResolver.load_file"]
     C --> D["CTextProcessor.load_and_remove_comments"]
-    D --> E["check_reserved_tokens"]
-    E --> F["prepare_text<br/>(line based checks and normalization)"]
+    D --> F["prepare_text<br/>(line based checks and normalization)"]
     F --> G["JsonpParser.parse → AST"]
     G --> H["ImportResolver.expand<br/>(static imports)"]
     H --> I{"unresolved<br/>dynamic imports?"}
@@ -27,8 +26,6 @@ flowchart TD
 `extensions/comments.py`), which removes
 `//` line comments and `/* */` block comments (strings are respected). Parsed files are cached per resolver, so a file
 that is imported several times is parsed only once.
-
-`check_reserved_tokens` rejects content that contains internal marker tokens (`CNameMangling`).
 
 ## 2. Text preparation
 

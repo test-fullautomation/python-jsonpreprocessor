@@ -15,7 +15,7 @@ The only module users import. It validates the constructor arguments, creates an
 | `getVersion`, `getVersionDate` | version information from `version.py` |
 
 For backward compatibility the module also re-exports the helper classes of `common.py`
-(`CSyntaxType`, `CNameMangling`, `CPythonJSONDecoder`, `CKeyChecker`, `CTreeNode`, `CTextProcessor`).
+(`CSyntaxType`, `CPythonJSONDecoder`, `CKeyChecker`, `CTreeNode`, `CTextProcessor`).
 
 ## `common.py` - shared building blocks
 
@@ -23,7 +23,6 @@ For backward compatibility the module also re-exports the helper classes of `com
 |---|---|
 | `JsonpError` | internal exception type of all modules |
 | `CSyntaxType` | `python` / `json` |
-| `CNameMangling` | reserved internal tokens that must not occur in JSONP content |
 | `CKeyChecker` | checks key names against brackets and the user defined `key_pattern` |
 | `CTextProcessor` | `load_and_remove_comments` (uses `extensions.comments`), `multiple_replace`, `normalize_digits` |
 | `CPythonJSONDecoder` | JSON decoder that accepts Python keywords |
