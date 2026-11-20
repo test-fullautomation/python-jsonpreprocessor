@@ -18,14 +18,16 @@
 # Shared building blocks of the JsonPreprocessor:
 #   - public helper classes (kept for backward compatibility of the module API)
 #   - the internal exception type and shared constants/patterns
+#   - lazy values of the interpreter
 #
 #################################################################################
 
 import json
 import unicodedata
-from enum import Enum
 
 import regex
+
+from .extensions.comments import remove_comments
 
 
 class JsonpError(Exception):
@@ -35,26 +37,6 @@ class JsonpError(Exception):
 class CSyntaxType():
     python = "python"
     json = "json"
-
-
-class CNameMangling(Enum):
-    """
-Token strings reserved by former implementations. JSONP content must not contain them.
-    """
-    AVOIDDATATYPE    = "JPavoidDataType_"
-    COLONS           = "__handleColonsInLine__"
-    NESTEDPARAM      = "__handleNestedParamInLine__"
-    DUPLICATEDKEY_00 = "__handleDuplicatedKey__00"
-    DUPLICATEDKEY_01 = "__handleDuplicatedKey__"
-    STRINGCONVERT    = "__ConvertParameterToString__"
-    LISTINDEX        = "__IndexOfList__"
-    SLICEINDEX       = "__SlicingIndex__"
-    STRINGVALUE      = "__StringValueMake-up__"
-    HANDLEIMPORTED   = "__CheckImportedHandling__"
-    DYNAMICIMPORTED  = "__DynamicImportedHandling__"
-    PYTHONBUILTIN    = "__PythonBuiltInFunction__"
-    PYBUILTINSTR     = "__StrInPythonInlineCode__"
-    BYTEVALUE        = "__HandleByteValue__"
 
 
 # Python inline code: <<...>> (no nested '<<' and no '>>' inside)
@@ -74,6 +56,20 @@ PYTHON_TYPE_ERRORS = ("object is not subscriptable",
 def type_name(value) -> str:
     """Returns the type of a value in the format "'int'"."""
     return regex.search(r"('.+')>\s*$", str(type(value)))[1]
+
+
+class Busy(Exception):
+    """A lazy value is referenced during its own evaluation."""
+
+
+class Lazy:
+    """Placeholder of a value which is evaluated on demand."""
+    __slots__ = ('node', 'path', 'busy')
+
+    def __init__(self, node, path):
+        self.node = node
+        self.path = path
+        self.busy = False
 
 
 class CPythonJSONDecoder(json.JSONDecoder):
@@ -236,22 +232,12 @@ Loads a given json file or json content and filters all C/C++ style comments.
 
   String version of JSON file after removing all comments.
         """
-        def replacer(match):
-            s = match.group(0)
-            if s.startswith('/'):
-                return ""
-            else:
-                return s
-
         if is_file:
             with open(jsonP, mode='r', encoding='utf-8') as file:
                 content = file.read()
         else:
             content = jsonP
-
-        pattern = regex.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', regex.DOTALL | regex.MULTILINE)
-        content_cleaned=regex.sub(pattern, replacer, content)
-        return content_cleaned
+        return remove_comments(content)
 
     @staticmethod
     def multiple_replace(input : str, replacements : dict) -> str:

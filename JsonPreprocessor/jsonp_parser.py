@@ -16,126 +16,37 @@
 # File: jsonp_parser.py
 #
 # Parser of the JSONP document syntax (JSON + extensions). The result is an AST
-# (see the node classes below). The structure follows the scanner of the Python
-# standard library (json.decoder), so that JSON syntax errors keep the well known
-# messages and positions. JSONP extensions handled here:
+# (see nodes.py). The structure follows the scanner of the Python standard library
+# (json.decoder), so that JSON syntax errors keep the well known messages and
+# positions.
 #
-#   - Python literals True/False/None (syntax 'python')
-#   - "[import]" and "[import?]" keys (value: path or import object with the
-#     keys 'file', 'if', 'else' and 'optional')
-#   - unquoted dollar operator expressions as values and keys (${...})
-#   - Python inline code <<...>> as values
-#   - byte values b'...'
+# This module contains the JSON core syntax only. The syntax extensions are
+# provided by mixin classes:
 #
-# The dollar operator expressions themselves are parsed by dollar_syntax.
+#   dollar_syntax/scanner.py        dollar operator expressions in values and keys (${...})
+#   extensions/inline_code.py       Python inline code <<...>> as values
+#   extensions/imports.py           "[import]" and "[import?]" keys
+#   extensions/python_literals.py   Python literals True/False/None and byte values b'...'
 #
 #################################################################################
 
 import json
 import shlex
-from dataclasses import dataclass, field
 from json.decoder import scanstring, WHITESPACE
 from typing import Optional
 
 import regex
 
-from .common import (JsonpError, CKeyChecker, CTextProcessor, PY_INLINE_PATTERN, NUMBER_RE, type_name)
-from .dollar_syntax import DollarParser, Ref, Template, err_curly_missing
-
-# --------------------------------------------------------------------------------
-# AST
-# --------------------------------------------------------------------------------
-
-@dataclass(frozen=True)
-class Source:
-    """A parsed JSONP source (file or content)."""
-    path: Optional[str]         # normalized file path, None for content
-    base_dir: Optional[str]     # reference directory for relative imports
-    label: str                  # identification within the import chain
-
-
-@dataclass(eq=False)
-class Scalar:
-    value: object
-
-
-@dataclass(eq=False)
-class Str:
-    text: str
-    parts: Optional[Template] = None    # set if the string contains references
-    escape_text: bool = False
-
-
-@dataclass(eq=False)
-class Bare:
-    ref: Ref
-    src: str
-
-
-@dataclass(eq=False)
-class Inline:
-    code: str
-    src: str
-    in_list: bool = False
-
-
-@dataclass(eq=False)
-class Bytes:
-    src: str
-
-
-@dataclass(eq=False)
-class Arr:
-    items: list
-
-
-@dataclass(eq=False)
-class DollarKey:
-    text: str
-    ref: Ref
-
-
-@dataclass(eq=False)
-class Member:
-    key: object                 # str (literal key) or DollarKey
-    value: object
-    origin: str = None          # path of the imported file the member comes from (None: current file)
-
-
-@dataclass(eq=False)
-class Import:
-    value: object               # Str (static or template), Bare or Inline
-    source: Source
-    pos: int
-    condition: object = None    # value node of 'if' (None: unconditional)
-    alternative: object = None  # value node of 'else' (None: nothing is imported if the condition is false)
-    optional: bool = False      # a not existing file is ignored
-
-    @property
-    def is_static(self) -> bool:
-        return self.condition is None and isinstance(self.value, Str) and self.value.parts is None
-
-
-@dataclass(eq=False)
-class Obj:
-    members: list = field(default_factory=list)     # Member | Import
-
-
-def is_pure_literal(node) -> bool:
-    """True if the value of the node does not depend on anything."""
-    if isinstance(node, Scalar):
-        return True
-    if isinstance(node, Str):
-        return node.parts is None
-    return False
-
+from .common import JsonpError, CKeyChecker, NUMBER_RE
+from .dollar_syntax.scanner import DollarScannerMixin, normalize_line, normalize_indices
+from .extensions.imports import ImportScannerMixin, IMPORT, IMPORT_OPT
+from .extensions.inline_code import InlineScannerMixin, check_inline_in_dollar
+from .extensions.python_literals import PythonLiteralScannerMixin
+from .nodes import Source, Scalar, Str, Arr, Member, Obj
 
 # --------------------------------------------------------------------------------
 # Text preparation
 # --------------------------------------------------------------------------------
-
-_INLINE_IN_DOLLAR = regex.compile(rf'\${{\s*{PY_INLINE_PATTERN}\s*}}')
-
 
 def prepare_text(content: str) -> str:
     """
@@ -151,18 +62,9 @@ whitespace, checks quotation and normalizes index notation.
         except Exception as error:
             raise JsonpError(f"{error} in line: '{line}'")
         line = line.rstrip()
-        if '<<' in line or '>>' in line:
-            match = _INLINE_IN_DOLLAR.search(line)
-            if match is not None:
-                raise JsonpError(f"Python inline code must not be used within dollar operator expression! "
-                                 f"Please check the expression '{match[0]}'")
-        if '${' in line:
-            line = regex.sub(r"\[\s*\+\s*(\d+)\s*\]", "[\\1]", line)
-        lines.append(line + "\n")
-    text = CTextProcessor.normalize_digits(''.join(lines))
-    text = regex.sub(r'\[\s+\'', '[\'', text)
-    text = regex.sub(r'\'\s+\]', '\']', text)
-    return text
+        check_inline_in_dollar(line)
+        lines.append(normalize_line(line) + "\n")
+    return normalize_indices(''.join(lines))
 
 
 def format_json_error(err: json.JSONDecodeError, file: Optional[str]) -> str:
@@ -182,17 +84,9 @@ def format_json_error(err: json.JSONDecodeError, file: Optional[str]) -> str:
 
 _WS = WHITESPACE.match
 _WS_STR = ' \t\n\r'
-_IMPORT_KEY = regex.compile(r'^\s*\[\s*import\s*(\?)?\s*\]\s*$')
-_IMPORT = object()      # marker for "[import]" keys
-_IMPORT_OPT = object()  # marker for "[import?]" keys
-_IMPORT_OPTIONS = ('file', 'if', 'else', 'optional')
 
 
-def _is_ascii(text: str) -> bool:
-    return text.isascii()
-
-
-class JsonpParser:
+class JsonpParser(DollarScannerMixin, InlineScannerMixin, ImportScannerMixin, PythonLiteralScannerMixin):
     """Parses prepared JSONP text into an AST."""
 
     def __init__(self, text: str, source: Source, python_syntax: bool, key_pattern: str):
@@ -228,10 +122,6 @@ class JsonpParser:
         line = self.s[i:self._eol(i)]
         return line[:line.rfind(':')] if ':' in line else line
 
-    def _raise_inline_key(self, expr: str):
-        raise JsonpError(f"Python inline code is not allowed at the left hand side of the colon. "
-                         f"Please check expression '{expr}'.")
-
     # -- values ------------------------------------------------------------------
 
     def scan_value(self, i: int, ctx: str, for_import: bool = False):
@@ -254,12 +144,9 @@ class JsonpParser:
         if c == 'f' and s.startswith('false', i):
             return Scalar(False), i + 5
         if self.python_syntax:
-            if c == 'N' and s.startswith('None', i):
-                return Scalar(None), i + 4
-            if c == 'T' and s.startswith('True', i):
-                return Scalar(True), i + 4
-            if c == 'F' and s.startswith('False', i):
-                return Scalar(False), i + 5
+            result = self._scan_python_constant(i)
+            if result is not None:
+                return result
         m = NUMBER_RE.match(s, i)
         if m is not None:
             integer, frac, exp = m.groups()
@@ -277,9 +164,9 @@ class JsonpParser:
         if c in '<>':
             return self._scan_inline(i, ctx)
         if c == 'b':
-            m = regex.compile(r"b'[^']+'").match(s, i)
-            if m is not None:
-                return Bytes(m[0]), m.end()
+            result = self._scan_bytes(i)
+            if result is not None:
+                return result
         rest = self._rest_of_line(i)
         if '${' in rest:
             self._raise_invalid_bare(rest)
@@ -292,96 +179,10 @@ class JsonpParser:
         return rest
 
     def _make_string(self, text: str, raw: str, for_import: bool):
-        if regex.search(PY_INLINE_PATTERN, text):
-            raise JsonpError(f"Python inline code must not be embedded part of a string! Please check the expression {raw}")
+        self._check_inline_in_string(text, raw)
         if '${' not in text:
             return Str(text)
-        if for_import and text.count('${') > text.count('}'):
-            if '}' in text:
-                raise err_curly_missing(text)
-            raise JsonpError(f"Invalid expression found: '{text}' - The brackets mismatch!!!")
-        parts, _ = DollarParser(text).parse_template()
-        return Str(text, parts, '\\' in text)
-
-    def _raise_invalid_bare(self, expr: str):
-        if expr.startswith('${') and expr.count('${') > expr.count('}'):
-            raise err_curly_missing(expr)
-        if not regex.match(r"^\${.+[}\]]+$", expr) or regex.search(r"\${[^\${]+}(\[[^\[]+\])*[^\[]*\${", expr):
-            raise JsonpError(f"Invalid expression found: '{expr}' - The double quotes are missing!!!")
-        if expr.count('{') != expr.count('}') or expr.count('[') != expr.count(']'):
-            raise JsonpError(f"Invalid expression found: '{expr}' - The brackets mismatch!!!")
-        raise JsonpError(f"Invalid expression found: '{expr}'.")
-
-    def _scan_bare(self, i: int, ctx: str):
-        """Unquoted dollar operator expression as value: exactly one reference."""
-        s = self.s
-        rest = self._rest_of_line(i)
-        if not s.startswith('${', i):
-            self._raise_invalid_bare(rest)
-        ref, end = DollarParser(s, orig=rest, strict=True).parse_ref(i)
-        j = end
-        while j < self.n and s[j] in ' \t':
-            j += 1
-        nxt = s[j:j + 1]
-        if nxt not in (',', '}', ']', '\n', ''):
-            self._raise_invalid_bare(rest)
-        if nxt == ',' and ctx == 'object':
-            following = s[j + 1:self._eol(j)].strip()
-            if following and following[0] not in '"$}<':
-                self._raise_invalid_bare(rest)
-        src = s[i:end]
-        if '\\' in src:
-            # unquoted text is decoded like a JSON string
-            try:
-                decoded = json.loads(f'"{src}"')
-                ref, _ = DollarParser(decoded, orig=rest, strict=True).parse_ref(0)
-            except json.JSONDecodeError:
-                pass
-        return Bare(ref, src), end
-
-    def _scan_inline(self, i: int, ctx: str):
-        """Python inline code <<...>> as value."""
-        s = self.s
-        j = i
-        depth = 0
-        quote = None
-        while j < self.n:
-            c = s[j]
-            if c == '\n':
-                break
-            if quote is not None:
-                if c == '\\':
-                    j += 2
-                    continue
-                if c == quote:
-                    quote = None
-            elif c in '"\'':
-                quote = c
-            elif c in '([{':
-                depth += 1
-            elif c in ')]}':
-                if depth == 0:
-                    break
-                depth -= 1
-            elif c == ',' and depth == 0:
-                break
-            j += 1
-        region = s[i:j].rstrip()
-        if regex.match(r'^\s*<<\s*>>\s*$', region):
-            raise JsonpError(f"The Python builtIn must not be empty. Please check '{region}'")
-        if not regex.search(PY_INLINE_PATTERN, region):
-            message = f"Invalid syntax: Check the Python inline code '{region}'. "
-            if region.count('<<') > region.count('>>'):
-                message += "Missing closed bracket!"
-            elif region.count('<<') < region.count('>>'):
-                message += "Missing opened bracket!"
-            else:
-                message += "The correct syntax is '<<Python_inline_code>>'!"
-            raise JsonpError(message)
-        if region.startswith('<<') and region.endswith('>>'):
-            code = regex.search(r'<<\s*(.*)>>', region)[1]
-            return Inline(code, region, ctx == 'array'), i + len(region)
-        raise StopIteration(i)
+        return self._dollar_string(text, for_import)
 
     # -- containers (structure as in json.decoder) -------------------------------
 
@@ -438,9 +239,7 @@ class JsonpParser:
             if s[end:end + 1] != ':':
                 end = _WS(s, end).end()
                 if s[end:end + 1] != ':':
-                    match = regex.search(PY_INLINE_PATTERN, self._key_region(end))
-                    if match is not None:
-                        self._raise_inline_key(match[0])
+                    self._check_inline_before_colon(end)
                     raise json.JSONDecodeError("Expecting ':' delimiter", s, end)
             end += 1
             try:
@@ -450,13 +249,13 @@ class JsonpParser:
                         end = _WS(s, end + 1).end()
             except IndexError:
                 pass
-            is_import = key is _IMPORT or key is _IMPORT_OPT
+            is_import = key is IMPORT or key is IMPORT_OPT
             try:
                 value, end = self.scan_value(end, 'object', for_import=is_import)
             except StopIteration as err:
                 raise json.JSONDecodeError("Expecting value", s, err.value) from None
             if is_import:
-                members.append(self._make_import(value, key_pos, key is _IMPORT_OPT))
+                members.append(self._make_import(value, key_pos, key is IMPORT_OPT))
             else:
                 members.append(Member(key, value))
             try:
@@ -486,114 +285,25 @@ class JsonpParser:
             text, end = scanstring(s, i + 1, True)
             return self._literal_key(text, s[i:end]), end
         if c == '$':
+            self._check_inline_in_dollar_key(i)
             return self._dollar_key(i)
         if c == '<':
-            region = self._key_region(i).strip()
-            if regex.fullmatch(r'<<.*>>', region):
-                self._raise_inline_key(region)
+            self._check_inline_key(i)
         if c == 'b':
-            m = regex.compile(r"b'[^']+'").match(s, i)
-            if m is not None:
-                raise JsonpError(f"Type error in key {m[0]}. Key names must be strings; byte values are not supported.")
+            self._check_bytes_key(i)
         raise json.JSONDecodeError("Expecting property name enclosed in double quotes", s, i)
 
     def _literal_key(self, text: str, raw: str):
-        if regex.search(rf'["\s]*{PY_INLINE_PATTERN}["\s]*', text):
-            self._raise_inline_key(text)
-        if '${' in text:
-            raise JsonpError(f"A substitution in key names is not allowed! Please update the key name \"{text}\"")
+        self._check_inline_in_key(text)
+        self._check_dollar_in_key(text)
         if regex.match(r'^\s+[^\s]+.+$|^.+[^\s]+\s+$', text):
             text = text.strip()
-        match = _IMPORT_KEY.match(text.lower())
-        if match is not None:
-            return _IMPORT if match[1] is None else _IMPORT_OPT
-        if r'\"' not in raw and _is_ascii(text) and not self.key_checker.key_name_checker(text):
+        marker = self._import_marker(text)
+        if marker is not None:
+            return marker
+        if r'\"' not in raw and text.isascii() and not self.key_checker.key_name_checker(text):
             raise JsonpError(self.key_checker.error_msg)
         return text
-
-    def _dollar_key(self, i: int):
-        s = self.s
-        region = self._key_region(i)
-        match = regex.search(PY_INLINE_PATTERN, region)
-        if match is not None:
-            code = match[0]
-            expr = region.strip().replace(code, '"' + code.replace('"', '') + '"') + "'  "
-            self._raise_inline_key(expr)
-        orig = self._dollar_key_text(i)
-        if not s.startswith('${', i):
-            raise json.JSONDecodeError("Expecting property name enclosed in double quotes", s, i)
-        ref, end = DollarParser(s, orig=orig, strict=True).parse_ref(i)
-        return DollarKey(s[i:end], ref), end
-
-    def _dollar_key_text(self, i: int) -> str:
-        """Text of an unquoted key (up to the colon outside of brackets)."""
-        s = self.s
-        depth = 0
-        quote = False
-        j = i
-        while j < self.n and s[j] != '\n':
-            c = s[j]
-            if c == "'":
-                quote = not quote
-            elif not quote:
-                if c in '[{':
-                    depth += 1
-                elif c in ']}':
-                    depth -= 1
-                elif c == ':' and depth <= 0:
-                    break
-            j += 1
-        return s[i:j].strip()
-
-    # -- imports -----------------------------------------------------------------
-
-    def _make_import(self, value, pos: int, optional: bool) -> Import:
-        if isinstance(value, Obj):
-            if optional:
-                raise JsonpError("The [import?] key requires a value of type 'str'. "
-                                 "Use the key 'optional' of an [import] object instead.")
-            return self._make_import_object(value, pos)
-        self._check_import_path(value, "The [import?] key" if optional else "The [import] key")
-        return Import(value, self.source, pos, optional=optional)
-
-    @staticmethod
-    def _literal_type(node) -> str:
-        """Type name of a literal value node."""
-        sample = {Obj: {}, Arr: [], Bytes: b''}.get(type(node), getattr(node, 'value', getattr(node, 'text', None)))
-        return type_name(sample)
-
-    def _check_import_path(self, value, name: str):
-        if isinstance(value, Scalar) and not isinstance(value.value, str) or isinstance(value, (Obj, Arr, Bytes)):
-            raise JsonpError(f"{name} requires a value of type 'str', but the type is {self._literal_type(value)}")
-
-    def _make_import_object(self, node: Obj, pos: int) -> Import:
-        """Import object: {"file": <path>, "if": <condition>, "else": <path>, "optional": <bool>}"""
-        options = {}
-        for member in node.members:
-            key = member.key if isinstance(member, Member) else '[import]'
-            if not isinstance(key, str) or key not in _IMPORT_OPTIONS:
-                key = key.text if isinstance(key, DollarKey) else key
-                raise JsonpError(f"Invalid key '{key}' in [import] object. "
-                                 f"Allowed keys are: {', '.join(repr(k) for k in _IMPORT_OPTIONS)}.")
-            if key in options:
-                raise JsonpError(f"Duplicate key '{key}' in [import] object.")
-            options[key] = member.value
-        if 'file' not in options:
-            raise JsonpError("The [import] object requires the key 'file'.")
-        if 'else' in options and 'if' not in options:
-            raise JsonpError("The key 'else' of an [import] object requires the key 'if'.")
-        self._check_import_path(options['file'], "The key 'file' of an [import] object")
-        if 'else' in options:
-            self._check_import_path(options['else'], "The key 'else' of an [import] object")
-        condition = options.get('if')
-        if isinstance(condition, (Obj, Arr, Bytes)) or isinstance(condition, Scalar) and not isinstance(condition.value, bool) \
-                or isinstance(condition, Str) and condition.parts is None:
-            raise JsonpError(f"The key 'if' of an [import] object requires a value of type 'bool', "
-                             f"but the type is {self._literal_type(condition)}")
-        optional = options.get('optional', Scalar(False))
-        if not (isinstance(optional, Scalar) and isinstance(optional.value, bool)):
-            raise JsonpError("The key 'optional' of an [import] object requires the literal value 'true' or 'false'.")
-        return Import(options['file'], self.source, pos, condition, options.get('else'), optional.value)
 
 
 def parse_jsonp(text: str, source: Source, python_syntax: bool, key_pattern: str):

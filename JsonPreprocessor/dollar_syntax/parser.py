@@ -13,7 +13,7 @@
 #  limitations under the License.
 #################################################################################
 #
-# File: dollar_syntax.py
+# File: dollar_syntax/parser.py
 #
 # Parser for the dollar operator expression language. It is independent from the
 # JSONP document syntax and works on plain strings:
@@ -33,7 +33,7 @@ from typing import List, Union
 
 import regex
 
-from .common import JsonpError
+from ..common import JsonpError
 
 
 @dataclass
